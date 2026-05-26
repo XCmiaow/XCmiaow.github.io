@@ -31,6 +31,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Compress certificate images
+        run: |
+          if ls dist/assets/evidence/public/*.jpg 2>/dev/null; then
+            npx @squoosh/cli --mozjpeg '{quality:80}' dist/assets/evidence/public/*.jpg -d dist/assets/evidence/public/
+          fi
+          if ls dist/assets/evidence/public/*.png 2>/dev/null; then
+            npx @squoosh/cli --oxipng '{level:2}' dist/assets/evidence/public/*.png -d dist/assets/evidence/public/
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

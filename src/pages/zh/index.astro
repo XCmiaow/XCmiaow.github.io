@@ -1,133 +1,147 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
+import resume from '../../data/resume.json';
+
+const p = resume.person;
+const edu = resume.education;
 ---
 
-<BaseLayout title="方绪杰 | 林产化工本科生 | 数学建模与 AI 工具链" description="方绪杰，南京林业大学化学工程学院林产化工专业本科生，GPA 3.60，班级第1，专业第2，关注数学建模与AI工具链。" lang="zh">
+<BaseLayout title={`${p.name.zh} | 林产化工本科生 | 数学建模与 AI 工具链`} description={`${p.name.zh}，南京林业大学化学工程学院林产化工专业本科生，GPA ${edu.gpa}，班级第${edu.rankClass}，专业第${edu.rankMajor}。`} lang="zh">
 
+<!-- HERO -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <h1>方绪杰</h1>
+      <h1 data-animate>{p.name.zh}</h1>
       <p class="subtitle">南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
-      <p class="lead">GPA 3.60，班级第 1，专业第 2。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。</p>
+      <p class="lead">GPA {edu.gpa}，班级第 {edu.rankClass}，专业第 {edu.rankMajor}。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。</p>
       <div class="hero-actions no-print">
         <a class="btn primary" href="#honors">查看核心成果</a>
-        <a class="btn" href="/zh/resume-onepage">一页投递版</a>
+        <a class="btn" href="/zh/resume-onepage">一页投递版 · PDF</a>
       </div>
       <div class="tag-row">
-        <span class="tag">GPA 3.60</span>
-        <span class="tag">班级第 1</span>
-        <span class="tag">专业第 2</span>
+        <span class="tag">GPA {edu.gpa}</span>
+        <span class="tag">班级第 {edu.rankClass}</span>
+        <span class="tag">专业第 {edu.rankMajor}</span>
         <span class="tag">数学建模</span>
         <span class="tag">AI 工具链</span>
       </div>
     </div>
-    <aside class="portrait-card">
-      <img class="profile-photo" src="/assets/avatar.jpg" alt="方绪杰照片" />
+    <aside class="portrait-card" data-animate="right">
+      <img class="profile-photo" src={p.avatar} alt={`${p.name.zh}照片`} />
       <div class="profile-meta">
-        <strong>Xujie Fang · XCmiaow</strong>
-        <span>a student exploring code, modeling and chemistry</span>
+        <strong>{p.name.en} · {p.githubUser}</strong>
+        <span>{p.tagline.en}</span>
       </div>
       <div class="stat-grid">
-        <div class="stat"><strong>3.60</strong><span>GPA</span></div>
-        <div class="stat"><strong>第 1</strong><span>班级排名</span></div>
-        <div class="stat"><strong>第 2</strong><span>专业排名</span></div>
-        <div class="stat"><strong>大二</strong><span>当前年级</span></div>
+        <div class="stat"><strong>{edu.gpa}</strong><span>GPA</span></div>
+        <div class="stat"><strong>第 {edu.rankClass}</strong><span>班级排名</span></div>
+        <div class="stat"><strong>第 {edu.rankMajor}</strong><span>专业排名</span></div>
+        <div class="stat"><strong>{edu.year}</strong><span>当前年级</span></div>
       </div>
     </aside>
   </div>
 </section>
 
-<section id="about">
-  <div class="container">
-    <div class="section-head"><h2>个人简介</h2><p>以学业成绩为基础，以数学建模为能力证明。</p></div>
-    <div class="card pad about-copy">
-      <p>本人现就读于南京林业大学化学工程学院林产化工专业，GPA 3.60，班级排名第 1、专业排名第 2。曾获国家励志奖学金、校三好学生、大学生学科竞赛先进个人等荣誉。</p>
-      <p>重点参与数学建模类竞赛，曾获全国大学生数学建模竞赛江苏省一等奖，并连续获得 2025、2026 年美国大学生数学建模竞赛 MCM/ICM H 奖。</p>
-      <p>熟悉 Python、LaTeX、Markdown、Zotero、Obsidian 等工具，正在探索 AI 辅助学习、科研阅读和知识管理的实践路径。</p>
+<!-- ABOUT -->
+<section id="about"><div class="container">
+  <div class="section-head"><h2>个人简介</h2><p>以学业成绩为基础，以数学建模为能力证明。</p></div>
+  <div class="card pad about-copy" data-animate>
+    <p>现就读于{edu.zh.school}{edu.zh.college}{edu.zh.major}，GPA {edu.gpa}，班级排名第 {edu.rankClass}、专业排名第 {edu.rankMajor}。曾获国家励志奖学金、校三好学生、大学生学科竞赛先进个人等荣誉。</p>
+    <p>重点参与数学建模类竞赛，获全国大学生数学建模竞赛江苏省一等奖，并连续获得 2025、2026 年 MCM/ICM H 奖。熟悉 Python、LaTeX、Markdown 等工具，正在探索 AI 辅助学习与知识管理实践。</p>
+  </div>
+</div></section>
+
+<!-- EDUCATION -->
+<section id="education"><div class="container">
+  <div class="section-head"><h2>教育背景</h2></div>
+  <div class="education-card" data-animate>
+    <div class="school">
+      <h3>{edu.zh.school}</h3>
+      <p>{edu.zh.college} · {edu.zh.major}</p>
+      <p>{edu.zh.period} · {edu.zh.degree}</p>
+    </div>
+    <div class="rank-list">
+      <div class="rank-item"><span>GPA</span><strong>{edu.gpa}</strong></div>
+      <div class="rank-item"><span>班级排名</span><strong>第 {edu.rankClass}</strong></div>
+      <div class="rank-item"><span>专业排名</span><strong>第 {edu.rankMajor}</strong></div>
+      <div class="rank-item"><span>当前年级</span><strong>{edu.year}</strong></div>
     </div>
   </div>
-</section>
+</div></section>
 
-<section id="education">
-  <div class="container">
-    <div class="section-head"><h2>教育背景</h2></div>
-    <div class="education-card">
-      <div class="school">
-        <h3>南京林业大学</h3>
-        <p>化学工程学院 · 林产化工专业</p>
-        <p>2024.09 - 至今 · 本科在读</p>
-      </div>
-      <div class="rank-list">
-        <div class="rank-item"><span>GPA</span><strong>3.60</strong></div>
-        <div class="rank-item"><span>班级排名</span><strong>第 1</strong></div>
-        <div class="rank-item"><span>专业排名</span><strong>第 2</strong></div>
-        <div class="rank-item"><span>当前年级</span><strong>大二</strong></div>
-      </div>
-    </div>
+<!-- HIGHLIGHTS -->
+<section id="highlights"><div class="container">
+  <div class="section-head"><h2>核心亮点</h2></div>
+  <div class="grid-4">
+    {resume.highlights.map(h => (
+      <article class="card pad highlight" data-animate="up">
+        <span class="num">{h.id}</span>
+        <h3>{h.zh}</h3>
+        <p>{h.zhDesc}</p>
+      </article>
+    ))}
   </div>
-</section>
+</div></section>
 
-<section id="honors">
-  <div class="container">
-    <div class="section-head"><h2>获奖情况</h2><p>按国际级、国家级、省级、校级、院级分类展示。</p></div>
-    <div class="honor-tabs" role="tablist">
-      <button class="tab-btn active" data-tab="international">国际级 <span>2</span></button>
-      <button class="tab-btn" data-tab="national">国家级 <span>1</span></button>
-      <button class="tab-btn" data-tab="provincial">省级 <span>4</span></button>
-      <button class="tab-btn" data-tab="school">校级 <span>3</span></button>
-      <button class="tab-btn" data-tab="college">院级 <span>1</span></button>
-    </div>
-    <div>
-      <div class="honor-panel active" id="intl-panel">
-        <div class="timeline">
-          <div class="timeline-item"><div class="year">2025</div><div><strong>美国大学生数学建模竞赛 MCM/ICM H 奖</strong><span>国际级数学建模竞赛</span></div></div>
-          <div class="timeline-item"><div class="year">2026</div><div><strong>美国大学生数学建模竞赛 MCM/ICM H 奖</strong><span>国际级数学建模竞赛</span></div></div>
+<!-- COMPETITION TIMELINE -->
+<section id="honors"><div class="container">
+  <div class="section-head"><h2>获奖与竞赛</h2><p>点击展开详情，按级别筛选。</p></div>
+  <CompetitionTimeline lang="zh" />
+</div></section>
+
+<!-- SKILLS -->
+<section id="skills"><div class="container">
+  <div class="section-head"><h2>技能专长</h2></div>
+  <div class="grid-4">
+    {resume.skills.map(s => (
+      <article class="card pad skill-card" data-animate="up">
+        <h3>{s.category.zh}</h3>
+        <p>{s.zhDesc}</p>
+        <ul>
+          {s.items.zh.map(item => <li>{item}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</div></section>
+
+<!-- PROJECTS -->
+<section id="projects"><div class="container">
+  <div class="section-head"><h2>项目与作品</h2></div>
+  <div class="grid-3">
+    {resume.projects.map(proj => (
+      <article class="card pad project-card" data-animate="up">
+        <div>
+          <h3>{proj.zh}</h3>
+          <p>{proj.zhDesc}</p>
+          <ul class="project-facts">
+            <li><b>能力</b><span>{proj.zhAbilities}</span></li>
+            {proj.link && <li><b>链接</b><span><a href={proj.link}>{proj.link}</a></span></li>}
+          </ul>
         </div>
-      </div>
-    </div>
+        <div class="tag-row">{proj.tags.map(t => <span class="tag">{t}</span>)}</div>
+      </article>
+    ))}
   </div>
-</section>
+</div></section>
 
-<section id="projects">
-  <div class="container">
-    <div class="section-head"><h2>项目与作品</h2></div>
-    <div class="grid-3">
-      <article class="card pad project-card">
-        <h3>数学建模竞赛实践</h3>
-        <p>围绕实际问题完成模型构建、数据分析与论文撰写，取得省级与国际级奖项。</p>
-        <div class="tag-row"><span class="tag">Python</span><span class="tag">Data Analysis</span><span class="tag">Academic Writing</span></div>
-      </article>
-      <article class="card pad project-card">
-        <h3>AI 辅助科研学习与知识管理</h3>
-        <p>探索 AI 工具、Zotero、Obsidian、Markdown 与 LaTeX 进行文献阅读与知识组织。</p>
-        <div class="tag-row"><span class="tag">AI Workflow</span><span class="tag">Zotero</span><span class="tag">Obsidian</span></div>
-      </article>
-      <article class="card pad project-card">
-        <h3>个人静态简历网站</h3>
-        <p>基于 Astro 构建双语学术主页，展示教育背景、获奖经历与技能专长。</p>
-        <div class="tag-row"><span class="tag">Astro</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">GitHub Pages</span></div>
-      </article>
+<!-- CONTACT -->
+<section id="contact"><div class="container">
+  <div class="contact-card" data-animate>
+    <div>
+      <h2>联系与展示</h2>
+      <p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p>
+    </div>
+    <div class="contact-list">
+      <span>Phone: {p.phone}</span>
+      <span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span>
+      <span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span>
+      <span>Location: {p.location}</span>
     </div>
   </div>
-</section>
-
-<section id="contact">
-  <div class="container">
-    <div class="contact-card">
-      <div>
-        <h2>联系与展示</h2>
-        <p>适合部署到 GitHub Pages 或作为个人主页链接使用。</p>
-      </div>
-      <div class="contact-list">
-        <span>Phone: 133****4936</span>
-        <span>Email: <a href="mailto:2332797170@qq.com">2332797170@qq.com</a></span>
-        <span>GitHub: <a href="https://github.com/XCmiaow">github.com/XCmiaow</a></span>
-        <span>Location: Nanjing, China</span>
-      </div>
-    </div>
-  </div>
-</section>
+</div></section>
 
 </BaseLayout>
 
@@ -156,42 +170,55 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .rank-list { display: grid; gap: 12px; }
   .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
   .rank-item span { color: var(--muted); }
-  .honor-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
-  .tab-btn { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--muted); font-weight: 800; cursor: pointer; }
-  .tab-btn.active { border-color: rgba(201,162,39,0.72); background: var(--accent-soft); color: var(--primary); }
-  .honor-panel { display: none; }
-  .honor-panel.active { display: block; }
-  .timeline { display: grid; gap: 14px; }
-  .timeline-item { display: grid; grid-template-columns: 92px 1fr; gap: 16px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
-  .year { color: var(--accent); font-weight: 900; }
-  .timeline-item strong { display: block; color: var(--primary); }
-  .timeline-item span { color: var(--muted); font-size: 14px; }
-  .project-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; }
+  .highlight { position: relative; min-height: 170px; overflow: hidden; }
+  .highlight::after { content: ""; position: absolute; right: -32px; bottom: -32px; width: 92px; height: 92px; border-radius: 50%; border: 18px solid var(--accent-soft); }
+  .highlight .num { display: inline-flex; align-items: center; height: 28px; margin-bottom: 20px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft); color: var(--primary); font-size: 13px; font-weight: 900; }
+  .skill-card ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .skill-card li { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: rgba(47,81,104,0.05); color: var(--secondary); font-size: 13px; font-weight: 720; }
+  .project-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; }
   .project-card .tag-row { margin-top: 18px; }
+  .project-facts { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .project-facts li { display: grid; grid-template-columns: 78px 1fr; gap: 10px; color: var(--muted); font-size: 14px; }
+  .project-facts b { color: var(--primary); }
   .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
   .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
   .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
   .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; }
   .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
 
-  @media (max-width: 940px) {
-    .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 640px) {
-    .hero { padding-top: 50px; }
-  }
+  /* Animations */
+  [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  [data-animate].revealed { opacity: 1; transform: translateY(0); }
+  [data-animate="right"] { transform: translateX(20px); }
+  [data-animate="right"].revealed { transform: translateX(0); }
+  [data-animate="up"] { transform: translateY(30px); }
+  [data-animate="up"].revealed { transform: translateY(0); }
 
-  <script>
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const tab = btn.dataset.tab;
-        const panels = document.querySelectorAll('.honor-panel');
-        panels.forEach(p => p.classList.remove('active'));
-        // Show first panel for now, to be enhanced later
-        document.getElementById('intl-panel')?.classList.add('active');
-      });
-    });
-  </script>
+  /* Hero typewriter */
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
+
+<script>
+  // Scroll reveal
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+
+  // Typewriter effect on hero
+  const h1 = document.querySelector('.hero h1');
+  if (h1) {
+    const text = h1.textContent || '';
+    h1.textContent = '';
+    h1.style.borderRight = '3px solid var(--accent)';
+    let i = 0;
+    const type = () => {
+      if (i < text.length) { h1.textContent += text[i]; i++; setTimeout(type, 80 + Math.random() * 50); }
+      else { h1.style.borderRight = 'none'; }
+    };
+    setTimeout(type, 300);
+  }
+</script>
