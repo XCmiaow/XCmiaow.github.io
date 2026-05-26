@@ -1,0 +1,126 @@
+:root {
+  --bg: #f7f5ef;
+  --paper: #ffffff;
+  --ink: #172331;
+  --muted: #657385;
+  --primary: #102a43;
+  --secondary: #2f5168;
+  --accent: #c9a227;
+  --accent-soft: #fff4cb;
+  --green: #2f6f5e;
+  --line: #e2e7ee;
+  --shadow: 0 16px 36px rgba(16, 42, 67, 0.09);
+  --radius: 8px;
+  --max: 1120px;
+}
+
+:root[data-theme="dark"], :root.dark {
+  --bg: #0f1720;
+  --paper: #162230;
+  --ink: #edf3f8;
+  --muted: #aab8c6;
+  --primary: #d7e8f5;
+  --secondary: #9fc6d8;
+  --accent: #e0bd4e;
+  --accent-soft: rgba(224, 189, 78, 0.13);
+  --green: #71c0a8;
+  --line: #2a3a4b;
+  --shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(201, 162, 39, 0.14), transparent 30rem),
+    linear-gradient(180deg, #fbfaf7 0%, var(--bg) 48%, #ffffff 100%);
+  color: var(--ink);
+  font-family: "Inter", "Segoe UI", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+:root[data-theme="dark"] body, :root.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(201, 162, 39, 0.12), transparent 30rem),
+    linear-gradient(180deg, #0d1620 0%, var(--bg) 52%, #111b25 100%);
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+.container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+section { padding: 74px 0; scroll-margin-top: 86px; }
+
+.section-head {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: 22px; margin-bottom: 28px;
+}
+.section-head h2 {
+  margin: 0; color: var(--primary);
+  font-size: clamp(28px, 4vw, 40px); line-height: 1.15;
+}
+.section-head p { max-width: 600px; margin: 0; color: var(--muted); }
+
+.card {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--paper); box-shadow: 0 8px 22px rgba(16, 42, 67, 0.06);
+}
+.card.pad { padding: 24px; }
+.card h3 { margin: 0 0 10px; color: var(--primary); font-size: 19px; line-height: 1.35; }
+.card p, .card li { color: var(--muted); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; min-height: 42px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--paper); color: var(--primary);
+  font-size: 14px; font-weight: 750; cursor: pointer;
+}
+.btn.primary { border-color: transparent; background: var(--primary); color: #fff; }
+.btn:hover { box-shadow: 0 10px 22px rgba(16, 42, 67, 0.12); transform: translateY(-1px); }
+
+.tag {
+  display: inline-flex; align-items: center; min-height: 30px;
+  padding: 0 10px; border: 1px solid var(--line); border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68); color: var(--secondary);
+  font-size: 13px; font-weight: 700;
+}
+:root[data-theme="dark"] .tag, :root.dark .tag { background: rgba(255, 255, 255, 0.05); }
+.tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+.grid-2, .grid-3, .grid-4 { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.evidence-list {
+  display: grid; gap: 12px; margin: 0; padding: 0; list-style: none;
+}
+.evidence-list li {
+  display: flex; gap: 10px; align-items: flex-start; color: var(--muted);
+}
+.evidence-list li::before {
+  content: ""; flex: 0 0 auto; width: 8px; height: 8px;
+  margin-top: 10px; border-radius: 50%; background: var(--accent);
+}
+
+footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align: center; }
+
+@media (max-width: 940px) {
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .container { width: min(100% - 28px, var(--max)); }
+  section { padding: 54px 0; }
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .section-head { align-items: stretch; flex-direction: column; }
+}
+
+@media print {
+  body { background: #fff; font-size: 12px; }
+  section { min-height: auto; padding: 22px 0; }
+  .no-print { display: none !important; }
+}

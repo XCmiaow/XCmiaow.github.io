@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Xujie Fang | One-Page Resume" lang="en">
+<div class="print-bar no-print"><button class="btn primary" onclick="window.print()">Print / Save as PDF</button></div>
+
+<article class="page">
+  <header class="resume-head">
+    <div>
+      <h1>Xujie Fang</h1>
+      <p>Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
+      <p class="meta">Male · Sophomore · GPA 3.60 · Class Rank 1st · Major Rank 2nd</p>
+    </div>
+    <img class="avatar" src="/assets/avatar.jpg" alt="Xujie Fang photo" />
+    <div class="contact">Phone: 133****4936 · Email: 2332797170@qq.com · GitHub: github.com/XCmiaow · Location: Nanjing, China</div>
+  </header>
+
+  <section><h2>About Me</h2>
+  <p>Undergraduate in Chemical Engineering of Forest Products, GPA 3.60, ranked 1st in class and 2nd in major. Recipient of National Inspirational Scholarship. Won CUMCM Jiangsu Provincial First Prize and consecutive MCM/ICM Honorable Mentions (2025, 2026).</p></section>
+
+  <section class="grid-2"><div><h2>Education</h2>
+  <p>Nanjing Forestry University · College of Chemical Engineering · 2024.09 - Present</p>
+  <p>GPA: 3.60 · Class Rank: 1st · Major Rank: 2nd</p></div>
+  <div><h2>Target Positioning</h2><p>Graduate School: Academics, math modeling, honors, research potential. Career: Python modeling, frontend dev, AI toolchain, knowledge management.</p></div></section>
+
+  <section><h2>Key Honors</h2>
+  <div class="columns"><ul><li>2025/2026 MCM/ICM Honorable Mention</li><li>National Inspirational Scholarship</li><li>CUMCM Jiangsu Provincial First Prize</li></ul>
+  <ul><li>Jiangsu Advanced Math Competition, 3rd Prize</li><li>MathorCup Regional Second Prize</li><li>University Merit Student</li></ul></div></section>
+
+  <section><h2>Project Experience</h2>
+  <p><strong>Mathematical Modeling Practice</strong> (Python · Academic Writing) — Model construction, data analysis, and paper writing across CUMCM and MCM/ICM competitions.</p>
+  <p><strong>Personal Resume Website</strong> (Astro · HTML · CSS · GitHub Pages) — Built a bilingual academic homepage with responsive design and CI/CD deployment.</p></section>
+
+  <section><h2>Skills</h2>
+  <p>Domain: Organic chemistry mechanisms, Clayden, March, disconnection approach</p>
+  <p>Modeling: Mathematical modeling, Python, LaTeX, Markdown, Origin</p>
+  <p>Tools: HTML, CSS, JavaScript, React, Zotero, Obsidian, AutoCAD, Aspen Plus</p></section>
+</article>
+</BaseLayout>
+
+<style>
+  .print-bar { text-align: right; margin: 20px 0; padding: 0 var(--max); }
+  .page { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+  .resume-head { display: grid; grid-template-columns: 1fr auto; gap: 24px; }
+  .resume-head h1 { font-size: 36px; margin: 0 0 4px; }
+  .resume-head p { margin: 4px 0; color: var(--muted); }
+  .meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .avatar { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; }
+  .contact { grid-column: 1 / -1; padding: 10px 16px; background: rgba(16,42,67,0.04); border-radius: var(--radius); font-size: 14px; color: var(--muted); }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .columns ul { margin: 0; padding-left: 18px; }
+  section h2 { font-size: 20px; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 4px; margin-top: 24px; }
+  @media print { .no-print { display: none !important; } .page { padding: 0; } }
+  @media (max-width: 640px) { .columns { grid-template-columns: 1fr; } .resume-head { grid-template-columns: 1fr; } }
+</style>

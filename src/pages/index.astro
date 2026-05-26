@@ -1,0 +1,6 @@
+---
+// Root: redirect to preferred or default language
+const url = Astro.url;
+const lang = url.searchParams.get('lang') || 'zh';
+return Astro.redirect(`/${lang}/`);
+---

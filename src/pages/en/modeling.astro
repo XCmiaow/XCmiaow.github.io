@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Xujie Fang | Mathematical Modeling Case Study" lang="en">
+<section class="hero"><div class="container">
+  <h1>Mathematical Modeling in Practice</h1>
+  <p class="lead">Turning competition awards into explainable skill evidence: problem abstraction, model construction, data processing, algorithm solving, and paper writing.</p>
+  <div class="tag-row"><span class="tag">CUMCM Provincial 1st</span><span class="tag">MCM/ICM H Award ×2</span><span class="tag">MathorCup Regional 2nd</span></div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>Skill Positioning</h2></div>
+  <div class="grid-3">
+    <article class="card pad"><h3>For Graduate School</h3><p>Demonstrates mathematical foundations, research communication, English writing, and interdisciplinary modeling.</p></article>
+    <article class="card pad"><h3>For Career</h3><p>Proves ability to decompose open problems into variables, assumptions, models, code, and conclusions.</p></article>
+    <article class="card pad"><h3>Next Steps</h3><p>Add paper abstracts, code snippets, chart screenshots, role descriptions, and post-competition reflections.</p></article>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>Modeling Workflow</h2></div>
+  <div class="flow">
+    <div class="step"><b>01</b> Problem Understanding</div>
+    <div class="step"><b>02</b> Model Assumptions</div>
+    <div class="step"><b>03</b> Data Processing</div>
+    <div class="step"><b>04</b> Algorithm Solving</div>
+    <div class="step"><b>05</b> Result Analysis</div>
+    <div class="step"><b>06</b> Paper Writing</div>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>Personal Role</h2></div>
+  <div class="grid-2">
+    <div class="card pad"><h3>Verifiable Skills</h3>
+    <ul class="evidence-list"><li>Contributed to problem abstraction, model construction, data analysis, and paper writing</li><li>Proficient in Python, LaTeX, Markdown, Origin</li><li>Experienced in cross-disciplinary research and deadline-driven delivery</li></ul></div>
+    <div class="card pad"><h3>Recommended Additions</h3>
+    <ul class="evidence-list"><li>Actual role per contest: modeling/programming/writing/visualization/literature review</li><li>Specific models, algorithms, metrics, and figures used</li><li>Paper abstracts, key charts, code snippets, and reflections</li></ul></div>
+  </div>
+</div></section>
+</BaseLayout>
+
+<style>
+  .hero { padding: 80px 0 40px; }
+  .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); }
+  .lead { max-width: 640px; margin-top: 16px; color: var(--muted); font-size: 17px; }
+  .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .step { text-align: center; padding: 20px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+  .step b { display: block; color: var(--accent); font-size: 22px; margin-bottom: 6px; }
+  @media (max-width: 640px) { .flow { grid-template-columns: repeat(3, 1fr); } }
+</style>

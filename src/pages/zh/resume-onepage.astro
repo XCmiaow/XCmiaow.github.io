@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="方绪杰 | 一页正式简历" lang="zh">
+<div class="print-bar no-print"><button class="btn primary" onclick="window.print()">打印 / 另存为 PDF</button></div>
+
+<article class="page">
+  <header class="resume-head">
+    <div>
+      <h1>方绪杰</h1>
+      <p>南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
+      <p class="meta">男 · 共青团员 · 大二 · GPA 3.60 · 班级第 1 · 专业第 2</p>
+    </div>
+    <img class="avatar" src="/assets/avatar.jpg" alt="方绪杰照片" />
+    <div class="contact">Phone: 133****4936 · Email: 2332797170@qq.com · GitHub: github.com/XCmiaow · Location: Nanjing, China</div>
+  </header>
+
+  <section><h2>个人简介</h2>
+  <p>林产化工专业本科生，GPA 3.60，班级第 1、专业第 2。获国家励志奖学金、校三好学生、大学生学科竞赛先进个人。重点参与数学建模类竞赛，获全国大学生数学建模竞赛江苏省一等奖，并连续获得 2025、2026 年 MCM/ICM H 奖。</p></section>
+
+  <section class="grid-2"><div><h2>教育背景</h2>
+  <p>南京林业大学 · 化学工程学院 · 林产化工专业 · 2024.09 - 至今</p>
+  <p>GPA：3.60 · 班级排名：第 1 · 专业排名：第 2</p></div>
+  <div><h2>申请定位</h2><p>保研/评优：专业成绩、数学建模、综合荣誉与科研潜力。求职/作品集：Python 建模、前端工程、AI 工具链。</p></div></section>
+
+  <section><h2>核心荣誉</h2>
+  <div class="columns"><ul><li>2025/2026 年 MCM/ICM H 奖</li><li>国家励志奖学金</li><li>全国大学生数学建模竞赛 江苏省一等奖</li></ul>
+  <ul><li>江苏省高等数学竞赛 三等奖</li><li>MathorCup 区域赛二等奖</li><li>校三好学生 · 学科竞赛先进个人</li></ul></div></section>
+
+  <section><h2>项目实践</h2>
+  <p><strong>数学建模竞赛实践</strong>（Python · Academic Writing）— 参与全国大学生数学建模竞赛、MCM/ICM 等赛事，完成模型构建、数据分析与论文撰写。</p>
+  <p><strong>个人静态简历网站</strong>（Astro · HTML · CSS · GitHub Pages）— 构建双语学术主页，含响应式布局、隐私分版、打印样式。</p></section>
+
+  <section><h2>技能</h2>
+  <p>专业：有机化学机理、Clayden、March、有机合成切断法</p>
+  <p>建模：数学建模、Python、LaTeX、Markdown、Origin</p>
+  <p>工具：HTML、CSS、JavaScript、React、Zotero、Obsidian、AutoCAD、Aspen Plus</p></section>
+</article>
+</BaseLayout>
+
+<style>
+  .print-bar { text-align: right; margin: 20px 0; padding: 0 var(--max); }
+  .page { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+  .resume-head { display: grid; grid-template-columns: 1fr auto; gap: 24px; }
+  .resume-head h1 { font-size: 36px; margin: 0 0 4px; }
+  .resume-head p { margin: 4px 0; color: var(--muted); }
+  .meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .avatar { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; }
+  .contact { grid-column: 1 / -1; padding: 10px 16px; background: rgba(16,42,67,0.04); border-radius: var(--radius); font-size: 14px; color: var(--muted); }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .columns ul { margin: 0; padding-left: 18px; }
+  section h2 { font-size: 20px; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 4px; margin-top: 24px; }
+  @media print { .no-print { display: none !important; } .page { padding: 0; } }
+  @media (max-width: 640px) { .columns { grid-template-columns: 1fr; } .resume-head { grid-template-columns: 1fr; } }
+</style>
