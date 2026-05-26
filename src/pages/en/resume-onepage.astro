@@ -1,56 +1,213 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+// Strict one-page A4 resume - English
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xujie Fang · One-Page Resume</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body class="a4-page">
 
-<BaseLayout title="Xujie Fang | One-Page Resume" lang="en">
-<div class="print-bar no-print"><button class="btn primary" onclick="window.print()">Print / Save as PDF</button></div>
+<div class="toolbar no-print">
+  <div class="lang-switch">
+    <a href="/zh/resume-onepage" data-lang="zh">中文</a>
+    <span class="sep">|</span>
+    <a href="/en/resume-onepage" data-lang="en" class="active">EN</a>
+  </div>
+  <a href="/en/" class="btn">← Back</a>
+  <button class="btn primary" id="download-pdf">⬇ Download PDF</button>
+</div>
 
-<article class="page">
-  <header class="resume-head">
-    <div>
+<article class="sheet">
+
+  <!-- HEADER -->
+  <header class="top">
+    <div class="top-main">
       <h1>Xujie Fang</h1>
-      <p>Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
-      <p class="meta">Male · Sophomore · GPA 3.60 · Class Rank 1st · Major Rank 2nd</p>
+      <p class="sub">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
     </div>
-    <img class="avatar" src="/assets/avatar.jpg" alt="Xujie Fang photo" />
-    <div class="contact">Phone: 133****4936 · Email: 2332797170@qq.com · GitHub: github.com/XCmiaow · Location: Nanjing, China</div>
+    <div class="top-contact">
+      <span>📧 2332797170@qq.com</span>
+      <span>📱 +86 133****4936</span>
+      <span>🐙 github.com/XCmiaow</span>
+      <span>📍 Nanjing, China</span>
+    </div>
   </header>
 
-  <section><h2>About Me</h2>
-  <p>Undergraduate in Chemical Engineering of Forest Products, GPA 3.60, ranked 1st in class and 2nd in major. Recipient of National Inspirational Scholarship. Won CUMCM Jiangsu Provincial First Prize and consecutive MCM/ICM Honorable Mentions (2025, 2026).</p></section>
+  <!-- SUMMARY -->
+  <p class="summary">Undergraduate in Chemical Engineering with GPA <strong>3.60</strong> (Class <strong>1st</strong>, Major <strong>2nd</strong>). National Inspirational Scholarship recipient. Core math modeling achievements: CUMCM <strong>Jiangsu Provincial First Prize</strong>, consecutive MCM/ICM <strong>Honorable Mentions</strong> (2025, 2026). Proficient in Python modeling, LaTeX writing, and AI toolchain workflows.</p>
 
-  <section class="grid-2"><div><h2>Education</h2>
-  <p>Nanjing Forestry University · College of Chemical Engineering · 2024.09 - Present</p>
-  <p>GPA: 3.60 · Class Rank: 1st · Major Rank: 2nd</p></div>
-  <div><h2>Target Positioning</h2><p>Graduate School: Academics, math modeling, honors, research potential. Career: Python modeling, frontend dev, AI toolchain, knowledge management.</p></div></section>
+  <!-- TWO-COL: Education + Target -->
+  <div class="row-2">
+    <section>
+      <h2>Education</h2>
+      <div class="item">
+        <div class="item-head"><strong>Nanjing Forestry University</strong><span>2024.09 - Present</span></div>
+        <p>College of Chemical Engineering</p>
+        <p>GPA: 3.60 · Class Rank: 1st · Major Rank: 2nd · Sophomore</p>
+      </div>
+    </section>
+    <section>
+      <h2>Target Positioning</h2>
+      <p class="small"><strong>Graduate School:</strong> Academic performance, math modeling, honors, and research potential.</p>
+      <p class="small"><strong>Career:</strong> Python modeling, frontend engineering, AI toolchain, and knowledge management.</p>
+    </section>
+  </div>
 
-  <section><h2>Key Honors</h2>
-  <div class="columns"><ul><li>2025/2026 MCM/ICM Honorable Mention</li><li>National Inspirational Scholarship</li><li>CUMCM Jiangsu Provincial First Prize</li></ul>
-  <ul><li>Jiangsu Advanced Math Competition, 3rd Prize</li><li>MathorCup Regional Second Prize</li><li>University Merit Student</li></ul></div></section>
+  <!-- HONORS -->
+  <section>
+    <h2>Key Honors</h2>
+    <div class="row-2 tight">
+      <ul>
+        <li>2025 / 2026 MCM/ICM Honorable Mention (H Award)</li>
+        <li>2024-2025 National Inspirational Scholarship</li>
+        <li>2024 CUMCM Jiangsu Provincial First Prize</li>
+      </ul>
+      <ul>
+        <li>Jiangsu Advanced Math Competition, 3rd Prize (A-level)</li>
+        <li>MathorCup Math Modeling Challenge, Regional 2nd Prize</li>
+        <li>University Merit Student · Competition Outstanding Individual</li>
+      </ul>
+    </div>
+  </section>
 
-  <section><h2>Project Experience</h2>
-  <p><strong>Mathematical Modeling Practice</strong> (Python · Academic Writing) — Model construction, data analysis, and paper writing across CUMCM and MCM/ICM competitions.</p>
-  <p><strong>Personal Resume Website</strong> (Astro · HTML · CSS · GitHub Pages) — Built a bilingual academic homepage with responsive design and CI/CD deployment.</p></section>
+  <!-- PROJECTS -->
+  <section>
+    <h2>Project Experience</h2>
+    <div class="item">
+      <div class="item-head"><strong>Mathematical Modeling in Practice</strong><span>Python · Academic Writing · Data Analysis</span></div>
+      <p class="small">Applied problem abstraction, model construction, data processing, algorithm solving, result analysis, and paper writing to real-world problems across CUMCM and MCM/ICM competitions.</p>
+    </div>
+    <div class="item">
+      <div class="item-head"><strong>Personal Academic Resume Website</strong><span>Astro · HTML/CSS · GitHub Pages · CI/CD</span></div>
+      <p class="small">Built a bilingual academic homepage with Astro, featuring component-based layout, dark mode, language auto-switching, print styles, and GitHub Actions auto-deployment.</p>
+    </div>
+  </section>
 
-  <section><h2>Skills</h2>
-  <p>Domain: Organic chemistry mechanisms, Clayden, March, disconnection approach</p>
-  <p>Modeling: Mathematical modeling, Python, LaTeX, Markdown, Origin</p>
-  <p>Tools: HTML, CSS, JavaScript, React, Zotero, Obsidian, AutoCAD, Aspen Plus</p></section>
+  <!-- TWO-COL: Skills + Leadership -->
+  <div class="row-2">
+    <section>
+      <h2>Technical Skills</h2>
+      <p class="small"><strong>Domain:</strong> Organic chemistry mechanisms, Clayden, March, disconnection approach</p>
+      <p class="small"><strong>Modeling:</strong> Math modeling, Python, LaTeX, Markdown, Origin</p>
+      <p class="small"><strong>Tools:</strong> HTML, CSS, JavaScript, React, Zotero, Obsidian, AutoCAD, Aspen Plus</p>
+    </section>
+    <section>
+      <h2>Leadership &amp; Service</h2>
+      <ul class="tiny">
+        <li>Class Academic Representative (2024-2025): assignment coordination &amp; academic affairs</li>
+        <li>Teaching Information Liaison (2024-2025): student-teacher communication</li>
+        <li>Primary organizer of the 1st Baima Campus Freshman Volleyball Cup</li>
+        <li>"Card House" volunteer service &amp; Red Cross blood donation</li>
+      </ul>
+    </section>
+  </div>
+
 </article>
-</BaseLayout>
+
+<script>
+  document.getElementById('download-pdf')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
 
 <style>
-  .print-bar { text-align: right; margin: 20px 0; padding: 0 var(--max); }
-  .page { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
-  .resume-head { display: grid; grid-template-columns: 1fr auto; gap: 24px; }
-  .resume-head h1 { font-size: 36px; margin: 0 0 4px; }
-  .resume-head p { margin: 4px 0; color: var(--muted); }
-  .meta { display: flex; gap: 12px; flex-wrap: wrap; }
-  .avatar { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; }
-  .contact { grid-column: 1 / -1; padding: 10px 16px; background: rgba(16,42,67,0.04); border-radius: var(--radius); font-size: 14px; color: var(--muted); }
-  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .columns ul { margin: 0; padding-left: 18px; }
-  section h2 { font-size: 20px; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 4px; margin-top: 24px; }
-  @media print { .no-print { display: none !important; } .page { padding: 0; } }
-  @media (max-width: 640px) { .columns { grid-template-columns: 1fr; } .resume-head { grid-template-columns: 1fr; } }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body.a4-page {
+    font-family: "Inter", "Segoe UI", "Noto Sans SC", sans-serif;
+    background: #e8e8e8;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,0.9); padding: 10px 20px;
+    border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .toolbar .lang-switch { display: flex; align-items: center; gap: 4px; }
+  .toolbar .lang-switch a { color: #888; text-decoration: none; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .toolbar .lang-switch a.active { color: #1a1a1a; background: #e8e4d4; }
+  .toolbar .lang-switch .sep { color: #ddd; margin: 0 2px; }
+
+  .sheet {
+    width: 210mm; min-height: 297mm;
+    background: #fff;
+    padding: 19mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  }
+
+  .sheet h1 { font-size: 24pt; font-weight: 800; letter-spacing: 0.02em; }
+  .sheet h2 { font-size: 10.5pt; font-weight: 800; color: #2f5168; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5pt solid #c9a227; padding-bottom: 2pt; margin-top: 9pt; margin-bottom: 4pt; }
+  .sheet p, .sheet li { font-size: 9pt; line-height: 1.32; color: #333; }
+  .sheet .small { font-size: 8.5pt; }
+  .sheet .tiny { font-size: 8pt; padding-left: 14px; }
+  .sheet .tiny li { margin-bottom: 1.5pt; }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 7pt; }
+  .top-main h1 { margin-bottom: 1.5pt; }
+  .top-main .sub { font-size: 9pt; color: #555; }
+  .top-contact { display: grid; gap: 0.5pt; font-size: 8.5pt; color: #555; text-align: right; white-space: nowrap; }
+
+  .summary { font-size: 9pt; line-height: 1.35; margin-bottom: 8pt; color: #333; }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row-2.tight { gap: 6px; }
+  .row-2 ul { padding-left: 14px; }
+  .row-2 li { font-size: 8.5pt; margin-bottom: 1.5pt; }
+
+  .item { margin-bottom: 5pt; }
+  .item-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1pt; }
+  .item-head strong { font-size: 9pt; }
+  .item-head span { font-size: 8pt; color: #888; }
+
+  /* ── PRINT: enforced one-page A4 ── */
+  @media print {
+    @page { size: A4; margin: 0; }
+
+    body.a4-page { background: #fff; padding: 0; }
+
+    .toolbar { display: none !important; }
+
+    .sheet {
+      width: 210mm; min-height: auto; height: auto;
+      padding: 16mm 16mm 14mm 16mm;
+      box-shadow: none; border: none;
+      page-break-after: avoid;
+    }
+
+    .sheet h1 { font-size: 18pt; }
+    .sheet h2 { font-size: 9pt; margin-top: 6pt; margin-bottom: 3pt; padding-bottom: 1.5pt; }
+    .sheet p, .sheet li { font-size: 7.5pt; line-height: 1.25; }
+    .sheet .small { font-size: 7.3pt; }
+    .sheet .tiny { font-size: 7pt; padding-left: 11px; }
+    .sheet .tiny li { margin-bottom: 1pt; }
+
+    .top { margin-bottom: 4pt; }
+    .top-main h1 { font-size: 18pt; margin-bottom: 0.5pt; }
+    .top-main .sub { font-size: 8pt; }
+    .top-contact { font-size: 7.3pt; gap: 0; }
+
+    .summary { font-size: 7.5pt; line-height: 1.28; margin-bottom: 5pt; }
+
+    .row-2 { gap: 8px; }
+    .row-2.tight { gap: 5px; }
+    .row-2 li { font-size: 7.3pt; margin-bottom: 1pt; }
+
+    .item { margin-bottom: 3pt; }
+    .item-head strong { font-size: 7.5pt; }
+    .item-head span { font-size: 7pt; }
+
+    * { page-break-inside: avoid; }
+  }
 </style>
+</body>
+</html>
