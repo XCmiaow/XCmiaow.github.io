@@ -13,6 +13,8 @@ const APP_SHELL = [
   '/styles/site.css',
   '/manifest.json',
   '/admin/',
+  '/blog/',
+  '/en/blog/',
 ];
 
 self.addEventListener('install', (e) => {

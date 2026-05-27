@@ -7,6 +7,7 @@
 ## 技术栈
 
 - **框架**: Astro 5.x (static output)
+- **博客**: Markdown 驱动 (`src/content/blog/`)，Astro Content Collections
 - **样式**: 单文件 CSS (`public/styles/site.css`)，由 `scripts/generate-site-css.mjs` 从源文件合并生成
 - **数据**: JSON 驱动 (`src/data/`)
 - **部署**: GitHub Actions (push 到 main 自动构建部署)
@@ -105,6 +106,23 @@ i18n.json
 5. 在 `src/data/common.json` 中添加共享数据 (如 tags、links)
 6. 更新 `BaseLayout` 的导航链接和 `i18n.json` 的标签 (如需)
 7. 更新 `public/sw.js` 的 APP_SHELL 缓存列表
+
+## 博客发布
+
+在 `src/content/blog/` 下创建 `.md` 文件，frontmatter 包含：
+
+```yaml
+---
+title: "文章标题"
+description: "简短摘要"
+date: 2026-05-27
+lang: zh        # 或 en
+tags: ["标签1", "标签2"]
+draft: false    # true 则不发布
+---
+```
+
+支持中英文双语。中文文章在 `/blog/`，英文文章在 `/en/blog/`。用 `draft: true` 可以暂不发布。
 
 ## CSS 规范
 
