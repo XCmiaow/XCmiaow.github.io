@@ -1,0 +1,209 @@
+@media (max-width: 980px) {
+  .nav {
+    gap: 8px;
+  }
+
+  .brand {
+    min-height: 44px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .brand > span:not(.brand-mark) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-actions {
+    flex: 0 0 auto;
+  }
+
+  .lang-switch {
+    flex: 0 0 auto;
+  }
+
+  .lang-switch a,
+  .ls a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    min-width: 36px;
+  }
+
+  .contact-list a,
+  .project-facts a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
+
+  .filter-btn {
+    min-height: 36px;
+  }
+
+  #cursor-glow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: calc(100% - 28px) !important;
+  }
+
+  .hero {
+    padding: 50px 0 42px !important;
+  }
+
+  .hero-grid,
+  .education-card,
+  .contact-card {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 22px !important;
+  }
+
+  .hero-grid > *,
+  .contact-card > *,
+  .education-card > * {
+    min-width: 0;
+  }
+
+  .hero h1 {
+    max-width: 100%;
+    font-size: clamp(32px, 11vw, 44px) !important;
+    overflow-wrap: anywhere;
+  }
+
+  .subtitle,
+  .lead,
+  .section-head p,
+  .card p,
+  .contact-list,
+  .profile-meta,
+  .project-facts {
+    overflow-wrap: anywhere;
+  }
+
+  .hero-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+  }
+
+  .hero-actions .btn {
+    min-height: 46px;
+    padding: 0 12px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .portrait-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px !important;
+    transform: none !important;
+  }
+
+  .profile-photo {
+    width: 116px !important;
+    height: 116px !important;
+  }
+
+  .stat-grid {
+    gap: 10px !important;
+  }
+
+  .stat {
+    padding: 14px !important;
+  }
+
+  .stat strong {
+    font-size: 24px !important;
+  }
+
+  .tag-row {
+    gap: 8px !important;
+    margin-top: 22px !important;
+  }
+
+  .tag {
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.35;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .card.pad {
+    padding: 20px;
+  }
+
+  .flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .step {
+    min-width: 0;
+    padding: 16px 8px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-card {
+    padding: 22px !important;
+  }
+
+  .cert-card img {
+    height: clamp(180px, 58vw, 240px) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    width: calc(100% - 24px) !important;
+  }
+
+  .nav {
+    min-height: 60px !important;
+  }
+
+  .brand-mark {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .brand > span:not(.brand-mark) {
+    max-width: 92px;
+  }
+
+  .nav-actions {
+    gap: 4px !important;
+  }
+
+  .icon-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 10.5vw, 38px) !important;
+  }
+
+  .subtitle {
+    font-size: 17px !important;
+  }
+
+  .lead {
+    font-size: 15.5px !important;
+  }
+
+  .toolbar {
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+}

@@ -16,6 +16,7 @@ const sources = [
   'src/pages/en/evidence.astro',
   'src/pages/resume-onepage.astro',
   'src/pages/en/resume-onepage.astro',
+  'src/styles/mobile.css',
 ];
 
 let css = [

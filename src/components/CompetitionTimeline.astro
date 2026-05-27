@@ -9,33 +9,39 @@ const levelLabel: Record<string, string> = isZh
   ? { international: '国际级', national: '国家级', provincial: '省级', school: '校级', college: '院级' }
   : { international: 'International', national: 'National', provincial: 'Provincial', school: 'University', college: 'College' };
 const levelColors: Record<string, string> = {
-  international: '#c9a227', national: '#2f6f5e', provincial: '#2f5168', school: '#657385', college: '#8a9aad'
+  international: '#c9a227',
+  national: '#2f6f5e',
+  provincial: '#2f5168',
+  school: '#657385',
+  college: '#8a9aad',
 };
 ---
 
 <div class="timeline-wrap" id="timeline">
   <div class="timeline-filters">
     <button class="filter-btn active" data-level="all">{isZh ? '全部' : 'All'}</button>
-    {levels.map(l => (
-      <button class="filter-btn" data-level={l} style={`--level-color:${levelColors[l]}`}>{levelLabel[l]}</button>
+    {levels.map((level) => (
+      <button class="filter-btn" data-level={level} style={`--level-color:${levelColors[level]}`}>
+        {levelLabel[level]}
+      </button>
     ))}
   </div>
 
   <div class="timeline-track">
-    {comps.map((c, i) => {
-      const hasDetails = c.details?.topic && c.details.topic !== 'TBD';
+    {comps.map((competition, index) => {
+      const hasDetails = competition.details?.topic && competition.details.topic !== 'TBD';
       return (
-        <div class="tl-item fade-in" data-level={c.level} style={`--level-color:${levelColors[c.level]};animation-delay:${i * 0.08}s`}>
+        <div class="tl-item fade-in" data-level={competition.level} style={`--level-color:${levelColors[competition.level]};animation-delay:${index * 0.08}s`}>
           <div class="tl-dot"></div>
           <div class="tl-card">
-            <span class="tl-year">{c.year}</span>
-            <strong>{isZh ? c.zh : c.en}</strong>
-            <em>{isZh ? c.zhNote : c.enNote}</em>
+            <span class="tl-year">{competition.year}</span>
+            <strong>{isZh ? competition.zh : competition.en}</strong>
+            <em>{isZh ? competition.zhNote : competition.enNote}</em>
             {hasDetails && (
               <div class="tl-details">
-                <p><b>{isZh ? '题目' : 'Topic'}:</b> {c.details!.topic}</p>
-                <p><b>{isZh ? '角色' : 'Role'}:</b> {c.details!.role}</p>
-                <p><b>{isZh ? '模型' : 'Model'}:</b> {c.details!.model}</p>
+                <p><b>{isZh ? '题目' : 'Topic'}:</b> {competition.details!.topic}</p>
+                <p><b>{isZh ? '角色' : 'Role'}:</b> {competition.details!.role}</p>
+                <p><b>{isZh ? '模型' : 'Model'}:</b> {competition.details!.model}</p>
               </div>
             )}
             {!hasDetails && (
@@ -52,13 +58,13 @@ const levelColors: Record<string, string> = {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const items = document.querySelectorAll('.tl-item');
 
-  filterBtns.forEach(btn => {
+  filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      filterBtns.forEach((button) => button.classList.remove('active'));
       btn.classList.add('active');
       const level = btn.dataset.level;
 
-      items.forEach(item => {
+      items.forEach((item) => {
         if (level === 'all' || item.dataset.level === level) {
           item.style.display = '';
           setTimeout(() => item.classList.add('visible'), 10);
@@ -70,30 +76,27 @@ const levelColors: Record<string, string> = {
     });
   });
 
-  // click-to-expand
-  document.querySelectorAll('.tl-card').forEach(card => {
-    card.addEventListener('click', function(e) {
+  document.querySelectorAll('.tl-card').forEach((card) => {
+    card.addEventListener('click', function () {
       const item = this.closest('.tl-item');
       if (!item) return;
-      document.querySelectorAll('.tl-item.expanded').forEach(el => {
-        if (el !== item) el.classList.remove('expanded');
+      document.querySelectorAll('.tl-item.expanded').forEach((entry) => {
+        if (entry !== item) entry.classList.remove('expanded');
       });
       item.classList.toggle('expanded');
     });
   });
 
-  // scroll reveal with sequential lighting
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, idx) => {
-      if (entry.isIntersecting) {
-        const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
-        setTimeout(() => entry.target.classList.add('visible', 'lit'), delay);
-        observer.unobserve(entry.target);
-      }
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
+      setTimeout(() => entry.target.classList.add('visible', 'lit'), delay);
+      observer.unobserve(entry.target);
     });
   }, { threshold: 0.3, rootMargin: '0px 0px -60px 0px' });
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.fade-in').forEach((entry) => observer.observe(entry));
 </script>
 
 <style>
@@ -129,10 +132,9 @@ const levelColors: Record<string, string> = {
   .tl-item[style*="display: none"] { opacity: 0; }
 
   .tl-dot {
-    position: absolute; left: calc(-28px + 10px); top: 18px;
+    position: absolute; left: -13px; top: 18px;
     width: 12px; height: 12px; border-radius: 50%;
     background: var(--level-color, var(--accent));
-    transform: translateX(-5px);
     box-shadow: 0 0 0 4px rgba(201,162,39,0.12);
     z-index: 1;
   }
@@ -164,6 +166,7 @@ const levelColors: Record<string, string> = {
 
   @media (max-width: 640px) {
     .timeline-track { padding-left: 20px; }
+    .tl-dot { left: -6px; }
     .tl-card { padding: 14px; }
     .tl-card strong { font-size: 14px; }
   }

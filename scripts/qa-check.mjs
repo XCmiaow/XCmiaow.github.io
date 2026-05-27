@@ -16,6 +16,15 @@ const routes = [
   '/en/resume-onepage',
 ];
 
+const responsiveViewports = [
+  { name: 'desktop', width: 1440, height: 1000 },
+  { name: 'iphone-se', width: 320, height: 568 },
+  { name: 'small-android', width: 360, height: 740 },
+  { name: 'iphone-12', width: 390, height: 844 },
+  { name: 'large-phone', width: 430, height: 932 },
+  { name: 'tablet', width: 768, height: 1024 },
+];
+
 const expectedHeadings = {
   '/': '\u65b9\u7eea\u6770',
   '/en/': 'Xujie Fang',
@@ -141,10 +150,8 @@ async function runBrowserChecks() {
   if (zhH1 !== expectedHeadings['/']) failures.push(`Language switch to Chinese landed on unexpected h1: ${zhH1}`);
 
   const overflowChecks = [];
-  for (const viewport of [
-    { name: 'desktop', width: 1440, height: 1000 },
-    { name: 'mobile', width: 390, height: 844 },
-  ]) {
+  const tapTargetChecks = [];
+  for (const viewport of responsiveViewports) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     for (const route of routes) {
       await page.goto(`${base}${route}`, { waitUntil: 'load' });
@@ -156,6 +163,28 @@ async function runBrowserChecks() {
       const overflow = metrics.scrollWidth > metrics.innerWidth + 1;
       overflowChecks.push({ viewport: viewport.name, route, overflow });
       if (overflow) failures.push(`${route} overflows on ${viewport.name}: ${metrics.scrollWidth}px > ${metrics.innerWidth}px`);
+
+      const smallTargets = viewport.width <= 980
+        ? await page.evaluate(() =>
+          [...document.querySelectorAll('a[href], button, [role="button"]')]
+            .map((el) => {
+              const box = el.getBoundingClientRect();
+              const style = getComputedStyle(el);
+              if (box.width === 0 || box.height === 0 || style.display === 'none' || style.visibility === 'hidden') return null;
+              if (box.width < 36 || box.height < 36) {
+                return {
+                  text: (el.textContent || el.getAttribute('aria-label') || el.getAttribute('href') || el.tagName).trim().replace(/\s+/g, ' ').slice(0, 60),
+                  width: Math.round(box.width),
+                  height: Math.round(box.height),
+                };
+              }
+              return null;
+            })
+            .filter(Boolean)
+        )
+        : [];
+      tapTargetChecks.push({ viewport: viewport.name, route, smallTargets: smallTargets.length });
+      smallTargets.forEach((target) => failures.push(`${route} has small tap target on ${viewport.name}: ${target.text} (${target.width}x${target.height})`));
     }
   }
 
@@ -166,7 +195,7 @@ async function runBrowserChecks() {
   if (menuDisplay !== 'flex') failures.push(`Mobile menu did not open; display=${menuDisplay}`);
 
   await browser.close();
-  return { failures, routeResults, overflowChecks };
+  return { failures, routeResults, overflowChecks, tapTargetChecks };
 }
 
 const { cmd, args } = previewCommand();
