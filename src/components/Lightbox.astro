@@ -61,6 +61,14 @@ const imgs: string[] = Astro.props.images;
       });
     });
 
+    // Touch swipe support
+    var touchX = 0;
+    overlay.addEventListener('touchstart', function(e) { touchX = e.touches[0].clientX; });
+    overlay.addEventListener('touchend', function(e) {
+      var diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1);
+    });
+
     close.addEventListener('click', closeLB);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closeLB(); });
     prevBtn.addEventListener('click', function() { go(-1); });

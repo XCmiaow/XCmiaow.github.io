@@ -1,4 +1,4 @@
-const CACHE = 'resume-v4';
+const CACHE = 'resume-v5';
 const APP_SHELL = [
   '/',
   '/en/',
@@ -8,6 +8,10 @@ const APP_SHELL = [
   '/en/modeling',
   '/evidence',
   '/en/evidence',
+  '/chem-ai-lab',
+  '/en/chem-ai-lab',
+  '/styles/site.css',
+  '/manifest.json',
 ];
 
 self.addEventListener('install', (e) => {

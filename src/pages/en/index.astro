@@ -14,7 +14,7 @@ const edu = en.education;
 const c = common;
 ---
 
-<BaseLayout title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${edu.gpa}, ranked ${edu.rankClass}st in class and ${edu.rankMajor}nd in major.`} lang="en">
+<BaseLayout title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${c.education.gpa}, ranked ${c.education.rankClass}st in class and ${c.education.rankMajor}nd in major.`} lang="en">
 
 <section class="hero">
   <ParticlesBackground />
@@ -22,15 +22,15 @@ const c = common;
     <div>
       <h1 data-animate>{p.name}</h1>
       <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
-      <p class="lead">GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
+      <p class="lead">GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
       <div class="hero-actions no-print">
         <a class="btn primary" href="#honors">Key Achievements</a>
         <a class="btn" href="/en/resume-onepage">One-Page PDF</a>
       </div>
       <div class="tag-row">
-        <span class="tag">GPA {edu.gpa}</span>
-        <span class="tag">Class Rank {edu.rankClass}st</span>
-        <span class="tag">Major Rank {edu.rankMajor}nd</span>
+        <span class="tag">GPA {c.education.gpa}</span>
+        <span class="tag">Class Rank {c.education.rankClass}st</span>
+        <span class="tag">Major Rank {c.education.rankMajor}nd</span>
         <span class="tag">Math Modeling</span>
         <span class="tag">AI Toolchain</span>
       </div>
@@ -39,9 +39,9 @@ const c = common;
       <img class="profile-photo" src={c.person.avatar} alt={`${p.name} photo`} />
       <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
-        <div class="stat"><strong>{edu.gpa}</strong><span>GPA</span></div>
-        <div class="stat"><strong>{edu.rankClass}st</strong><span>Class Rank</span></div>
-        <div class="stat"><strong>{edu.rankMajor}nd</strong><span>Major Rank</span></div>
+        <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
+        <div class="stat"><strong>{c.education.rankClass}st</strong><span>Class Rank</span></div>
+        <div class="stat"><strong>{c.education.rankMajor}nd</strong><span>Major Rank</span></div>
         <div class="stat"><strong>{edu.year}</strong><span>Year</span></div>
       </div>
     </aside>
@@ -51,7 +51,7 @@ const c = common;
 <section id="about"><div class="container">
   <SectionHead title="About Me" description="Strong academic performance with growing expertise in math modeling and AI tools." />
   <Card pad animate class="about-copy">
-    <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
+    <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
     <p>Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes how I approach unfamiliar problems in any domain.</p>
     <p>More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am working through Clayden and March while learning deep learning fundamentals on the side. I am particularly interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical engineering and AI-driven computational chemistry.</p>
   </Card>
@@ -62,9 +62,9 @@ const c = common;
   <div class="education-card" data-animate>
     <div class="school"><h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p></div>
     <div class="rank-list">
-      <div class="rank-item"><span>GPA</span><strong>{edu.gpa}</strong></div>
-      <div class="rank-item"><span>Class Rank</span><strong>{edu.rankClass}st</strong></div>
-      <div class="rank-item"><span>Major Rank</span><strong>{edu.rankMajor}nd</strong></div>
+      <div class="rank-item"><span>GPA</span><strong>{c.education.gpa}</strong></div>
+      <div class="rank-item"><span>Class Rank</span><strong>{c.education.rankClass}st</strong></div>
+      <div class="rank-item"><span>Major Rank</span><strong>{c.education.rankMajor}nd</strong></div>
       <div class="rank-item"><span>Year</span><strong>{edu.year}</strong></div>
     </div>
   </div>

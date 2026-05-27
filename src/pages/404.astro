@@ -1,13 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Detect English path
+const isEn = typeof Astro !== 'undefined' && Astro.url.pathname.startsWith('/en/');
 ---
 
-<BaseLayout title="页面未找到 · 404" lang="zh">
+<BaseLayout title={isEn ? 'Page Not Found · 404' : '页面未找到 · 404'} lang={isEn ? 'en' : 'zh'}>
 <section class="hero" style="min-height:60vh;display:grid;place-items:center;text-align:center">
   <div>
     <h1 style="font-size:clamp(80px,20vw,160px);color:var(--accent);margin:0">404</h1>
-    <p style="font-size:20px;color:var(--muted);margin:8px 0 32px">页面不存在或已被移除</p>
-    <a class="btn primary" href="/">回到首页</a>
+    <p style="font-size:20px;color:var(--muted);margin:8px 0 32px">{isEn ? 'Page not found or has been removed.' : '页面不存在或已被移除'}</p>
+    <a class="btn primary" href={isEn ? '/en/' : '/'}>{isEn ? 'Back to Home' : '回到首页'}</a>
   </div>
 </section>
 </BaseLayout>

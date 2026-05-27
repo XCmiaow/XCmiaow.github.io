@@ -174,19 +174,6 @@ const c = common;
   .gh-status.loading .dot { animation: pulse 1.5s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  /* Parallax depth layers */
-  .parallax-layer { transition: transform 0.3s ease-out; }
-  .parallax-1 { transform: translateZ(0); }
-  .parallax-2 { transform: translateZ(20px); }
-  .parallax-3 { transform: translateZ(40px); }
-  .parallax-scene { perspective: 600px; }
-
-  /* Progress Bar */
-  #progress-bar {
-    position: fixed; top: 0; left: 0; height: 3px; z-index: 9998;
-    background: linear-gradient(90deg, var(--accent, #c9a227), var(--green, #2f6f5e));
-    width: 0; transition: width 0.3s ease;
-  }
 </style>
 
 <script>
@@ -197,15 +184,6 @@ const c = common;
 
   const h1 = document.querySelector('.hero h1');
   if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
-
-  // Parallax scroll
-  window.addEventListener('scroll',function(){
-    var y=window.scrollY;
-    document.querySelectorAll('.parallax-layer').forEach(function(el,i){
-      var speed=0.1+(i*0.05);
-      el.style.transform='translateY('+(y*speed)+'px)'
-    })
-  });
 
   // 3D Tilt
   const tiltCard = document.querySelector('.tilt-card');
