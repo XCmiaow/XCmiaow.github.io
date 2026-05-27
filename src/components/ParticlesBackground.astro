@@ -9,7 +9,7 @@
 
     let W, H, particles = [];
     let mouse = { x: -1000, y: -1000 };
-    let animId;
+    let animId, trail = [];
     const MAX_PARTICLES = 40;
 
     const hero = canvas.closest('section');
@@ -68,6 +68,19 @@
           ctx.lineWidth = 0.5; ctx.stroke();
         }
       }
+      // draw mouse trail
+      for (var t = trail.length - 1; t >= 0; t--) {
+        var tp = trail[t];
+        tp.x += (mouse.x - tp.x) * 0.08;
+        tp.y += (mouse.y - tp.y) * 0.08;
+        tp.alpha -= 0.015;
+        tp.r *= 0.98;
+        if (tp.alpha <= 0) { trail.splice(t, 1); continue; }
+        ctx.beginPath(); ctx.arc(tp.x, tp.y, tp.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + color + ',' + (tp.alpha * 0.4) + ')';
+        ctx.fill();
+      }
+
       animId = requestAnimationFrame(draw);
     }
 
@@ -81,6 +94,8 @@
     hero.addEventListener('mousemove', (e) => {
       const r = hero.getBoundingClientRect();
       mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+      trail.push({ x: mouse.x, y: mouse.y, r: 3 + Math.random() * 2, alpha: 1 });
+      if (trail.length > 20) trail.shift();
     });
     hero.addEventListener('mouseleave', () => { mouse = { x: -1000, y: -1000 }; });
 

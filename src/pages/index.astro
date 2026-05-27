@@ -49,7 +49,7 @@ const c = common;
     <p>我目前就读于{edu.school}{edu.college}{edu.major}，GPA {c.education.gpa}，排名班级第 {c.education.rankClass}、专业第 {c.education.rankMajor}。选择林产化工这个方向，是因为它处于化学基础与工程应用的交叉点上——既要理解有机反应的微观机理，又要处理实际工艺中的宏观问题。这种从机理到应用的跨度，是我学习和思考的核心动力。</p>
     <p>在课堂之外，我花了大量时间在数学建模上。参加全国大学生数学建模竞赛（江苏省一等奖）、MCM/ICM（连续两年 H 奖）的经历训练了我从现实问题中抽象变量、建立模型、用数据验证假设的能力。这套方法论并不只是用来比赛，它改变了我解决问题的思维方式——不管面对的是化学反应还是复杂系统，第一步永远是拆解问题、定义边界。</p>
     <p>进入大二后，我逐渐对计算化学和 AI 辅助有机合成产生了兴趣。我在持续阅读 Clayden 和 March 等经典教材的同时，也在自学深度学习基础，关注图神经网络在分子表示学习中的应用，以及 LLM 和 Agent 工作流在科研场景中的落地可能。长期来看，我希望成为一名能从化工问题出发、用计算和 AI 工具来求解的研究者。</p>
-  </div>
+  </Card>
 </div></section>
 
 <section id="education"><div class="container">
@@ -197,6 +197,15 @@ const c = common;
 
   const h1 = document.querySelector('.hero h1');
   if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+
+  // Parallax scroll
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY;
+    document.querySelectorAll('.parallax-layer').forEach(function(el,i){
+      var speed=0.1+(i*0.05);
+      el.style.transform='translateY('+(y*speed)+'px)'
+    })
+  });
 
   // 3D Tilt
   const tiltCard = document.querySelector('.tilt-card');

@@ -12,6 +12,7 @@
   --shadow: 0 16px 36px rgba(16, 42, 67, 0.09);
   --radius: 8px;
   --max: 1120px;
+  transition: background-color .3s, color .3s, border-color .3s, box-shadow .3s;
 }
 
 :root[data-theme="dark"], :root.dark {
@@ -40,6 +41,7 @@ body {
   font-family: "Inter", "Segoe UI", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   font-size: 16px;
   line-height: 1.7;
+  transition: background-color .3s, color .3s;
 }
 
 :root[data-theme="dark"] body, :root.dark body {
@@ -109,7 +111,8 @@ section { padding: 74px 0; scroll-margin-top: 86px; }
   margin-top: 10px; border-radius: 50%; background: var(--accent);
 }
 
-footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align: center; }
+footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align: center; position: relative; }
+footer::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--green), transparent); }
 
 @media (max-width: 940px) {
   .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -122,6 +125,17 @@ footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align:
   .project-facts li { grid-template-columns: 1fr; }
   .contact-list { white-space: normal; }
 }
+/* ── Avatar glow ── */
+@keyframes avatar-glow { 0%,100% { box-shadow: 0 18px 34px rgba(16,42,67,0.18), 0 0 0 0 rgba(201,162,39,0.3); } 50% { box-shadow: 0 18px 34px rgba(16,42,67,0.18), 0 0 0 8px rgba(201,162,39,0.08); } }
+.portrait-card .profile-photo { animation: avatar-glow 3s ease-in-out infinite; }
+
+/* ── Colorful border glow ── */
+@keyframes border-glow { 0%,100% { border-color: var(--accent); box-shadow: 0 0 8px rgba(201,162,39,0.15); } 33% { border-color: var(--green); box-shadow: 0 0 8px rgba(47,111,94,0.15); } 66% { border-color: var(--secondary); box-shadow: 0 0 8px rgba(47,81,104,0.15); } }
+.project-card { animation: border-glow 6s ease-in-out infinite; }
+
+/* ── Blockquote decoration ── */
+.interest-summary { border-left: 3px solid var(--accent); padding-left: 18px; background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 100%); margin: -8px 0; padding-top: 8px; padding-bottom: 8px; border-radius: 0 var(--radius) var(--radius) 0; }
+
 @media (orientation: landscape) and (max-height: 700px) {
   .hero { padding: 32px 0 16px; }
   .hero h1 { font-size: clamp(22px, 4vw, 36px); }

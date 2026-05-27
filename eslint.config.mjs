@@ -3,14 +3,15 @@ import astro from 'eslint-plugin-astro';
 
 export default [
   js.configs.recommended,
-  ...astro.configs.recommended,
+  ...astro.configs['flat/recommended'],
   {
+    files: ['src/**/*.{js,ts,mjs}'],
     rules: {
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': 'warn',
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', '.astro/', 'public/'],
+    ignores: ['dist/', 'node_modules/', '.astro/', 'public/', 'scripts/'],
   },
 ];
