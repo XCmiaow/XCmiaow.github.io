@@ -1,9 +1,7 @@
 ---
-import resume from '../data/resume.json';
-
-const { lang = 'zh' } = Astro.props;
+const { lang = 'zh', competitions = [] } = Astro.props;
 const isZh = lang === 'zh';
-const comps = resume.competitions;
+const comps = competitions;
 const levels = ['international', 'national', 'provincial', 'school', 'college'];
 const levelLabel: Record<string, string> = isZh
   ? { international: '国际级', national: '国家级', provincial: '省级', school: '校级', college: '院级' }

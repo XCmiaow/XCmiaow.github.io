@@ -1,0 +1,66 @@
+{
+  "person": {
+    "name": "方绪杰",
+    "brandMark": "FX",
+    "tagline": "一个正在学习代码、建模与化工专业知识的学生",
+    "location": "Nanjing, China"
+  },
+  "education": {
+    "school": "南京林业大学",
+    "college": "化学工程学院",
+    "major": "林产化工专业",
+    "period": "2024.09 - 至今",
+    "degree": "本科在读",
+    "year": "大二"
+  },
+  "highlights": [
+    { "id": "academic", "title": "学业成绩突出", "desc": "GPA 3.60，班级第 1，专业第 2，获得校级综合荣誉。" },
+    { "id": "modeling", "title": "数学建模能力", "desc": "全国大学生数学建模竞赛江苏省一等奖，具备完整建模流程意识。" },
+    { "id": "global", "title": "国际竞赛经历", "desc": "连续获得 2025、2026 年美国大学生数学建模竞赛 MCM/ICM H 奖。" },
+    { "id": "growth", "title": "综合发展", "desc": "担任学习委员与教学信息员，参与志愿服务、辩论赛与排球赛事组织。" }
+  ],
+  "competitions": [
+    { "year": "2026", "level": "international", "title": "美国大学生数学建模竞赛 MCM/ICM H 奖", "note": "国际级数学建模竞赛", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2025", "level": "international", "title": "美国大学生数学建模竞赛 MCM/ICM H 奖", "note": "国际级数学建模竞赛", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2024-2025", "level": "national", "title": "国家励志奖学金", "note": "国家级奖学金" },
+    { "year": "2024", "level": "provincial", "title": "全国大学生数学建模竞赛 江苏省一等奖", "note": "数学建模核心奖项", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2025", "level": "provincial", "title": "第二十二届江苏省高等数学竞赛 本科一级 A 类三等奖", "note": "数学基础能力证明" },
+    { "year": "2025", "level": "provincial", "title": "MathorCup 高校数学建模挑战赛 区域赛二等奖", "note": "数学建模赛事", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "高中", "level": "provincial", "title": "第 37 届中国化学奥林匹克竞赛 江苏赛区二等奖", "note": "化学学科基础证明" },
+    { "year": "2024-2025", "level": "school", "title": "校三好学生", "note": "综合素质荣誉" },
+    { "year": "2024-2025", "level": "school", "title": "大学生学科竞赛先进个人", "note": "学科竞赛荣誉" },
+    { "year": "2024", "level": "school", "title": "白马校区第一届排球新生杯 亚军", "note": "校园文体活动" },
+    { "year": "2024", "level": "college", "title": "材料院辩论赛新生杯 亚军", "note": "表达与团队协作" }
+  ],
+  "skills": [
+    { "category": "专业基础", "desc": "熟悉有机化学机理与林产化工基础。", "items": ["有机化学机理","Clayden","March","有机合成切断法"] },
+    { "category": "建模与科研表达", "desc": "熟悉数学建模、文档写作与结果可视化。", "items": ["数学建模","Python","Markdown","LaTeX","Origin"] },
+    { "category": "开发与效率工具", "desc": "掌握前端基础，持续学习 AI 辅助开发流程。", "items": ["HTML","CSS","JavaScript","React","VS Code","Codex"] },
+    { "category": "工程与知识管理", "desc": "熟悉常用办公、绘图、仿真与文献管理工具。", "items": ["Office/WPS","Axglyph","AutoCAD","Aspen Plus","Zotero","Obsidian"] }
+  ],
+  "projects": [
+    { "id": "modeling", "title": "数学建模竞赛实践", "desc": "围绕实际问题完成模型构建、数据处理、结果分析与论文撰写，参与全国大学生数学建模竞赛、MCM/ICM 等赛事，并取得省级与国际级奖项。", "abilities": "问题抽象、模型假设、数据分析、论文表达" },
+    { "id": "ai-km", "title": "AI 辅助科研学习与知识管理", "desc": "探索使用 AI 工具、Zotero、Obsidian、Markdown 与 LaTeX 进行文献阅读、知识整理、学习路径规划与科研表达辅助。", "abilities": "文献管理、知识组织、科研表达、学习复盘", "todo": "Obsidian 知识库截图、文献笔记样例、工作流说明" },
+    { "id": "resume-site", "title": "个人学术简历网站", "desc": "基于 Astro 构建中英双语个人学术主页，包含组件化布局、暗色模式、语言自动切换、响应式设计、打印样式与 GitHub Actions 自动部署。", "abilities": "组件化架构、响应式页面、静态部署、信息架构、隐私分版、CI/CD" },
+    { "id": "chem-ai-lab", "title": "ChemAI Lab", "desc": "机器学习与量子化学驱动的化学研究平台。整合 RDKit、PyTorch、Lightning，16 个子模块覆盖数据、特征工程、模型训练、可解释性分析与量子化学接口。", "abilities": "Python、PyTorch、RDKit、ML 工程化、项目架构" }
+  ],
+  "experience": [
+    { "period": "2024.09 - 2025.06", "title": "班级学习委员", "desc": "负责课程作业收发、学习事务协调，并配合任课教师开展教学相关工作。" },
+    { "period": "2024.09 - 2025.06", "title": "教学信息员", "desc": "负责教学信息传达、课程反馈收集与师生沟通。" }
+  ],
+  "volunteer": [
+    "2024 年 白马校区第一届排球新生杯第一组织责任人",
+    "2025 年 参与材料院'纸牌搭屋'志愿服务活动",
+    "2025 年 参与红十字会无偿献血活动"
+  ],
+  "researchInterests": {
+    "tagline": "有机化学为根基、计算工具为延伸、AI 为杠杆",
+    "summary": "我对有机合成方法学有持续的学术兴趣，同时关注 LLM、Agent 工作流和深度学习在化学中的应用。长期目标是将化工专业基础与计算/AI 能力结合，探索计算化学和 AI 辅助有机合成这一交叉方向。",
+    "areas": [
+      { "name": "有机合成方法学", "note": "本科阶段持续阅读 Clayden、March 等经典教材，关注合成策略与反应机理" },
+      { "name": "计算化学 / AI 辅助有机合成", "note": "核心兴趣方向，关注反应预测、路线规划、分子性质预测等交叉课题" },
+      { "name": "LLM + Agent Workflow", "note": "探索大语言模型在文献检索、实验方案生成、科研知识管理中的落地可能" },
+      { "name": "深度学习基础", "note": "学习神经网络基础，关注图神经网络在分子表示学习中的应用" }
+    ]
+  }
+}

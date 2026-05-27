@@ -1,0 +1,66 @@
+{
+  "person": {
+    "name": "Xujie Fang",
+    "brandMark": "XF",
+    "tagline": "a student exploring code, modeling and chemistry",
+    "location": "Nanjing, China"
+  },
+  "education": {
+    "school": "Nanjing Forestry University",
+    "college": "College of Chemical Engineering",
+    "major": "Chemical Engineering of Forest Products",
+    "period": "2024.09 - Present",
+    "degree": "Undergraduate",
+    "year": "Sophomore"
+  },
+  "highlights": [
+    { "id": "academic", "title": "Outstanding Academics", "desc": "GPA 3.60, ranked 1st in class and 2nd in major with university-level honors." },
+    { "id": "modeling", "title": "Math Modeling", "desc": "CUMCM Provincial First Prize, demonstrating complete modeling workflow proficiency." },
+    { "id": "global", "title": "International Competitions", "desc": "Consecutive MCM/ICM Honorable Mentions in 2025 and 2026." },
+    { "id": "growth", "title": "Well-Rounded Development", "desc": "Class officer, debate competition runner-up, and volleyball event organizer." }
+  ],
+  "competitions": [
+    { "year": "2026", "level": "international", "title": "MCM/ICM Honorable Mention (H Award)", "note": "International math modeling competition", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2025", "level": "international", "title": "MCM/ICM Honorable Mention (H Award)", "note": "International math modeling competition", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2024-2025", "level": "national", "title": "National Inspirational Scholarship", "note": "National-level scholarship" },
+    { "year": "2024", "level": "provincial", "title": "CUMCM Jiangsu Provincial First Prize", "note": "Core math modeling achievement", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "2025", "level": "provincial", "title": "Jiangsu Advanced Mathematics Competition, 3rd Prize (A-level)", "note": "Mathematics proficiency" },
+    { "year": "2025", "level": "provincial", "title": "MathorCup Math Modeling Challenge, Regional 2nd Prize", "note": "Math modeling event", "details": { "topic": "TBD", "role": "TBD", "model": "TBD" } },
+    { "year": "High School", "level": "provincial", "title": "37th China Chemistry Olympiad, Jiangsu 2nd Prize", "note": "Chemistry foundation" },
+    { "year": "2024-2025", "level": "school", "title": "University Merit Student", "note": "Comprehensive honor" },
+    { "year": "2024-2025", "level": "school", "title": "Academic Competition Outstanding Individual", "note": "Competition recognition" },
+    { "year": "2024", "level": "school", "title": "Baima Campus Freshman Volleyball Cup, Runner-up", "note": "Campus sports" },
+    { "year": "2024", "level": "college", "title": "College Freshman Debate, Runner-up", "note": "Communication & teamwork" }
+  ],
+  "skills": [
+    { "category": "Core Discipline", "desc": "Organic chemistry mechanisms and chemical engineering fundamentals.", "items": ["Organic Chemistry","Clayden","March","Disconnection Approach"] },
+    { "category": "Modeling & Research", "desc": "Mathematical modeling, scientific writing, and data visualization.", "items": ["Math Modeling","Python","Markdown","LaTeX","Origin"] },
+    { "category": "Dev & Productivity", "desc": "Frontend fundamentals and AI-assisted development workflows.", "items": ["HTML","CSS","JavaScript","React","VS Code","Codex"] },
+    { "category": "Engineering & KM", "desc": "Office, drawing, simulation, and reference management tools.", "items": ["Office/WPS","Axglyph","AutoCAD","Aspen Plus","Zotero","Obsidian"] }
+  ],
+  "projects": [
+    { "id": "modeling", "title": "Mathematical Modeling Practice", "desc": "Applied model construction, data processing, result analysis, and paper writing to real-world problems across CUMCM and MCM/ICM competitions, earning provincial and international awards.", "abilities": "Problem abstraction, model assumption, data analysis, paper writing" },
+    { "id": "ai-km", "title": "AI-Assisted Learning & Knowledge Management", "desc": "Exploring AI tools, Zotero, Obsidian, Markdown, and LaTeX for literature reading, knowledge organization, learning path planning, and research writing assistance.", "abilities": "Reference management, knowledge organization, research communication, learning reflection", "todo": "Obsidian vault screenshots, reading note samples, workflow documentation" },
+    { "id": "resume-site", "title": "Personal Academic Resume Website", "desc": "Built a bilingual personal academic homepage with Astro, featuring component-based layout, dark mode, language auto-switching, print styles, and GitHub Actions auto-deployment.", "abilities": "Component architecture, responsive design, static deployment, information architecture, privacy-aware versioning, CI/CD" },
+    { "id": "chem-ai-lab", "title": "ChemAI Lab", "desc": "A machine learning & quantum chemistry driven chemical research platform. Integrates RDKit, PyTorch, Lightning across 16 subpackages for data, features, modeling, XAI, and QM interfaces.", "abilities": "Python, PyTorch, RDKit, ML Engineering, Project Architecture" }
+  ],
+  "experience": [
+    { "period": "2024.09 - 2025.06", "title": "Class Academic Representative", "desc": "Responsible for assignment collection and distribution, academic affairs coordination, and supporting course instructors." },
+    { "period": "2024.09 - 2025.06", "title": "Teaching Information Liaison", "desc": "Responsible for communicating teaching information, collecting course feedback, and facilitating student-teacher communication." }
+  ],
+  "volunteer": [
+    "2024: Primary organizer of the 1st Baima Campus Freshman Volleyball Cup",
+    "2025: Participated in the 'Card House' volunteer service activity",
+    "2025: Participated in the Red Cross voluntary blood donation activity"
+  ],
+  "researchInterests": {
+    "tagline": "Organic chemistry as foundation, computational tools as extension, AI as leverage",
+    "summary": "I have a sustained academic interest in organic synthesis methodology, and I am also deeply interested in how LLMs, agent workflows, and deep learning can be applied to chemical research. My long-term goal is to bridge my chemical engineering training with computational and AI capabilities, focusing on the intersection of computational chemistry and AI-assisted organic synthesis.",
+    "areas": [
+      { "name": "Organic Synthesis Methodology", "note": "Ongoing study of Clayden, March and related texts; focus on synthetic strategy and reaction mechanisms" },
+      { "name": "Computational Chemistry / AI-Assisted Synthesis", "note": "Core research interest — reaction prediction, retrosynthetic planning, molecular property prediction" },
+      { "name": "LLMs + Agent Workflows", "note": "Exploring LLM applications in literature retrieval, experiment proposal generation, and research knowledge management" },
+      { "name": "Deep Learning Fundamentals", "note": "Studying neural network basics, interested in graph neural networks for molecular representation learning" }
+    ]
+  }
+}

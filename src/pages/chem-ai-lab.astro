@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import zh from '../data/zh.json';
+
+const { projects } = zh;
+const proj = projects.find(p => p.id === 'chem-ai-lab');
+---
+
+<BaseLayout title="方绪杰 | ChemAI Lab" lang="zh">
+<section class="hero"><div class="container">
+  <div class="hero-icon">🧪</div>
+  <h1>ChemAI Lab</h1>
+  <p class="lead">机器学习与量子化学驱动的化学研究平台</p>
+  <div class="tag-row">
+    <span class="tag">Python</span>
+    <span class="tag">PyTorch</span>
+    <span class="tag">RDKit</span>
+    <span class="tag">v0.2.0</span>
+    <span class="tag">Apache 2.0</span>
+  </div>
+  <a class="btn" href="https://github.com/XCmiaow/chem-ai-lab" target="_blank" rel="noopener noreferrer" style="margin-top:20px;display:inline-flex;align-items:center;gap:8px;">
+    <span>📦</span> GitHub 仓库
+  </a>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>项目简介</h2></div>
+  <div class="card pad">
+    <p>ChemAI Lab 是一个统一的化学 + AI 研究平台，目标是为计算化学和机器学习交叉领域提供一套完整的工具链。它整合了多种开源化学信息学工具（RDKit、Chemprop、DeepChem、DScribe、MLatom、Molfeat），并提供统一的数据抽象、特征工程、模型训练、可解释性分析和量子化学计算接口。</p>
+    <p style="margin-top:14px;">项目当前聚焦于不对称有机催化中的手性磷酸催化（CPA）体系，科学路线图分 5 个阶段、100 个开发周期，从数据基础设施建设逐步推进到逆向分子设计。</p>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>技术栈</h2></div>
+  <div class="grid-4">
+    <div class="card pad tech-card"><strong>PyTorch</strong><span>深度学习框架</span></div>
+    <div class="card pad tech-card"><strong>Lightning</strong><span>训练流水线</span></div>
+    <div class="card pad tech-card"><strong>RDKit</strong><span>化学信息学</span></div>
+    <div class="card pad tech-card"><strong>scikit-learn</strong><span>经典 ML</span></div>
+    <div class="card pad tech-card"><strong>NumPy</strong><span>数值计算</span></div>
+    <div class="card pad tech-card"><strong>Pandas</strong><span>数据处理</span></div>
+    <div class="card pad tech-card"><strong>SciPy</strong><span>科学计算</span></div>
+    <div class="card pad tech-card"><strong>loguru</strong><span>日志系统</span></div>
+    <div class="card pad tech-card"><strong>Chemprop</strong><span>可选</span></div>
+    <div class="card pad tech-card"><strong>DeepChem</strong><span>可选</span></div>
+    <div class="card pad tech-card"><strong>DScribe</strong><span>可选</span></div>
+    <div class="card pad tech-card"><strong>MLatom</strong><span>可选</span></div>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>模块架构</h2><p>16 个子模块覆盖完整科研工作流</p></div>
+  <div class="grid-4">
+    <article class="card pad module-card"><span class="module-icon">📦</span><h3>data</h3><p>分子数据抽象层：Molecule、Dataset、FormatConverter</p></article>
+    <article class="card pad module-card"><span class="module-icon">🔬</span><h3>features</h3><p>分子特征工程：MolecularFeaturizer、FeatureStore</p></article>
+    <article class="card pad module-card"><span class="module-icon">🧠</span><h3>models</h3><p>模型注册与调用：ModelHub、ModelRegistry</p></article>
+    <article class="card pad module-card"><span class="module-icon">⚡</span><h3>nn</h3><p>神经网络模块：自定义层与架构</p></article>
+    <article class="card pad module-card"><span class="module-icon">🔗</span><h3>pipeline</h3><p>工作流编排：Workflow、PipelineStep</p></article>
+    <article class="card pad module-card"><span class="module-icon">⚛️</span><h3>qm</h3><p>量子化学计算接口：QMInterface</p></article>
+    <article class="card pad module-card"><span class="module-icon">🤖</span><h3>automl</h3><p>自动超参优化：AutoMLOptimizer</p></article>
+    <article class="card pad module-card"><span class="module-icon">📊</span><h3>evaluation</h3><p>模型评估与指标</p></article>
+    <article class="card pad module-card"><span class="module-icon">🔍</span><h3>xai</h3><p>可解释性分析</p></article>
+    <article class="card pad module-card"><span class="module-icon">🎨</span><h3>viz</h3><p>数据可视化</p></article>
+    <article class="card pad module-card"><span class="module-icon">📁</span><h3>hub / pretrained</h3><p>模型仓库与预训练权重</p></article>
+    <article class="card pad module-card"><span class="module-icon">⚙️</span><h3>cli / config / utils</h3><p>命令行、配置管理、工具函数</p></article>
+    <article class="card pad module-card"><span class="module-icon">🔁</span><h3>serialization</h3><p>序列化工具</p></article>
+    <article class="card pad module-card"><span class="module-icon">🖥️</span><h3>hub</h3><p>模型中心与版本管理</p></article>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>科学路线图</h2><p>聚焦不对称有机催化 —— 手性磷酸（CPA）体系，100 个开发周期分 5 个阶段</p></div>
+  <div class="grid-2">
+    <div class="card pad stage"><div class="stage-num">1</div><h3>数据基础设施</h3><p>标准化数据格式、描述符库、反应条件编码、可视化工具</p><span class="stage-phase">阶段 1-20</span></div>
+    <div class="card pad stage"><div class="stage-num">2</div><h3>不对称催化模型</h3><p>CPA 特异性描述符、对映选择性预测、SHAP 机制分析、多任务产率/ee 模型</p><span class="stage-phase">阶段 21-40</span></div>
+    <div class="card pad stage"><div class="stage-num">3</div><h3>小样本学习</h3><p>元学习、数据增强、主动学习、迁移学习</p><span class="stage-phase">阶段 41-60</span></div>
+    <div class="card pad stage"><div class="stage-num">4</div><h3>机理驱动的可解释 AI</h3><p>DFT 特征融合、反应势能面建模、因果推断、物理约束神经网络</p><span class="stage-phase">阶段 61-80</span></div>
+    <div class="card pad stage" style="grid-column:1/-1;max-width:520px;margin:0 auto;"><div class="stage-num">5</div><h3>逆向设计</h3><p>目标驱动分子生成、逆向条件优化、自动化实验闭环、多目标优化</p><span class="stage-phase">阶段 81-100</span></div>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="section-head"><h2>开发规范</h2></div>
+  <div class="card pad">
+    <ul class="spec-list">
+      <li><b>代码风格</b><span>Ruff + Black（行宽 100，目标 py311）</span></li>
+      <li><b>类型检查</b><span>Mypy（非严格模式）</span></li>
+      <li><b>测试框架</b><span>Pytest + 插件（覆盖率、基准测试）</span></li>
+      <li><b>文档</b><span>Sphinx + mkdocs</span></li>
+      <li><b>Git Hooks</b><span>pre-commit 自动化检查</span></li>
+      <li><b>CI</b><span>GitHub Actions</span></li>
+      <li><b>许可</b><span>Apache 2.0</span></li>
+    </ul>
+  </div>
+</div></section>
+</BaseLayout>
+
+<style>
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero-icon { font-size: 4rem; margin-bottom: 0.5rem; }
+  .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); margin: 0; }
+  .lead { max-width: 580px; margin: 14px auto 0; color: var(--muted); font-size: 17px; }
+  .hero .tag-row { justify-content: center; margin-top: 16px; }
+
+  .tech-card { text-align: center; }
+  .tech-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
+  .tech-card span { font-size: 13px; color: var(--muted); }
+
+  .module-card { }
+  .module-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+  .module-card h3 { font-size: 15px; margin-bottom: 4px; color: var(--primary); }
+  .module-card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+  .stage { position: relative; }
+  .stage-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 900; margin-bottom: 10px; }
+  .stage h3 { font-size: 15px; margin-bottom: 6px; color: var(--primary); }
+  .stage p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.55; }
+  .stage-phase { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--accent); font-weight: 700; }
+
+  .spec-list { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
+  .spec-list li { display: grid; grid-template-columns: 100px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .spec-list li:last-child { border-bottom: none; }
+  .spec-list b { color: var(--primary); }
+  .spec-list span { color: var(--muted); }
+</style>

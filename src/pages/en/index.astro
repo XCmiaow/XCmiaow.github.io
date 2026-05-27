@@ -3,19 +3,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
 import ParticlesBackground from '../../components/ParticlesBackground.astro';
 import CursorGlow from '../../components/CursorGlow.astro';
-import resume from '../../data/resume.json';
+import en from '../../data/en.json';
+import common from '../../data/common.json';
 
-const p = resume.person;
-const edu = resume.education;
+const p = en.person;
+const edu = en.education;
+const c = common;
 ---
 
-<BaseLayout title={`${p.name.en} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name.en}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${edu.gpa}, ranked ${edu.rankClass}st in class and ${edu.rankMajor}nd in major.`} lang="en">
+<BaseLayout title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${edu.gpa}, ranked ${edu.rankClass}st in class and ${edu.rankMajor}nd in major.`} lang="en">
 
 <section class="hero">
   <ParticlesBackground />
   <div class="container hero-grid">
     <div>
-      <h1 data-animate>{p.name.en}</h1>
+      <h1 data-animate>{p.name}</h1>
       <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
       <p class="lead">GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
       <div class="hero-actions no-print">
@@ -31,13 +33,13 @@ const edu = resume.education;
       </div>
     </div>
     <aside class="portrait-card tilt-card" data-animate="right">
-      <img class="profile-photo" src={p.avatar} alt={`${p.name.en} photo`} />
-      <div class="profile-meta"><strong>{p.name.en} · {p.githubUser}</strong><span>{p.tagline.en}</span></div>
+      <img class="profile-photo" src={c.person.avatar} alt={`${p.name} photo`} />
+      <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
         <div class="stat"><strong>{edu.gpa}</strong><span>GPA</span></div>
         <div class="stat"><strong>{edu.rankClass}st</strong><span>Class Rank</span></div>
         <div class="stat"><strong>{edu.rankMajor}nd</strong><span>Major Rank</span></div>
-        <div class="stat"><strong>{edu.en.year}</strong><span>Year</span></div>
+        <div class="stat"><strong>{edu.year}</strong><span>Year</span></div>
       </div>
     </aside>
   </div>
@@ -46,7 +48,7 @@ const edu = resume.education;
 <section id="about"><div class="container">
   <div class="section-head"><h2>About Me</h2><p>Strong academic performance with growing expertise in math modeling and AI tools.</p></div>
   <div class="card pad about-copy" data-animate>
-    <p>I am an undergraduate in {edu.en.major} at {edu.en.school} (GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
+    <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
     <p>Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes how I approach unfamiliar problems in any domain.</p>
     <p>More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am working through Clayden and March while learning deep learning fundamentals on the side. I am particularly interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical engineering and AI-driven computational chemistry.</p>
   </div>
@@ -55,22 +57,22 @@ const edu = resume.education;
 <section id="education"><div class="container">
   <div class="section-head"><h2>Education</h2></div>
   <div class="education-card" data-animate>
-    <div class="school"><h3>{edu.en.school}</h3><p>{edu.en.college} · {edu.en.major}</p><p>{edu.en.period} · {edu.en.degree}</p></div>
+    <div class="school"><h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p></div>
     <div class="rank-list">
       <div class="rank-item"><span>GPA</span><strong>{edu.gpa}</strong></div>
       <div class="rank-item"><span>Class Rank</span><strong>{edu.rankClass}st</strong></div>
       <div class="rank-item"><span>Major Rank</span><strong>{edu.rankMajor}nd</strong></div>
-      <div class="rank-item"><span>Year</span><strong>{edu.en.year}</strong></div>
+      <div class="rank-item"><span>Year</span><strong>{edu.year}</strong></div>
     </div>
   </div>
 </div></section>
 
 <section id="interests"><div class="container">
-  <div class="section-head"><h2>Research Interests</h2><p>{resume.researchInterests.en.tagline}</p></div>
+  <div class="section-head"><h2>Research Interests</h2><p>{en.researchInterests.tagline}</p></div>
   <div class="card pad" data-animate>
-    <p class="interest-summary">{resume.researchInterests.en.summary}</p>
+    <p class="interest-summary">{en.researchInterests.summary}</p>
     <div class="grid-2" style="margin-top:20px">
-      {resume.researchInterests.en.areas.map(a => (
+      {en.researchInterests.areas.map(a => (
         <div class="interest-card"><strong>{a.name}</strong><p>{a.note}</p></div>
       ))}
     </div>
@@ -80,32 +82,32 @@ const edu = resume.education;
 <section id="highlights"><div class="container">
   <div class="section-head"><h2>Profile Highlights</h2></div>
   <div class="grid-4">
-    {resume.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.en}</h3><p>{h.enDesc}</p></article>))}
+    {en.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.title}</h3><p>{h.desc}</p></article>))}
   </div>
 </div></section>
 
 <section id="honors"><div class="container">
   <div class="section-head"><h2>Awards & Competitions</h2><p>Click to expand details, filter by level.</p></div>
-  <CompetitionTimeline lang="en" />
+  <CompetitionTimeline lang="en" competitions={en.competitions} />
 </div></section>
 
 <section id="skills"><div class="container">
   <div class="section-head"><h2>Skills</h2></div>
   <div class="grid-4">
-    {resume.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category.en}</h3><p>{s.enDesc}</p><ul>{s.items.en.map(item => <li>{item}</li>)}</ul></article>))}
+    {en.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
   </div>
 </div></section>
 
 <section id="projects"><div class="container">
   <div class="section-head"><h2>Projects & Portfolio</h2></div>
   <div class="grid-3">
-    {resume.projects.map(proj => (<article class="card pad project-card" data-animate="up"><div><h3>{proj.en}</h3><p>{proj.enDesc}</p><ul class="project-facts"><li><b>Skills</b><span>{proj.enAbilities}</span></li>{proj.link && <li><b>Link</b><span><a href={proj.link}>{proj.link}</a></span></li>}</ul></div><div class="tag-row">{proj.tags.map(t => <span class="tag">{t}</span>)}</div></article>))}
+    {(() => { const projIndex = {}; c.projects.forEach(p => projIndex[p.id] = p); return en.projects.map(proj => { const commonProj = projIndex[proj.id] || {}; return (<article class="card pad project-card" data-animate="up"><div><h3>{proj.title}</h3><p>{proj.desc}</p><ul class="project-facts"><li><b>Skills</b><span>{proj.abilities}</span></li>{commonProj.link && <li><b>Link</b><span><a href={commonProj.link}>{commonProj.link}</a></span></li>}</ul></div><div class="tag-row">{(commonProj.tags || []).map(t => <span class="tag">{t}</span>)}</div></article>);});})()}
   </div>
 </div></section>
 
 <section id="contact"><div class="container">
   <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
-  <div class="contact-list"><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>School: Nanjing Forestry University</span></div></div>
+  <div class="contact-list"><span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span>GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span><span>School: Nanjing Forestry University</span></div></div>
 </div></section>
 
 <CursorGlow />
