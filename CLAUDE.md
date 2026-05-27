@@ -107,6 +107,14 @@ i18n.json
 6. 更新 `BaseLayout` 的导航链接和 `i18n.json` 的标签 (如需)
 7. 更新 `public/sw.js` 的 APP_SHELL 缓存列表
 
+## 移动端写文章
+
+访问 `/write/` 页面，在手机上直接写博客并发布。
+
+1. 生成 GitHub Token：https://github.com/settings/tokens → Generate new token → 勾选 `public_repo`
+2. 在 `/write/` 页面输入 Token（仅需一次，存储在本地浏览器）
+3. 写标题、正文 → 点"发布文章"
+
 ## 博客发布
 
 在 `src/content/blog/` 下创建 `.md` 文件，frontmatter 包含：
