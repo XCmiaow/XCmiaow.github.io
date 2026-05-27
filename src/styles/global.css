@@ -122,6 +122,30 @@ footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align:
   .project-facts li { grid-template-columns: 1fr; }
   .contact-list { white-space: normal; }
 }
+@media (orientation: landscape) and (max-height: 700px) {
+  .hero { padding: 32px 0 16px; }
+  .hero h1 { font-size: clamp(22px, 4vw, 36px); }
+  .hero-grid { gap: 16px; grid-template-columns: 1fr 300px; }
+  .portrait-card { padding: 14px; }
+  .profile-photo { width: 70px; height: 70px; }
+  .stat-grid { grid-template-columns: repeat(4, 1fr); margin-top: 12px; gap: 8px; }
+  .stat { padding: 8px; }
+  .stat strong { font-size: 16px; }
+  .nav { min-height: 48px; }
+  section { padding: 28px 0; scroll-margin-top: 44px; }
+  .section-head { margin-bottom: 16px; }
+  .section-head h2 { font-size: 20px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .education-card { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .skill-card ul { gap: 4px; }
+  .skill-card li { font-size: 11px; padding: 4px 7px; }
+  .project-card { min-height: auto; }
+}
+@media (orientation: landscape) and (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr 260px; gap: 14px; }
+  .nav-links { font-size: 12px; gap: 10px; }
+  .nav-actions { gap: 6px; }
+}
 
 @media print {
   body { background: #fff; font-size: 12px; }

@@ -1,57 +1,87 @@
-# 方绪杰个人简历主页 · Astro 主线
+# Xujie Fang · Academic Resume Website
 
-这是个人简历网站的正式工程化版本，基于 Astro 构建，面向 GitHub Pages 部署和长期维护。
+[![MIT License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Astro](https://img.shields.io/badge/built%20with-Astro-ff5a03)](https://astro.build)
+[![GitHub Pages](https://img.shields.io/badge/deployed%20on-GitHub%20Pages-222)](https://pages.github.com)
 
-## 主线定位
+> Personal academic resume website built with Astro. Bilingual Chinese/English, data-driven, PWA-enabled.
 
-- `src/pages/index.astro`：中文主页
-- `src/pages/en/index.astro`：英文主页
-- `src/pages/modeling.astro` 与 `src/pages/en/modeling.astro`：数学建模能力案例
-- `src/pages/evidence.astro` 与 `src/pages/en/evidence.astro`：证书材料墙
-- `src/pages/resume-onepage.astro` 与 `src/pages/en/resume-onepage.astro`：一页投递版
+**Live site → https://XCmiaow.github.io**
 
-## 本地开发
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Astro 5.x (static output) |
+| Styling | CSS custom properties + generated site.css |
+| Data | JSON-driven (src/data/) |
+| Deployment | GitHub Actions to GitHub Pages |
+| Offline | Service Worker + APP_SHELL |
+| License | MIT |
+
+## Project Structure
+
+```
+/
+├── src/
+│   ├── pages/           # Page routes (/, /en/, /chem-ai-lab, etc.)
+│   ├── components/      # Reusable components (7 atomic + 4 effects)
+│   ├── layouts/         # BaseLayout + PrintLayout
+│   ├── data/            # zh.json, en.json, common.json, i18n.json
+│   ├── types/           # TypeScript definitions
+│   ├── utils/           # Helper functions (URL, i18n)
+│   └── styles/          # CSS source files
+├── public/              # Static assets, site.css, sw.js, manifest.json
+├── scripts/             # Build scripts (CSS generation, QA check)
+├── CLAUDE.md            # Project spec for AI agents
+└── LICENSE
+```
+
+## Features
+
+- **Bilingual** — Chinese at `/`, English at `/en/`, language preference memory
+- **Dark mode** — Persisted toggle via CSS custom properties
+- **Responsive** — 3 breakpoints, mobile hamburger menu, landscape support
+- **PWA** — Add to home screen, offline cache via Service Worker
+- **Print** — Strict one-page A4 resume with dedicated PrintLayout
+- **Animations** — Scroll reveal, typewriter hero, particle starfield, cursor glow, 3D tilt card
+- **Interactive timeline** — Filterable competition timeline with expandable detail cards
+- **Lightbox** — Certificate image viewer with keyboard navigation
+- **Data-driven** — All content from JSON, UI labels from i18n.json
+- **CI/CD** — Auto build + deploy on git push via GitHub Actions
+
+## Quick Start
 
 ```bash
 npm install
-npm run dev
+npm run dev      # localhost:4321
+npm run build    # production build
 ```
 
-默认访问：
+## Data Architecture
 
-```text
-http://localhost:4321/
-http://localhost:4321/en/
+```
+zh.json / en.json  →  Page frontmatter  →  Component props  →  Render
+common.json        →  Shared: GPA, email, GitHub, project tags
+i18n.json          →  BaseLayout: nav, footer, CTA labels
 ```
 
-## 构建检查
+## Adding a Page
+
+1. Add content to `zh.json` and `en.json`
+2. Create `.astro` in `src/pages/`
+3. Wrap with `BaseLayout` (set `lang`)
+4. Add shared data to `common.json`
+5. Update `BaseLayout` nav and `i18n.json` if needed
+6. Update `public/sw.js` APP_SHELL cache list
+
+## Deployment
 
 ```bash
-npm run build
-npm run preview
+git push origin main
+# GitHub Actions auto-builds and deploys
 ```
 
-## 部署
+## License
 
-`.github/workflows/deploy.yml` 已配置 GitHub Pages 自动部署。推送到 `main` 后，GitHub Actions 会执行：
-
-```bash
-npm ci
-npm run build
-```
-
-并将 `dist/` 发布到 GitHub Pages。
-
-## 隐私规则
-
-- 公开版只展示脱敏手机号 `133****4936`。
-- 不展示学号、出生年月、民族、政治面貌等敏感身份信息。
-- 证书图片只从 `public/assets/evidence/public/` 引用。
-- 含学号、证书编号或二维码的原始材料不要放入公开目录。
-
-## 质量标准
-
-- 中英文页面都必须能直接访问。
-- 导航栏、语言切换、简历页、建模页、证书页互链必须无 404。
-- 构建必须通过 `npm run build`。
-- 发布前建议用浏览器检查桌面端和手机端首屏、导航、图片加载和控制台错误。
+MIT © 2026 Xujie Fang
