@@ -12,6 +12,7 @@ const APP_SHELL = [
   '/en/chem-ai-lab',
   '/styles/site.css',
   '/manifest.json',
+  '/admin/',
 ];
 
 self.addEventListener('install', (e) => {

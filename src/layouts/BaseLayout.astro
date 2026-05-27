@@ -80,7 +80,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <main id="main" tabindex="-1"><slot /></main>
 
   <footer role="contentinfo">
-    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]}</div>
+    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · <a href="/admin/" class="footer-admin" aria-label="Content manager">{isZh ? '管理' : 'Admin'}</a></div>
   </footer>
 
 </body>
@@ -124,6 +124,8 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   .skeleton-screen .sk-line{height:16px;border-radius:8px}
   .skeleton-screen .sk-line.w-60{width:60%}.skeleton-screen .sk-line.w-80{width:80%}.skeleton-screen .sk-line.w-40{width:40%}.skeleton-screen .sk-line.w-20{width:200px}.skeleton-screen .sk-line.w-10{width:80px}
   .skeleton-screen .sk-header .sk-line,.skeleton-screen .sk-line,.skeleton-screen .sk-circle{background:linear-gradient(90deg,var(--line) 25%,transparent 50%,var(--line) 75%);background-size:200% 100%;animation:skeleton 1.5s ease-in-out infinite}
+  .footer-admin{color:var(--muted);text-decoration:underline;text-underline-offset:4px;text-decoration-color:transparent;transition:text-decoration-color .2s}
+  .footer-admin:hover{text-decoration-color:var(--accent)}
   .skip-link:focus{top:0}
   @media (max-width: 460px){
     .nav{gap:8px}

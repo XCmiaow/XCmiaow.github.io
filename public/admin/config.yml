@@ -1,0 +1,155 @@
+# Decap CMS configuration
+# After deploying, visit https://XCmiaow.github.io/admin/
+
+backend:
+  name: github
+  repo: XCmiaow/XCmiaow.github.io
+  branch: main
+  site_domain: XCmiaow.github.io
+
+publish_mode: editorial_workflow
+media_folder: public/assets
+public_folder: /assets
+
+collections:
+  - name: "zh"
+    label: "中文内容"
+    folder: "src/data"
+    create: false
+    delete: false
+    format: "json"
+    slug: "{{slug}}"
+    files:
+      - file: "src/data/zh.json"
+        label: "中文简历数据"
+        name: "zh"
+        fields:
+          - { label: "姓名", name: "person.name", widget: "string" }
+          - { label: "学校", name: "education.school", widget: "string" }
+          - { label: "学院", name: "education.college", widget: "string" }
+          - { label: "专业", name: "education.major", widget: "string" }
+          - { label: "当前年级", name: "education.year", widget: "string" }
+          - { label: "教育时间段", name: "education.period", widget: "string" }
+          - label: "荣誉与竞赛"
+            name: "competitions"
+            widget: "list"
+            fields:
+              - { label: "年份", name: "year", widget: "string" }
+              - { label: "级别 (international/national/provincial/school/college)", name: "level", widget: "select", options: ["international","national","provincial","school","college"] }
+              - { label: "奖项名称", name: "title", widget: "string" }
+              - { label: "备注", name: "note", widget: "string", required: false }
+          - label: "技能"
+            name: "skills"
+            widget: "list"
+            fields:
+              - { label: "分类", name: "category", widget: "string" }
+              - { label: "描述", name: "desc", widget: "text" }
+              - { label: "技能项 (逗号分隔)", name: "items", widget: "list" }
+          - label: "研究兴趣"
+            name: "researchInterests"
+            widget: "object"
+            fields:
+              - { label: "口号", name: "tagline", widget: "string" }
+              - { label: "描述", name: "summary", widget: "text" }
+              - label: "方向"
+                name: "areas"
+                widget: "list"
+                fields:
+                  - { label: "方向名称", name: "name", widget: "string" }
+                  - { label: "说明", name: "note", widget: "text" }
+
+  - name: "en"
+    label: "English Content"
+    folder: "src/data"
+    create: false
+    delete: false
+    format: "json"
+    files:
+      - file: "src/data/en.json"
+        label: "English Resume Data"
+        name: "en"
+        fields:
+          - { label: "Name", name: "person.name", widget: "string" }
+          - { label: "School", name: "education.school", widget: "string" }
+          - { label: "Major", name: "education.major", widget: "string" }
+          - { label: "Year", name: "education.year", widget: "string" }
+          - label: "Competitions"
+            name: "competitions"
+            widget: "list"
+            fields:
+              - { label: "Year", name: "year", widget: "string" }
+              - { label: "Level", name: "level", widget: "select", options: ["international","national","provincial","school","college"] }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Note", name: "note", widget: "string", required: false }
+          - label: "Skills"
+            name: "skills"
+            widget: "list"
+            fields:
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Description", name: "desc", widget: "text" }
+              - { label: "Items", name: "items", widget: "list" }
+          - label: "Research Interests"
+            name: "researchInterests"
+            widget: "object"
+            fields:
+              - { label: "Tagline", name: "tagline", widget: "string" }
+              - { label: "Summary", name: "summary", widget: "text" }
+              - label: "Areas"
+                name: "areas"
+                widget: "list"
+                fields:
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "Note", name: "note", widget: "text" }
+
+  - name: "common"
+    label: "公共数据"
+    folder: "src/data"
+    create: false
+    delete: false
+    format: "json"
+    files:
+      - file: "src/data/common.json"
+        label: "Common Data"
+        name: "common"
+        fields:
+          - { label: "Email", name: "person.email", widget: "string" }
+          - { label: "GitHub", name: "person.github", widget: "string" }
+          - { label: "GPA", name: "education.gpa", widget: "number", value_type: "float" }
+          - { label: "班级排名", name: "education.rankClass", widget: "number" }
+          - { label: "专业排名", name: "education.rankMajor", widget: "number" }
+
+  - name: "i18n"
+    label: "界面文字"
+    folder: "src/data"
+    create: false
+    delete: false
+    format: "json"
+    files:
+      - file: "src/data/i18n.json"
+        label: "UI Labels"
+        name: "i18n"
+        fields:
+          - label: "导航 (中文)"
+            name: "nav.zh"
+            widget: "object"
+            fields:
+              - { label: "个人简介", name: "about", widget: "string" }
+              - { label: "教育背景", name: "education", widget: "string" }
+              - { label: "获奖情况", name: "honors", widget: "string" }
+              - { label: "技能专长", name: "skills", widget: "string" }
+              - { label: "项目作品", name: "projects", widget: "string" }
+              - { label: "建模案例", name: "modeling", widget: "string" }
+              - { label: "证书墙", name: "evidence", widget: "string" }
+              - { label: "联系我", name: "contact", widget: "string" }
+          - label: "Navigation (English)"
+            name: "nav.en"
+            widget: "object"
+            fields:
+              - { label: "About", name: "about", widget: "string" }
+              - { label: "Education", name: "education", widget: "string" }
+              - { label: "Honors", name: "honors", widget: "string" }
+              - { label: "Skills", name: "skills", widget: "string" }
+              - { label: "Projects", name: "projects", widget: "string" }
+              - { label: "Modeling", name: "modeling", widget: "string" }
+              - { label: "Evidence", name: "evidence", widget: "string" }
+              - { label: "Contact", name: "contact", widget: "string" }

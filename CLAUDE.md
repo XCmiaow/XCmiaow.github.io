@@ -167,6 +167,15 @@ git push origin main  # GitHub Actions 自动构建部署
 7. **提交前** → 确认 `npm run build` 通过
 8. **不要修改** → `public/styles/site.css` 是自动生成的，改 `src/styles/` 下的源文件
 
+## CMS 使用
+
+项目使用 Decap CMS（`/admin/`）进行内容管理。配置在 `public/admin/config.yml`。
+
+- 只能由 GitHub 仓库所有者（XCmiaow）通过 OAuth 登录后编辑
+- 编辑内容会直接 commit 到 main 分支并触发自动部署
+- 编辑界面在 `https://XCmiaow.github.io/admin/`
+- OAuth 代理服务器在 `scripts/oauth-worker.js`（部署在 Cloudflare Workers）
+
 ## 隐私规则
 
 - 手机号全站已移除
