@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+
 export interface Props {
   title: string;
   description?: string;
@@ -28,6 +30,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#102a43" />
+  <ViewTransitions />
   <link rel="stylesheet" href="/styles/site.css" />
   <link rel="manifest" href="/manifest.json" />
   <script>
