@@ -23,7 +23,8 @@
 
       requestAnimationFrame(animate);
     }
-    animate();
+    const id = animate();
+    document.addEventListener('astro:after-swap', () => cancelAnimationFrame(id));
   })();
 </script>
 
