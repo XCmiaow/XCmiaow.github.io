@@ -1,6 +1,150 @@
 ---
-// Root: redirect to preferred or default language
-const url = Astro.url;
-const lang = url.searchParams.get('lang') || 'zh';
-return Astro.redirect(`/${lang}/`);
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CompetitionTimeline from '../components/CompetitionTimeline.astro';
+import resume from '../data/resume.json';
+
+const p = resume.person;
+const edu = resume.education;
 ---
+
+<BaseLayout title={`${p.name.zh} | 林产化工本科生 | 数学建模与 AI 工具链`} description={`${p.name.zh}，南京林业大学化学工程学院林产化工专业本科生，GPA ${edu.gpa}，班级第${edu.rankClass}，专业第${edu.rankMajor}。`} lang="zh">
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1 data-animate>{p.name.zh}</h1>
+      <p class="subtitle">南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
+      <p class="lead">GPA {edu.gpa}，班级第 {edu.rankClass}，专业第 {edu.rankMajor}。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。</p>
+      <div class="hero-actions no-print">
+        <a class="btn primary" href="#honors">查看核心成果</a>
+        <a class="btn" href="/resume-onepage">一页投递版 · PDF</a>
+      </div>
+      <div class="tag-row">
+        <span class="tag">GPA {edu.gpa}</span><span class="tag">班级第 {edu.rankClass}</span><span class="tag">专业第 {edu.rankMajor}</span><span class="tag">数学建模</span><span class="tag">AI 工具链</span>
+      </div>
+    </div>
+    <aside class="portrait-card" data-animate="right">
+      <img class="profile-photo" src={p.avatar} alt={`${p.name.zh}照片`} />
+      <div class="profile-meta"><strong>{p.name.en} · {p.githubUser}</strong><span>{p.tagline.en}</span></div>
+      <div class="stat-grid">
+        <div class="stat"><strong>{edu.gpa}</strong><span>GPA</span></div>
+        <div class="stat"><strong>第 {edu.rankClass}</strong><span>班级排名</span></div>
+        <div class="stat"><strong>第 {edu.rankMajor}</strong><span>专业排名</span></div>
+        <div class="stat"><strong>{edu.year}</strong><span>当前年级</span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="about"><div class="container">
+  <div class="section-head"><h2>个人简介</h2><p>以学业成绩为基础，以数学建模为能力证明。</p></div>
+  <div class="card pad about-copy" data-animate>
+    <p>现就读于{edu.zh.school}{edu.zh.college}{edu.zh.major}，GPA {edu.gpa}，班级排名第 {edu.rankClass}、专业排名第 {edu.rankMajor}。曾获国家励志奖学金、校三好学生、大学生学科竞赛先进个人等荣誉。</p>
+    <p>重点参与数学建模类竞赛，获全国大学生数学建模竞赛江苏省一等奖，并连续获得 2025、2026 年 MCM/ICM H 奖。熟悉 Python、LaTeX、Markdown 等工具，正在探索 AI 辅助学习与知识管理实践。</p>
+  </div>
+</div></section>
+
+<section id="education"><div class="container">
+  <div class="section-head"><h2>教育背景</h2></div>
+  <div class="education-card" data-animate>
+    <div class="school"><h3>{edu.zh.school}</h3><p>{edu.zh.college} · {edu.zh.major}</p><p>{edu.zh.period} · {edu.zh.degree}</p></div>
+    <div class="rank-list">
+      <div class="rank-item"><span>GPA</span><strong>{edu.gpa}</strong></div>
+      <div class="rank-item"><span>班级排名</span><strong>第 {edu.rankClass}</strong></div>
+      <div class="rank-item"><span>专业排名</span><strong>第 {edu.rankMajor}</strong></div>
+      <div class="rank-item"><span>当前年级</span><strong>{edu.year}</strong></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="highlights"><div class="container">
+  <div class="section-head"><h2>核心亮点</h2></div>
+  <div class="grid-4">
+    {resume.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.zh}</h3><p>{h.zhDesc}</p></article>))}
+  </div>
+</div></section>
+
+<section id="honors"><div class="container">
+  <div class="section-head"><h2>获奖与竞赛</h2><p>点击展开详情，按级别筛选。</p></div>
+  <CompetitionTimeline lang="zh" />
+</div></section>
+
+<section id="skills"><div class="container">
+  <div class="section-head"><h2>技能专长</h2></div>
+  <div class="grid-4">
+    {resume.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category.zh}</h3><p>{s.zhDesc}</p><ul>{s.items.zh.map(item => <li>{item}</li>)}</ul></article>))}
+  </div>
+</div></section>
+
+<section id="projects"><div class="container">
+  <div class="section-head"><h2>项目与作品</h2></div>
+  <div class="grid-3">
+    {resume.projects.map(proj => (<article class="card pad project-card" data-animate="up"><div><h3>{proj.zh}</h3><p>{proj.zhDesc}</p><ul class="project-facts"><li><b>能力</b><span>{proj.zhAbilities}</span></li>{proj.link && <li><b>链接</b><span><a href={proj.link}>{proj.link}</a></span></li>}</ul></div><div class="tag-row">{proj.tags.map(t => <span class="tag">{t}</span>)}</div></article>))}
+  </div>
+</div></section>
+
+<section id="contact"><div class="container">
+  <div class="contact-card" data-animate><div><h2>联系与展示</h2><p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p></div>
+  <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span></div></div>
+</div></section>
+
+</BaseLayout>
+
+<style>
+  .hero { padding: 108px 0 64px; }
+  .hero h1 { margin: 0; color: var(--primary); font-size: clamp(44px, 8vw, 82px); line-height: 1.02; }
+  .subtitle { margin: 18px 0 0; color: var(--secondary); font-size: clamp(18px, 2.2vw, 24px); font-weight: 750; }
+  .lead { max-width: 680px; margin: 22px 0 0; color: var(--muted); font-size: 17px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr); gap: 44px; align-items: center; }
+  .portrait-card { position: relative; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: var(--shadow); }
+  .profile-photo { width: 138px; height: 138px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.9); box-shadow: 0 18px 34px rgba(16,42,67,0.18); display: block; }
+  .profile-meta { margin-top: 18px; }
+  .profile-meta strong { display: block; color: var(--primary); font-size: 20px; }
+  .profile-meta span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
+  .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 28px; }
+  .stat { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.28)); }
+  .stat strong { display: block; color: var(--primary); font-size: 28px; line-height: 1.1; }
+  .stat span { color: var(--muted); font-size: 13px; font-weight: 700; }
+  .about-copy { display: grid; gap: 16px; } .about-copy p { margin: 0; }
+  .education-card { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr); gap: 22px; align-items: stretch; }
+  .school { padding: 28px; background: linear-gradient(135deg, rgba(16,42,67,0.96), rgba(47,111,94,0.92)), var(--primary); color: #fff; border-radius: var(--radius); }
+  .school h3 { margin: 0; font-size: 27px; } .school p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
+  .rank-list { display: grid; gap: 12px; }
+  .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
+  .rank-item span { color: var(--muted); }
+  .highlight { position: relative; min-height: 170px; overflow: hidden; }
+  .highlight::after { content: ""; position: absolute; right: -32px; bottom: -32px; width: 92px; height: 92px; border-radius: 50%; border: 18px solid var(--accent-soft); }
+  .highlight .num { display: inline-flex; align-items: center; height: 28px; margin-bottom: 20px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft); color: var(--primary); font-size: 13px; font-weight: 900; }
+  .skill-card ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .skill-card li { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: rgba(47,81,104,0.05); color: var(--secondary); font-size: 13px; font-weight: 720; }
+  .project-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; }
+  .project-card .tag-row { margin-top: 18px; }
+  .project-facts { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .project-facts li { display: grid; grid-template-columns: 78px 1fr; gap: 10px; color: var(--muted); font-size: 14px; }
+  .project-facts b { color: var(--primary); }
+  .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
+  .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
+  .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
+  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; }
+  .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
+
+  [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  [data-animate].revealed { opacity: 1; transform: translateY(0); }
+  [data-animate="right"] { transform: translateX(20px); }
+  [data-animate="right"].revealed { transform: translateX(0); }
+  [data-animate="up"] { transform: translateY(30px); }
+  [data-animate="up"].revealed { transform: translateY(0); }
+  @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<script>
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+
+  const h1 = document.querySelector('.hero h1');
+  if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+</script>

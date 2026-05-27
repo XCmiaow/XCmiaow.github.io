@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="方绪杰 | 数学建模竞赛实践" lang="zh">
@@ -21,29 +21,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <section><div class="container">
   <div class="section-head"><h2>建模流程</h2></div>
   <div class="flow">
-    <div class="step"><b>01</b> 问题理解</div>
-    <div class="step"><b>02</b> 模型假设</div>
-    <div class="step"><b>03</b> 数据处理</div>
-    <div class="step"><b>04</b> 算法求解</div>
-    <div class="step"><b>05</b> 结果分析</div>
-    <div class="step"><b>06</b> 论文表达</div>
+    <div class="step"><b>01</b> 问题理解</div><div class="step"><b>02</b> 模型假设</div><div class="step"><b>03</b> 数据处理</div>
+    <div class="step"><b>04</b> 算法求解</div><div class="step"><b>05</b> 结果分析</div><div class="step"><b>06</b> 论文表达</div>
   </div>
 </div></section>
 
 <section><div class="container">
   <div class="section-head"><h2>个人职责</h2></div>
   <div class="grid-2">
-    <div class="card pad"><h3>可确认能力</h3>
-    <ul class="evidence-list"><li>参与问题抽象、模型构建、数据分析与论文表达</li><li>熟悉 Python、LaTeX、Markdown、Origin 等工具</li><li>具备跨学科资料检索、团队协作和限时交付意识</li></ul></div>
-    <div class="card pad"><h3>建议补充</h3>
-    <ul class="evidence-list"><li>每场比赛实际负责模块：建模/编程/论文/可视化/文献</li><li>使用过的具体模型、算法、指标和图表</li><li>论文摘要、关键图、代码片段和赛后复盘</li></ul></div>
+    <div class="card pad"><h3>可确认能力</h3><ul class="evidence-list"><li>参与问题抽象、模型构建、数据分析与论文表达</li><li>熟悉 Python、LaTeX、Markdown、Origin 等工具</li><li>具备跨学科资料检索、团队协作和限时交付意识</li></ul></div>
+    <div class="card pad"><h3>建议补充</h3><ul class="evidence-list"><li>每场比赛实际负责模块：建模/编程/论文/可视化/文献</li><li>使用过的具体模型、算法、指标和图表</li><li>论文摘要、关键图、代码片段和赛后复盘</li></ul></div>
   </div>
 </div></section>
 </BaseLayout>
 
 <style>
-  .hero { padding: 80px 0 40px; }
-  .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); }
+  .hero { padding: 80px 0 40px; } .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); }
   .lead { max-width: 640px; margin-top: 16px; color: var(--muted); font-size: 17px; }
   .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
   .step { text-align: center; padding: 20px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
