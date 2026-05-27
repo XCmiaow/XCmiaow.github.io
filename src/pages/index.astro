@@ -78,26 +78,26 @@ const c = common;
 </div></section>
 
 <section id="highlights"><div class="container">
-  <div class="section-head"><h2>核心亮点</h2></div>
+  <SectionHead title="核心亮点" />
   <div class="grid-4">
     {zh.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.title}</h3><p>{h.desc}</p></article>))}
   </div>
 </div></section>
 
 <section id="honors"><div class="container">
-  <div class="section-head"><h2>获奖与竞赛</h2><p>点击展开详情，按级别筛选。</p></div>
+  <SectionHead title="获奖与竞赛" description="点击展开详情，按级别筛选。" />
   <CompetitionTimeline lang="zh" competitions={zh.competitions} />
 </div></section>
 
 <section id="skills"><div class="container">
-  <div class="section-head"><h2>技能专长</h2></div>
+  <SectionHead title="技能专长" />
   <div class="grid-4">
     {zh.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
   </div>
 </div></section>
 
 <section id="projects"><div class="container">
-  <div class="section-head"><h2>项目与作品</h2></div>
+  <SectionHead title="项目与作品" />
   <div class="grid-3">
     {(() => { const projIndex = {}; c.projects.forEach(p => projIndex[p.id] = p); return zh.projects.map(proj => { const commonProj = projIndex[proj.id] || {}; return (<article class="card pad project-card" data-animate="up"><div><h3>{proj.title}</h3><p>{proj.desc}</p><ul class="project-facts"><li><b>能力</b><span>{proj.abilities}</span></li>{commonProj.link && <li><b>链接</b><span><a href={commonProj.link}>{commonProj.link}</a></span></li>}</ul></div><div class="tag-row">{(commonProj.tags || []).map(t => <span class="tag">{t}</span>)}</div></article>);});})()}
   </div>

@@ -51,6 +51,41 @@ const proj = projects.find(p => p.id === 'chem-ai-lab');
 
 <section><div class="container">
   <div class="section-head"><h2>模块架构</h2><p>16 个子模块覆盖完整科研工作流</p></div>
+
+  <div class="card pad" style="margin-bottom:18px;overflow:auto">
+    <pre class="mermaid" style="margin:0;min-width:600px">
+      graph TB
+        subgraph 数据层[Data Layer]
+          data[org.data] --> clean[org.data.clean]
+          data --> process[org.data.process]
+        end
+        subgraph 特征工程[Feature Engineering]
+          feat[org.features] --> desc[org.features.descriptors]
+          feat --> gen[org.features.generate]
+          feat --> select[org.features.select]
+          feat --> split[org.features.split]
+        end
+        subgraph 模型训练[Modeling]
+          model[org.model] --> nn[nn]
+          model --> train[org.model.train]
+          model --> tune[org.model.tune]
+          model --> ensemble[org.model.ensemble]
+          model --> eval[org.model.evaluate]
+        end
+        subgraph 可解释性[XAI]
+          xai[org.xai] --> imp[org.xai.importance]
+          xai --> anal[org.xai.analysis]
+        end
+        subgraph 量子化学接口[Quantum Chemistry]
+          qm[org.qm] --> cal[org.qm.calculations]
+          qm --> geo[org.qm.geometry]
+          qm --> prop[org.qm.properties]
+        end
+        数据层 --> 特征工程 --> 模型训练
+        模型训练 --> 可解释性
+        模型训练 --> 量子化学接口
+    </pre>
+  </div>
   <div class="grid-4">
     <article class="card pad module-card"><span class="module-icon">📦</span><h3>data</h3><p>分子数据抽象层：Molecule、Dataset、FormatConverter</p></article>
     <article class="card pad module-card"><span class="module-icon">🔬</span><h3>features</h3><p>分子特征工程：MolecularFeaturizer、FeatureStore</p></article>
@@ -94,6 +129,8 @@ const proj = projects.find(p => p.id === 'chem-ai-lab');
     </ul>
   </div>
 </div></section>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.10.0/dist/mermaid.min.js" integrity="sha384-PY+AFiXLIHkR5jE4nk0JwPQQmmQlT4mJXFlgeT4jJeuARaBQBK+nSwwxzrPRAtUM" crossorigin="anonymous"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:'neutral',securityLevel:'loose'})</script>
 </BaseLayout>
 
 <style>
