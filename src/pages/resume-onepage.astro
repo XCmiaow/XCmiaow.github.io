@@ -7,6 +7,7 @@ import '../styles/global.css';
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>方绪杰 · 一页简历</title>
+  <link rel="stylesheet" href="/styles/site.css" />
 </head>
 <body class="a4-page">
 
@@ -79,6 +80,17 @@ import '../styles/global.css';
   .item{margin-bottom:6pt}
   .item-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1pt}
   .item-head strong{font-size:9.5pt}.item-head span{font-size:8.5pt;color:#888}
+
+  @media (max-width:840px){
+    body.a4-page{align-items:stretch;padding:12px;background:#f2f2f2}
+    .toolbar{position:static;flex-wrap:wrap;justify-content:center;width:100%;padding:10px 12px}
+    .sheet{width:100%;min-height:auto;padding:18px;box-shadow:0 2px 14px rgba(0,0,0,0.1)}
+    .top{flex-direction:column;gap:8px}
+    .top-contact{text-align:left;white-space:normal}
+    .row-2,.row-2.tight{grid-template-columns:1fr;gap:8px}
+    .item-head{display:grid;gap:3px}
+    .sheet p,.sheet li{overflow-wrap:anywhere}
+  }
 
   @media print{
     @page{size:A4;margin:0}

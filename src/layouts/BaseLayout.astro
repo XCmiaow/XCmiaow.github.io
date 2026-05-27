@@ -13,7 +13,13 @@ const basePath = isZh ? '' : '/en';
 const labels = isZh
   ? { about: '个人简介', education: '教育背景', honors: '获奖情况', skills: '技能专长', projects: '项目作品', modeling: '建模案例', evidence: '证书墙', contact: '联系我', onepage: '一页版', fullcv: '完整版' }
   : { about: 'About', education: 'Education', honors: 'Honors', skills: 'Skills', projects: 'Projects', modeling: 'Modeling', evidence: 'Evidence', contact: 'Contact', onepage: 'One-Page', fullcv: 'Full CV' };
-const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split('/').pop() || 'index';
+const pathWithoutLocale = Astro.url.pathname
+  .replace(/^\/en(?:\/|$)/, '/')
+  .replace(/\/+$/, '');
+const currentPage = pathWithoutLocale.replace(/^\/+/, '');
+const pageKey = currentPage === '' || currentPage === 'index' ? '' : currentPage;
+const zhUrl = pageKey ? `/${pageKey}` : '/';
+const enUrl = pageKey ? `/en/${pageKey}` : '/en/';
 ---
 
 <!DOCTYPE html>
@@ -24,6 +30,7 @@ const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#102a43" />
+  <link rel="stylesheet" href="/styles/site.css" />
   <link rel="manifest" href="/manifest.json" />
   <script>
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
@@ -49,11 +56,12 @@ const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split
       </nav>
       <div class="nav-actions">
         <div class="lang-switch">
-          <a href={`/${page}`} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
+          <a href={zhUrl} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
           <span class="sep">|</span>
-          <a href={`/en/${page}`} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
+          <a href={enUrl} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
         </div>
         <button class="icon-btn" id="themeToggle" type="button" aria-label={isZh ? '切换暗色模式' : 'Toggle dark mode'}>🌓</button>
+        <button class="icon-btn menu-btn" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}>☰</button>
         <a class="btn" href={`${basePath}/resume-onepage`}>{labels.onepage}</a>
         <a class="btn" href={`${basePath}/modeling`}>{labels.modeling}</a>
         <a class="btn primary" href={`${basePath}/#contact`}>{labels.contact}</a>
@@ -82,6 +90,17 @@ const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split
 
     // Language preference
     document.querySelectorAll('.lang-switch a').forEach(function(el){el.addEventListener('click',function(){localStorage.setItem('resume-lang',el.dataset.lang)})})
+
+    // Mobile navigation
+    var menu=document.getElementById('menuToggle'),nav=document.getElementById('navLinks');
+    menu&&nav&&menu.addEventListener('click',function(){
+      var open=nav.classList.toggle('open');
+      menu.setAttribute('aria-expanded',open?'true':'false');
+    });
+    nav&&nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){
+      nav.classList.remove('open');
+      menu&&menu.setAttribute('aria-expanded','false');
+    })});
   </script>
 </body>
 </html>
@@ -96,6 +115,7 @@ const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split
   .nav-links a:hover{color:var(--primary)}
   .nav-actions{display:flex;align-items:center;gap:10px}
   .icon-btn{display:inline-grid;width:40px;height:40px;place-items:center;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);color:var(--primary);cursor:pointer}
+  .menu-btn{display:none}
   .lang-switch{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700}
   .lang-switch a{padding:3px 6px;border-radius:4px;color:var(--muted)}
   .lang-switch a:hover{color:var(--primary)}
@@ -103,4 +123,22 @@ const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split
   .lang-switch .sep{color:var(--line)}
   #progress-bar{position:fixed;top:0;left:0;height:3px;z-index:9998;background:linear-gradient(90deg,var(--accent,#c9a227),var(--green,#2f6f5e));width:0;transition:width 0.3s ease}
   @keyframes ripple-anim{to{transform:scale(2);opacity:0}}
+
+  @media (max-width: 980px){
+    .nav{position:relative;gap:12px;min-height:64px}
+    .nav-links{display:none;position:absolute;top:100%;left:14px;right:14px;align-items:stretch;flex-direction:column;gap:2px;padding:10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow)}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:10px 12px;border-radius:6px}
+    .nav-links a:hover{background:var(--accent-soft)}
+    .menu-btn{display:inline-grid}
+    .nav-actions>.btn{display:none}
+  }
+
+  @media (max-width: 460px){
+    .nav{gap:8px}
+    .brand{gap:8px}
+    .brand-mark{width:36px;height:36px}
+    .nav-actions{gap:6px}
+    .icon-btn{width:38px;height:38px}
+  }
 </style>

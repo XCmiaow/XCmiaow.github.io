@@ -1,19 +1,18 @@
-const CACHE = 'resume-v3';
+const CACHE = 'resume-v4';
+const APP_SHELL = [
+  '/',
+  '/en/',
+  '/resume-onepage',
+  '/en/resume-onepage',
+  '/modeling',
+  '/en/modeling',
+  '/evidence',
+  '/en/evidence',
+];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE).then((cache) =>
-      cache.addAll([
-        '/',
-        '/en/',
-        '/resume-onepage',
-        '/en/resume-onepage',
-        '/modeling',
-        '/en/modeling',
-        '/evidence',
-        '/en/evidence',
-      ])
-    )
+    caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL))
   );
   self.skipWaiting();
 });
@@ -29,6 +28,24 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.origin !== location.origin) return;
+
+  if (e.request.mode === 'navigate' || e.request.headers.get('accept')?.includes('text/html')) {
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE).then((cache) => cache.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('/')))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetched = fetch(e.request)

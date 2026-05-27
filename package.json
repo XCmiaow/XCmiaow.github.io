@@ -4,11 +4,17 @@
   "description": "Xujie Fang - Personal Academic Resume Website (Astro)",
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/generate-site-css.mjs",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "qa": "node scripts/qa-check.mjs",
+    "check": "npm run build && npm run qa"
   },
   "dependencies": {
     "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }

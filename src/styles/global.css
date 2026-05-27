@@ -67,7 +67,9 @@ section { padding: 74px 0; scroll-margin-top: 86px; }
 .card {
   border: 1px solid var(--line); border-radius: var(--radius);
   background: var(--paper); box-shadow: 0 8px 22px rgba(16, 42, 67, 0.06);
+  min-width: 0;
 }
+.card *, .project-card *, .evidence-list * { min-width: 0; overflow-wrap: anywhere; }
 .card.pad { padding: 24px; }
 .card h3 { margin: 0 0 10px; color: var(--primary); font-size: 19px; line-height: 1.35; }
 .card p, .card li { color: var(--muted); }
@@ -117,6 +119,8 @@ footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align:
   section { padding: 54px 0; }
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .section-head { align-items: stretch; flex-direction: column; }
+  .project-facts li { grid-template-columns: 1fr; }
+  .contact-list { white-space: normal; }
 }
 
 @media print {
