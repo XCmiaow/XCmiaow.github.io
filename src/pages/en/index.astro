@@ -17,7 +17,7 @@ const edu = resume.education;
     <div>
       <h1 data-animate>{p.name.en}</h1>
       <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
-      <p class="lead">GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major. Building a composite skill profile grounded in chemical engineering and organic chemistry, extended by mathematical modeling, Python, and AI toolchain exploration.</p>
+      <p class="lead">GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
       <div class="hero-actions no-print">
         <a class="btn primary" href="#honors">Key Achievements</a>
         <a class="btn" href="/en/resume-onepage">One-Page PDF</a>
@@ -46,8 +46,8 @@ const edu = resume.education;
 <section id="about"><div class="container">
   <div class="section-head"><h2>About Me</h2><p>Strong academic performance with growing expertise in math modeling and AI tools.</p></div>
   <div class="card pad about-copy" data-animate>
-    <p>Undergraduate in {edu.en.major} at {edu.en.school}, GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major. Recipient of the National Inspirational Scholarship and University Merit Student.</p>
-    <p>Won the CUMCM Jiangsu Provincial First Prize and consecutive MCM/ICM Honorable Mentions (2025, 2026). Building proficiency in Python, LaTeX, and exploring AI tool integration into research workflows.</p>
+    <p>I'm an undergraduate in {edu.en.major} at {edu.en.school} with a GPA of {edu.gpa} — ranked {edu.rankClass}st in my class and {edu.rankMajor}nd in my major. I have received the National Inspirational Scholarship and was named a University Merit Student.</p>
+    <p>In mathematical modeling, I won the CUMCM Jiangsu Provincial First Prize and earned consecutive MCM/ICM Honorable Mentions (2025, 2026). I work with Python, LaTeX, and Markdown daily, and I have been actively building AI-assisted workflows for literature review and knowledge management.</p>
   </div>
 </div></section>
 
@@ -65,7 +65,7 @@ const edu = resume.education;
 </div></section>
 
 <section id="highlights"><div class="container">
-  <div class="section-head"><h2>Key Strengths</h2></div>
+  <div class="section-head"><h2>Profile Highlights</h2></div>
   <div class="grid-4">
     {resume.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.en}</h3><p>{h.enDesc}</p></article>))}
   </div>
@@ -92,7 +92,7 @@ const edu = resume.education;
 
 <section id="contact"><div class="container">
   <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
-  <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span><span class="gh-status loading" id="gh-status"></span></div></div>
+  <div class="contact-list"><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>School: Nanjing Forestry University</span></div></div>
 </div></section>
 
 <CursorGlow />

@@ -16,8 +16,8 @@ const pathWithoutLocale = Astro.url.pathname
   .replace(/\/+$/, '');
 const currentPage = pathWithoutLocale.replace(/^\/+/, '');
 const pageKey = currentPage === '' || currentPage === 'index' ? '' : currentPage;
-const zhUrl = pageKey ? `/${pageKey}` : '/';
-const enUrl = pageKey ? `/en/${pageKey}` : '/en/';
+const zhUrl = (pageKey ? `/${pageKey}` : '/');
+const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
 ---
 
 <!DOCTYPE html>
@@ -86,8 +86,8 @@ const enUrl = pageKey ? `/en/${pageKey}` : '/en/';
     if(localStorage.getItem('resume-theme')==='dark')root.setAttribute('data-theme','dark');
     toggle&&toggle.addEventListener('click',function(){var d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?null:'dark');localStorage.setItem('resume-theme',d?'light':'dark')})
 
-    // Language preference
-    document.querySelectorAll('.lang-switch a').forEach(function(el){el.addEventListener('click',function(){localStorage.setItem('resume-lang',el.dataset.lang)})})
+    // Language switch with anchor preservation
+    document.querySelectorAll('.lang-switch a').forEach(function(el){el.addEventListener('click',function(){var h=window.location.hash;if(h&&h.length>1){var parts=el.href.split('#');el.href=parts[0]+h}localStorage.setItem('resume-lang',el.dataset.lang)})})
 
     // Mobile navigation
     var menu=document.getElementById('menuToggle'),nav=document.getElementById('navLinks');

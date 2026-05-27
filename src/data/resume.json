@@ -1,8 +1,7 @@
 {
   "person": {
     "name": { "zh": "方绪杰", "en": "Xujie Fang" },
-    "email": "2332797170@qq.com",
-    "phone": "133****4936",
+    "email": "2332797170@njfu.edu.cn",
     "github": "github.com/XCmiaow",
     "githubUser": "XCmiaow",
     "location": "Nanjing, China",
@@ -102,20 +101,4 @@
     { "zh": "2025 年 参与材料院'纸牌搭屋'志愿服务活动", "en": "2025: Participated in the 'Card House' volunteer service activity" },
     { "zh": "2025 年 参与红十字会无偿献血活动", "en": "2025: Participated in the Red Cross voluntary blood donation activity" }
   ],
-  "competitiveness": {
-    "graduate": { "score": 87, "rows": [
-      { "zh": "学业排名", "en": "Academics", "value": 96, "level": "strong" },
-      { "zh": "竞赛荣誉", "en": "Competitions", "value": 88, "level": "strong" },
-      { "zh": "综合素质", "en": "Well-Rounded", "value": 82, "level": "solid" },
-      { "zh": "科研证据", "en": "Research", "value": 48, "level": "weak" },
-      { "zh": "材料完整", "en": "Documentation", "value": 54, "level": "weak" }
-    ]},
-    "career": { "score": 74, "rows": [
-      { "zh": "学习能力", "en": "Learning Ability", "value": 92, "level": "strong" },
-      { "zh": "技术基础", "en": "Technical Skills", "value": 68, "level": "fair" },
-      { "zh": "项目包装", "en": "Project Polish", "value": 72, "level": "fair" },
-      { "zh": "代码证据", "en": "Code Evidence", "value": 42, "level": "weak" },
-      { "zh": "岗位匹配", "en": "Job Matching", "value": 46, "level": "weak" }
-    ]}
-  }
 }
