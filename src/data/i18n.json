@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "zh": {
+      "about": "个人简介",
+      "education": "教育背景",
+      "honors": "获奖情况",
+      "skills": "技能专长",
+      "projects": "项目作品",
+      "modeling": "建模案例",
+      "evidence": "证书墙",
+      "contact": "联系我",
+      "onepage": "一页版",
+      "fullcv": "完整版",
+      "chem_ai_lab": "ChemAI Lab"
+    },
+    "en": {
+      "about": "About",
+      "education": "Education",
+      "honors": "Honors",
+      "skills": "Skills",
+      "projects": "Projects",
+      "modeling": "Modeling",
+      "evidence": "Evidence",
+      "contact": "Contact",
+      "onepage": "One-Page",
+      "fullcv": "Full CV",
+      "chem_ai_lab": "ChemAI Lab"
+    }
+  },
+  "footer": {
+    "zh": "个人学术简历网站",
+    "en": "Personal Academic Resume Website"
+  },
+  "hero": {
+    "zh": {
+      "subtitle": "南京林业大学 · 化学工程学院 · 林产化工专业本科生",
+      "cta_primary": "查看核心成果",
+      "cta_pdf": "一页投递版 · PDF"
+    },
+    "en": {
+      "subtitle": "Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU",
+      "cta_primary": "Key Achievements",
+      "cta_pdf": "One-Page PDF"
+    }
+  },
+  "contact": {
+    "zh": { "title": "联系与展示", "desc": "公开展示版适合 GitHub Pages 部署或个人主页链接。" },
+    "en": { "title": "Contact & Links", "desc": "Public version for GitHub Pages deployment." }
+  }
+}

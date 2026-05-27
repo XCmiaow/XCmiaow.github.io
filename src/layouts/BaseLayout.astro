@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import i18n from '../data/i18n.json';
 
 export interface Props {
   title: string;
@@ -10,9 +11,7 @@ export interface Props {
 const { title, description = '', lang } = Astro.props;
 const isZh = lang === 'zh';
 const basePath = isZh ? '' : '/en';
-const labels = isZh
-  ? { about: '个人简介', education: '教育背景', honors: '获奖情况', skills: '技能专长', projects: '项目作品', modeling: '建模案例', evidence: '证书墙', contact: '联系我', onepage: '一页版', fullcv: '完整版' }
-  : { about: 'About', education: 'Education', honors: 'Honors', skills: 'Skills', projects: 'Projects', modeling: 'Modeling', evidence: 'Evidence', contact: 'Contact', onepage: 'One-Page', fullcv: 'Full CV' };
+const labels = i18n.nav[lang];
 const pathWithoutLocale = Astro.url.pathname
   .replace(/^\/en(?:\/|$)/, '/')
   .replace(/\/+$/, '');
@@ -73,7 +72,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <main><slot /></main>
 
   <footer>
-    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {isZh ? '个人学术简历网站' : 'Personal Academic Resume Website'}</div>
+    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]}</div>
   </footer>
 
   <script>

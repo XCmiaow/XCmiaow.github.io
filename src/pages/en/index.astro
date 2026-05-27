@@ -1,10 +1,13 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
-import ParticlesBackground from '../../components/ParticlesBackground.astro';
-import CursorGlow from '../../components/CursorGlow.astro';
-import en from '../../data/en.json';
-import common from '../../data/common.json';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CompetitionTimeline from '../components/CompetitionTimeline.astro';
+import ParticlesBackground from '../components/ParticlesBackground.astro';
+import CursorGlow from '../components/CursorGlow.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Card from '../components/Card.astro';
+import TagRow from '../components/TagRow.astro';
+import en from '../data/en.json';
+import common from '../data/common.json';
 
 const p = en.person;
 const edu = en.education;
@@ -46,8 +49,8 @@ const c = common;
 </section>
 
 <section id="about"><div class="container">
-  <div class="section-head"><h2>About Me</h2><p>Strong academic performance with growing expertise in math modeling and AI tools.</p></div>
-  <div class="card pad about-copy" data-animate>
+  <SectionHead title="About Me" description="Strong academic performance with growing expertise in math modeling and AI tools." />
+  <Card pad animate class="about-copy">
     <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
     <p>Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes how I approach unfamiliar problems in any domain.</p>
     <p>More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am working through Clayden and March while learning deep learning fundamentals on the side. I am particularly interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical engineering and AI-driven computational chemistry.</p>
@@ -87,7 +90,7 @@ const c = common;
 </div></section>
 
 <section id="honors"><div class="container">
-  <div class="section-head"><h2>Awards & Competitions</h2><p>Click to expand details, filter by level.</p></div>
+  <SectionHead title="Awards & Competitions" description="Click to expand details, filter by level." />
   <CompetitionTimeline lang="en" competitions={en.competitions} />
 </div></section>
 
