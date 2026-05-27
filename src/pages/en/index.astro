@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
+import ParticlesBackground from '../../components/ParticlesBackground.astro';
 import resume from '../../data/resume.json';
 
 const p = resume.person;
@@ -10,6 +11,7 @@ const edu = resume.education;
 <BaseLayout title={`${p.name.en} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name.en}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${edu.gpa}, ranked ${edu.rankClass}st in class and ${edu.rankMajor}nd in major.`} lang="en">
 
 <section class="hero">
+  <ParticlesBackground />
   <div class="container hero-grid">
     <div>
       <h1 data-animate>{p.name.en}</h1>
@@ -27,7 +29,7 @@ const edu = resume.education;
         <span class="tag">AI Toolchain</span>
       </div>
     </div>
-    <aside class="portrait-card" data-animate="right">
+    <aside class="portrait-card tilt-card" data-animate="right">
       <img class="profile-photo" src={p.avatar} alt={`${p.name.en} photo`} />
       <div class="profile-meta"><strong>{p.name.en} · {p.githubUser}</strong><span>{p.tagline.en}</span></div>
       <div class="stat-grid">
@@ -89,7 +91,7 @@ const edu = resume.education;
 
 <section id="contact"><div class="container">
   <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
-  <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span></div></div>
+  <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span><span class="gh-status loading" id="gh-status"></span></div></div>
 </div></section>
 
 </BaseLayout>
@@ -141,6 +143,12 @@ const edu = resume.education;
   [data-animate="up"].revealed { transform: translateY(0); }
   @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+  .gh-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px; }
+  .gh-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #55d65a; display: inline-block; }
+  .gh-status.loading .dot { animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 </style>
 
 <script>
@@ -150,15 +158,25 @@ const edu = resume.education;
   document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
 
   const h1 = document.querySelector('.hero h1');
-  if (h1) {
-    const text = h1.textContent || '';
-    h1.textContent = '';
-    h1.style.borderRight = '3px solid var(--accent)';
-    let i = 0;
-    const type = () => {
-      if (i < text.length) { h1.textContent += text[i]; i++; setTimeout(type, 80 + Math.random() * 50); }
-      else { h1.style.borderRight = 'none'; }
-    };
-    setTimeout(type, 300);
+  if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+
+  const tiltCard = document.querySelector('.tilt-card');
+  if (tiltCard) {
+    tiltCard.addEventListener('mousemove', (e) => { const r = tiltCard.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5; tiltCard.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`; });
+    tiltCard.addEventListener('mouseleave', () => { tiltCard.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)'; });
   }
+
+  (async () => {
+    const el = document.getElementById('gh-status');
+    if (!el) return;
+    try {
+      const res = await fetch('https://api.github.com/users/XCmiaow/events/public?per_page=1');
+      const events = await res.json();
+      if (events.length) {
+        const date = new Date(events[0].created_at);
+        const ago = Math.floor((Date.now() - date) / 3600000);
+        el.innerHTML = `<span class="dot"></span> Active ${ago < 1 ? 'just now' : ago < 24 ? ago+'h ago' : Math.floor(ago/24)+'d ago'} on GitHub`;
+      }
+    } catch(e) { el.textContent = 'Active on GitHub'; el.classList.remove('loading'); }
+  })();
 </script>

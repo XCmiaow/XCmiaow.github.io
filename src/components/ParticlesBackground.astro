@@ -1,0 +1,85 @@
+<canvas id="particles-bg" aria-hidden="true"></canvas>
+
+<script>
+  (() => {
+    const canvas = document.getElementById('particles-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let W, H, particles = [];
+    let mouse = { x: -1000, y: -1000 };
+
+    const hero = canvas.closest('section');
+    if (!hero) return;
+
+    function resize() {
+      const r = hero.getBoundingClientRect();
+      W = r.width; H = r.height;
+      canvas.width = W * 2; canvas.height = H * 2;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.scale(2, 2);
+      init();
+    }
+
+    function init() {
+      const count = Math.floor((W * H) / 14000);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * W, y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+          alpha: Math.random() * 0.6 + 0.2,
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const color = isDark ? '255,255,255' : '16,42,67';
+
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color},${p.alpha * 0.5})`; ctx.fill();
+      });
+
+      particles.forEach((a, i) => {
+        particles.slice(i + 1).forEach(b => {
+          const dx = a.x - b.x, dy = a.y - b.y, dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${color},${(1 - dist / 100) * 0.08})`;
+            ctx.lineWidth = 0.5; ctx.stroke();
+          }
+        });
+        const dmx = a.x - mouse.x, dmy = a.y - mouse.y, dm = Math.sqrt(dmx * dmx + dmy * dmy);
+        if (dm < 150) {
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(${color},${(1 - dm / 150) * 0.12})`;
+          ctx.lineWidth = 0.5; ctx.stroke();
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    resize(); draw();
+    window.addEventListener('resize', resize);
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+    });
+    hero.addEventListener('mouseleave', () => { mouse = { x: -1000, y: -1000 }; });
+  })();
+</script>
+
+<style>
+  #particles-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  section:has(#particles-bg) { position: relative; overflow: hidden; }
+  section:has(#particles-bg) > .container { position: relative; z-index: 1; }
+</style>
