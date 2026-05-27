@@ -31,7 +31,8 @@
     "playwright": "^1.60.0"
   },
   "lint-staged": {
-    "src/**/*.{astro,ts,js}": ["eslint --fix", "prettier --write"],
+    "src/**/*.astro": ["eslint --fix"],
+    "src/**/*.{ts,js}": ["eslint --fix", "prettier --write"],
     "src/**/*.{css,json,md}": ["prettier --write"]
   }
 }

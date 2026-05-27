@@ -33,8 +33,8 @@ const levelColors: Record<string, string> = {
           <div class="tl-dot"></div>
           <div class="tl-card">
             <span class="tl-year">{competition.year}</span>
-            <strong>{isZh ? competition.zh : competition.en}</strong>
-            <em>{isZh ? competition.zhNote : competition.enNote}</em>
+            <strong>{competition.title}</strong>
+            <em>{competition.note}</em>
             {hasDetails && (
               <div class="tl-details">
                 <p><b>{isZh ? '题目' : 'Topic'}:</b> {competition.details!.topic}</p>
