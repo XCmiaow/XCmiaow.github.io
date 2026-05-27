@@ -101,4 +101,26 @@
     { "zh": "2025 年 参与材料院'纸牌搭屋'志愿服务活动", "en": "2025: Participated in the 'Card House' volunteer service activity" },
     { "zh": "2025 年 参与红十字会无偿献血活动", "en": "2025: Participated in the Red Cross voluntary blood donation activity" }
   ],
+  "researchInterests": {
+    "zh": {
+      "tagline": "有机化学为根基、计算工具为延伸、AI 为杠杆",
+      "summary": "我对有机合成方法学有持续的学术兴趣，同时关注 LLM、Agent 工作流和深度学习在化学中的应用。长期目标是将化工专业基础与计算/AI 能力结合，探索计算化学和 AI 辅助有机合成这一交叉方向。",
+      "areas": [
+        { "name": "有机合成方法学", "note": "本科阶段持续阅读 Clayden、March 等经典教材，关注合成策略与反应机理" },
+        { "name": "计算化学 / AI 辅助有机合成", "note": "核心兴趣方向，关注反应预测、路线规划、分子性质预测等交叉课题" },
+        { "name": "LLM + Agent Workflow", "note": "探索大语言模型在文献检索、实验方案生成、科研知识管理中的落地可能" },
+        { "name": "深度学习基础", "note": "学习神经网络基础，关注图神经网络在分子表示学习中的应用" }
+      ]
+    },
+    "en": {
+      "tagline": "Organic chemistry as foundation, computational tools as extension, AI as leverage",
+      "summary": "I have a sustained academic interest in organic synthesis methodology, and I am also deeply interested in how LLMs, agent workflows, and deep learning can be applied to chemical research. My long-term goal is to bridge my chemical engineering training with computational and AI capabilities, focusing on the intersection of computational chemistry and AI-assisted organic synthesis.",
+      "areas": [
+        { "name": "Organic Synthesis Methodology", "note": "Ongoing study of Clayden, March and related texts; focus on synthetic strategy and reaction mechanisms" },
+        { "name": "Computational Chemistry / AI-Assisted Synthesis", "note": "Core research interest — reaction prediction, retrosynthetic planning, molecular property prediction" },
+        { "name": "LLMs + Agent Workflows", "note": "Exploring LLM applications in literature retrieval, experiment proposal generation, and research knowledge management" },
+        { "name": "Deep Learning Fundamentals", "note": "Studying neural network basics, interested in graph neural networks for molecular representation learning" }
+      ]
+    }
+  }
 }

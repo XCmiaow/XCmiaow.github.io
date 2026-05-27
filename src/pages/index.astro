@@ -42,8 +42,9 @@ const edu = resume.education;
 <section id="about"><div class="container">
   <div class="section-head"><h2>个人简介</h2><p>以学业成绩为基础，以数学建模为能力证明。</p></div>
   <div class="card pad about-copy" data-animate>
-    <p>现就读于{edu.zh.school}{edu.zh.college}{edu.zh.major}，GPA {edu.gpa}，班级排名第 {edu.rankClass}、专业排名第 {edu.rankMajor}。曾获国家励志奖学金、校三好学生、大学生学科竞赛先进个人等荣誉。</p>
-    <p>重点参与数学建模类竞赛，获全国大学生数学建模竞赛江苏省一等奖，并连续获得 2025、2026 年 MCM/ICM H 奖。熟悉 Python、LaTeX、Markdown 等工具，正在探索 AI 辅助学习与知识管理实践。</p>
+    <p>我目前就读于{edu.zh.school}{edu.zh.college}{edu.zh.major}，GPA {edu.gpa}，排名班级第 {edu.rankClass}、专业第 {edu.rankMajor}。选择林产化工这个方向，是因为它处于化学基础与工程应用的交叉点上——既要理解有机反应的微观机理，又要处理实际工艺中的宏观问题。这种从机理到应用的跨度，是我学习和思考的核心动力。</p>
+    <p>在课堂之外，我花了大量时间在数学建模上。参加全国大学生数学建模竞赛（江苏省一等奖）、MCM/ICM（连续两年 H 奖）的经历训练了我从现实问题中抽象变量、建立模型、用数据验证假设的能力。这套方法论并不只是用来比赛，它改变了我解决问题的思维方式——不管面对的是化学反应还是复杂系统，第一步永远是拆解问题、定义边界。</p>
+    <p>进入大二后，我逐渐对计算化学和 AI 辅助有机合成产生了兴趣。我在持续阅读 Clayden 和 March 等经典教材的同时，也在自学深度学习基础，关注图神经网络在分子表示学习中的应用，以及 LLM 和 Agent 工作流在科研场景中的落地可能。长期来看，我希望成为一名能从化工问题出发、用计算和 AI 工具来求解的研究者。</p>
   </div>
 </div></section>
 
@@ -56,6 +57,18 @@ const edu = resume.education;
       <div class="rank-item"><span>班级排名</span><strong>第 {edu.rankClass}</strong></div>
       <div class="rank-item"><span>专业排名</span><strong>第 {edu.rankMajor}</strong></div>
       <div class="rank-item"><span>当前年级</span><strong>{edu.zh.year}</strong></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="interests"><div class="container">
+  <div class="section-head"><h2>研究兴趣</h2><p>{resume.researchInterests.zh.tagline}</p></div>
+  <div class="card pad" data-animate>
+    <p class="interest-summary">{resume.researchInterests.zh.summary}</p>
+    <div class="grid-2" style="margin-top:20px">
+      {resume.researchInterests.zh.areas.map(a => (
+        <div class="interest-card"><strong>{a.name}</strong><p>{a.note}</p></div>
+      ))}
     </div>
   </div>
 </div></section>
@@ -118,6 +131,10 @@ const edu = resume.education;
   .rank-list { display: grid; gap: 12px; }
   .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
   .rank-item span { color: var(--muted); }
+  .interest-summary { line-height: 1.65; color: var(--muted); }
+  .interest-card { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+  .interest-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
+  .interest-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.45; }
   .highlight { position: relative; min-height: 170px; overflow: hidden; }
   .highlight::after { content: ""; position: absolute; right: -32px; bottom: -32px; width: 92px; height: 92px; border-radius: 50%; border: 18px solid var(--accent-soft); }
   .highlight .num { display: inline-flex; align-items: center; height: 28px; margin-bottom: 20px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft); color: var(--primary); font-size: 13px; font-weight: 900; }
