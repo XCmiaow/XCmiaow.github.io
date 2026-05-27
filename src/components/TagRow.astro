@@ -1,0 +1,12 @@
+---
+export interface Props {
+  tags: string[];
+  class?: string;
+}
+
+const { tags, class: className = '' } = Astro.props;
+---
+
+<div class={`tag-row ${className}`}>
+  {tags.map(t => <span class="tag">{t}</span>)}
+</div>

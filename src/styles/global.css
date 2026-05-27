@@ -124,3 +124,16 @@ footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align:
   section { min-height: auto; padding: 22px 0; }
   .no-print { display: none !important; }
 }
+
+@media (orientation: landscape) and (max-height: 800px) {
+  .hero { padding: 40px 0 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); }
+  .hero-grid { gap: 20px; }
+  .portrait-card { padding: 16px; }
+  .profile-photo { width: 90px; height: 90px; }
+  .stat-grid { grid-template-columns: repeat(4, 1fr); margin-top: 14px; }
+  .stat { padding: 10px; }
+  .stat strong { font-size: 20px; }
+  .nav { min-height: 52px; }
+  section { padding: 36px 0; scroll-margin-top: 56px; }
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://XCmiaow.github.io/sitemap.xml
+
+Disallow: /assets/evidence/

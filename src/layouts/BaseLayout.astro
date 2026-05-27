@@ -29,7 +29,26 @@ const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replac
   <ViewTransitions />
   <script>
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
+
+    // Ripple effect on touch
+    document.addEventListener('touchstart', function ignore() {}, {passive:true});
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('.card, .btn, .tl-card, .skill-card li, .filter-btn, .cert-card');
+      if (!target) return;
+      const ripple = document.createElement('span');
+      const r = target.getBoundingClientRect();
+      const size = Math.max(r.width, r.height);
+      ripple.style.cssText = `position:absolute;width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;border-radius:50%;background:rgba(201,162,39,0.2);animation:ripple-anim 0.6s ease-out forwards;pointer-events:none`;
+      target.style.position = target.style.position || 'relative';
+      target.style.overflow = 'hidden';
+      target.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
   </script>
+
+<style>
+  @keyframes ripple-anim { to { transform: scale(2); opacity: 0; } }
+</style>
 </head>
 <body>
   <div id="progress-bar"></div>

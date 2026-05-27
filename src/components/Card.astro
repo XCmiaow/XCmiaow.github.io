@@ -1,0 +1,16 @@
+---
+export interface Props {
+  class?: string;
+  animate?: boolean;
+  animateDir?: 'up' | 'right' | 'left';
+  pad?: boolean;
+}
+
+const { class: className = '', animate, animateDir, pad } = Astro.props;
+const animAttr = animate ? { 'data-animate': animateDir || '' } : {};
+const cls = `card${pad ? ' pad' : ''} ${className}`.trim();
+---
+
+<article class={cls} {...animAttr}>
+  <slot />
+</article>
