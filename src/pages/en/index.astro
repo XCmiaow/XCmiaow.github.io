@@ -54,11 +54,11 @@ const c = common;
     <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {edu.gpa}, ranked {edu.rankClass}st in class and {edu.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
     <p>Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes how I approach unfamiliar problems in any domain.</p>
     <p>More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am working through Clayden and March while learning deep learning fundamentals on the side. I am particularly interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical engineering and AI-driven computational chemistry.</p>
-  </div>
+  </Card>
 </div></section>
 
 <section id="education"><div class="container">
-  <div class="section-head"><h2>Education</h2></div>
+  <SectionHead title="Education" />
   <div class="education-card" data-animate>
     <div class="school"><h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p></div>
     <div class="rank-list">
@@ -71,19 +71,19 @@ const c = common;
 </div></section>
 
 <section id="interests"><div class="container">
-  <div class="section-head"><h2>Research Interests</h2><p>{en.researchInterests.tagline}</p></div>
-  <div class="card pad" data-animate>
+  <SectionHead title="Research Interests" description={en.researchInterests.tagline} />
+  <Card pad animate>
     <p class="interest-summary">{en.researchInterests.summary}</p>
     <div class="grid-2" style="margin-top:20px">
       {en.researchInterests.areas.map(a => (
         <div class="interest-card"><strong>{a.name}</strong><p>{a.note}</p></div>
       ))}
     </div>
-  </div>
+  </Card>
 </div></section>
 
 <section id="highlights"><div class="container">
-  <div class="section-head"><h2>Profile Highlights</h2></div>
+  <SectionHead title="Profile Highlights" />
   <div class="grid-4">
     {en.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.title}</h3><p>{h.desc}</p></article>))}
   </div>
@@ -95,14 +95,14 @@ const c = common;
 </div></section>
 
 <section id="skills"><div class="container">
-  <div class="section-head"><h2>Skills</h2></div>
+  <SectionHead title="Skills" />
   <div class="grid-4">
     {en.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
   </div>
 </div></section>
 
 <section id="projects"><div class="container">
-  <div class="section-head"><h2>Projects & Portfolio</h2></div>
+  <SectionHead title="Projects & Portfolio" />
   <div class="grid-3">
     {(() => { const projIndex = {}; c.projects.forEach(p => projIndex[p.id] = p); return en.projects.map(proj => { const commonProj = projIndex[proj.id] || {}; return (<article class="card pad project-card" data-animate="up"><div><h3>{proj.title}</h3><p>{proj.desc}</p><ul class="project-facts"><li><b>Skills</b><span>{proj.abilities}</span></li>{commonProj.link && <li><b>Link</b><span><a href={commonProj.link}>{commonProj.link}</a></span></li>}</ul></div><div class="tag-row">{(commonProj.tags || []).map(t => <span class="tag">{t}</span>)}</div></article>);});})()}
   </div>

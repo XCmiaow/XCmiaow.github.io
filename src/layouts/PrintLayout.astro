@@ -1,0 +1,82 @@
+---
+export interface Props {
+  title: string;
+  lang: 'zh' | 'en';
+}
+
+const { title, lang } = Astro.props;
+const isZh = lang === 'zh';
+const backUrl = isZh ? '/resume-onepage' : '/en/resume-onepage';
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="stylesheet" href="/styles/site.css" />
+</head>
+<body class="a4-page">
+
+<div class="toolbar no-print">
+  <div class="ls">
+    <a href="/resume-onepage" data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
+    <span class="ls-sep">|</span>
+    <a href="/en/resume-onepage" data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
+  </div>
+  <a href={isZh ? '/' : '/en/'} class="btn">← {isZh ? '返回' : 'Back'}</a>
+  <button class="btn primary" onclick="window.print()">{isZh ? '⬇ 下载 PDF' : '⬇ Download PDF'}</button>
+</div>
+
+<article class="sheet">
+  <slot />
+</article>
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body.a4-page{font-family:"Inter","Segoe UI","Noto Sans SC",sans-serif;background:#e8e8e8;color:#1a1a1a;display:flex;flex-direction:column;align-items:center;padding:24px}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;position:sticky;top:0;z-index:10;background:rgba(255,255,255,0.9);padding:10px 20px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+  .ls{display:flex;align-items:center;gap:4px;font-size:13px}
+  .ls a{color:#888;text-decoration:none;padding:2px 6px;border-radius:4px}
+  .ls a.active{color:#1a1a1a;background:#e8e4d4}
+  .ls-sep{color:#ddd;margin:0 2px}
+  .sheet{width:210mm;min-height:297mm;background:#fff;padding:19mm;box-shadow:0 4px 24px rgba(0,0,0,0.12)}
+  .sheet h1{font-size:24pt;font-weight:800}
+  .sheet h2{font-size:10.5pt;font-weight:800;color:#2f5168;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5pt solid #c9a227;padding-bottom:2pt;margin:9pt 0 4pt 0}
+  .sheet p,.sheet li{font-size:9pt;line-height:1.32;color:#333}
+  .sheet .small{font-size:8.5pt}.sheet .tiny{font-size:8pt;padding-left:14px}.sheet .tiny li{margin-bottom:1.5pt}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7pt}
+  .top-main h1{margin-bottom:1.5pt}.top-main .sub{font-size:9pt;color:#555}
+  .top-contact{display:grid;gap:.5pt;font-size:8.5pt;color:#555;text-align:right;white-space:nowrap}
+  .summary{font-size:9pt;line-height:1.35;margin-bottom:8pt}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row-2.tight{gap:6px}
+  .row-2 ul{padding-left:14px}.row-2 li{font-size:8.5pt;margin-bottom:1.5pt}
+  .item{margin-bottom:5pt}
+  .item-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1pt}
+  .item-head strong{font-size:9pt}.item-head span{font-size:8pt;color:#888}
+  @media (max-width:840px){
+    body.a4-page{align-items:stretch;padding:12px;background:#f2f2f2}
+    .toolbar{position:static;flex-wrap:wrap;justify-content:center;width:100%;padding:10px 12px}
+    .sheet{width:100%;min-height:auto;padding:18px;box-shadow:0 2px 14px rgba(0,0,0,0.1)}
+    .top{flex-direction:column;gap:8px}.top-contact{text-align:left;white-space:normal}
+    .row-2,.row-2.tight{grid-template-columns:1fr;gap:8px}.item-head{display:grid;gap:3px}
+    .sheet p,.sheet li{overflow-wrap:anywhere}
+  }
+  @media print{
+    @page{size:A4;margin:0}
+    body.a4-page{background:#fff;padding:0}
+    .toolbar{display:none!important}
+    .sheet{width:210mm;min-height:auto;padding:16mm 16mm 14mm 16mm;box-shadow:none;border:none}
+    .sheet h1{font-size:18pt}.sheet h2{font-size:9pt;margin:6pt 0 3pt 0;padding-bottom:1.5pt}
+    .sheet p,.sheet li{font-size:7.5pt;line-height:1.25}
+    .sheet .small{font-size:7.3pt}.sheet .tiny{font-size:7pt;padding-left:11px}.sheet .tiny li{margin-bottom:1pt}
+    .top{margin-bottom:4pt}.top-main h1{font-size:18pt;margin-bottom:.5pt}.top-main .sub{font-size:8pt}.top-contact{font-size:7.3pt;gap:0}
+    .summary{font-size:7.5pt;line-height:1.28;margin-bottom:5pt}
+    .row-2{gap:8px}.row-2.tight{gap:5px}.row-2 li{font-size:7.3pt;margin-bottom:1pt}
+    .item{margin-bottom:3pt}.item-head strong{font-size:7.5pt}.item-head span{font-size:7pt}
+    *{page-break-inside:avoid}
+  }
+</style>
+</body>
+</html>
