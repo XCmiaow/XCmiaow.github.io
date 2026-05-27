@@ -9,7 +9,6 @@ export default [
     processor: 'astro/client-side-ts',
     rules: {
       'astro/no-conflict-set-directives': 'error',
-      'astro/no-unused-define-vars-in-styles': 'warn',
     },
   },
 
