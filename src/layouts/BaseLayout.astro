@@ -14,7 +14,7 @@ const basePath = isZh ? '' : '/en';
 const labels = isZh
   ? { about: '个人简介', education: '教育背景', honors: '获奖情况', skills: '技能专长', projects: '项目作品', modeling: '建模案例', evidence: '证书墙', contact: '联系我', onepage: '一页版', fullcv: '完整版' }
   : { about: 'About', education: 'Education', honors: 'Honors', skills: 'Skills', projects: 'Projects', modeling: 'Modeling', evidence: 'Evidence', contact: 'Contact', onepage: 'One-Page', fullcv: 'Full CV' };
-const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replace(/^\//, '').split('/').pop() || 'index';
+const page = Astro.url.pathname.replace(/^\/en\//, '/').replace(/\/$/, '').split('/').pop() || 'index';
 ---
 
 <!DOCTYPE html>
@@ -105,20 +105,9 @@ const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replac
       localStorage.setItem('resume-theme', isDark ? 'light' : 'dark');
     });
 
-    const savedLang = localStorage.getItem('resume-lang');
-    const currentLang = '{lang}';
-    if (savedLang && savedLang !== currentLang) {
-      const targetPage = savedLang === 'zh' ? '/{page}' : '/en/{page}';
-      if (targetPage !== '{Astro.url.pathname}') {
-        const justSwitched = sessionStorage.getItem('resume-just-switched');
-        if (!justSwitched) window.location.href = targetPage;
-        sessionStorage.removeItem('resume-just-switched');
-      }
-    }
     document.querySelectorAll('.lang-switch a').forEach(el => {
       el.addEventListener('click', () => {
         localStorage.setItem('resume-lang', el.dataset.lang);
-        sessionStorage.setItem('resume-just-switched', '1');
       });
     });
   </script>
