@@ -19,7 +19,7 @@ const c = common;
 <section class="hero">
   <ParticlesBackground />
   <div class="container hero-grid">
-    <div>
+    <div class="parallax-layer" data-speed="0.15">
       <h1 data-animate>{p.name}</h1>
       <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
       <p class="lead">GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
@@ -35,7 +35,7 @@ const c = common;
         <span class="tag">AI Toolchain</span>
       </div>
     </div>
-    <aside class="portrait-card tilt-card" data-animate="right">
+    <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
       <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
       <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
@@ -170,6 +170,8 @@ const c = common;
   @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 
+  .parallax-layer { will-change: transform; transition: transform 0.05s linear; }
+  .hero { position: relative; overflow: hidden; }
   .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
   .gh-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px; }
   .gh-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #55d65a; display: inline-block; }
@@ -185,6 +187,9 @@ const c = common;
 
   const h1 = document.querySelector('.hero h1');
   if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+
+  // Parallax scroll
+  (function(){var layers=document.querySelectorAll('.parallax-layer');window.addEventListener('scroll',function(){var y=window.scrollY;layers.forEach(function(el){var s=parseFloat(el.dataset.speed)||0.1;el.style.transform='translateY('+(y*s)+'px)'})})})();
 
   const tiltCard = document.querySelector('.tilt-card');
   if (tiltCard) {

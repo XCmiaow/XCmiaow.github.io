@@ -39,6 +39,12 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
 </head>
 <body>
   <ClientBehaviors />
+  <div class="skeleton-screen" id="skeleton">
+    <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>
+    <div class="sk-hero"><div class="sk-circle"></div><div class="sk-block"><div class="sk-line w-60"></div><div class="sk-line w-80"></div><div class="sk-line w-40"></div></div></div>
+  </div>
+  <script>window.addEventListener('load',function(){var s=document.getElementById('skeleton');if(s)s.style.opacity='0';setTimeout(function(){if(s)s.remove()},300)})</script>
+
   <a href="#main" class="skip-link">{isZh ? '跳到主要内容' : 'Skip to content'}</a>
   <header class="site-header">
     <div class="container nav">
@@ -110,6 +116,14 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   }
 
   .skip-link{position:fixed;top:-100%;left:8px;z-index:10000;padding:8px 16px;background:var(--primary);color:#fff;border-radius:0 0 var(--radius) var(--radius);font-size:14px;font-weight:700}
+  .skeleton-screen{position:fixed;inset:0;z-index:9997;background:var(--bg);transition:opacity .3s;pointer-events:none}
+  .skeleton-screen .sk-header{display:flex;gap:16px;padding:20px;max-width:var(--max);margin:0 auto}
+  .skeleton-screen .sk-hero{display:flex;gap:24px;padding:60px 20px;max-width:var(--max);margin:0 auto;align-items:center}
+  .skeleton-screen .sk-circle{width:138px;height:138px;border-radius:50%;flex-shrink:0}
+  .skeleton-screen .sk-block{flex:1;display:grid;gap:16px}
+  .skeleton-screen .sk-line{height:16px;border-radius:8px}
+  .skeleton-screen .sk-line.w-60{width:60%}.skeleton-screen .sk-line.w-80{width:80%}.skeleton-screen .sk-line.w-40{width:40%}.skeleton-screen .sk-line.w-20{width:200px}.skeleton-screen .sk-line.w-10{width:80px}
+  .skeleton-screen .sk-header .sk-line,.skeleton-screen .sk-line,.skeleton-screen .sk-circle{background:linear-gradient(90deg,var(--line) 25%,transparent 50%,var(--line) 75%);background-size:200% 100%;animation:skeleton 1.5s ease-in-out infinite}
   .skip-link:focus{top:0}
   @media (max-width: 460px){
     .nav{gap:8px}

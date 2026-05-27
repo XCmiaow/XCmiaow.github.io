@@ -49,14 +49,21 @@
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${color},0.4)`; ctx.fill();
 
-        // connections (only check forward, limited pairs)
+        // constellation connections — brighter near mouse
         for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
           const q = particles[j];
           const dx = p.x - q.x, dy = p.y - q.y, dist = Math.hypot(dx, dy);
           if (dist < 120) {
+            // mouse proximity boost
+            const mBoost = Math.max(0, 1 - (Math.hypot((p.x+q.x)/2 - mouse.x, (p.y+q.y)/2 - mouse.y) / 200));
+            const alpha = (1 - dist / 120) * (0.06 + mBoost * 0.2);
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = `rgba(${color},${(1 - dist / 120) * 0.06})`;
-            ctx.lineWidth = 0.5; ctx.stroke();
+            ctx.strokeStyle = `rgba(${color},${alpha})`;
+            ctx.lineWidth = mBoost > 0.5 ? 1.2 : 0.5;
+            ctx.shadowColor = mBoost > 0.5 ? `rgba(201,162,39,${mBoost * 0.3})` : 'transparent';
+            ctx.shadowBlur = mBoost > 0.5 ? 6 : 0;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
           }
         }
 
@@ -64,8 +71,9 @@
         const dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
         if (dm < 150) {
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(${color},${(1 - dm / 150) * 0.1})`;
-          ctx.lineWidth = 0.5; ctx.stroke();
+          ctx.strokeStyle = `rgba(${color},${(1 - dm / 150) * 0.12})`;
+          ctx.lineWidth = 0.5 + (1 - dm / 150) * 1;
+          ctx.stroke();
         }
       }
       // draw mouse trail

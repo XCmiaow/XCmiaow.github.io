@@ -18,7 +18,7 @@ const c = common;
 <section class="hero">
   <ParticlesBackground />
   <div class="container hero-grid">
-    <div>
+    <div class="parallax-layer" data-speed="0.15">
       <h1 data-animate>{p.name}</h1>
       <p class="subtitle">南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
       <p class="lead">GPA {c.education.gpa}，班级第 {c.education.rankClass}，专业第 {c.education.rankMajor}。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。</p>
@@ -30,7 +30,7 @@ const c = common;
         <span class="tag">GPA {c.education.gpa}</span><span class="tag">班级第 {c.education.rankClass}</span><span class="tag">专业第 {c.education.rankMajor}</span><span class="tag">数学建模</span><span class="tag">AI 工具链</span>
       </div>
     </div>
-    <aside class="portrait-card tilt-card" data-animate="right">
+    <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
       <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
       <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
@@ -164,6 +164,10 @@ const c = common;
   @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 
+  /* Parallax layers */
+  .parallax-layer { will-change: transform; transition: transform 0.05s linear; }
+  .hero { position: relative; overflow: hidden; }
+
   /* 3D Tilt Card */
   .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
   .tilt-card:hover { transform: perspective(800px) rotateY(0deg) rotateX(0deg); }
@@ -184,6 +188,15 @@ const c = common;
 
   const h1 = document.querySelector('.hero h1');
   if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+
+  // Parallax scroll
+  (function(){
+    var layers=document.querySelectorAll('.parallax-layer');
+    window.addEventListener('scroll',function(){
+      var y=window.scrollY;
+      layers.forEach(function(el){var s=parseFloat(el.dataset.speed)||0.1;el.style.transform='translateY('+(y*s)+'px)'})
+    })
+  })();
 
   // 3D Tilt
   const tiltCard = document.querySelector('.tilt-card');

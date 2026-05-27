@@ -117,6 +117,25 @@ html { scroll-padding-top: 80px; }
   margin-top: 10px; border-radius: 50%; background: var(--accent);
 }
 
+/* ── Wave dividers ── */
+section::after { content: ''; display: block; height: 32px; margin-top: -32px; background: no-repeat; background-size: 100% 32px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 32'%3E%3Cpath d='M0,16 Q150,32 300,16 T600,16 T900,16 T1200,16 L1200,32 L0,32Z' fill='rgba(201,162,39,0.04)'/%3E%3C/svg%3E"); pointer-events: none; }
+section:last-of-type::after { display: none; }
+
+/* ── Glassmorphism nav upgrade ── */
+.site-header { background: rgba(247,245,239,0.72) !important; border-bottom: 1px solid rgba(226,231,238,0.6); }
+[data-theme="dark"] .site-header { background: rgba(15,23,32,0.75) !important; border-bottom-color: rgba(42,58,75,0.7); }
+.site-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.06) 50%, transparent 100%); pointer-events: none; }
+.site-header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); }
+
+/* ── Border glow upgrade (dark mode) ── */
+[data-theme="dark"] .card { border-color: rgba(201,162,39,0.08); }
+[data-theme="dark"] .card:hover { border-color: rgba(201,162,39,0.25); box-shadow: 0 0 20px rgba(201,162,39,0.06); }
+[data-theme="dark"] .project-card { animation: border-glow 8s ease-in-out infinite; }
+
+/* ── Skeleton loading ── */
+@keyframes skeleton { 0%{background-position:-200% 0}100%{background-position:200% 0} }
+.skeleton { background: linear-gradient(90deg, var(--line) 25%, transparent 50%, var(--line) 75%); background-size: 200% 100%; animation: skeleton 1.5s ease-in-out infinite; border-radius: var(--radius); }
+
 footer { padding: 28px 0 44px; color: var(--muted); font-size: 14px; text-align: center; position: relative; user-select: none; }
 main:focus { outline: none; }
 footer::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--green), transparent); }
