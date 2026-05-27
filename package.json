@@ -9,12 +9,28 @@
     "build": "astro build",
     "preview": "astro preview",
     "qa": "node scripts/qa-check.mjs",
-    "check": "npm run build && npm run qa"
+    "check": "npm run build && npm run qa",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write 'src/**/*.{astro,ts,js,css,json}'",
+    "format:check": "prettier --check 'src/**/*.{astro,ts,js,css,json}'",
+    "prepare": "husky"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "astro": "^6.0.0"
   },
   "devDependencies": {
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "eslint-plugin-astro": "^1.0.0",
+    "prettier": "^3.5.0",
+    "prettier-plugin-astro": "^0.14.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
     "playwright": "^1.60.0"
+  },
+  "lint-staged": {
+    "src/**/*.{astro,ts,js}": ["eslint --fix", "prettier --write"],
+    "src/**/*.{css,json,md}": ["prettier --write"]
   }
 }

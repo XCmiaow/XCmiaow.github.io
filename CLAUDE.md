@@ -129,9 +129,32 @@ npm run dev
 # 构建 (自动运行 generate-site-css.mjs → astro build)
 npm run build
 
+# 代码检查
+npm run lint          # ESLint 检查
+npm run format:check  # Prettier 格式检查
+npm run format        # Prettier 自动格式化
+
+# QA 检查 (启动预览服务器后运行)
+npm run build && npm run qa  # Playwright 测试所有页面
+
 # 部署
 git push origin main  # GitHub Actions 自动构建部署
 ```
+
+## 提交规范
+
+- 提交前自动运行 `lint-staged`（ESLint + Prettier）
+- 提交信息格式：`type: description`（如 `feat: add OG tags`、`fix: repair import path`）
+- 如果 husky 未安装：`npm install` 会自动安装
+
+## 代码规范
+
+| 工具 | 用途 | 配置文件 |
+|------|------|----------|
+| ESLint | JS/TS 代码检查 | `eslint.config.mjs` |
+| Prettier | 代码格式化 | `.prettierrc` |
+| lint-staged | 暂存文件自动检查 | `package.json` 中的 `lint-staged` 字段 |
+| Husky | Git 钩子管理 | `.husky/pre-commit` |
 
 ## 智能体开发指南
 
