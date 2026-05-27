@@ -39,6 +39,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
 </head>
 <body>
   <ClientBehaviors />
+  <a href="#main" class="skip-link">{isZh ? '跳到主要内容' : 'Skip to content'}</a>
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href={`${basePath}/`} aria-label={isZh ? '回到首页' : 'Home'}>
@@ -70,9 +71,9 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
     </div>
   </header>
 
-  <main><slot /></main>
+  <main id="main" tabindex="-1"><slot /></main>
 
-  <footer>
+  <footer role="contentinfo">
     <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]}</div>
   </footer>
 
@@ -108,6 +109,8 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
     .nav-actions>.btn{display:none}
   }
 
+  .skip-link{position:fixed;top:-100%;left:8px;z-index:10000;padding:8px 16px;background:var(--primary);color:#fff;border-radius:0 0 var(--radius) var(--radius);font-size:14px;font-weight:700}
+  .skip-link:focus{top:0}
   @media (max-width: 460px){
     .nav{gap:8px}
     .brand{gap:8px}

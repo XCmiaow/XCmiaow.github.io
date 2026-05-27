@@ -36,7 +36,7 @@ const c = common;
       </div>
     </div>
     <aside class="portrait-card tilt-card" data-animate="right">
-      <img class="profile-photo" src={c.person.avatar} alt={`${p.name} photo`} />
+      <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
       <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
         <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
@@ -157,7 +157,8 @@ const c = common;
   .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
   .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
   .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; }
+  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; overflow-wrap: anywhere; }
+.contact-list span { min-width: 0; }
   .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
 
   [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }

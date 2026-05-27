@@ -31,7 +31,7 @@ const c = common;
       </div>
     </div>
     <aside class="portrait-card tilt-card" data-animate="right">
-      <img class="profile-photo" src={c.person.avatar} alt={`${p.name}照片`} />
+      <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
       <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
       <div class="stat-grid">
         <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
@@ -135,7 +135,6 @@ const c = common;
   .rank-list { display: grid; gap: 12px; }
   .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
   .rank-item span { color: var(--muted); }
-  .interest-summary { line-height: 1.65; color: var(--muted); }
   .interest-card { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
   .interest-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
   .interest-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.45; }
@@ -152,7 +151,8 @@ const c = common;
   .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
   .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
   .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; }
+  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; overflow-wrap: anywhere; }
+.contact-list span { min-width: 0; }
   .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
 
   [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -200,17 +200,16 @@ const c = common;
   }
 
   // GitHub Status
-  (async () => {
-    const el = document.getElementById('gh-status');
-    if (!el) return;
-    try {
-      const res = await fetch('https://api.github.com/users/XCmiaow/events/public?per_page=1');
-      const events = await res.json();
-      if (events.length) {
-        const date = new Date(events[0].created_at);
-        const ago = Math.floor((Date.now() - date) / 3600000);
-        el.innerHTML = `<span class="dot"></span> Active ${ago < 1 ? 'just now' : ago < 24 ? ago+'h ago' : Math.floor(ago/24)+'d ago'} on GitHub`;
+  (async function(){
+    var el=document.getElementById('gh-status');if(!el)return;
+    try{
+      var res=await fetch('https://api.github.com/users/XCmiaow/events/public?per_page=1');
+      var events=await res.json();
+      if(events.length){
+        var date=new Date(events[0].created_at),ago=Math.floor((Date.now()-date)/3600000);
+        el.innerHTML='<span class="dot"></span> Active '+(ago<1?'just now':ago<24?ago+'h ago':Math.floor(ago/24)+'d ago')+' on GitHub';
       }
-    } catch(e) { el.textContent = 'Active on GitHub'; el.classList.remove('loading'); }
+    }catch(e){el.textContent='Active on GitHub'}
+    finally{el.classList.remove('loading')}
   })();
 </script>
