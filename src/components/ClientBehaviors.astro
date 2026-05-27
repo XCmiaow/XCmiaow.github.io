@@ -1,0 +1,58 @@
+<!-- Bundles all client-side behaviors: progress bar, ripple, theme, lang switch, mobile nav -->
+<div id="progress-bar"></div>
+
+<script>
+  (function() {
+    // ── Progress bar ──
+    (function(){
+      var b=document.getElementById('progress-bar');if(!b)return;var w=0,p,loaded=false;
+      function step(){w+=(100-w)*0.08;b.style.width=w+'%';if(w>99){b.style.width='100%';clearInterval(p);setTimeout(function(){b.style.width='0'},400)}}
+      p=setInterval(step,100);
+      window.addEventListener('load',function(){if(!loaded){loaded=true;clearInterval(p);b.style.width='100%';setTimeout(function(){b.style.width='0'},400)}})
+    })();
+
+    // ── Ripple effect ──
+    document.addEventListener('click',function(e){
+      var t=e.target.closest('.card,.btn,.tl-card,.skill-card li,.filter-btn,.cert-card');if(!t)return;
+      var r=document.createElement('span'),b=t.getBoundingClientRect(),s=Math.max(b.width,b.height);
+      r.style.cssText='position:absolute;width:'+s+'px;height:'+s+'px;left:'+(e.clientX-b.left-s/2)+'px;top:'+(e.clientY-b.top-s/2)+'px;border-radius:50%;background:rgba(201,162,39,0.15);animation:ripple-anim .6s ease-out forwards';
+      var w=document.createElement('span');w.style.cssText='position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:inherit;z-index:0';
+      if(!t.style.position||t.style.position==='static')t.style.position='relative';w.appendChild(r);t.appendChild(w);setTimeout(function(){w.remove()},600)
+    });
+
+    // ── Theme toggle ──
+    (function(){
+      var toggle=document.getElementById('themeToggle'),root=document.documentElement;
+      if(localStorage.getItem('resume-theme')==='dark')root.setAttribute('data-theme','dark');
+      toggle&&toggle.addEventListener('click',function(){
+        var d=root.getAttribute('data-theme')==='dark';
+        root.setAttribute('data-theme',d?null:'dark');
+        localStorage.setItem('resume-theme',d?'light':'dark')
+      })
+    })();
+
+    // ── Language switch + anchor preservation ──
+    document.querySelectorAll('.lang-switch a').forEach(function(el){
+      el.addEventListener('click',function(){
+        var h=window.location.hash;if(h&&h.length>1){var parts=el.href.split('#');el.href=parts[0]+h}
+        localStorage.setItem('resume-lang',el.dataset.lang)
+      })
+    });
+
+    // ── Mobile navigation ──
+    (function(){
+      var menu=document.getElementById('menuToggle'),nav=document.getElementById('navLinks');
+      menu&&nav&&menu.addEventListener('click',function(){
+        var open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open?'true':'false')
+      });
+      nav&&nav.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click',function(){nav.classList.remove('open');menu&&menu.setAttribute('aria-expanded','false')})
+      })
+    })();
+  })();
+</script>
+
+<style>
+  #progress-bar{position:fixed;top:0;left:0;height:3px;z-index:9998;background:linear-gradient(90deg,var(--accent,#c9a227),var(--green,#2f6f5e));width:0;transition:width 0.3s ease}
+  @keyframes ripple-anim{to{transform:scale(2);opacity:0}}
+</style>
