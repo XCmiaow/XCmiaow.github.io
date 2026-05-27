@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../components/CompetitionTimeline.astro';
 import ParticlesBackground from '../components/ParticlesBackground.astro';
+import CursorGlow from '../components/CursorGlow.astro';
 import resume from '../data/resume.json';
 
 const p = resume.person;
@@ -90,6 +91,8 @@ const edu = resume.education;
   <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span><span class="gh-status loading" id="gh-status"></span></div></div>
 </div></section>
 
+<CursorGlow />
+
 </BaseLayout>
 
 <style>
@@ -149,6 +152,20 @@ const edu = resume.education;
   .gh-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #55d65a; display: inline-block; }
   .gh-status.loading .dot { animation: pulse 1.5s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* Parallax depth layers */
+  .parallax-layer { transition: transform 0.3s ease-out; }
+  .parallax-1 { transform: translateZ(0); }
+  .parallax-2 { transform: translateZ(20px); }
+  .parallax-3 { transform: translateZ(40px); }
+  .parallax-scene { perspective: 600px; }
+
+  /* Progress Bar */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 3px; z-index: 9998;
+    background: linear-gradient(90deg, var(--accent, #c9a227), var(--green, #2f6f5e));
+    width: 0; transition: width 0.3s ease;
+  }
 </style>
 
 <script>

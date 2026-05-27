@@ -82,12 +82,16 @@ const levelColors: Record<string, string> = {
     });
   });
 
-  // scroll reveal
+  // scroll reveal with sequential lighting
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
+    entries.forEach((entry, idx) => {
+      if (entry.isIntersecting) {
+        const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
+        setTimeout(() => entry.target.classList.add('visible', 'lit'), delay);
+        observer.unobserve(entry.target);
+      }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.3, rootMargin: '0px 0px -60px 0px' });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
@@ -154,6 +158,9 @@ const levelColors: Record<string, string> = {
   .tl-details b { color: var(--primary); }
 
   .tl-soon { display: inline-block; margin-top: 8px; font-size: 11px; color: #aaa; font-style: italic; }
+
+  .tl-item.lit .tl-dot { box-shadow: 0 0 12px 3px var(--level-color, var(--accent)); }
+  .tl-item.lit .tl-card { border-color: rgba(201,162,39,0.25); }
 
   @media (max-width: 640px) {
     .timeline-track { padding-left: 20px; }

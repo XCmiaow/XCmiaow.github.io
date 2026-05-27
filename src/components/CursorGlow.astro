@@ -1,0 +1,40 @@
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<script>
+  (() => {
+    const glow = document.getElementById('cursor-glow');
+    if (!glow) return;
+    let mx = -200, my = -200, cx = -200, cy = -200;
+
+    document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+    document.addEventListener('mouseleave', () => { mx = -200; my = -200; });
+
+    function animate() {
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+      glow.style.transform = `translate(${cx - 150}px, ${cy - 150}px)`;
+
+      // Check if hovering over interactive elements
+      const el = document.elementFromPoint(mx, my);
+      const isLink = el?.closest('a, button, .tl-card, .project-card, .skill-card, .highlight');
+      glow.style.width = isLink ? '400px' : '300px';
+      glow.style.height = isLink ? '400px' : '300px';
+      glow.style.opacity = isLink ? '0.12' : '0.06';
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+</script>
+
+<style>
+  #cursor-glow {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, var(--accent, #c9a227) 0%, transparent 70%);
+    mix-blend-mode: screen; opacity: 0.06;
+    transition: width 0.3s, height 0.3s, opacity 0.3s;
+    will-change: transform;
+  }
+  [data-theme="dark"] #cursor-glow { mix-blend-mode: lighten; }
+</style>

@@ -24,9 +24,15 @@ const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replac
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="theme-color" content="#102a43" />
+  <link rel="manifest" href="/manifest.json" />
   <ViewTransitions />
+  <script>
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
+  </script>
 </head>
 <body>
+  <div id="progress-bar"></div>
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href={`${basePath}/`} aria-label={isZh ? '回到首页' : 'Home'}>
@@ -68,6 +74,9 @@ const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replac
   </footer>
 
   <script>
+    // Progress bar
+    (() => { const bar = document.getElementById('progress-bar'); if (!bar) return; let w = 0; const iv = setInterval(() => { w += (100 - w) * 0.08; bar.style.width = w + '%'; if (w > 99) { bar.style.width = '100%'; clearInterval(iv); setTimeout(() => { bar.style.width = '0'; }, 400); } }, 100); window.addEventListener('load', () => { bar.style.width = '100%'; setTimeout(() => { bar.style.width = '0'; }, 400); }); })();
+
     const toggle = document.getElementById('themeToggle');
     const root = document.documentElement;
     if (localStorage.getItem('resume-theme') === 'dark') root.setAttribute('data-theme', 'dark');
@@ -112,4 +121,5 @@ const page = Astro.url.pathname.replace(/\/$/, '').replace(/^\/en\//, '').replac
   .lang-switch a:hover { color: var(--primary); }
   .lang-switch a.active { color: var(--primary); background: var(--accent-soft); }
   .lang-switch .sep { color: var(--line); }
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; z-index: 9998; background: linear-gradient(90deg, var(--accent, #c9a227), var(--green, #2f6f5e)); width: 0; transition: width 0.3s ease; }
 </style>

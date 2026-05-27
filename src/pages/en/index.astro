@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
 import ParticlesBackground from '../../components/ParticlesBackground.astro';
+import CursorGlow from '../../components/CursorGlow.astro';
 import resume from '../../data/resume.json';
 
 const p = resume.person;
@@ -93,6 +94,8 @@ const edu = resume.education;
   <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
   <div class="contact-list"><span>Phone: {p.phone}</span><span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span><span>GitHub: <a href={`https://${p.github}`}>{p.github}</a></span><span>Location: {p.location}</span><span class="gh-status loading" id="gh-status"></span></div></div>
 </div></section>
+
+<CursorGlow />
 
 </BaseLayout>
 
