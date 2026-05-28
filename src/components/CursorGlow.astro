@@ -4,14 +4,15 @@
   (function() {
     var glow = document.getElementById('cursor-glow');
     if (!glow) return;
-    var mx = -200, my = -200;
+    var mx = -200, my = -200, cx = -200, cy = -200;
 
     document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
-    document.addEventListener('mouseleave', function() { glow.style.opacity = '0'; });
-    document.addEventListener('mouseenter', function() { glow.style.opacity = '1'; });
+    document.addEventListener('mouseleave', function() { mx = -200; my = -200; });
 
     function animate() {
-      glow.style.transform = 'translate(' + (mx - 120) + 'px,' + (my - 120) + 'px)';
+      cx += (mx - cx) * 0.08;
+      cy += (my - cy) * 0.08;
+      glow.style.transform = 'translate(' + (cx - 80) + 'px,' + (cy - 80) + 'px)';
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
@@ -21,13 +22,12 @@
 <style>
   #cursor-glow {
     position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2147483647;
-    width: 240px; height: 240px; border-radius: 50%;
-    box-shadow: 0 0 60px 20px rgba(201,162,39,0.08), 0 0 120px 40px rgba(201,162,39,0.04);
-    transition: width 0.25s, height 0.25s;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(201,162,39,0.06) 0%, rgba(201,162,39,0.02) 40%, transparent 70%);
     will-change: transform;
   }
   [data-theme="dark"] #cursor-glow {
-    box-shadow: 0 0 60px 20px rgba(224,189,78,0.1), 0 0 120px 40px rgba(224,189,78,0.05);
+    background: radial-gradient(circle at center, rgba(224,189,78,0.08) 0%, rgba(224,189,78,0.03) 40%, transparent 70%);
   }
   @media (max-width: 980px) { #cursor-glow { display: none !important; } }
 </style>
