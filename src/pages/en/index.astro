@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
 import ParticlesBackground from '../../components/ParticlesBackground.astro';
-import CursorGlow from '../../components/CursorGlow.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import Card from '../../components/Card.astro';
 import en from '../../data/en.json';
@@ -111,8 +110,6 @@ const c = common;
   <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
   <div class="contact-list"><span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span>GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span><span>School: Nanjing Forestry University</span></div></div>
 </div></section>
-
-<CursorGlow />
 
 </BaseLayout>
 

@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../components/CompetitionTimeline.astro';
 import ParticlesBackground from '../components/ParticlesBackground.astro';
-import CursorGlow from '../components/CursorGlow.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Card from '../components/Card.astro';
 import zh from '../data/zh.json';
@@ -107,8 +106,6 @@ const c = common;
   <div class="contact-card" data-animate><div><h2>联系与展示</h2><p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p></div>
   <div class="contact-list"><span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span>GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span><span>School: {edu.school}</span></div></div>
 </div></section>
-
-<CursorGlow />
 
 </BaseLayout>
 

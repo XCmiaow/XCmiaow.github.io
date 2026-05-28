@@ -1,35 +1,36 @@
 <div id="cursor-glow" aria-hidden="true"></div>
 
 <script>
-  (() => {
-    const glow = document.getElementById('cursor-glow');
+  (function() {
+    var glow = document.getElementById('cursor-glow');
     if (!glow) return;
-    let mx = -200, my = -200, cx = -200, cy = -200;
+    var mx = -200, my = -200;
 
-    document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
-    document.addEventListener('mouseleave', () => { mx = -200; my = -200; });
+    document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+    document.addEventListener('mouseleave', function() { mx = -200; my = -200; });
 
     function animate() {
-      cx += (mx - cx) * 0.12;
-      cy += (my - cy) * 0.12;
-      glow.style.transform = `translate(${cx - 150}px, ${cy - 150}px)`;
+      var cx = mx, cy = my;
+      glow.style.transform = 'translate(' + (cx - 150) + 'px,' + (cy - 150) + 'px)';
 
-      // Check if hovering over interactive elements
-      const el = document.elementFromPoint(mx, my);
-      const isLink = el?.closest('a, button, .tl-card, .project-card, .skill-card, .highlight');
-      glow.style.width = isLink ? '400px' : '300px';
-      glow.style.height = isLink ? '400px' : '300px';
+      try {
+        var el = document.elementFromPoint(cx, cy);
+        if (el && el.closest) {
+          var isLink = el.closest('a,button,.tl-card,.project-card,.skill-card,.highlight');
+          glow.style.width = isLink ? '400px' : '300px';
+          glow.style.height = isLink ? '400px' : '300px';
+        }
+      } catch(e) { /* elementFromPoint may fail in some contexts */ }
 
       requestAnimationFrame(animate);
     }
-    const id = animate();
-    document.addEventListener('astro:after-swap', () => cancelAnimationFrame(id));
+    requestAnimationFrame(animate);
   })();
 </script>
 
 <style>
   #cursor-glow {
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2147483647;
     width: 300px; height: 300px; border-radius: 50%;
     background: radial-gradient(circle, rgba(201,162,39,0.12) 0%, transparent 70%);
     transition: width 0.3s, height 0.3s;
@@ -38,4 +39,5 @@
   [data-theme="dark"] #cursor-glow {
     background: radial-gradient(circle, rgba(224,189,78,0.15) 0%, transparent 70%);
   }
+  @media (max-width: 980px) { #cursor-glow { display: none !important; } }
 </style>
