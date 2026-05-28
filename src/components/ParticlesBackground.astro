@@ -1,82 +1,82 @@
 <canvas id="particles-bg" aria-hidden="true"></canvas>
 
 <script>
-  (() => {
-    const canvas = document.getElementById('particles-bg');
+  (function() {
+    var canvas = document.getElementById('particles-bg');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let W, H, particles = [];
-    let mouse = { x: -1000, y: -1000 };
-    let animId, trail = [];
-    const MAX_PARTICLES = 40;
-
-    const hero = canvas.closest('section');
-    if (!hero) return;
+    var W, H, particles = [], trail = [];
+    var mouse = { x: -1000, y: -1000 };
+    var animId;
 
     function resize() {
-      const r = hero.getBoundingClientRect();
-      W = r.width; H = r.height;
-      canvas.width = W * 2; canvas.height = H * 2;
-      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-      ctx.setTransform(2, 0, 0, 2, 0, 0); // reset + scale, avoids accumulation
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * 2;
+      canvas.height = H * 2;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(2, 0, 0, 2, 0, 0);
       init();
     }
 
     function init() {
       particles = [];
-      const count = Math.min(Math.floor((W * H) / 15000), MAX_PARTICLES);
-      for (let i = 0; i < count; i++) {
+      var count = Math.min(Math.floor((W * H) / 20000), 50);
+      for (var i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * W, y: Math.random() * H,
           r: Math.random() * 1.5 + 0.5,
-          vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
         });
       }
     }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const color = isDark ? '255,255,255' : '16,42,67';
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '255,255,255' : '16,42,67';
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
         if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${color},0.4)`; ctx.fill();
+        ctx.fillStyle = 'rgba(' + color + ',0.35)';
+        ctx.fill();
 
-        // constellation connections — brighter near mouse
-        for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
-          const q = particles[j];
-          const dx = p.x - q.x, dy = p.y - q.y, dist = Math.hypot(dx, dy);
+        // connections — brighter near mouse (constellation effect)
+        for (var j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+          var q = particles[j];
+          var dx = p.x - q.x, dy = p.y - q.y, dist = Math.hypot(dx, dy);
           if (dist < 120) {
-            // mouse proximity boost
-            const mBoost = Math.max(0, 1 - (Math.hypot((p.x+q.x)/2 - mouse.x, (p.y+q.y)/2 - mouse.y) / 200));
-            const alpha = (1 - dist / 120) * (0.06 + mBoost * 0.2);
+            var mx = (p.x + q.x) / 2 - mouse.x, my = (p.y + q.y) / 2 - mouse.y;
+            var mBoost = Math.max(0, 1 - Math.hypot(mx, my) / 200);
+            var alpha = (1 - dist / 120) * (0.06 + mBoost * 0.25);
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = `rgba(${color},${alpha})`;
+            ctx.strokeStyle = 'rgba(' + color + ',' + alpha + ')';
             ctx.lineWidth = mBoost > 0.5 ? 1.2 : 0.5;
-            ctx.shadowColor = mBoost > 0.5 ? `rgba(201,162,39,${mBoost * 0.3})` : 'transparent';
-            ctx.shadowBlur = mBoost > 0.5 ? 6 : 0;
+            if (mBoost > 0.5) { ctx.shadowColor = 'rgba(201,162,39,' + (mBoost * 0.3) + ')'; ctx.shadowBlur = 6; }
             ctx.stroke();
             ctx.shadowBlur = 0;
           }
         }
 
-        // mouse interaction
-        const dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        // mouse connection
+        var dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
         if (dm < 150) {
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(${color},${(1 - dm / 150) * 0.12})`;
+          ctx.strokeStyle = 'rgba(' + color + ',' + ((1 - dm / 150) * 0.1) + ')';
           ctx.lineWidth = 0.5 + (1 - dm / 150) * 1;
           ctx.stroke();
         }
       }
-      // draw mouse trail
+
+      // mouse trail
       for (var t = trail.length - 1; t >= 0; t--) {
         var tp = trail[t];
         tp.x += (mouse.x - tp.x) * 0.08;
@@ -94,28 +94,25 @@
 
     resize(); draw();
 
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resize, 200);
-    });
-    hero.addEventListener('mousemove', (e) => {
-      const r = hero.getBoundingClientRect();
-      mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+    var resizeTimer;
+    window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 200); });
+
+    // Global mouse tracking (entire page)
+    document.addEventListener('mousemove', function(e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
       trail.push({ x: mouse.x, y: mouse.y, r: 3 + Math.random() * 2, alpha: 1 });
       if (trail.length > 20) trail.shift();
     });
-    hero.addEventListener('mouseleave', () => { mouse = { x: -1000, y: -1000 }; });
+    document.addEventListener('mouseleave', function() { mouse.x = -1000; mouse.y = -1000; });
 
-    // Cleanup on Astro page transitions
-    document.addEventListener('astro:after-swap', () => {
-      if (animId) cancelAnimationFrame(animId);
-    });
+    document.addEventListener('astro:after-swap', function() { if (animId) cancelAnimationFrame(animId); });
   })();
 </script>
 
 <style>
-  #particles-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-  section:has(#particles-bg) { position: relative; overflow: hidden; }
-  section:has(#particles-bg) > .container { position: relative; z-index: 1; }
+  #particles-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 0;
+  }
 </style>
