@@ -19,7 +19,6 @@
       const isLink = el?.closest('a, button, .tl-card, .project-card, .skill-card, .highlight');
       glow.style.width = isLink ? '400px' : '300px';
       glow.style.height = isLink ? '400px' : '300px';
-      glow.style.opacity = isLink ? '0.12' : '0.06';
 
       requestAnimationFrame(animate);
     }
@@ -32,10 +31,11 @@
   #cursor-glow {
     position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
     width: 300px; height: 300px; border-radius: 50%;
-    background: radial-gradient(circle, var(--accent, #c9a227) 0%, transparent 70%);
-    mix-blend-mode: screen; opacity: 0.06;
-    transition: width 0.3s, height 0.3s, opacity 0.3s;
+    background: radial-gradient(circle, rgba(201,162,39,0.12) 0%, transparent 70%);
+    transition: width 0.3s, height 0.3s;
     will-change: transform;
   }
-  [data-theme="dark"] #cursor-glow { mix-blend-mode: lighten; }
+  [data-theme="dark"] #cursor-glow {
+    background: radial-gradient(circle, rgba(224,189,78,0.15) 0%, transparent 70%);
+  }
 </style>
