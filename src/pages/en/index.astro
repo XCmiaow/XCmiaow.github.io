@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
-import ParticlesBackground from '../../components/ParticlesBackground.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import Card from '../../components/Card.astro';
 import en from '../../data/en.json';
@@ -15,7 +14,6 @@ const c = common;
 <BaseLayout title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${c.education.gpa}, ranked ${c.education.rankClass}st in class and ${c.education.rankMajor}nd in major.`} lang="en">
 
 <section class="hero">
-  <ParticlesBackground />
   <div class="container hero-grid">
     <div class="parallax-layer" data-speed="0.15">
       <h1 data-animate>{p.name}</h1>

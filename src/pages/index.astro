@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../components/CompetitionTimeline.astro';
-import ParticlesBackground from '../components/ParticlesBackground.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Card from '../components/Card.astro';
 import zh from '../data/zh.json';
@@ -15,7 +14,6 @@ const c = common;
 <BaseLayout title={`${p.name} | 林产化工本科生 | 数学建模与 AI 工具链`} description={`${p.name}，南京林业大学化学工程学院林产化工专业本科生，GPA ${c.education.gpa}，班级第${c.education.rankClass}，专业第${c.education.rankMajor}。`} lang="zh">
 
 <section class="hero">
-  <ParticlesBackground />
   <div class="container hero-grid">
     <div class="parallax-layer" data-speed="0.15">
       <h1 data-animate>{p.name}</h1>
