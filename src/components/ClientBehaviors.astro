@@ -32,6 +32,16 @@
       })
     })();
 
+    // ── Layout toggle (academic / minimal) ──
+    (function(){
+      var btn=document.getElementById('layoutToggle'),root=document.documentElement;
+      if(localStorage.getItem('resume-layout')==='minimal')root.classList.add('minimal-mode');
+      btn&&btn.addEventListener('click',function(){
+        root.classList.toggle('minimal-mode');
+        localStorage.setItem('resume-layout',root.classList.contains('minimal-mode')?'minimal':'academic')
+      })
+    })();
+
     // ── Language switch + anchor preservation ──
     document.querySelectorAll('.lang-switch a').forEach(function(el){
       el.addEventListener('click',function(){

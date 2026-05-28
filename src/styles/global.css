@@ -29,6 +29,22 @@
   --shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
 }
 
+/* ── Minimal mode override ── */
+html.minimal-mode { --radius: 0px; }
+html.minimal-mode #particles-bg, html.minimal-mode #cursor-glow, html.minimal-mode .parallax-layer { display: none !important; }
+html.minimal-mode .portrait-card .profile-photo { animation: none !important; }
+html.minimal-mode .project-card { animation: none !important; }
+html.minimal-mode .card, html.minimal-mode .btn { box-shadow: none !important; border-color: var(--ink) !important; }
+html.minimal-mode .card:hover, html.minimal-mode .btn:hover { transform: none !important; box-shadow: none !important; }
+html.minimal-mode [data-animate] { opacity: 1 !important; transform: none !important; }
+html.minimal-mode .hero h1 { border-right: none !important; }
+html.minimal-mode .school { background: var(--primary) !important; }
+html.minimal-mode .contact-card { background: var(--primary) !important; border-radius: 0 !important; }
+html.minimal-mode .brand-mark { border-radius: 0 !important; }
+html.minimal-mode * { transition: none !important; animation: none !important; }
+html.minimal-mode a, html.minimal-mode button { cursor: default; }
+html.minimal-mode .skeleton-screen { display: none !important; }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 

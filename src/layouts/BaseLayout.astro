@@ -12,6 +12,7 @@ const { title, description = '', lang } = Astro.props;
 const isZh = lang === 'zh';
 const basePath = isZh ? '' : '/en';
 const labels = i18n.nav[lang];
+const buildDate = new Date().toLocaleDateString(isZh ? 'zh-CN' : 'en-US', { year:'numeric', month:'long', day:'numeric' });
 const pathWithoutLocale = Astro.url.pathname
   .replace(/^\/en(?:\/|$)/, '/')
   .replace(/\/+$/, '');
@@ -69,6 +70,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
           <span class="sep">|</span>
           <a href={enUrl} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
         </div>
+        <button class="icon-btn" id="layoutToggle" type="button" aria-label={isZh ? '切换极简模式' : 'Toggle minimal mode'} title={isZh ? '极简模式' : 'Minimal'}>⬜</button>
         <button class="icon-btn" id="themeToggle" type="button" aria-label={isZh ? '切换暗色模式' : 'Toggle dark mode'}>🌓</button>
         <button class="icon-btn menu-btn" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}>☰</button>
         <a class="btn" href={`${basePath}/resume-onepage`}>{labels.onepage}</a>
@@ -81,7 +83,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <main id="main" tabindex="-1"><slot /></main>
 
   <footer role="contentinfo">
-    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a href="/admin/" class="footer-admin" aria-label="Content manager">{isZh ? '管理' : 'Admin'}</a></div>
+    <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'} {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a href="/admin/" class="footer-admin" aria-label="Content manager">{isZh ? '管理' : 'Admin'}</a></div>
   </footer>
 
 </body>

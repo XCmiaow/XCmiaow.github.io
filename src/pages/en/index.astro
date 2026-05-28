@@ -5,7 +5,6 @@ import ParticlesBackground from '../../components/ParticlesBackground.astro';
 import CursorGlow from '../../components/CursorGlow.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import Card from '../../components/Card.astro';
-import SkillTree from '../../components/SkillTree.astro';
 import en from '../../data/en.json';
 import common from '../../data/common.json';
 
@@ -99,10 +98,6 @@ const c = common;
   <div class="grid-4">
     {en.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
   </div>
-</div></section>
-
-<section id="skill-tree"><div class="container" style="text-align:center">
-  <SkillTree lang="en" />
 </div></section>
 
 <section id="projects"><div class="container">

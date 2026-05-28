@@ -4,7 +4,7 @@
   "description": "Xujie Fang - Personal Academic Resume Website (Astro)",
   "type": "module",
   "scripts": {
-    "prebuild": "node scripts/generate-site-css.mjs",
+    "prebuild": "node scripts/generate-site-css.mjs && node scripts/generate-build-meta.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
