@@ -4,6 +4,15 @@
 
 <script>
   (function() {
+    // ── External link security ──
+    document.querySelectorAll('a[href*="//"]:not([href*="' + location.host + '"])').forEach(function(el){
+      if(!el.getAttribute('target'))el.setAttribute('target','_blank');
+      el.setAttribute('rel','noopener noreferrer')
+    });
+
+    // ── Console greeting ──
+    console.log('%c 方绪杰 · Xujie Fang %c https://XCmiaow.github.io ', 'background:#102a43;color:#c9a227;font-size:14px;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px', 'background:#c9a227;color:#102a43;font-size:14px;padding:4px 8px;border-radius:0 4px 4px 0');
+
     // ── Progress bar ──
     (function(){
       var b=document.getElementById('progress-bar');if(!b)return;var w=0,p,loaded=false;
@@ -61,12 +70,16 @@
       })
     })();
 
-    // ── Scroll progress bar ──
+    // ── Scroll progress bar (smooth) ──
     (function(){
       var sb=document.getElementById('scroll-bar');if(!sb)return;
+      var ticking=false;
       window.addEventListener('scroll',function(){
-        var h=document.documentElement.scrollHeight-window.innerHeight;
-        sb.style.height=(h>0?(window.scrollY/h)*100:0)+'%'
+        if(!ticking){requestAnimationFrame(function(){
+          var h=document.documentElement.scrollHeight-window.innerHeight;
+          sb.style.height=(h>0?(window.scrollY/h)*100:0)+'%';
+          ticking=false
+        });ticking=true}
       })
     })();
 

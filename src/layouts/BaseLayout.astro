@@ -31,6 +31,12 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="theme-color" content="#102a43" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://XCmiaow.github.io/assets/avatar.jpg" />
+  <meta property="og:url" content={`https://XCmiaow.github.io${Astro.url.pathname}`} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="a4ca01a5-020c-41c7-946c-7bd2a29fa5b3"></script>
   <link rel="stylesheet" href="/styles/site.css" />
   <link rel="manifest" href="/manifest.json" />
