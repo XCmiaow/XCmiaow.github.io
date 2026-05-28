@@ -1,15 +1,14 @@
-<!-- 
-  方绪杰 · GitHub Profile README
-  把这个文件的内容放到 XCmiaow/XCmiaow 仓库的 README.md
--->
-
 <h1 align="center">
   <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&pause=1000&color=C9A227&center=true&vCenter=true&width=435&lines=方绪杰+%C2%B7+Xujie+Fang;NJFU+%C2%B7+%E6%9E%97%E4%BA%A7%E5%8C%96%E5%B7%A5;Math+Modeling+%C2%B7+AI+for+Chemistry" alt="Typing SVG" />
 </h1>
 
 <p align="center">
   <b>南京林业大学 · 化学工程学院 · 林产化工专业</b><br/>
-  <em>GPA 3.60 · 班级第1 · 专业第2 | CUMCM 省一 · MCM/ICM H奖×2</em>
+  <em>CUMCM 省一 · MCM/ICM H奖×2 · AI for Chemistry</em>
+</p>
+
+<p align="center">
+  <em>不驰于空想，不骛于虚声</em>
 </p>
 
 <p align="center">
@@ -19,17 +18,24 @@
   <img src="https://visitor-badge.laobi.icu/badge?page_id=XCmiaow.XCmiaow&style=flat-square" alt="visitors" />
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/-PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white"/>
+  <img src="https://img.shields.io/badge/-Astro-FF5A03?style=flat-square&logo=astro&logoColor=white"/>
+  <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/-LaTeX-008080?style=flat-square&logo=latex&logoColor=white"/>
+  <img src="https://img.shields.io/badge/-RDKit-00A859?style=flat-square&logo=python&logoColor=white"/>
+</p>
+
 ---
 
-### 🧪 研究兴趣
+### 🧪 研究方向
 
 **AI 辅助有机合成 · 计算化学 · 图神经网络 · LLM + Agent Workflow**
 
-我对有机合成方法学有持续的学术兴趣，同时关注 AI 在化学中的应用。目前在学习深度学习基础与图神经网络在分子表示中的应用。
-
 ---
 
-### 🏆 目前取得的
+### 🏆 获奖
 
 | 级别 | 奖项 | 年份 |
 |------|------|------|
@@ -49,21 +55,19 @@
     <td width="50%">
       <h3>📄 <a href="https://github.com/XCmiaow/XCmiaow.github.io">XCmiaow.github.io</a></h3>
       <p>中英双语个人学术简历网站 · Astro 构建</p>
-      <p>组件化 · 数据驱动 · PWA · CI/CD · TypeScript</p>
-      <p><img src="https://img.shields.io/github/stars/XCmiaow/XCmiaow.github.io?style=flat-square" /></p>
+      <p>TypeScript · CSS · PWA · CI/CD</p>
     </td>
     <td width="50%">
       <h3>🧪 <a href="https://github.com/XCmiaow/chem-ai-lab">ChemAI Lab</a></h3>
       <p>机器学习与量子化学驱动的化学研究平台</p>
-      <p>RDKit · PyTorch · Lightning · 16 子模块</p>
-      <p><img src="https://img.shields.io/github/stars/XCmiaow/chem-ai-lab?style=flat-square" /></p>
+      <p>PyTorch · RDKit · Lightning · 16 子模块</p>
     </td>
   </tr>
 </table>
 
 ---
 
-### 📊 数据
+### 📊 统计
 
 <p align="center">
   <img height="165" src="https://github-readme-stats.vercel.app/api?username=XCmiaow&show_icons=true&theme=graywhite&hide_border=true&bg_color=00000000&text_color=657385&title_color=102a43&icon_color=c9a227" />
@@ -72,6 +76,17 @@
 
 ---
 
+### 🌐 社交
+
+<p align="center">
+  <a href="https://github.com/XCmiaow"><img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white"/></a>
+  <a href="https://XCmiaow.github.io">🌐 简历网站</a>
+  ·
+  <a href="mailto:2332797170@njfu.edu.cn">📧 Email</a>
+</p>
+
+---
+
 <div align="center">
-  <sub>✨ <a href="https://XCmiaow.github.io">XCmiaow.github.io</a> · 最后更新于 2026 年 5 月</sub>
+  <sub><a href="https://XCmiaow.github.io">XCmiaow.github.io</a></sub>
 </div>

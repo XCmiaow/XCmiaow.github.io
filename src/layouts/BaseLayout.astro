@@ -44,7 +44,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
     <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>
     <div class="sk-hero"><div class="sk-circle"></div><div class="sk-block"><div class="sk-line w-60"></div><div class="sk-line w-80"></div><div class="sk-line w-40"></div></div></div>
   </div>
-  <script>window.addEventListener('load',function(){var s=document.getElementById('skeleton');if(s)s.style.opacity='0';setTimeout(function(){if(s)s.remove()},300)})</script>
+  <script>!function(){var s=document.getElementById('skeleton');function hide(){if(!s)return;s.style.opacity='0';setTimeout(function(){s&&s.remove()},300)}window.addEventListener('load',hide);setTimeout(hide,3000)}()</script>
 
   <a href="#main" class="skip-link">{isZh ? '跳到主要内容' : 'Skip to content'}</a>
   <header class="site-header">
@@ -90,7 +90,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
 </html>
 
 <style>
-  .site-header{position:sticky;top:0;z-index:20;background:rgba(247,245,239,0.82);border-bottom:1px solid rgba(226,231,238,0.85);backdrop-filter:blur(18px)}
+  .site-header{position:sticky;top:0;z-index:20;background:rgba(247,245,239,0.82);border-bottom:1px solid rgba(226,231,238,0.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
   [data-theme="dark"] .site-header{background:rgba(15,23,32,0.84);border-bottom-color:rgba(42,58,75,0.9)}
   .nav{display:flex;align-items:center;justify-content:space-between;min-height:70px;gap:24px}
   .brand{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--primary);white-space:nowrap}
