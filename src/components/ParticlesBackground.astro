@@ -10,7 +10,6 @@
     var W, H, particles = [], trail = [];
     var mouse = { x: -1000, y: -1000 };
     var animId, globalTime = 0;
-    var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
     function resize() {
       W = window.innerWidth;
@@ -25,27 +24,27 @@
 
     function init() {
       particles = [];
-      var count = Math.min(Math.floor((W * H) / 16000), 35);
+      var count = Math.min(Math.floor((W * H) / 15000), 32);
       for (var i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * W, y: Math.random() * H,
-          r: 1.2 + Math.random() * 2,
-          vx: (Math.random() - 0.5) * 0.06,
-          vy: (Math.random() - 0.5) * 0.06,
+          r: 1.5 + Math.random() * 2.5,
+          vx: (Math.random() - 0.5) * 0.04,
+          vy: (Math.random() - 0.5) * 0.04,
           phase: Math.random() * Math.PI * 2,
-          speed: 0.015 + Math.random() * 0.025,
+          speed: 0.012 + Math.random() * 0.02,
+          bright: 0.5 + Math.random() * 0.5,
         });
       }
     }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      globalTime += 0.008;
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      // Mystical purple-indigo palette
-      var starCore = isDark ? '200,190,255' : '80,70,150';
-      var starGlow = isDark ? '160,140,220' : '60,50,120';
-      var lineColor = isDark ? '140,120,200' : '50,40,100';
+      globalTime += 0.01;
+
+      // Gold color palette
+      var gR = '255', gG = '220', gB = '150';        // warm gold core
+      var glowR = '255', glowG = '200', glowB = '100'; // golden glow
 
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
@@ -53,43 +52,46 @@
         if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
         if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
 
-        // Twinkle
         p.phase += p.speed;
-        var twinkle = 0.5 + Math.sin(p.phase) * 0.4;
-        var alpha = 0.3 + twinkle * 0.4;
+        var twinkle = 0.5 + Math.sin(p.phase) * 0.35 + Math.cos(p.phase * 0.5) * 0.15;
+        var alpha = Math.min(1, (0.4 + twinkle * 0.5) * p.bright);
 
-        // Star glow
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + starGlow + ',' + (alpha * 0.1) + ')';
+        // Large golden glow
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + glowR + ',' + glowG + ',' + glowB + ',' + (alpha * 0.12) + ')';
         ctx.fill();
 
-        // Star core
+        // Medium glow
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + gR + ',' + gG + ',' + gB + ',' + (alpha * 0.25) + ')';
+        ctx.fill();
+
+        // Bright core
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + starCore + ',' + alpha + ')';
+        ctx.fillStyle = 'rgba(' + gR + ',' + gG + ',' + gB + ',' + alpha + ')';
         ctx.fill();
 
-        // Constellation connections — mystical, always visible, pulsing
-        for (var j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+        // Constellation connections — clearly visible
+        for (var j = i + 1; j < Math.min(i + 6, particles.length); j++) {
           var q = particles[j];
           var dx = p.x - q.x, dy = p.y - q.y, dist = Math.hypot(dx, dy);
-          if (dist < 150) {
-            // Mystical pulse: connection strength oscillates slowly
-            var pulse = 0.7 + Math.sin(globalTime * 2 + i * 0.5 + j * 0.3) * 0.3;
-            var baseAlpha = (1 - dist / 150) * 0.15 * pulse;
-            var mBoost = 0;
-            if (!isTouch) {
-              var mx = (p.x + q.x) / 2 - mouse.x, my = (p.y + q.y) / 2 - mouse.y;
-              mBoost = Math.max(0, 1 - Math.hypot(mx, my) / 200) * 0.3;
-            }
-            var connAlpha = baseAlpha + mBoost;
+          if (dist < 200) {
+            // Base visibility: decays with distance
+            var baseAlpha = (1 - dist / 200) * 0.25;
+            // Slow pulse
+            var pulse = 0.7 + Math.sin(globalTime * 1.5 + i + j) * 0.3;
+            // Mouse boost
+            var mx = (p.x + q.x) / 2 - mouse.x, my = (p.y + q.y) / 2 - mouse.y;
+            var mBoost = Math.max(0, 1 - Math.hypot(mx, my) / 250) * 0.3;
+            var connAlpha = (baseAlpha + mBoost) * pulse;
+
             if (connAlpha > 0.04) {
               ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-              ctx.strokeStyle = 'rgba(' + lineColor + ',' + connAlpha + ')';
-              ctx.lineWidth = 0.6 + mBoost * 1.5 + pulse * 0.3;
-              // Glow effect on brighter lines
-              if (connAlpha > 0.12) {
-                ctx.shadowColor = 'rgba(130,110,200,' + (connAlpha * 0.4) + ')';
-                ctx.shadowBlur = 4 + connAlpha * 10;
+              ctx.strokeStyle = 'rgba(255,200,100,' + connAlpha + ')';
+              ctx.lineWidth = 0.8 + mBoost * 2;
+              if (connAlpha > 0.15) {
+                ctx.shadowColor = 'rgba(255,200,100,' + (connAlpha * 0.5) + ')';
+                ctx.shadowBlur = 6 + connAlpha * 12;
               }
               ctx.stroke();
               ctx.shadowBlur = 0;
@@ -97,28 +99,26 @@
           }
         }
 
-        // Mouse starlight connection
-        if (!isTouch) {
-          var dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-          if (dm < 100) {
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = 'rgba(' + starGlow + ',' + ((1 - dm / 100) * 0.1) + ')';
-            ctx.lineWidth = 0.3;
-            ctx.stroke();
-          }
+        // Mouse golden thread
+        var dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        if (dm < 120) {
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = 'rgba(255,200,100,' + ((1 - dm / 120) * 0.12) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
         }
       }
 
-      // Mystical trail
+      // Golden sparkle trail
       for (var t = trail.length - 1; t >= 0; t--) {
         var tp = trail[t];
-        tp.x += (mouse.x - tp.x) * 0.06;
-        tp.y += (mouse.y - tp.y) * 0.06;
-        tp.alpha -= 0.012;
-        tp.r *= 0.97;
+        tp.x += (mouse.x - tp.x) * 0.05;
+        tp.y += (mouse.y - tp.y) * 0.05;
+        tp.alpha -= 0.015;
+        tp.r *= 0.96;
         if (tp.alpha <= 0) { trail.splice(t, 1); continue; }
-        ctx.beginPath(); ctx.arc(tp.x, tp.y, tp.r * 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + starGlow + ',' + (tp.alpha * 0.3) + ')';
+        ctx.beginPath(); ctx.arc(tp.x, tp.y, tp.r * 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,220,150,' + (tp.alpha * 0.5) + ')';
         ctx.fill();
       }
 
@@ -133,15 +133,11 @@
     document.addEventListener('mousemove', function(e) {
       mouse.x = e.clientX; mouse.y = e.clientY;
       trail.push({ x: mouse.x, y: mouse.y, r: 2 + Math.random() * 2, alpha: 1 });
-      if (trail.length > 15) trail.shift();
+      if (trail.length > 12) trail.shift();
     });
     document.addEventListener('touchmove', function(e) {
       var t = e.touches[0];
-      if (t) {
-        mouse.x = t.clientX; mouse.y = t.clientY;
-        trail.push({ x: mouse.x, y: mouse.y, r: 2 + Math.random() * 2, alpha: 1 });
-        if (trail.length > 10) trail.shift();
-      }
+      if (t) { mouse.x = t.clientX; mouse.y = t.clientY; }
     }, { passive: true });
     document.addEventListener('mouseleave', function() { mouse.x = -1000; mouse.y = -1000; });
     document.addEventListener('astro:after-swap', function() { if (animId) cancelAnimationFrame(animId); });
