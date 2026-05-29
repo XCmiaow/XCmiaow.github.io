@@ -1,4 +1,4 @@
-const CACHE = 'resume-v5';
+const CACHE = 'resume-v6';
 const APP_SHELL = [
   '/',
   '/en/',
@@ -12,7 +12,6 @@ const APP_SHELL = [
   '/en/chem-ai-lab',
   '/styles/site.css',
   '/manifest.json',
-  '/admin/',
   '/blog/',
   '/en/blog/',
 ];
