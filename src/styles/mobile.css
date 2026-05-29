@@ -1,4 +1,9 @@
-/* ── 980px: Tablet / small desktop ── */
+/* ═══════════════════════════════════════
+   Mobile Responsive Styles
+   All breakpoints consolidated here
+   ═══════════════════════════════════════ */
+
+/* ── 980px: Tablet ── */
 @media (max-width: 980px) {
   .nav { gap: 8px; }
   .brand { min-height: 44px; flex: 1 1 auto; min-width: 0; }
@@ -10,9 +15,26 @@
   .filter-btn { min-height: 36px; }
   section { padding: 48px 0; }
   .hero { padding: 80px 0 40px; }
-  .timeline-wrap { padding-left: 0; }
   .nav-links.open { animation: navFadeIn 0.2s ease-out; }
   @keyframes navFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+/* ── 768px: Small tablet / large phone ── */
+@media (max-width: 768px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .hero-grid { gap: 28px; }
+  .admin-grid { grid-template-columns: 1fr !important; }
+  .admin-tabs { gap: 6px; }
+  .admin-tab { padding: 8px 12px; font-size: 13px; }
+  .tech-card { padding: 14px; }
+  .tech-card strong { font-size: 14px; }
+  .module-card { padding: 12px; }
+  .cert-card img { height: 200px; }
+  .blog-card { padding: 18px; }
+  .blog-card h2 { font-size: 18px; }
+  #tab-content fieldset.card { padding: 12px; }
+  #tab-content .field { margin-bottom: 10px; }
 }
 
 /* ── 640px: Phone ── */
@@ -39,14 +61,20 @@
   .tag { max-width: 100%; white-space: normal; line-height: 1.35; padding-top: 5px; padding-bottom: 5px; }
 
   .card.pad { padding: 20px; }
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr !important; }
+
+  /* ChemAI Lab */
+  .tech-card { padding: 12px; }
+  .tech-card strong { font-size: 14px; }
+  .tech-card span { font-size: 12px; }
+  .module-card { padding: 12px 10px; min-height: auto; }
+  .module-card h3 { font-size: 14px; }
+  .module-card p { font-size: 12px; }
   .flow { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   .step { min-width: 0; padding: 16px 8px !important; overflow-wrap: anywhere; }
 
   .contact-card { padding: 22px !important; }
   .contact-list { white-space: normal !important; word-break: break-word; }
-
-  .cert-card img { height: clamp(180px, 58vw, 240px) !important; }
-  .cert-card { width: 100%; }
 
   /* Competition timeline */
   .tl-item { margin-bottom: 12px; }
@@ -56,6 +84,8 @@
   .tl-year { font-size: 11px; }
   .timeline-filters { gap: 6px; }
   .filter-btn { padding: 5px 10px; font-size: 12px; min-height: 32px; }
+  .timeline-track { padding-left: 18px; }
+  .tl-dot { width: 10px; height: 10px; left: -23px; }
 
   /* Research interests */
   .interest-card { padding: 12px; }
@@ -66,14 +96,36 @@
   .project-card { min-height: auto !important; }
   .project-facts li { grid-template-columns: 60px 1fr; gap: 6px; font-size: 13px; }
 
-  /* Lightbox */
+  /* Certificate / Lightbox */
+  .cert-card img { height: clamp(180px, 58vw, 240px) !important; }
+  .cert-card { width: 100%; }
   .lightbox-close { top: 8px; right: 8px; width: 40px; height: 40px; font-size: 22px; }
   .lightbox-nav { font-size: 28px; width: 40px; height: 40px; }
   .lightbox-prev { left: 4px; }
   .lightbox-next { right: 4px; }
 
+  /* Blog */
+  .blog-card { padding: 16px; }
+  .blog-card h2 { font-size: 17px; }
+  .blog-card p { font-size: 14px; }
+  .blog-content { padding: 0 !important; }
+  .blog-content h2 { font-size: 20px; }
+  .blog-content pre { font-size: 13px; padding: 12px; }
+
+  /* Admin */
+  .admin-tab { padding: 6px 10px; font-size: 12px; }
+  .admin-grid { grid-template-columns: 1fr !important; gap: 12px; }
+  fieldset.card { padding: 12px; }
+  fieldset.card .field { margin-bottom: 8px; }
+
+  /* Write page */
+  .field textarea { min-height: 150px; }
+
+  /* Mermaid diagram */
+  .mermaid { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
   /* Footer */
-  footer { padding: 22px 0 32px; }
+  footer { padding: 22px 0 32px; font-size: 12px; }
   .footer-admin { display: inline-block; margin: 0 2px; }
 
   /* Section spacing */
@@ -81,9 +133,6 @@
   .section-head { flex-direction: column; align-items: stretch; gap: 8px; }
   .section-head h2 { font-size: 24px; }
   .section-head p { max-width: 100%; }
-
-  /* Grid stacking */
-  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr !important; }
 
   /* Education card */
   .education-card { gap: 14px !important; }
@@ -93,13 +142,13 @@
   /* Skill tags */
   .skill-card ul { gap: 6px; }
   .skill-card li { font-size: 12px; padding: 5px 8px; }
+  .skill-card h3 { font-size: 16px; }
 
-  /* Timeline track */
-  .timeline-track { padding-left: 18px; }
-  .tl-dot { width: 10px; height: 10px; left: -23px; }
-
-  /* Particles off for performance on mobile */
+  /* Particles performance */
   #particles-bg { opacity: 0.4; }
+
+  /* Award hero */
+  .hero-icon { font-size: 48px; }
 }
 
 /* ── 360px: Small phones ── */
@@ -115,4 +164,7 @@
   .subtitle { font-size: 17px !important; }
   .lead { font-size: 15.5px !important; }
   .toolbar { gap: 8px !important; padding: 10px !important; }
+  .hero-icon { font-size: 36px; }
+  .admin-tab { font-size: 11px; padding: 5px 8px; }
+  .stat strong { font-size: 20px !important; }
 }
