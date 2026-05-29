@@ -58,7 +58,7 @@ const compsTotal = zh.competitions.length;
 
       <div class="card pad">
         <h3>📋 待办</h3>
-        {totalTbds > 0 && <div class="todo-item">⚠️ <b>{totalTbds}</b> 个竞赛 TBD · <a href="#" onclick="switchTab('competitions');return false">补全</a></div>}
+        {totalTbds > 0 && <div class="todo-item">⚠️ <b>{totalTbds}</b> 个竞赛 TBD · <a href="#" id="goto-competitions">补全</a></div>}
         <div class="todo-item">✅ 数据完整性良好</div>
         <div id="gh-latest-commit" class="todo-item" style="font-size:12px;margin-top:8px;color:var(--muted)">加载最近提交...</div>
       </div>
@@ -72,7 +72,7 @@ const compsTotal = zh.competitions.length;
           <p style="font-size:13px">3. 在下方输入框粘贴，或联系我硬编码</p>
           <div style="display:flex;gap:8px;margin-top:12px;max-width:500px;margin-left:auto;margin-right:auto">
             <input id="umami-url" type="url" placeholder="https://cloud.umami.is/share/xxxxx/..." style="flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:13px" />
-            <button class="btn" onclick="document.getElementById('umami-frame').src=document.getElementById('umami-url').value;this.textContent='✅'">嵌入</button>
+            <button class="btn" id="umami-embed-btn">嵌入</button>
           </div>
         </div>
         <iframe id="umami-frame" style="width:100%;height:280px;border:none;border-radius:var(--radius);display:none" loading="lazy"></iframe>
@@ -233,7 +233,7 @@ const compsTotal = zh.competitions.length;
       <div class="card pad">
         <h3>📅 学期切换器</h3>
         <p style="font-size:14px;color:var(--muted);margin:4px 0 14px">当前：{zh.education.year}</p>
-        <button class="btn" onclick="alert('需通过 GitHub API 提交修改。当前年级: {zh.education.year}')" style="width:100%;justify-content:center;font-size:13px">升级到下学期</button>
+        <button class="btn" id="semester-btn" style="width:100%;justify-content:center;font-size:13px">升级到下学期</button>
       </div>
       <div class="card pad">
         <h3>🔗 外部链接</h3>
@@ -249,7 +249,26 @@ const compsTotal = zh.competitions.length;
 </div>
 </BaseLayout>
 
-<script>
+<script is:inline>
+  // ===== DOM-ready event bindings =====
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tab competition button
+    var gt = document.getElementById('goto-competitions');
+    if (gt) gt.addEventListener('click', function(e) { e.preventDefault(); switchTab('competitions'); });
+
+    // Semester button
+    var sem = document.getElementById('semester-btn');
+    if (sem) sem.addEventListener('click', function() { alert('当前年级: 请通过 GitHub 编辑 data/zh.json'); });
+
+    // Umami embed button
+    var umamiBtn = document.querySelector('#umami-placeholder .btn');
+    if (umamiBtn) umamiBtn.addEventListener('click', function() {
+      var url = document.getElementById('umami-url').value;
+      document.getElementById('umami-frame').src = url;
+      this.textContent = '✅';
+    });
+  });
+
   // ===== Password check =====
   function checkPw() {
     var input = document.getElementById('pw-input');
