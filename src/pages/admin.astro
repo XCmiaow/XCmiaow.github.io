@@ -31,28 +31,40 @@ const compsTotal = zh.competitions.length;
     <div class="admin-grid">
       <div class="card pad">
         <h3>📊 内容完整度</h3>
-        <div class="meter-bar"><div class="meter-fill" style="width:100%"></div></div>
-        <div class="admin-stat"><span>教育信息</span><b>✅ 100%</b></div>
-        <div class="meter-bar"><div class="meter-fill" style="width:82%"></div></div>
-        <div class="admin-stat"><span>奖项录入</span><b>{compsTotal} 项</b></div>
-        <div class="meter-bar"><div class="meter-fill" style="width:70%"></div></div>
-        <div class="admin-stat"><span>竞赛详情</span><b>{compsWithDetails}/{compsTotal} 填写</b></div>
-        <div class="meter-bar"><div class="meter-fill" style="width:50%"></div></div>
-        <div class="admin-stat"><span>博客文章</span><b>{posts.length} 篇</b></div>
-        <div class="admin-stat" style="margin-top:8px"><span>最后构建</span><b>{compiled}</b></div>
+        <div class="meter-row"><div class="meter-label"><span>教育信息</span><b>100%</b></div><div class="meter-bar"><div class="meter-fill" style="width:100%"></div></div></div>
+        <div class="meter-row"><div class="meter-label"><span>奖项录入</span><b>{compsTotal} 项</b></div><div class="meter-bar"><div class="meter-fill" style="width:100%"></div></div></div>
+        <div class="meter-row"><div class="meter-label"><span>竞赛详情</span><b>{compsWithDetails}/{compsTotal}</b></div><div class="meter-bar"><div class="meter-fill" style="width:{compsTotal > 0 ? (compsWithDetails/compsTotal*100) : 0}%"></div></div></div>
+        <div class="meter-row"><div class="meter-label"><span>博客文章</span><b>{posts.length} 篇</b></div><div class="meter-bar"><div class="meter-fill" style="width:{Math.min(posts.length * 25, 100)}%"></div></div></div>
+        <div class="admin-stat" style="margin-top:10px"><span>最后构建</span><b id="build-date">{compiled}</b></div>
+      </div>
+
+      <div class="card pad" id="github-card">
+        <h3>🐙 GitHub 仓库</h3>
+        <div class="admin-stat"><span>简历站</span><b id="gh-stars">-</b></div>
+        <div class="admin-stat"><span>ChemAI Lab</span><b id="gh-chem-stars">-</b></div>
+        <div class="admin-stat" style="border:none"><span>构建状态</span><b><img src="https://img.shields.io/github/actions/workflow/status/XCmiaow/XCmiaow.github.io/deploy.yml?branch=main&label=&style=flat-square" alt="build" style="vertical-align:middle"/></b></div>
       </div>
 
       <div class="card pad">
-        <h3>📋 待办事项</h3>
-        {totalTbds > 0 && <div class="todo-item">⚠️ 还有 <b>{totalTbds}</b> 个竞赛详情是 TBD，<a href="#tab-competitions" onclick="switchTab('competitions')">去补全</a></div>}
-        <div class="todo-item">✅ 数据文件完整性良好</div>
-        <div class="todo-item" style="margin-top:12px;font-size:12px;color:var(--muted)">切换 Tab 查看详细管理功能</div>
+        <h3>📋 待办</h3>
+        {totalTbds > 0 && <div class="todo-item">⚠️ <b>{totalTbds}</b> 个竞赛 TBD · <a href="#" onclick="switchTab('competitions');return false">补全</a></div>}
+        <div class="todo-item">✅ 数据完整性良好</div>
+        <div id="gh-latest-commit" class="todo-item" style="font-size:12px;margin-top:8px;color:var(--muted)">加载最近提交...</div>
       </div>
 
       <div class="card pad" style="grid-column:1/-1">
         <h3>📈 访问统计</h3>
-        <iframe src="https://cloud.umami.is/share/xxxxx" style="width:100%;height:280px;border:none;border-radius:var(--radius);background:var(--paper)" loading="lazy"></iframe>
-        <p style="font-size:12px;color:var(--muted);margin:6px 0 0">数据来自 Umami · <a href="https://cloud.umami.is" target="_blank" rel="noopener">详细统计 →</a></p>
+        <div id="umami-placeholder" style="padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius)">
+          <p style="margin:0 0 10px;font-size:15px">要显示 Umami 图表，请从 Umami 后台获取分享链接</p>
+          <p style="font-size:13px">1. 打开 <a href="https://cloud.umami.is" target="_blank" rel="noopener">cloud.umami.is</a> → 选择站点 → Share</p>
+          <p style="font-size:13px">2. 开启 "Enable share link" → 复制链接</p>
+          <p style="font-size:13px">3. 在下方输入框粘贴，或联系我硬编码</p>
+          <div style="display:flex;gap:8px;margin-top:12px;max-width:500px;margin-left:auto;margin-right:auto">
+            <input id="umami-url" type="url" placeholder="https://cloud.umami.is/share/xxxxx/..." style="flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:13px" />
+            <button class="btn" onclick="document.getElementById('umami-frame').src=document.getElementById('umami-url').value;this.textContent='✅'">嵌入</button>
+          </div>
+        </div>
+        <iframe id="umami-frame" style="width:100%;height:280px;border:none;border-radius:var(--radius);display:none" loading="lazy"></iframe>
       </div>
     </div>
   </div>
@@ -196,6 +208,29 @@ const compsTotal = zh.competitions.length;
     });
   })();
 
+  // ===== GitHub stats & latest commit =====
+  (async function(){
+    try {
+      var r = await fetch('https://api.github.com/repos/XCmiaow/XCmiaow.github.io');
+      var d = await r.json();
+      document.getElementById('gh-stars').textContent = d.stargazers_count + ' ★';
+    } catch(e) { document.getElementById('gh-stars').textContent = '—'; }
+    try {
+      var r2 = await fetch('https://api.github.com/repos/XCmiaow/chem-ai-lab');
+      var d2 = await r2.json();
+      document.getElementById('gh-chem-stars').textContent = d2.stargazers_count + ' ★';
+    } catch(e) { document.getElementById('gh-chem-stars').textContent = '—'; }
+    try {
+      var r3 = await fetch('https://api.github.com/repos/XCmiaow/XCmiaow.github.io/commits?per_page=1');
+      var d3 = await r3.json();
+      if (d3.length) {
+        var msg = d3[0].commit.message.split('\n')[0];
+        var date = new Date(d3[0].commit.committer.date).toLocaleDateString('zh-CN');
+        document.getElementById('gh-latest-commit').innerHTML = '🔄 最近: ' + msg.substring(0,50) + ' · ' + date;
+      }
+    } catch(e) { document.getElementById('gh-latest-commit').textContent = '—'; }
+  })();
+
   // ===== Competition TBD forms =====
   (function(){
     var forms = document.querySelectorAll('.comp-form');
@@ -235,8 +270,12 @@ const compsTotal = zh.competitions.length;
   .tab-panel.active { display: block; }
   .admin-stat { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
   .admin-stat span { color: var(--muted); }
-  .meter-bar { height: 6px; background: var(--line); border-radius: 3px; margin: 4px 0 2px; overflow: hidden; }
-  .meter-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 3px; }
+  .meter-row { margin-bottom: 10px; }
+  .meter-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
+  .meter-label span { color: var(--muted); }
+  .meter-label b { color: var(--primary); }
+  .meter-bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .meter-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 3px; transition: width .5s; }
   .todo-item { padding: 6px 0; font-size: 14px; color: var(--ink); }
   .admin-btn { display: block; padding: 10px 14px; margin-bottom: 8px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; color: var(--primary); font-weight: 650; }
   .admin-btn:hover { background: var(--accent-soft); }
