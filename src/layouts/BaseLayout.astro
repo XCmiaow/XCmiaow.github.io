@@ -45,7 +45,6 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   </script>
 </head>
 <body>
-  <ClientBehaviors />
   <div class="skeleton-screen" id="skeleton">
     <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>
     <div class="sk-hero"><div class="sk-circle"></div><div class="sk-block"><div class="sk-line w-60"></div><div class="sk-line w-80"></div><div class="sk-line w-40"></div></div></div>
@@ -89,6 +88,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
   <main id="main" tabindex="-1"><slot /></main>
 
   <ParticlesBackground />
+  <ClientBehaviors />
   <footer role="contentinfo">
     <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'} {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a href="/admin/" class="footer-admin">{isZh ? '管理' : 'Admin'}</a></div>
   </footer>
