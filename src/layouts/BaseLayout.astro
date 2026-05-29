@@ -93,6 +93,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
     <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'} {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a href="/admin/" class="footer-admin">{isZh ? '管理' : 'Admin'}</a></div>
   </footer>
 
+<script>(function(){var b=document.getElementById('layoutToggle'),r=document.documentElement;if(!b)return;if(localStorage.getItem('resume-layout')==='minimal')r.classList.add('minimal-mode');b.onclick=function(){r.classList.toggle('minimal-mode');localStorage.setItem('resume-layout',r.classList.contains('minimal-mode')?'minimal':'academic')}})()</script>
 </body>
 </html>
 
