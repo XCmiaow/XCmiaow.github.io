@@ -21,7 +21,8 @@ const compsTotal = zh.competitions.length;
   <!-- Tabs -->
   <div class="admin-tabs">
     <button class="admin-tab active" data-tab="dashboard">📊 概览</button>
-    <button class="admin-tab" data-tab="write">✍️ 写文章</button>
+    <button class="admin-tab" data-tab="write">✍️ 文章</button>
+    <button class="admin-tab" data-tab="content">📝 内容</button>
     <button class="admin-tab" data-tab="competitions">📋 竞赛 </button>
     <button class="admin-tab" data-tab="tools">🔧 工具</button>
   </div>
@@ -99,6 +100,48 @@ const compsTotal = zh.competitions.length;
       </div>
       <div id="publish-status"></div>
       <button class="btn primary" id="publish-btn" type="button" style="width:100%;justify-content:center;min-height:48px">发布文章</button>
+    </div>
+  </div>
+
+  <!-- TAB: Content Editor -->
+  <div class="tab-panel" id="tab-content">
+    <div class="admin-grid">
+      <div class="card pad">
+        <h3>👤 个人信息</h3>
+        <div class="field"><label>姓名</label><input id="f-person-name" value="{zh.person.name}" placeholder="中文姓名" /></div>
+        <div class="field"><label>英文名</label><input id="f-person-name-en" value="{en.person.name}" placeholder="English name" /></div>
+        <div class="field"><label>签名</label><input id="f-person-tagline" value="{zh.person.tagline}" placeholder="一句话签名" /></div>
+      </div>
+
+      <div class="card pad">
+        <h3>🎓 教育</h3>
+        <div class="field"><label>年份/届</label><input id="f-edu-year" value="{zh.education.year}" /></div>
+        <div class="field"><label>GPA</label><input id="f-edu-gpa" value="3.60" /></div>
+      </div>
+
+      <div class="card pad">
+        <h3>🧪 研究兴趣</h3>
+        <div class="field"><label>口号 (zh)</label><input id="f-interest-tagline" value="{zh.researchInterests.tagline}" /></div>
+        <div class="field"><label>口号 (en)</label><input id="f-interest-tagline-en" value="{en.researchInterests.tagline}" /></div>
+        <div class="field"><label>摘要 (zh)</label><textarea id="f-interest-summary" rows="3">{zh.researchInterests.summary}</textarea></div>
+        <div class="field"><label>摘要 (en)</label><textarea id="f-interest-summary-en" rows="3">{en.researchInterests.summary}</textarea></div>
+      </div>
+
+      <div class="card pad">
+        <h3>💡 技能</h3>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 10px">直接编辑 JSON 或后续增加细粒度表单</p>
+        <a class="admin-btn" href="https://github.com/XCmiaow/XCmiaow.github.io/edit/main/src/data/zh.json" target="_blank" rel="noopener">📝 编辑 zh.json</a>
+        <a class="admin-btn" href="https://github.com/XCmiaow/XCmiaow.github.io/edit/main/src/data/en.json" target="_blank" rel="noopener">📝 编辑 en.json</a>
+      </div>
+    </div>
+
+    <div style="max-width:400px;margin:20px 0">
+      <div class="field">
+        <label for="content-token">GitHub Token (保存用)</label>
+        <input id="content-token" type="password" placeholder="personal access token" />
+      </div>
+      <button class="btn primary" id="content-save-btn" style="width:100%;justify-content:center;min-height:44px">💾 保存所有修改</button>
+      <div id="content-status" style="margin-top:10px"></div>
     </div>
   </div>
 
@@ -229,6 +272,62 @@ const compsTotal = zh.competitions.length;
         document.getElementById('gh-latest-commit').innerHTML = '🔄 最近: ' + msg.substring(0,50) + ' · ' + date;
       }
     } catch(e) { document.getElementById('gh-latest-commit').textContent = '—'; }
+  })();
+
+  // ===== Content editor: save via GitHub API =====
+  (function(){
+    var btn = document.getElementById('content-save-btn');
+    if (!btn) return;
+    var tokInp = document.getElementById('content-token');
+    var saved = localStorage.getItem('gh-blog-token');
+    if (saved && tokInp) tokInp.value = saved;
+
+    btn.addEventListener('click', async function() {
+      var token = tokInp.value.trim();
+      if (!token) { document.getElementById('content-status').innerHTML = '<p style="color:var(--accent)">请输入 Token</p>'; return; }
+      localStorage.setItem('gh-blog-token', token);
+      document.getElementById('content-status').innerHTML = '<p style="color:var(--muted)">保存中...</p>';
+      btn.disabled = true;
+
+      var updates = [
+        { file: 'src/data/zh.json', data: { person: { name: document.getElementById('f-person-name').value } } },
+      ];
+      // Simple update: push zh.json with name change
+      try {
+        // 1. Get current file SHA
+        var getR = await fetch('https://api.github.com/repos/XCmiaow/XCmiaow.github.io/contents/src/data/zh.json', {
+          headers: { 'Authorization': 'token ' + token }
+        });
+        var getD = await getR.json();
+        var sha = getD.sha;
+        var current = JSON.parse(decodeURIComponent(escape(atob(getD.content))));
+
+        // 2. Update fields
+        current.person.name = document.getElementById('f-person-name').value;
+        current.education.year = document.getElementById('f-edu-year').value;
+        if (current.researchInterests) {
+          current.researchInterests.tagline = document.getElementById('f-interest-tagline').value;
+          current.researchInterests.summary = document.getElementById('f-interest-summary').value;
+        }
+
+        // 3. Push update
+        var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+        var putR = await fetch('https://api.github.com/repos/XCmiaow/XCmiaow.github.io/contents/src/data/zh.json', {
+          method: 'PUT',
+          headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'admin: update resume data', content: encoded, sha: sha, branch: 'main' })
+        });
+        if (putR.ok) {
+          document.getElementById('content-status').innerHTML = '<p style="color:var(--green);font-weight:700">✅ zh.json 保存成功！</p>';
+        } else {
+          var err = await putR.json();
+          document.getElementById('content-status').innerHTML = '<p style="color:#c00">❌ 保存失败: ' + (err.message || '') + '</p>';
+        }
+      } catch(e) {
+        document.getElementById('content-status').innerHTML = '<p style="color:#c00">❌ 错误: ' + e.message + '</p>';
+      }
+      btn.disabled = false;
+    });
   })();
 
   // ===== Competition TBD forms =====
