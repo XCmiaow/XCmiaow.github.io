@@ -1,6 +1,6 @@
 ---
 import ClientBehaviors from '../components/ClientBehaviors.astro';
-import ParticlesBackground from '../components/ParticlesBackground.astro';
+import Molecule3D from '../components/Molecule3D.astro';
 import i18n from '../data/i18n.json';
 
 export interface Props {
@@ -87,7 +87,7 @@ const enUrl = (pageKey ? `/en/${pageKey}` : '/en/');
 
   <main id="main" tabindex="-1"><slot /></main>
 
-  <ParticlesBackground />
+  <Molecule3D />
   <ClientBehaviors />
   <footer role="contentinfo">
     <div class="container">&copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'} {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a href="/admin/" class="footer-admin">{isZh ? '管理' : 'Admin'}</a></div>

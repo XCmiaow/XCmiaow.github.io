@@ -145,7 +145,7 @@
   .skill-card h3 { font-size: 16px; }
 
   /* Particles performance */
-  #particles-bg { opacity: 0.4; }
+  #particles-bg, #mol-bg { opacity: 0.4; }
 
   /* Award hero */
   .hero-icon { font-size: 48px; }

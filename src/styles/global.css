@@ -17,7 +17,7 @@
 
 /* ── Minimal mode ── */
 html.minimal-mode { --radius: 0px; }
-html.minimal-mode #particles-bg, html.minimal-mode #cursor-glow, html.minimal-mode .parallax-layer { display: none !important; }
+html.minimal-mode #mol-bg, html.minimal-mode #particles-bg, html.minimal-mode #cursor-glow, html.minimal-mode .parallax-layer { display: none !important; }
 html.minimal-mode .portrait-card .profile-photo { animation: none !important; }
 html.minimal-mode .project-card { animation: none !important; }
 html.minimal-mode .card, html.minimal-mode .btn { box-shadow: none !important; border-color: var(--ink) !important; }
