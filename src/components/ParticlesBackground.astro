@@ -7,7 +7,7 @@
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    var W, H, particles = [], trail = [];
+    var W, H, particles = [];
     var mouse = { x: -1000, y: -1000 };
     var animId, globalTime = 0;
 
@@ -24,27 +24,22 @@
 
     function init() {
       particles = [];
-      var count = Math.min(Math.floor((W * H) / 15000), 32);
+      var count = Math.min(Math.floor((W * H) / 15000), 30);
       for (var i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * W, y: Math.random() * H,
-          r: 1.5 + Math.random() * 2.5,
+          r: 1.5 + Math.random() * 2,
           vx: (Math.random() - 0.5) * 0.04,
           vy: (Math.random() - 0.5) * 0.04,
           phase: Math.random() * Math.PI * 2,
-          speed: 0.012 + Math.random() * 0.02,
-          bright: 0.5 + Math.random() * 0.5,
+          speed: 0.015 + Math.random() * 0.02,
         });
       }
     }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      globalTime += 0.01;
-
-      // Gold color palette
-      var gR = '255', gG = '220', gB = '150';        // warm gold core
-      var glowR = '255', glowG = '200', glowB = '100'; // golden glow
+      globalTime += 0.008;
 
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
@@ -53,73 +48,41 @@
         if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
 
         p.phase += p.speed;
-        var twinkle = 0.5 + Math.sin(p.phase) * 0.35 + Math.cos(p.phase * 0.5) * 0.15;
-        var alpha = Math.min(1, (0.4 + twinkle * 0.5) * p.bright);
+        var shine = 0.5 + Math.sin(p.phase) * 0.4;
 
-        // Large golden glow
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + glowR + ',' + glowG + ',' + glowB + ',' + (alpha * 0.12) + ')';
-        ctx.fill();
-
-        // Medium glow
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + gR + ',' + gG + ',' + gB + ',' + (alpha * 0.25) + ')';
-        ctx.fill();
-
-        // Bright core
+        // Gold particle — single clean dot
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + gR + ',' + gG + ',' + gB + ',' + alpha + ')';
+        ctx.fillStyle = 'rgba(255,215,0,' + (0.6 + shine * 0.4) + ')';
         ctx.fill();
 
-        // Constellation connections — clearly visible
+        // Constellation lines — clearly visible
         for (var j = i + 1; j < Math.min(i + 6, particles.length); j++) {
           var q = particles[j];
           var dx = p.x - q.x, dy = p.y - q.y, dist = Math.hypot(dx, dy);
           if (dist < 200) {
-            // Base visibility: decays with distance
-            var baseAlpha = (1 - dist / 200) * 0.25;
-            // Slow pulse
+            var baseAlpha = (1 - dist / 200) * 0.2;
             var pulse = 0.7 + Math.sin(globalTime * 1.5 + i + j) * 0.3;
-            // Mouse boost
+            var mBoost = 0;
             var mx = (p.x + q.x) / 2 - mouse.x, my = (p.y + q.y) / 2 - mouse.y;
-            var mBoost = Math.max(0, 1 - Math.hypot(mx, my) / 250) * 0.3;
+            mBoost = Math.max(0, 1 - Math.hypot(mx, my) / 250) * 0.3;
             var connAlpha = (baseAlpha + mBoost) * pulse;
-
             if (connAlpha > 0.04) {
               ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-              ctx.strokeStyle = 'rgba(255,200,100,' + connAlpha + ')';
-              ctx.lineWidth = 0.8 + mBoost * 2;
-              if (connAlpha > 0.15) {
-                ctx.shadowColor = 'rgba(255,200,100,' + (connAlpha * 0.5) + ')';
-                ctx.shadowBlur = 6 + connAlpha * 12;
-              }
+              ctx.strokeStyle = 'rgba(255,215,0,' + connAlpha + ')';
+              ctx.lineWidth = 0.6 + mBoost * 1.5;
               ctx.stroke();
-              ctx.shadowBlur = 0;
             }
           }
         }
 
-        // Mouse golden thread
+        // Mouse thread
         var dm = Math.hypot(p.x - mouse.x, p.y - mouse.y);
         if (dm < 120) {
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = 'rgba(255,200,100,' + ((1 - dm / 120) * 0.12) + ')';
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = 'rgba(255,215,0,' + ((1 - dm / 120) * 0.1) + ')';
+          ctx.lineWidth = 0.4;
           ctx.stroke();
         }
-      }
-
-      // Golden sparkle trail
-      for (var t = trail.length - 1; t >= 0; t--) {
-        var tp = trail[t];
-        tp.x += (mouse.x - tp.x) * 0.05;
-        tp.y += (mouse.y - tp.y) * 0.05;
-        tp.alpha -= 0.015;
-        tp.r *= 0.96;
-        if (tp.alpha <= 0) { trail.splice(t, 1); continue; }
-        ctx.beginPath(); ctx.arc(tp.x, tp.y, tp.r * 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,220,150,' + (tp.alpha * 0.5) + ')';
-        ctx.fill();
       }
 
       animId = requestAnimationFrame(draw);
@@ -132,13 +95,7 @@
 
     document.addEventListener('mousemove', function(e) {
       mouse.x = e.clientX; mouse.y = e.clientY;
-      trail.push({ x: mouse.x, y: mouse.y, r: 2 + Math.random() * 2, alpha: 1 });
-      if (trail.length > 12) trail.shift();
     });
-    document.addEventListener('touchmove', function(e) {
-      var t = e.touches[0];
-      if (t) { mouse.x = t.clientX; mouse.y = t.clientY; }
-    }, { passive: true });
     document.addEventListener('mouseleave', function() { mouse.x = -1000; mouse.y = -1000; });
     document.addEventListener('astro:after-swap', function() { if (animId) cancelAnimationFrame(animId); });
   })();
