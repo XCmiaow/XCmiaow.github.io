@@ -11,183 +11,615 @@ const edu = en.education;
 const c = common;
 ---
 
-<BaseLayout title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`} description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${c.education.gpa}, ranked ${c.education.rankClass}st in class and ${c.education.rankMajor}nd in major.`} lang="en">
-
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="parallax-layer" data-speed="0.15">
-      <h1 data-animate>{p.name}</h1>
-      <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
-      <p class="lead">GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major. Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling, Python, and AI-assisted workflows.</p>
-      <div class="hero-actions no-print">
-        <a class="btn primary" href="#honors">Key Achievements</a>
-        <a class="btn" href="/en/resume-onepage">One-Page PDF</a>
+<BaseLayout
+  title={`${p.name} | Chemical Engineering | Math Modeling & AI Toolchain`}
+  description={`${p.name}, undergraduate in Chemical Engineering of Forest Products at NJFU. GPA ${c.education.gpa}, ranked ${c.education.rankClass}st in class and ${c.education.rankMajor}nd in major.`}
+  lang="en"
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="parallax-layer" data-speed="0.15">
+        <h1 data-animate>{p.name}</h1>
+        <p class="subtitle">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
+        <p class="lead">
+          GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major.
+          Combining a strong foundation in chemical engineering and organic chemistry with mathematical modeling,
+          Python, and AI-assisted workflows.
+        </p>
+        <div class="hero-actions no-print">
+          <a class="btn primary" href="#honors">Key Achievements</a>
+          <a class="btn" href="/en/resume-onepage">One-Page PDF</a>
+        </div>
+        <div class="tag-row">
+          <span class="tag">GPA {c.education.gpa}</span>
+          <span class="tag">Class Rank {c.education.rankClass}st</span>
+          <span class="tag">Major Rank {c.education.rankMajor}nd</span>
+          <span class="tag">Math Modeling</span>
+          <span class="tag">AI Toolchain</span>
+        </div>
       </div>
-      <div class="tag-row">
-        <span class="tag">GPA {c.education.gpa}</span>
-        <span class="tag">Class Rank {c.education.rankClass}st</span>
-        <span class="tag">Major Rank {c.education.rankMajor}nd</span>
-        <span class="tag">Math Modeling</span>
-        <span class="tag">AI Toolchain</span>
+      <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
+        <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
+        <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
+        <div class="stat-grid">
+          <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
+          <div class="stat"><strong>{c.education.rankClass}st</strong><span>Class Rank</span></div>
+          <div class="stat"><strong>{c.education.rankMajor}nd</strong><span>Major Rank</span></div>
+          <div class="stat"><strong>{edu.year}</strong><span>Year</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <SectionHead
+        title="About Me"
+        description="Strong academic performance with growing expertise in math modeling and AI tools."
+      />
+      <Card pad animate class="about-copy">
+        <p>
+          I am an undergraduate in {edu.major} at {edu.school} (GPA {c.education.gpa}, ranked {c.education.rankClass}st
+          in class and {c.education.rankMajor}nd in major). I chose this field because it sits at the intersection of
+          fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and
+          dealing with process-scale problems on the other. This span drives most of my academic interests.
+        </p>
+        <p>
+          Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu
+          Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down
+          ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes
+          how I approach unfamiliar problems in any domain.
+        </p>
+        <p>
+          More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am
+          working through Clayden and March while learning deep learning fundamentals on the side. I am particularly
+          interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can
+          assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical
+          engineering and AI-driven computational chemistry.
+        </p>
+      </Card>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <SectionHead title="Education" />
+      <div class="education-card" data-animate>
+        <div class="school">
+          <h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p>
+        </div>
+        <div class="rank-list">
+          <div class="rank-item"><span>GPA</span><strong>{c.education.gpa}</strong></div>
+          <div class="rank-item"><span>Class Rank</span><strong>{c.education.rankClass}st</strong></div>
+          <div class="rank-item"><span>Major Rank</span><strong>{c.education.rankMajor}nd</strong></div>
+          <div class="rank-item"><span>Year</span><strong>{edu.year}</strong></div>
+        </div>
       </div>
     </div>
-    <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
-      <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
-      <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
-      <div class="stat-grid">
-        <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
-        <div class="stat"><strong>{c.education.rankClass}st</strong><span>Class Rank</span></div>
-        <div class="stat"><strong>{c.education.rankMajor}nd</strong><span>Major Rank</span></div>
-        <div class="stat"><strong>{edu.year}</strong><span>Year</span></div>
+  </section>
+
+  <section id="interests">
+    <div class="container">
+      <SectionHead title="Research Interests" description={en.researchInterests.tagline} />
+      <Card pad animate>
+        <p class="interest-summary">{en.researchInterests.summary}</p>
+        <div class="grid-2" style="margin-top:20px">
+          {
+            en.researchInterests.areas.map((a) => (
+              <div class="interest-card">
+                <>
+                  <strong>{a.name}</strong>
+                  <p>{a.note}</p>
+                </>
+              </div>
+            ))
+          }
+        </div>
+      </Card>
+    </div>
+  </section>
+
+  <section id="highlights">
+    <div class="container">
+      <SectionHead title="Profile Highlights" />
+      <div class="grid-4">
+        {
+          en.highlights.map((h) => (
+            <article class="card pad highlight" data-animate="up">
+              <>
+                <span class="num">{h.id}</span>
+                <h3>{h.title}</h3>
+                <p>{h.desc}</p>
+              </>
+            </article>
+          ))
+        }
       </div>
-    </aside>
-  </div>
-</section>
-
-<section id="about"><div class="container">
-  <SectionHead title="About Me" description="Strong academic performance with growing expertise in math modeling and AI tools." />
-  <Card pad animate class="about-copy">
-    <p>I am an undergraduate in {edu.major} at {edu.school} (GPA {c.education.gpa}, ranked {c.education.rankClass}st in class and {c.education.rankMajor}nd in major). I chose this field because it sits at the intersection of fundamental organic chemistry and real-world engineering — understanding reaction mechanisms on one hand, and dealing with process-scale problems on the other. This span drives most of my academic interests.</p>
-    <p>Outside the classroom, mathematical modeling has been my primary training ground. Through CUMCM (Jiangsu Provincial First Prize) and consecutive MCM/ICM Honorable Mentions (2025, 2026), I learned how to break down ill-posed problems, choose appropriate models, and validate assumptions with data. This methodology now shapes how I approach unfamiliar problems in any domain.</p>
-    <p>More recently, I have been focusing on the intersection of organic synthesis and computational methods. I am working through Clayden and March while learning deep learning fundamentals on the side. I am particularly interested in graph neural networks for molecular representation learning and how LLMs and agent workflows can assist literature retrieval and experiment design. My long-term goal is to work at the interface of chemical engineering and AI-driven computational chemistry.</p>
-  </Card>
-</div></section>
-
-<section id="education"><div class="container">
-  <SectionHead title="Education" />
-  <div class="education-card" data-animate>
-    <div class="school"><h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p></div>
-    <div class="rank-list">
-      <div class="rank-item"><span>GPA</span><strong>{c.education.gpa}</strong></div>
-      <div class="rank-item"><span>Class Rank</span><strong>{c.education.rankClass}st</strong></div>
-      <div class="rank-item"><span>Major Rank</span><strong>{c.education.rankMajor}nd</strong></div>
-      <div class="rank-item"><span>Year</span><strong>{edu.year}</strong></div>
     </div>
-  </div>
-</div></section>
+  </section>
 
-<section id="interests"><div class="container">
-  <SectionHead title="Research Interests" description={en.researchInterests.tagline} />
-  <Card pad animate>
-    <p class="interest-summary">{en.researchInterests.summary}</p>
-    <div class="grid-2" style="margin-top:20px">
-      {en.researchInterests.areas.map(a => (
-        <div class="interest-card"><strong>{a.name}</strong><p>{a.note}</p></div>
-      ))}
+  <section id="honors">
+    <div class="container">
+      <SectionHead title="Awards & Competitions" description="Click to expand details, filter by level." />
+      <CompetitionTimeline lang="en" competitions={en.competitions} />
     </div>
-  </Card>
-</div></section>
+  </section>
 
-<section id="highlights"><div class="container">
-  <SectionHead title="Profile Highlights" />
-  <div class="grid-4">
-    {en.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.title}</h3><p>{h.desc}</p></article>))}
-  </div>
-</div></section>
+  <section id="skills">
+    <div class="container">
+      <SectionHead title="Skills" />
+      <div class="grid-4">
+        {
+          en.skills.map((s) => (
+            <article class="card pad skill-card" data-animate="up">
+              <>
+                <h3>{s.category}</h3>
+                <p>{s.desc}</p>
+                <ul>
+                  {s.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-<section id="honors"><div class="container">
-  <SectionHead title="Awards & Competitions" description="Click to expand details, filter by level." />
-  <CompetitionTimeline lang="en" competitions={en.competitions} />
-</div></section>
+  <section id="projects">
+    <div class="container">
+      <SectionHead title="Projects & Portfolio" />
+      <div class="grid-3">
+        {
+          (() => {
+            const projIndex = {};
+            c.projects.forEach((p) => (projIndex[p.id] = p));
+            return en.projects.map((proj) => {
+              const commonProj = projIndex[proj.id] || {};
+              return (
+                <article class="card pad project-card" data-animate="up">
+                  <>
+                    <div>
+                      <>
+                        <h3>{proj.title}</h3>
+                        <p>{proj.desc}</p>
+                        <ul class="project-facts">
+                          <li>
+                            <>
+                              <b>Skills</b>
+                              <span>{proj.abilities}</span>
+                            </>
+                          </li>
+                          {commonProj.link && (
+                            <li>
+                              <b>Link</b>
+                              <span>
+                                <a href={commonProj.link}>{commonProj.link}</a>
+                              </span>
+                            </li>
+                          )}
+                        </ul>
+                      </>
+                    </div>
+                    <div class="tag-row">
+                      {(commonProj.tags || []).map((t) => (
+                        <span class="tag">{t}</span>
+                      ))}
+                    </div>
+                  </>
+                </article>
+              );
+            });
+          })()
+        }
+      </div>
+    </div>
+  </section>
 
-<section id="skills"><div class="container">
-  <SectionHead title="Skills" />
-  <div class="grid-4">
-    {en.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
-  </div>
-</div></section>
-
-<section id="projects"><div class="container">
-  <SectionHead title="Projects & Portfolio" />
-  <div class="grid-3">
-    {(() => { const projIndex = {}; c.projects.forEach(p => projIndex[p.id] = p); return en.projects.map(proj => { const commonProj = projIndex[proj.id] || {}; return (<article class="card pad project-card" data-animate="up"><div><h3>{proj.title}</h3><p>{proj.desc}</p><ul class="project-facts"><li><b>Skills</b><span>{proj.abilities}</span></li>{commonProj.link && <li><b>Link</b><span><a href={commonProj.link}>{commonProj.link}</a></span></li>}</ul></div><div class="tag-row">{(commonProj.tags || []).map(t => <span class="tag">{t}</span>)}</div></article>);});})()}
-  </div>
-</div></section>
-
-<section id="contact"><div class="container">
-  <div class="contact-card" data-animate><div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
-  <div class="contact-list"><span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span>GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span><span>School: Nanjing Forestry University</span></div></div>
-</div></section>
-
+  <section id="contact">
+    <div class="container">
+      <div class="contact-card" data-animate>
+        <div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
+        <div class="contact-list">
+          <span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span
+            >GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span
+          ><span>School: Nanjing Forestry University</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero { padding: 108px 0 64px; }
-  .hero h1 { margin: 0; color: var(--primary); font-size: clamp(44px, 8vw, 82px); line-height: 1.02; }
-  .subtitle { margin: 18px 0 0; color: var(--secondary); font-size: clamp(18px, 2.2vw, 24px); font-weight: 750; }
-  .lead { max-width: 680px; margin: 22px 0 0; color: var(--muted); font-size: 17px; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr); gap: 44px; align-items: center; }
-  .portrait-card { position: relative; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: var(--shadow); }
-  .profile-photo { width: 138px; height: 138px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.9); box-shadow: 0 18px 34px rgba(16,42,67,0.18); display: block; }
-  .profile-meta { margin-top: 18px; }
-  .profile-meta strong { display: block; color: var(--primary); font-size: 20px; }
-  .profile-meta span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
-  .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 28px; }
-  .stat { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.28)); }
-  .stat strong { display: block; color: var(--primary); font-size: 28px; line-height: 1.1; }
-  .stat span { color: var(--muted); font-size: 13px; font-weight: 700; }
-  .about-copy { display: grid; gap: 16px; } .about-copy p { margin: 0; }
-  .education-card { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr); gap: 22px; align-items: stretch; }
-  .school { padding: 28px; background: linear-gradient(135deg, rgba(16,42,67,0.96), rgba(47,111,94,0.92)), var(--primary); color: #fff; border-radius: var(--radius); }
-  .school h3 { margin: 0; font-size: 27px; } .school p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .rank-list { display: grid; gap: 12px; }
-  .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
-  .rank-item span { color: var(--muted); }
-  .interest-card { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
-  .interest-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
-  .interest-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.45; }
-  .highlight { position: relative; min-height: 170px; overflow: hidden; }
-  .highlight::after { content: ""; position: absolute; right: -20px; bottom: -20px; width: 60px; height: 60px; border-radius: 50%; border: 12px solid var(--accent-soft); pointer-events: none; }
-  .highlight .num { display: inline-flex; align-items: center; height: 28px; margin-bottom: 20px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft); color: var(--primary); font-size: 13px; font-weight: 900; }
-  .skill-card ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
-  .skill-card li { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: rgba(47,81,104,0.05); color: var(--secondary); font-size: 13px; font-weight: 720; }
-  .project-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; }
-  .project-card .tag-row { margin-top: 18px; }
-  .project-facts { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
-  .project-facts li { display: grid; grid-template-columns: 78px 1fr; gap: 10px; color: var(--muted); font-size: 14px; }
-  .project-facts b { color: var(--primary); }
-  .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
-  .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
-  .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; overflow-wrap: anywhere; }
-.contact-list span { min-width: 0; }
-  .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
+  .hero {
+    padding: 108px 0 64px;
+  }
+  .hero h1 {
+    margin: 0;
+    color: var(--primary);
+    font-size: clamp(44px, 8vw, 82px);
+    line-height: 1.02;
+  }
+  .subtitle {
+    margin: 18px 0 0;
+    color: var(--secondary);
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 750;
+  }
+  .lead {
+    max-width: 680px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 17px;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 44px;
+    align-items: center;
+  }
+  .portrait-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+  .profile-photo {
+    width: 138px;
+    height: 138px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 34px rgba(16, 42, 67, 0.18);
+    display: block;
+  }
+  .profile-meta {
+    margin-top: 18px;
+  }
+  .profile-meta strong {
+    display: block;
+    color: var(--primary);
+    font-size: 20px;
+  }
+  .profile-meta span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .stat {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28));
+  }
+  .stat strong {
+    display: block;
+    color: var(--primary);
+    font-size: 28px;
+    line-height: 1.1;
+  }
+  .stat span {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .about-copy {
+    display: grid;
+    gap: 16px;
+  }
+  .about-copy p {
+    margin: 0;
+  }
+  .education-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+  .school {
+    padding: 28px;
+    background: linear-gradient(135deg, rgba(16, 42, 67, 0.96), rgba(47, 111, 94, 0.92)), var(--primary);
+    color: #fff;
+    border-radius: var(--radius);
+  }
+  .school h3 {
+    margin: 0;
+    font-size: 27px;
+  }
+  .school p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .rank-list {
+    display: grid;
+    gap: 12px;
+  }
+  .rank-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-weight: 750;
+  }
+  .rank-item span {
+    color: var(--muted);
+  }
+  .interest-card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .interest-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .interest-card p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .highlight {
+    position: relative;
+    min-height: 170px;
+    overflow: hidden;
+  }
+  .highlight::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 12px solid var(--accent-soft);
+    pointer-events: none;
+  }
+  .highlight .num {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    margin-bottom: 20px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .skill-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .skill-card li {
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(47, 81, 104, 0.05);
+    color: var(--secondary);
+    font-size: 13px;
+    font-weight: 720;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+  }
+  .project-card .tag-row {
+    margin-top: 18px;
+  }
+  .project-facts {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .project-facts li {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .project-facts b {
+    color: var(--primary);
+  }
+  .contact-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+  }
+  .contact-card h2 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 42px);
+  }
+  .contact-card p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .contact-list {
+    display: grid;
+    gap: 10px;
+    color: #fff;
+    font-weight: 750;
+    white-space: nowrap;
+    overflow-wrap: anywhere;
+  }
+  .contact-list span {
+    min-width: 0;
+  }
+  .contact-list a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 
-  [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  [data-animate].revealed { opacity: 1; transform: translateY(0); }
-  [data-animate="right"] { transform: translateX(20px); }
-  [data-animate="right"].revealed { transform: translateX(0); }
-  [data-animate="up"] { transform: translateY(30px); }
-  [data-animate="up"].revealed { transform: translateY(0); }
-  @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
-  @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+  [data-animate].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-animate='right'] {
+    transform: translateX(20px);
+  }
+  [data-animate='right'].revealed {
+    transform: translateX(0);
+  }
+  [data-animate='up'] {
+    transform: translateY(30px);
+  }
+  [data-animate='up'].revealed {
+    transform: translateY(0);
+  }
+  @media (max-width: 940px) {
+    .hero-grid,
+    .education-card,
+    .contact-card {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 50px;
+    }
+    .stat-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-  .parallax-layer { will-change: transform; transition: transform 0.05s linear; }
-  .hero { position: relative; overflow: hidden; }
-  .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
-  .gh-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px; }
-  .gh-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #55d65a; display: inline-block; }
-  .gh-status.loading .dot { animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .parallax-layer {
+    will-change: transform;
+    transition: transform 0.05s linear;
+  }
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+  }
+  .gh-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 12px;
+  }
+  .gh-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #55d65a;
+    display: inline-block;
+  }
+  .gh-status.loading .dot {
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
 </style>
 
 <script>
-  const animObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+  const animObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('revealed');
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+  );
+  document.querySelectorAll('[data-animate]').forEach((el) => animObserver.observe(el));
 
   const h1 = document.querySelector('.hero h1');
-  if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+  if (h1) {
+    const t = h1.textContent || '';
+    h1.textContent = '';
+    h1.style.borderRight = '3px solid var(--accent)';
+    let i = 0;
+    const tp = () => {
+      if (i < t.length) {
+        h1.textContent += t[i];
+        i++;
+        setTimeout(tp, 60 + Math.random() * 40);
+      } else {
+        h1.style.borderRight = 'none';
+      }
+    };
+    setTimeout(tp, 300);
+  }
 
   // Parallax scroll
-  (function(){var layers=document.querySelectorAll('.parallax-layer');window.addEventListener('scroll',function(){var y=window.scrollY;layers.forEach(function(el){var s=parseFloat(el.dataset.speed)||0.1;el.style.transform='translateY('+(y*s)+'px)'})})})();
+  (function () {
+    var layers = document.querySelectorAll('.parallax-layer');
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      layers.forEach(function (el) {
+        var s = parseFloat(el.dataset.speed) || 0.1;
+        el.style.transform = 'translateY(' + y * s + 'px)';
+      });
+    });
+  })();
 
   const tiltCard = document.querySelector('.tilt-card');
   if (tiltCard) {
-    tiltCard.addEventListener('mousemove', (e) => { const r = tiltCard.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5; tiltCard.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`; });
-    tiltCard.addEventListener('mouseleave', () => { tiltCard.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)'; });
+    tiltCard.addEventListener('mousemove', (e) => {
+      const r = tiltCard.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      tiltCard.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+    });
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
+    });
   }
 
   (async () => {
@@ -199,8 +631,11 @@ const c = common;
       if (events.length) {
         const date = new Date(events[0].created_at);
         const ago = Math.floor((Date.now() - date) / 3600000);
-        el.innerHTML = `<span class="dot"></span> Active ${ago < 1 ? 'just now' : ago < 24 ? ago+'h ago' : Math.floor(ago/24)+'d ago'} on GitHub`;
+        el.innerHTML = `<span class="dot"></span> Active ${ago < 1 ? 'just now' : ago < 24 ? ago + 'h ago' : Math.floor(ago / 24) + 'd ago'} on GitHub`;
       }
-    } catch(e) { el.textContent = 'Active on GitHub'; el.classList.remove('loading'); }
+    } catch (e) {
+      el.textContent = 'Active on GitHub';
+      el.classList.remove('loading');
+    }
   })();
 </script>

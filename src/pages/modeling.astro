@@ -5,43 +5,110 @@ import Card from '../components/Card.astro';
 ---
 
 <BaseLayout title="方绪杰 | 数学建模竞赛实践" lang="zh">
-<section class="hero"><div class="container">
-  <h1>数学建模竞赛实践</h1>
-  <p class="lead">把竞赛奖项转化为可解释的能力证据：问题抽象、模型构建、数据处理、算法求解、结果分析与论文表达。</p>
-  <div class="tag-row"><span class="tag">CUMCM 省一</span><span class="tag">MCM/ICM H奖×2</span><span class="tag">MathorCup 区域二等奖</span></div>
-</div></section>
+  <section class="hero">
+    <div class="container">
+      <h1>数学建模竞赛实践</h1>
+      <p class="lead">把竞赛奖项转化为可解释的能力证据：问题抽象、模型构建、数据处理、算法求解、结果分析与论文表达。</p>
+      <div class="tag-row">
+        <span class="tag">CUMCM 省一</span><span class="tag">MCM/ICM H奖×2</span><span class="tag"
+          >MathorCup 区域二等奖</span>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <SectionHead title="能力定位" />
-  <div class="grid-3">
-    <article class="card pad"><h3>对保研/评优</h3><p>证明数学基础、科研表达、英文论文写作、跨学科建模和团队协作能力，是 GPA 之外最强的能力补充。</p></article>
-    <article class="card pad"><h3>对求职/作品集</h3><p>证明可以把开放问题拆成变量、假设、模型、代码和结论，适合数据分析和技术学习型岗位。</p></article>
-    <article class="card pad"><h3>待补证据</h3><p>建议补充竞赛论文摘要、代码片段、图表截图、个人职责说明和赛后复盘。</p></article>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <SectionHead title="能力定位" />
+      <div class="grid-3">
+        <article class="card pad">
+          <h3>对保研/评优</h3><p>
+            证明数学基础、科研表达、英文论文写作、跨学科建模和团队协作能力，是 GPA 之外最强的能力补充。
+          </p>
+        </article>
+        <article class="card pad">
+          <h3>对求职/作品集</h3><p>
+            证明可以把开放问题拆成变量、假设、模型、代码和结论，适合数据分析和技术学习型岗位。
+          </p>
+        </article>
+        <article class="card pad">
+          <h3>待补证据</h3><p>建议补充竞赛论文摘要、代码片段、图表截图、个人职责说明和赛后复盘。</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <SectionHead title="建模流程" />
-  <div class="flow">
-    <div class="step"><b>01</b> 问题理解</div><div class="step"><b>02</b> 模型假设</div><div class="step"><b>03</b> 数据处理</div>
-    <div class="step"><b>04</b> 算法求解</div><div class="step"><b>05</b> 结果分析</div><div class="step"><b>06</b> 论文表达</div>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <SectionHead title="建模流程" />
+      <div class="flow">
+        <div class="step"><b>01</b> 问题理解</div><div class="step"><b>02</b> 模型假设</div><div class="step">
+          <b>03</b> 数据处理
+        </div>
+        <div class="step"><b>04</b> 算法求解</div><div class="step"><b>05</b> 结果分析</div><div class="step">
+          <b>06</b> 论文表达
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <SectionHead title="个人职责" />
-  <div class="grid-2">
-    <Card pad><h3>可确认能力</h3><ul class="evidence-list"><li>参与问题抽象、模型构建、数据分析与论文表达</li><li>熟悉 Python、LaTeX、Markdown、Origin 等工具</li><li>具备跨学科资料检索、团队协作和限时交付意识</li></ul></div>
-    <Card pad><h3>建议补充</h3><ul class="evidence-list"><li>每场比赛实际负责模块：建模/编程/论文/可视化/文献</li><li>使用过的具体模型、算法、指标和图表</li><li>论文摘要、关键图、代码片段和赛后复盘</li></ul></div>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <SectionHead title="个人职责" />
+      <div class="grid-2">
+        <Card pad
+          ><h3>可确认能力</h3><ul class="evidence-list">
+            <li>参与问题抽象、模型构建、数据分析与论文表达</li><li>熟悉 Python、LaTeX、Markdown、Origin 等工具</li><li>
+              具备跨学科资料检索、团队协作和限时交付意识
+            </li>
+          </ul></Card
+        >
+        <Card pad
+          ><h3>建议补充</h3><ul class="evidence-list">
+            <li>每场比赛实际负责模块：建模/编程/论文/可视化/文献</li><li>使用过的具体模型、算法、指标和图表</li><li>
+              论文摘要、关键图、代码片段和赛后复盘
+            </li>
+          </ul></Card
+        >
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero { padding: 80px 0 40px; } .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); }
-  .lead { max-width: 640px; margin-top: 16px; color: var(--muted); font-size: 17px; }
-  .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-  .step { text-align: center; padding: 20px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
-  .step b { display: block; color: var(--accent); font-size: 22px; margin-bottom: 6px; }
-  @media (max-width: 640px) { .flow { grid-template-columns: repeat(3, 1fr); } }
+  .hero {
+    padding: 80px 0 40px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--primary);
+  }
+  .lead {
+    max-width: 640px;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 17px;
+  }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .step {
+    text-align: center;
+    padding: 20px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .step b {
+    display: block;
+    color: var(--accent);
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  @media (max-width: 640px) {
+    .flow {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 </style>

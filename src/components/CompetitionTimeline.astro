@@ -5,7 +5,13 @@ const comps = competitions;
 const levels = ['international', 'national', 'provincial', 'school', 'college'];
 const levelLabel: Record<string, string> = isZh
   ? { international: '国际级', national: '国家级', provincial: '省级', school: '校级', college: '院级' }
-  : { international: 'International', national: 'National', provincial: 'Provincial', school: 'University', college: 'College' };
+  : {
+      international: 'International',
+      national: 'National',
+      provincial: 'Provincial',
+      school: 'University',
+      college: 'College',
+    };
 const levelColors: Record<string, string> = {
   international: '#c9a227',
   national: '#2f6f5e',
@@ -18,37 +24,51 @@ const levelColors: Record<string, string> = {
 <div class="timeline-wrap" id="timeline">
   <div class="timeline-filters">
     <button class="filter-btn active" data-level="all">{isZh ? '全部' : 'All'}</button>
-    {levels.map((level) => (
-      <button class="filter-btn" data-level={level} style={`--level-color:${levelColors[level]}`}>
-        {levelLabel[level]}
-      </button>
-    ))}
+    {
+      levels.map((level) => (
+        <button class="filter-btn" data-level={level} style={`--level-color:${levelColors[level]}`}>
+          {levelLabel[level]}
+        </button>
+      ))
+    }
   </div>
 
   <div class="timeline-track">
-    {comps.map((competition, index) => {
-      const hasDetails = competition.details?.topic && competition.details.topic !== 'TBD';
-      return (
-        <div class="tl-item fade-in" data-level={competition.level} style={`--level-color:${levelColors[competition.level]};animation-delay:${index * 0.08}s`}>
-          <div class="tl-dot"></div>
-          <div class="tl-card">
-            <span class="tl-year">{competition.year}</span>
-            <strong>{competition.title}</strong>
-            <em>{competition.note}</em>
-            {hasDetails && (
-              <div class="tl-details">
-                <p><b>{isZh ? '题目' : 'Topic'}:</b> {competition.details!.topic}</p>
-                <p><b>{isZh ? '角色' : 'Role'}:</b> {competition.details!.role}</p>
-                <p><b>{isZh ? '模型' : 'Model'}:</b> {competition.details!.model}</p>
-              </div>
-            )}
-            {!hasDetails && (
-              <span class="tl-soon">{isZh ? '详细案例即将补充' : 'Detailed case study coming soon'}</span>
-            )}
+    {
+      comps.map((competition, index) => {
+        const hasDetails = competition.details?.topic && competition.details.topic !== 'TBD';
+        return (
+          <div
+            class="tl-item fade-in"
+            data-level={competition.level}
+            style={`--level-color:${levelColors[competition.level]};animation-delay:${index * 0.08}s`}
+          >
+            <div class="tl-dot" />
+            <div class="tl-card">
+              <span class="tl-year">{competition.year}</span>
+              <strong>{competition.title}</strong>
+              <em>{competition.note}</em>
+              {hasDetails && (
+                <div class="tl-details">
+                  <p>
+                    <b>{isZh ? '题目' : 'Topic'}:</b> {competition.details!.topic}
+                  </p>
+                  <p>
+                    <b>{isZh ? '角色' : 'Role'}:</b> {competition.details!.role}
+                  </p>
+                  <p>
+                    <b>{isZh ? '模型' : 'Model'}:</b> {competition.details!.model}
+                  </p>
+                </div>
+              )}
+              {!hasDetails && (
+                <span class="tl-soon">{isZh ? '详细案例即将补充' : 'Detailed case study coming soon'}</span>
+              )}
+            </div>
           </div>
-        </div>
-      );
-    })}
+        );
+      })
+    }
   </div>
 </div>
 
@@ -85,87 +105,186 @@ const levelColors: Record<string, string> = {
     });
   });
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
-      setTimeout(() => entry.target.classList.add('visible', 'lit'), delay);
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.3, rootMargin: '0px 0px -60px 0px' });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
+        setTimeout(() => entry.target.classList.add('visible', 'lit'), delay);
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.3, rootMargin: '0px 0px -60px 0px' },
+  );
 
   document.querySelectorAll('.fade-in').forEach((entry) => observer.observe(entry));
 </script>
 
 <style>
-  .timeline-wrap { margin: 0 auto; }
+  .timeline-wrap {
+    margin: 0 auto;
+  }
 
   .timeline-filters {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
     justify-content: center;
   }
   .filter-btn {
-    padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px;
-    background: var(--paper); color: var(--muted); font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
   }
   .filter-btn.active {
-    border-color: var(--accent); background: var(--accent-soft);
+    border-color: var(--accent);
+    background: var(--accent-soft);
     color: var(--primary);
   }
-  .filter-btn:not(.active):hover { border-color: var(--level-color, var(--accent)); color: var(--level-color, var(--primary)); }
+  .filter-btn:not(.active):hover {
+    border-color: var(--level-color, var(--accent));
+    color: var(--level-color, var(--primary));
+  }
 
-  .timeline-track { position: relative; padding-left: 28px; }
+  .timeline-track {
+    position: relative;
+    padding-left: 28px;
+  }
   .timeline-track::before {
-    content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
-    width: 2px; background: var(--line);
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--line);
   }
 
   .tl-item {
-    position: relative; margin-bottom: 18px;
-    opacity: 0; transform: translateX(-12px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative;
+    margin-bottom: 18px;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
   }
-  .tl-item.visible { opacity: 1; transform: translateX(0); }
-  .tl-item[style*="display: none"] { opacity: 0; }
+  .tl-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .tl-item[style*='display: none'] {
+    opacity: 0;
+  }
 
   .tl-dot {
-    position: absolute; left: -13px; top: 18px;
-    width: 12px; height: 12px; border-radius: 50%;
+    position: absolute;
+    left: -13px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
     background: var(--level-color, var(--accent));
-    box-shadow: 0 0 0 4px rgba(201,162,39,0.12);
+    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.12);
     z-index: 1;
   }
 
   .tl-card {
-    padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius);
-    background: var(--paper); cursor: pointer;
-    transition: all 0.25s ease; position: relative; overflow: hidden;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
   }
   .tl-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px; background: var(--level-color, var(--accent));
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--level-color, var(--accent));
     border-radius: var(--radius) 0 0 var(--radius);
   }
-  .tl-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); border-color: var(--level-color, var(--accent)); }
-  .tl-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
-  .tl-card em { font-style: normal; color: var(--muted); font-size: 13px; }
-  .tl-year { color: var(--level-color, var(--accent)); font-size: 12px; font-weight: 900; float: right; margin-left: 12px; }
+  .tl-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+    border-color: var(--level-color, var(--accent));
+  }
+  .tl-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .tl-card em {
+    font-style: normal;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .tl-year {
+    color: var(--level-color, var(--accent));
+    font-size: 12px;
+    font-weight: 900;
+    float: right;
+    margin-left: 12px;
+  }
 
-  .tl-details { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
-  .tl-item.expanded .tl-details { display: block; }
-  .tl-details p { margin: 4px 0; color: var(--muted); font-size: 13px; }
-  .tl-details b { color: var(--primary); }
+  .tl-details {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .tl-item.expanded .tl-details {
+    display: block;
+  }
+  .tl-details p {
+    margin: 4px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .tl-details b {
+    color: var(--primary);
+  }
 
-  .tl-soon { display: inline-block; margin-top: 8px; font-size: 11px; color: #aaa; font-style: italic; }
+  .tl-soon {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+  }
 
-  .tl-item.lit .tl-dot { box-shadow: 0 0 12px 3px var(--level-color, var(--accent)); }
-  .tl-item.lit .tl-card { border-color: rgba(201,162,39,0.25); }
+  .tl-item.lit .tl-dot {
+    box-shadow: 0 0 12px 3px var(--level-color, var(--accent));
+  }
+  .tl-item.lit .tl-card {
+    border-color: rgba(201, 162, 39, 0.25);
+  }
 
   @media (max-width: 640px) {
-    .timeline-track { padding-left: 20px; }
-    .tl-dot { left: -6px; }
-    .tl-card { padding: 14px; }
-    .tl-card strong { font-size: 14px; }
+    .timeline-track {
+      padding-left: 20px;
+    }
+    .tl-dot {
+      left: -6px;
+    }
+    .tl-card {
+      padding: 14px;
+    }
+    .tl-card strong {
+      font-size: 14px;
+    }
   }
 </style>

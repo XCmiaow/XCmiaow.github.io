@@ -3,67 +3,97 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="写新文章" lang="zh">
-<section class="hero" style="padding:60px 0 20px"><div class="container">
-  <h1 style="font-size:clamp(28px,4vw,40px);color:var(--primary);margin:0">写新文章</h1>
-  <p style="color:var(--muted);margin-top:6px">在手机上直接写博客并发布到网站</p>
-</div></section>
+  <section class="hero" style="padding:60px 0 20px">
+    <div class="container">
+      <h1 style="font-size:clamp(28px,4vw,40px);color:var(--primary);margin:0">写新文章</h1>
+      <p style="color:var(--muted);margin-top:6px">在手机上直接写博客并发布到网站</p>
+    </div>
+  </section>
 
-<section><div class="container" style="max-width:640px">
-  <div id="form-area">
-    <div class="field">
-      <label for="post-lang">语言</label>
-      <select id="post-lang">
-        <option value="zh">中文</option>
-        <option value="en">English</option>
-      </select>
+  <section>
+    <div class="container" style="max-width:640px">
+      <div id="form-area">
+        <div class="field">
+          <label for="post-lang">语言</label>
+          <select id="post-lang">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="post-title">标题 *</label>
+          <input id="post-title" type="text" placeholder="文章标题" />
+        </div>
+        <div class="field">
+          <label for="post-desc">摘要</label>
+          <input id="post-desc" type="text" placeholder="简短描述（可选）" />
+        </div>
+        <div class="field">
+          <label for="post-tags">标签</label>
+          <input id="post-tags" type="text" placeholder="用逗号分隔，如：有机化学,笔记" />
+        </div>
+        <div class="field">
+          <label for="post-body"
+            >正文 * <span style="font-weight:400;color:var(--muted);font-size:13px">支持 Markdown</span></label
+          >
+          <textarea id="post-body" rows="12" placeholder="在这里写文章内容..."></textarea>
+        </div>
+        <div class="field">
+          <label for="gh-token">GitHub Token</label>
+          <input id="gh-token" type="password" placeholder="personal access token" />
+          <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
+            仅需输入一次，保存在本地。权限需要 <code>public_repo</code>。
+          </p>
+        </div>
+        <div id="status"></div>
+        <button
+          class="btn primary"
+          id="publish-btn"
+          type="button"
+          style="width:100%;justify-content:center;min-height:48px">发布文章</button
+        >
+        <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">
+          发布后 GitHub Actions 会自动构建部署，约 1-2 分钟生效
+        </p>
+      </div>
     </div>
-    <div class="field">
-      <label for="post-title">标题 *</label>
-      <input id="post-title" type="text" placeholder="文章标题" />
-    </div>
-    <div class="field">
-      <label for="post-desc">摘要</label>
-      <input id="post-desc" type="text" placeholder="简短描述（可选）" />
-    </div>
-    <div class="field">
-      <label for="post-tags">标签</label>
-      <input id="post-tags" type="text" placeholder="用逗号分隔，如：有机化学,笔记" />
-    </div>
-    <div class="field">
-      <label for="post-body">正文 * <span style="font-weight:400;color:var(--muted);font-size:13px">支持 Markdown</span></label>
-      <textarea id="post-body" rows="12" placeholder="在这里写文章内容..."></textarea>
-    </div>
-    <div class="field">
-      <label for="gh-token">GitHub Token</label>
-      <input id="gh-token" type="password" placeholder="personal access token" />
-      <p style="font-size:12px;color:var(--muted);margin:4px 0 0">仅需输入一次，保存在本地。权限需要 <code>public_repo</code>。</p>
-    </div>
-    <div id="status"></div>
-    <button class="btn primary" id="publish-btn" type="button" style="width:100%;justify-content:center;min-height:48px">发布文章</button>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">发布后 GitHub Actions 会自动构建部署，约 1-2 分钟生效</p>
-  </div>
-</div></section>
+  </section>
 </BaseLayout>
 
 <script>
-  (function(){
+  (function () {
     // Restore saved token
     var savedToken = localStorage.getItem('gh-blog-token');
     var tokenInput = document.getElementById('gh-token');
     if (savedToken && tokenInput) tokenInput.value = savedToken;
 
-    document.getElementById('publish-btn').addEventListener('click', async function() {
+    document.getElementById('publish-btn').addEventListener('click', async function () {
       var title = document.getElementById('post-title').value.trim();
       var body = document.getElementById('post-body').value.trim();
       var lang = document.getElementById('post-lang').value;
       var desc = document.getElementById('post-desc').value.trim();
-      var tags = document.getElementById('post-tags').value.split(',').map(function(t){return t.trim()}).filter(Boolean);
+      var tags = document
+        .getElementById('post-tags')
+        .value.split(',')
+        .map(function (t) {
+          return t.trim();
+        })
+        .filter(Boolean);
       var token = tokenInput.value.trim();
       var status = document.getElementById('status');
 
-      if (!title) { status.innerHTML = '<p style="color:var(--accent)">请输入标题</p>'; return; }
-      if (!body) { status.innerHTML = '<p style="color:var(--accent)">请输入正文</p>'; return; }
-      if (!token) { status.innerHTML = '<p style="color:var(--accent)">请输入 GitHub Token</p>'; return; }
+      if (!title) {
+        status.innerHTML = '<p style="color:var(--accent)">请输入标题</p>';
+        return;
+      }
+      if (!body) {
+        status.innerHTML = '<p style="color:var(--accent)">请输入正文</p>';
+        return;
+      }
+      if (!token) {
+        status.innerHTML = '<p style="color:var(--accent)">请输入 GitHub Token</p>';
+        return;
+      }
 
       // Save token
       localStorage.setItem('gh-blog-token', token);
@@ -72,15 +102,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       document.getElementById('publish-btn').disabled = true;
 
       // Generate slug from title
-      var slug = title.toLowerCase()
-        .replace(/[^\w\s一-鿿-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .substring(0, 80) || 'post';
+      var slug =
+        title
+          .toLowerCase()
+          .replace(/[^\w\s一-鿿-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '')
+          .substring(0, 80) || 'post';
 
       // Build frontmatter
-      var frontmatter = '---\ntitle: "' + title + '"\ndescription: "' + (desc || '') + '"\ndate: ' + new Date().toISOString().split('T')[0] + '\nlang: ' + lang + '\ntags: [' + tags.map(function(t){return '"'+t+'"'}).join(',') + ']\ndraft: false\n---\n\n';
+      var frontmatter =
+        '---\ntitle: "' +
+        title +
+        '"\ndescription: "' +
+        (desc || '') +
+        '"\ndate: ' +
+        new Date().toISOString().split('T')[0] +
+        '\nlang: ' +
+        lang +
+        '\ntags: [' +
+        tags
+          .map(function (t) {
+            return '"' + t + '"';
+          })
+          .join(',') +
+        ']\ndraft: false\n---\n\n';
       var content = frontmatter + body;
 
       // Encode for GitHub API
@@ -92,12 +139,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       try {
         var res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
           method: 'PUT',
-          headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: 'blog: add ' + slug,
             content: encoded,
             branch: branch,
-          })
+          }),
         });
 
         if (res.ok) {
@@ -110,7 +157,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           var err = await res.json();
           status.innerHTML = '<p style="color:#c00">❌ 发布失败: ' + (err.message || '未知错误') + '</p>';
         }
-      } catch(e) {
+      } catch (e) {
         status.innerHTML = '<p style="color:#c00">❌ 网络错误: ' + e.message + '</p>';
       }
 
@@ -120,14 +167,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </script>
 
 <style>
-  .field { margin-bottom: 20px; }
-  .field label { display: block; font-weight: 700; color: var(--primary); margin-bottom: 6px; font-size: 14px; }
-  .field input, .field textarea, .field select {
-    width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius);
-    background: var(--paper); color: var(--ink); font-size: 15px; font-family: inherit;
-    box-sizing: border-box; transition: border-color .2s;
+  .field {
+    margin-bottom: 20px;
   }
-  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--accent); }
-  .field textarea { resize: vertical; min-height: 200px; line-height: 1.6; }
-  #status p { margin: 12px 0; font-size: 15px; }
+  .field label {
+    display: block;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 200px;
+    line-height: 1.6;
+  }
+  #status p {
+    margin: 12px 0;
+    font-size: 15px;
+  }
 </style>

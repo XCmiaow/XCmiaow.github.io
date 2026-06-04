@@ -4,120 +4,296 @@ import en from '../../data/en.json';
 ---
 
 <BaseLayout title="Xujie Fang | ChemAI Lab" lang="en">
-<section class="hero"><div class="container">
-  <div class="hero-icon">🧪</div>
-  <h1>ChemAI Lab</h1>
-  <p class="lead">Machine Learning &amp; Quantum Chemistry Driven Chemical Research Platform</p>
-  <div class="tag-row">
-    <span class="tag">Python</span>
-    <span class="tag">PyTorch</span>
-    <span class="tag">RDKit</span>
-    <span class="tag">v0.2.0</span>
-    <span class="tag">Apache 2.0</span>
-  </div>
-  <a class="btn" href="https://github.com/XCmiaow/chem-ai-lab" target="_blank" rel="noopener noreferrer" style="margin-top:20px;display:inline-flex;align-items:center;gap:8px;">
-    <span>📦</span> GitHub Repository
-  </a>
-</div></section>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-icon">🧪</div>
+      <h1>ChemAI Lab</h1>
+      <p class="lead">Machine Learning &amp; Quantum Chemistry Driven Chemical Research Platform</p>
+      <div class="tag-row">
+        <span class="tag">Python</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">RDKit</span>
+        <span class="tag">v0.2.0</span>
+        <span class="tag">Apache 2.0</span>
+      </div>
+      <a
+        class="btn"
+        href="https://github.com/XCmiaow/chem-ai-lab"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="margin-top:20px;display:inline-flex;align-items:center;gap:8px;"
+      >
+        <span>📦</span> GitHub Repository
+      </a>
+    </div>
+  </section>
 
-<section><div class="container">
-  <div class="section-head"><h2>Overview</h2></div>
-  <div class="card pad">
-    <p>ChemAI Lab is a unified chemistry + AI research platform designed to provide an end-to-end toolchain at the intersection of computational chemistry and machine learning. It integrates multiple open-source cheminformatics tools (RDKit, Chemprop, DeepChem, DScribe, MLatom, Molfeat) with a unified abstraction layer for data handling, feature engineering, model training, explainable AI, and quantum chemistry interfaces.</p>
-    <p style="margin-top:14px;">The project currently focuses on asymmetric organocatalysis with chiral phosphoric acids (CPAs), following a scientific roadmap of 5 stages across 100 development phases — from data infrastructure through to inverse molecular design.</p>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <div class="section-head"><h2>Overview</h2></div>
+      <div class="card pad">
+        <p>
+          ChemAI Lab is a unified chemistry + AI research platform designed to provide an end-to-end toolchain at the
+          intersection of computational chemistry and machine learning. It integrates multiple open-source
+          cheminformatics tools (RDKit, Chemprop, DeepChem, DScribe, MLatom, Molfeat) with a unified abstraction layer
+          for data handling, feature engineering, model training, explainable AI, and quantum chemistry interfaces.
+        </p>
+        <p style="margin-top:14px;">
+          The project currently focuses on asymmetric organocatalysis with chiral phosphoric acids (CPAs), following a
+          scientific roadmap of 5 stages across 100 development phases — from data infrastructure through to inverse
+          molecular design.
+        </p>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <div class="section-head"><h2>Tech Stack</h2></div>
-  <div class="grid-4">
-    <div class="card pad tech-card"><strong>PyTorch</strong><span>Deep Learning</span></div>
-    <div class="card pad tech-card"><strong>Lightning</strong><span>Training Pipeline</span></div>
-    <div class="card pad tech-card"><strong>RDKit</strong><span>Cheminformatics</span></div>
-    <div class="card pad tech-card"><strong>scikit-learn</strong><span>Classic ML</span></div>
-    <div class="card pad tech-card"><strong>NumPy</strong><span>Numerical</span></div>
-    <div class="card pad tech-card"><strong>Pandas</strong><span>Data Processing</span></div>
-    <div class="card pad tech-card"><strong>SciPy</strong><span>Scientific</span></div>
-    <div class="card pad tech-card"><strong>loguru</strong><span>Logging</span></div>
-    <div class="card pad tech-card"><strong>Chemprop</strong><span>Optional</span></div>
-    <div class="card pad tech-card"><strong>DeepChem</strong><span>Optional</span></div>
-    <div class="card pad tech-card"><strong>DScribe</strong><span>Optional</span></div>
-    <div class="card pad tech-card"><strong>MLatom</strong><span>Optional</span></div>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <div class="section-head"><h2>Tech Stack</h2></div>
+      <div class="grid-4">
+        <div class="card pad tech-card"><strong>PyTorch</strong><span>Deep Learning</span></div>
+        <div class="card pad tech-card"><strong>Lightning</strong><span>Training Pipeline</span></div>
+        <div class="card pad tech-card"><strong>RDKit</strong><span>Cheminformatics</span></div>
+        <div class="card pad tech-card"><strong>scikit-learn</strong><span>Classic ML</span></div>
+        <div class="card pad tech-card"><strong>NumPy</strong><span>Numerical</span></div>
+        <div class="card pad tech-card"><strong>Pandas</strong><span>Data Processing</span></div>
+        <div class="card pad tech-card"><strong>SciPy</strong><span>Scientific</span></div>
+        <div class="card pad tech-card"><strong>loguru</strong><span>Logging</span></div>
+        <div class="card pad tech-card"><strong>Chemprop</strong><span>Optional</span></div>
+        <div class="card pad tech-card"><strong>DeepChem</strong><span>Optional</span></div>
+        <div class="card pad tech-card"><strong>DScribe</strong><span>Optional</span></div>
+        <div class="card pad tech-card"><strong>MLatom</strong><span>Optional</span></div>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <div class="section-head"><h2>Module Architecture</h2><p>16 subpackages covering the full research workflow</p></div>
-  <div class="grid-4">
-    <article class="card pad module-card"><span class="module-icon">📦</span><h3>data</h3><p>Molecular data abstraction: Molecule, Dataset, FormatConverter</p></article>
-    <article class="card pad module-card"><span class="module-icon">🔬</span><h3>features</h3><p>Molecular featurization: MolecularFeaturizer, FeatureStore</p></article>
-    <article class="card pad module-card"><span class="module-icon">🧠</span><h3>models</h3><p>Model registry: ModelHub, ModelRegistry</p></article>
-    <article class="card pad module-card"><span class="module-icon">⚡</span><h3>nn</h3><p>Neural network modules &amp; custom layers</p></article>
-    <article class="card pad module-card"><span class="module-icon">🔗</span><h3>pipeline</h3><p>Workflow orchestration: Workflow, PipelineStep</p></article>
-    <article class="card pad module-card"><span class="module-icon">⚛️</span><h3>qm</h3><p>Quantum chemistry interface: QMInterface</p></article>
-    <article class="card pad module-card"><span class="module-icon">🤖</span><h3>automl</h3><p>Auto hyperparameter optimization</p></article>
-    <article class="card pad module-card"><span class="module-icon">📊</span><h3>evaluation</h3><p>Model evaluation metrics</p></article>
-    <article class="card pad module-card"><span class="module-icon">🔍</span><h3>xai</h3><p>Explainable AI</p></article>
-    <article class="card pad module-card"><span class="module-icon">🎨</span><h3>viz</h3><p>Data visualization</p></article>
-    <article class="card pad module-card"><span class="module-icon">📁</span><h3>hub / pretrained</h3><p>Model zoo &amp; pretrained weights</p></article>
-    <article class="card pad module-card"><span class="module-icon">⚙️</span><h3>cli / config / utils</h3><p>CLI, config management, utilities</p></article>
-    <article class="card pad module-card"><span class="module-icon">🔁</span><h3>serialization</h3><p>Serialization utilities</p></article>
-    <article class="card pad module-card"><span class="module-icon">🖥️</span><h3>hub</h3><p>Model hub &amp; version management</p></article>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>Module Architecture</h2><p>16 subpackages covering the full research workflow</p>
+      </div>
+      <div class="grid-4">
+        <article class="card pad module-card">
+          <span class="module-icon">📦</span><h3>data</h3><p>
+            Molecular data abstraction: Molecule, Dataset, FormatConverter
+          </p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🔬</span><h3>features</h3><p>
+            Molecular featurization: MolecularFeaturizer, FeatureStore
+          </p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🧠</span><h3>models</h3><p>Model registry: ModelHub, ModelRegistry</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">⚡</span><h3>nn</h3><p>Neural network modules &amp; custom layers</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🔗</span><h3>pipeline</h3><p>Workflow orchestration: Workflow, PipelineStep</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">⚛️</span><h3>qm</h3><p>Quantum chemistry interface: QMInterface</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🤖</span><h3>automl</h3><p>Auto hyperparameter optimization</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">📊</span><h3>evaluation</h3><p>Model evaluation metrics</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🔍</span><h3>xai</h3><p>Explainable AI</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🎨</span><h3>viz</h3><p>Data visualization</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">📁</span><h3>hub / pretrained</h3><p>Model zoo &amp; pretrained weights</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">⚙️</span><h3>cli / config / utils</h3><p>CLI, config management, utilities</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🔁</span><h3>serialization</h3><p>Serialization utilities</p>
+        </article>
+        <article class="card pad module-card">
+          <span class="module-icon">🖥️</span><h3>hub</h3><p>Model hub &amp; version management</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <div class="section-head"><h2>Scientific Roadmap</h2><p>Asymmetric organocatalysis with chiral phosphoric acids (CPAs) — 100 phases across 5 stages</p></div>
-  <div class="grid-2">
-    <div class="card pad stage"><div class="stage-num">1</div><h3>Data Infrastructure</h3><p>Standardized formats, descriptor libraries, reaction encoding, visualization tools</p><span class="stage-phase">Phases 1-20</span></div>
-    <div class="card pad stage"><div class="stage-num">2</div><h3>Asymmetric Catalysis Models</h3><p>CPA-specific descriptors, enantioselectivity prediction, SHAP analysis, multi-task yield/ee models</p><span class="stage-phase">Phases 21-40</span></div>
-    <div class="card pad stage"><div class="stage-num">3</div><h3>Few-Shot Learning</h3><p>Meta-learning, data augmentation, active learning, transfer learning</p><span class="stage-phase">Phases 41-60</span></div>
-    <div class="card pad stage"><div class="stage-num">4</div><h3>Mechanism-Driven Explainable AI</h3><p>DFT feature fusion, reaction surface modeling, causal inference, physics-constrained NNs</p><span class="stage-phase">Phases 61-80</span></div>
-    <div class="card pad stage" style="grid-column:1/-1;max-width:520px;margin:0 auto;"><div class="stage-num">5</div><h3>Inverse Design</h3><p>Target-driven molecular generation, inverse condition optimization, automated lab loops, multi-objective optimization</p><span class="stage-phase">Phases 81-100</span></div>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>Scientific Roadmap</h2><p>
+          Asymmetric organocatalysis with chiral phosphoric acids (CPAs) — 100 phases across 5 stages
+        </p>
+      </div>
+      <div class="grid-2">
+        <div class="card pad stage">
+          <div class="stage-num">1</div><h3>Data Infrastructure</h3><p>
+            Standardized formats, descriptor libraries, reaction encoding, visualization tools
+          </p><span class="stage-phase">Phases 1-20</span>
+        </div>
+        <div class="card pad stage">
+          <div class="stage-num">2</div><h3>Asymmetric Catalysis Models</h3><p>
+            CPA-specific descriptors, enantioselectivity prediction, SHAP analysis, multi-task yield/ee models
+          </p><span class="stage-phase">Phases 21-40</span>
+        </div>
+        <div class="card pad stage">
+          <div class="stage-num">3</div><h3>Few-Shot Learning</h3><p>
+            Meta-learning, data augmentation, active learning, transfer learning
+          </p><span class="stage-phase">Phases 41-60</span>
+        </div>
+        <div class="card pad stage">
+          <div class="stage-num">4</div><h3>Mechanism-Driven Explainable AI</h3><p>
+            DFT feature fusion, reaction surface modeling, causal inference, physics-constrained NNs
+          </p><span class="stage-phase">Phases 61-80</span>
+        </div>
+        <div class="card pad stage" style="grid-column:1/-1;max-width:520px;margin:0 auto;">
+          <div class="stage-num">5</div><h3>Inverse Design</h3><p>
+            Target-driven molecular generation, inverse condition optimization, automated lab loops, multi-objective
+            optimization
+          </p><span class="stage-phase">Phases 81-100</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section><div class="container">
-  <div class="section-head"><h2>Development Standards</h2></div>
-  <div class="card pad">
-    <ul class="spec-list">
-      <li><b>Code Style</b><span>Ruff + Black (line length 100, target py311)</span></li>
-      <li><b>Type Checking</b><span>Mypy (non-strict)</span></li>
-      <li><b>Testing</b><span>Pytest + plugins (coverage, benchmarks)</span></li>
-      <li><b>Documentation</b><span>Sphinx + mkdocs</span></li>
-      <li><b>Git Hooks</b><span>pre-commit automated checks</span></li>
-      <li><b>CI</b><span>GitHub Actions</span></li>
-      <li><b>License</b><span>Apache 2.0</span></li>
-    </ul>
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      <div class="section-head"><h2>Development Standards</h2></div>
+      <div class="card pad">
+        <ul class="spec-list">
+          <li><b>Code Style</b><span>Ruff + Black (line length 100, target py311)</span></li>
+          <li><b>Type Checking</b><span>Mypy (non-strict)</span></li>
+          <li><b>Testing</b><span>Pytest + plugins (coverage, benchmarks)</span></li>
+          <li><b>Documentation</b><span>Sphinx + mkdocs</span></li>
+          <li><b>Git Hooks</b><span>pre-commit automated checks</span></li>
+          <li><b>CI</b><span>GitHub Actions</span></li>
+          <li><b>License</b><span>Apache 2.0</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero { padding: 80px 0 40px; text-align: center; }
-  .hero-icon { font-size: 4rem; margin-bottom: 0.5rem; }
-  .hero h1 { font-size: clamp(36px, 6vw, 64px); color: var(--primary); margin: 0; }
-  .lead { max-width: 580px; margin: 14px auto 0; color: var(--muted); font-size: 17px; }
-  .hero .tag-row { justify-content: center; margin-top: 16px; }
+  .hero {
+    padding: 80px 0 40px;
+    text-align: center;
+  }
+  .hero-icon {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--primary);
+    margin: 0;
+  }
+  .lead {
+    max-width: 580px;
+    margin: 14px auto 0;
+    color: var(--muted);
+    font-size: 17px;
+  }
+  .hero .tag-row {
+    justify-content: center;
+    margin-top: 16px;
+  }
 
-  .tech-card { text-align: center; }
-  .tech-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
-  .tech-card span { font-size: 13px; color: var(--muted); }
+  .tech-card {
+    text-align: center;
+  }
+  .tech-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .tech-card span {
+    font-size: 13px;
+    color: var(--muted);
+  }
 
-  .module-card { }
-  .module-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
-  .module-card h3 { font-size: 15px; margin-bottom: 4px; color: var(--primary); }
-  .module-card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+  .module-card {
+  }
+  .module-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .module-card h3 {
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: var(--primary);
+  }
+  .module-card p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+  }
 
-  .stage { position: relative; }
-  .stage-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 900; margin-bottom: 10px; }
-  .stage h3 { font-size: 15px; margin-bottom: 6px; color: var(--primary); }
-  .stage p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.55; }
-  .stage-phase { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--accent); font-weight: 700; }
+  .stage {
+    position: relative;
+  }
+  .stage-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .stage h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: var(--primary);
+  }
+  .stage p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .stage-phase {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
 
-  .spec-list { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
-  .spec-list li { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-  .spec-list li:last-child { border-bottom: none; }
-  .spec-list b { color: var(--primary); }
-  .spec-list span { color: var(--muted); }
+  .spec-list {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .spec-list li {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .spec-list li:last-child {
+    border-bottom: none;
+  }
+  .spec-list b {
+    color: var(--primary);
+  }
+  .spec-list span {
+    color: var(--muted);
+  }
 </style>

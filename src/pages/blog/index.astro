@@ -3,38 +3,77 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog'))
-  .filter(p => p.data.lang === 'zh' && !p.data.draft)
+  .filter((p) => p.data.lang === 'zh' && !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title="方绪杰 | 博客" description="关于有机化学、数学建模、计算化学与 AI 工具链的学习笔记" lang="zh">
-<section class="hero" style="padding:80px 0 30px"><div class="container">
-  <h1 style="font-size:clamp(36px,6vw,54px);color:var(--primary);margin:0">博客</h1>
-  <p style="color:var(--muted);margin-top:8px">学习笔记 · 竞赛复盘 · 工具教程</p>
-</div></section>
+  <section class="hero" style="padding:80px 0 30px">
+    <div class="container">
+      <h1 style="font-size:clamp(36px,6vw,54px);color:var(--primary);margin:0">博客</h1>
+      <p style="color:var(--muted);margin-top:8px">学习笔记 · 竞赛复盘 · 工具教程</p>
+    </div>
+  </section>
 
-<section><div class="container">
-  {posts.length === 0 && <p style="color:var(--muted);text-align:center;padding:40px 0">暂无文章</p>}
-  <div class="blog-list">
-    {posts.map(post => (
-      <a href={`/blog/${post.slug}`} class="blog-card">
-        <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' })}</time>
-        <h2>{post.data.title}</h2>
-        {post.data.description && <p>{post.data.description}</p>}
-        <div class="tag-row" style="margin-top:12px">
-          {(post.data.tags || []).map(t => <span class="tag">{t}</span>)}
-        </div>
-      </a>
-    ))}
-  </div>
-</div></section>
+  <section>
+    <div class="container">
+      {posts.length === 0 && <p style="color:var(--muted);text-align:center;padding:40px 0">暂无文章</p>}
+      <div class="blog-list">
+        {
+          posts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="blog-card">
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <h2>{post.data.title}</h2>
+              {post.data.description && <p>{post.data.description}</p>}
+              <div class="tag-row" style="margin-top:12px">
+                {(post.data.tags || []).map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .blog-list { display: grid; gap: 20px; }
-  .blog-card { display: block; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); transition: transform .2s, box-shadow .2s; }
-  .blog-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
-  .blog-card time { display: block; color: var(--accent); font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-  .blog-card h2 { margin: 0; color: var(--primary); font-size: 20px; }
-  .blog-card p { color: var(--muted); margin: 8px 0 0; font-size: 15px; }
+  .blog-list {
+    display: grid;
+    gap: 20px;
+  }
+  .blog-card {
+    display: block;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .blog-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .blog-card time {
+    display: block;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .blog-card h2 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 20px;
+  }
+  .blog-card p {
+    color: var(--muted);
+    margin: 8px 0 0;
+    font-size: 15px;
+  }
 </style>

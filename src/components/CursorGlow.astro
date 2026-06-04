@@ -1,13 +1,22 @@
 <div id="cursor-glow" aria-hidden="true"></div>
 
 <script>
-  (function() {
+  (function () {
     var glow = document.getElementById('cursor-glow');
     if (!glow) return;
-    var mx = -200, my = -200, cx = -200, cy = -200;
+    var mx = -200,
+      my = -200,
+      cx = -200,
+      cy = -200;
 
-    document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
-    document.addEventListener('mouseleave', function() { mx = -200; my = -200; });
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+    });
+    document.addEventListener('mouseleave', function () {
+      mx = -200;
+      my = -200;
+    });
 
     function animate() {
       cx += (mx - cx) * 0.08;
@@ -21,13 +30,33 @@
 
 <style>
   #cursor-glow {
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2147483647;
-    width: 160px; height: 160px; border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(201,162,39,0.06) 0%, rgba(201,162,39,0.02) 40%, transparent 70%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2147483647;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(201, 162, 39, 0.06) 0%,
+      rgba(201, 162, 39, 0.02) 40%,
+      transparent 70%
+    );
     will-change: transform;
   }
-  [data-theme="dark"] #cursor-glow {
-    background: radial-gradient(circle at center, rgba(224,189,78,0.08) 0%, rgba(224,189,78,0.03) 40%, transparent 70%);
+  [data-theme='dark'] #cursor-glow {
+    background: radial-gradient(
+      circle at center,
+      rgba(224, 189, 78, 0.08) 0%,
+      rgba(224, 189, 78, 0.03) 40%,
+      transparent 70%
+    );
   }
-  @media (max-width: 980px) { #cursor-glow { display: none !important; } }
+  @media (max-width: 980px) {
+    #cursor-glow {
+      display: none !important;
+    }
+  }
 </style>

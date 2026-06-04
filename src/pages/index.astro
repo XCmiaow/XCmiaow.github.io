@@ -11,186 +11,602 @@ const edu = zh.education;
 const c = common;
 ---
 
-<BaseLayout title={`${p.name} | 林产化工本科生 | 数学建模与 AI 工具链`} description={`${p.name}，南京林业大学化学工程学院林产化工专业本科生，GPA ${c.education.gpa}，班级第${c.education.rankClass}，专业第${c.education.rankMajor}。`} lang="zh">
-
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="parallax-layer" data-speed="0.15">
-      <h1 data-animate>{p.name}</h1>
-      <p class="subtitle">南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
-      <p class="lead">GPA {c.education.gpa}，班级第 {c.education.rankClass}，专业第 {c.education.rankMajor}。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。</p>
-      <div class="hero-actions no-print">
-        <a class="btn primary" href="#honors">查看核心成果</a>
-        <a class="btn" href="/resume-onepage">一页投递版 · PDF</a>
+<BaseLayout
+  title={`${p.name} | 林产化工本科生 | 数学建模与 AI 工具链`}
+  description={`${p.name}，南京林业大学化学工程学院林产化工专业本科生，GPA ${c.education.gpa}，班级第${c.education.rankClass}，专业第${c.education.rankMajor}。`}
+  lang="zh"
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="parallax-layer" data-speed="0.15">
+        <h1 data-animate>{p.name}</h1>
+        <p class="subtitle">南京林业大学 · 化学工程学院 · 林产化工专业本科生</p>
+        <p class="lead">
+          GPA {c.education.gpa}，班级第 {c.education.rankClass}，专业第 {
+            c.education.rankMajor
+          }。以林产化工和有机化学机理为专业根基，以数学建模、Python 与 AI 工具链拓展问题解决能力。
+        </p>
+        <div class="hero-actions no-print">
+          <a class="btn primary" href="#honors">查看核心成果</a>
+          <a class="btn" href="/resume-onepage">一页投递版 · PDF</a>
+        </div>
+        <div class="tag-row">
+          <span class="tag">GPA {c.education.gpa}</span><span class="tag">班级第 {c.education.rankClass}</span><span
+            class="tag">专业第 {c.education.rankMajor}</span
+          ><span class="tag">数学建模</span><span class="tag">AI 工具链</span>
+        </div>
       </div>
-      <div class="tag-row">
-        <span class="tag">GPA {c.education.gpa}</span><span class="tag">班级第 {c.education.rankClass}</span><span class="tag">专业第 {c.education.rankMajor}</span><span class="tag">数学建模</span><span class="tag">AI 工具链</span>
+      <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
+        <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
+        <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
+        <div class="stat-grid">
+          <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
+          <div class="stat"><strong>第 {c.education.rankClass}</strong><span>班级排名</span></div>
+          <div class="stat"><strong>第 {c.education.rankMajor}</strong><span>专业排名</span></div>
+          <div class="stat"><strong>{edu.year}</strong><span>当前年级</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <SectionHead title="个人简介" description="以学业成绩为基础，以数学建模为能力证明。" />
+      <Card pad animate class="about-copy">
+        <p>
+          我目前就读于{edu.school}{edu.college}{edu.major}，GPA {c.education.gpa}，排名班级第 {
+            c.education.rankClass
+          }、专业第 {
+            c.education.rankMajor
+          }。选择林产化工这个方向，是因为它处于化学基础与工程应用的交叉点上——既要理解有机反应的微观机理，又要处理实际工艺中的宏观问题。这种从机理到应用的跨度，是我学习和思考的核心动力。
+        </p>
+        <p>
+          在课堂之外，我花了大量时间在数学建模上。参加全国大学生数学建模竞赛（江苏省一等奖）、MCM/ICM（连续两年 H
+          奖）的经历训练了我从现实问题中抽象变量、建立模型、用数据验证假设的能力。这套方法论并不只是用来比赛，它改变了我解决问题的思维方式——不管面对的是化学反应还是复杂系统，第一步永远是拆解问题、定义边界。
+        </p>
+        <p>
+          进入大二后，我逐渐对计算化学和 AI 辅助有机合成产生了兴趣。我在持续阅读 Clayden 和 March
+          等经典教材的同时，也在自学深度学习基础，关注图神经网络在分子表示学习中的应用，以及 LLM 和 Agent
+          工作流在科研场景中的落地可能。长期来看，我希望成为一名能从化工问题出发、用计算和 AI 工具来求解的研究者。
+        </p>
+      </Card>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <SectionHead title="教育背景" />
+      <div class="education-card" data-animate>
+        <div class="school">
+          <h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p>
+        </div>
+        <div class="rank-list">
+          <div class="rank-item"><span>GPA</span><strong>{c.education.gpa}</strong></div>
+          <div class="rank-item"><span>班级排名</span><strong>第 {c.education.rankClass}</strong></div>
+          <div class="rank-item"><span>专业排名</span><strong>第 {c.education.rankMajor}</strong></div>
+          <div class="rank-item"><span>当前年级</span><strong>{edu.year}</strong></div>
+        </div>
       </div>
     </div>
-    <aside class="portrait-card tilt-card parallax-layer" data-speed="-0.05" data-animate="right">
-      <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
-      <div class="profile-meta"><strong>{p.name} · {c.person.githubUser}</strong><span>{p.tagline}</span></div>
-      <div class="stat-grid">
-        <div class="stat"><strong>{c.education.gpa}</strong><span>GPA</span></div>
-        <div class="stat"><strong>第 {c.education.rankClass}</strong><span>班级排名</span></div>
-        <div class="stat"><strong>第 {c.education.rankMajor}</strong><span>专业排名</span></div>
-        <div class="stat"><strong>{edu.year}</strong><span>当前年级</span></div>
+  </section>
+
+  <section id="interests">
+    <div class="container">
+      <SectionHead title="研究兴趣" description={zh.researchInterests.tagline} />
+      <Card pad animate>
+        <p class="interest-summary">{zh.researchInterests.summary}</p>
+        <div class="grid-2" style="margin-top:20px">
+          {
+            zh.researchInterests.areas.map((a) => (
+              <div class="interest-card">
+                <>
+                  <strong>{a.name}</strong>
+                  <p>{a.note}</p>
+                </>
+              </div>
+            ))
+          }
+        </div>
+      </Card>
+    </div>
+  </section>
+
+  <section id="highlights">
+    <div class="container">
+      <SectionHead title="核心亮点" />
+      <div class="grid-4">
+        {
+          zh.highlights.map((h) => (
+            <article class="card pad highlight" data-animate="up">
+              <>
+                <span class="num">{h.id}</span>
+                <h3>{h.title}</h3>
+                <p>{h.desc}</p>
+              </>
+            </article>
+          ))
+        }
       </div>
-    </aside>
-  </div>
-</section>
-
-<section id="about"><div class="container">
-  <SectionHead title="个人简介" description="以学业成绩为基础，以数学建模为能力证明。" />
-  <Card pad animate class="about-copy">
-    <p>我目前就读于{edu.school}{edu.college}{edu.major}，GPA {c.education.gpa}，排名班级第 {c.education.rankClass}、专业第 {c.education.rankMajor}。选择林产化工这个方向，是因为它处于化学基础与工程应用的交叉点上——既要理解有机反应的微观机理，又要处理实际工艺中的宏观问题。这种从机理到应用的跨度，是我学习和思考的核心动力。</p>
-    <p>在课堂之外，我花了大量时间在数学建模上。参加全国大学生数学建模竞赛（江苏省一等奖）、MCM/ICM（连续两年 H 奖）的经历训练了我从现实问题中抽象变量、建立模型、用数据验证假设的能力。这套方法论并不只是用来比赛，它改变了我解决问题的思维方式——不管面对的是化学反应还是复杂系统，第一步永远是拆解问题、定义边界。</p>
-    <p>进入大二后，我逐渐对计算化学和 AI 辅助有机合成产生了兴趣。我在持续阅读 Clayden 和 March 等经典教材的同时，也在自学深度学习基础，关注图神经网络在分子表示学习中的应用，以及 LLM 和 Agent 工作流在科研场景中的落地可能。长期来看，我希望成为一名能从化工问题出发、用计算和 AI 工具来求解的研究者。</p>
-  </Card>
-</div></section>
-
-<section id="education"><div class="container">
-  <SectionHead title="教育背景" />
-  <div class="education-card" data-animate>
-    <div class="school"><h3>{edu.school}</h3><p>{edu.college} · {edu.major}</p><p>{edu.period} · {edu.degree}</p></div>
-    <div class="rank-list">
-      <div class="rank-item"><span>GPA</span><strong>{c.education.gpa}</strong></div>
-      <div class="rank-item"><span>班级排名</span><strong>第 {c.education.rankClass}</strong></div>
-      <div class="rank-item"><span>专业排名</span><strong>第 {c.education.rankMajor}</strong></div>
-      <div class="rank-item"><span>当前年级</span><strong>{edu.year}</strong></div>
     </div>
-  </div>
-</div></section>
+  </section>
 
-<section id="interests"><div class="container">
-  <SectionHead title="研究兴趣" description={zh.researchInterests.tagline} />
-  <Card pad animate>
-    <p class="interest-summary">{zh.researchInterests.summary}</p>
-    <div class="grid-2" style="margin-top:20px">
-      {zh.researchInterests.areas.map(a => (
-        <div class="interest-card"><strong>{a.name}</strong><p>{a.note}</p></div>
-      ))}
+  <section id="honors">
+    <div class="container">
+      <SectionHead title="获奖与竞赛" description="点击展开详情，按级别筛选。" />
+      <CompetitionTimeline lang="zh" competitions={zh.competitions} />
     </div>
-  </Card>
-</div></section>
+  </section>
 
-<section id="highlights"><div class="container">
-  <SectionHead title="核心亮点" />
-  <div class="grid-4">
-    {zh.highlights.map(h => (<article class="card pad highlight" data-animate="up"><span class="num">{h.id}</span><h3>{h.title}</h3><p>{h.desc}</p></article>))}
-  </div>
-</div></section>
+  <section id="skills">
+    <div class="container">
+      <SectionHead title="技能专长" />
+      <div class="grid-4">
+        {
+          zh.skills.map((s) => (
+            <article class="card pad skill-card" data-animate="up">
+              <>
+                <h3>{s.category}</h3>
+                <p>{s.desc}</p>
+                <ul>
+                  {s.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-<section id="honors"><div class="container">
-  <SectionHead title="获奖与竞赛" description="点击展开详情，按级别筛选。" />
-  <CompetitionTimeline lang="zh" competitions={zh.competitions} />
-</div></section>
+  <section id="projects">
+    <div class="container">
+      <SectionHead title="项目与作品" />
+      <div class="grid-3">
+        {
+          (() => {
+            const projIndex = {};
+            c.projects.forEach((p) => (projIndex[p.id] = p));
+            return zh.projects.map((proj) => {
+              const commonProj = projIndex[proj.id] || {};
+              return (
+                <article class="card pad project-card" data-animate="up">
+                  <>
+                    <div>
+                      <>
+                        <h3>{proj.title}</h3>
+                        <p>{proj.desc}</p>
+                        <ul class="project-facts">
+                          <li>
+                            <>
+                              <b>能力</b>
+                              <span>{proj.abilities}</span>
+                            </>
+                          </li>
+                          {commonProj.link && (
+                            <li>
+                              <b>链接</b>
+                              <span>
+                                <a href={commonProj.link}>{commonProj.link}</a>
+                              </span>
+                            </li>
+                          )}
+                        </ul>
+                      </>
+                    </div>
+                    <div class="tag-row">
+                      {(commonProj.tags || []).map((t) => (
+                        <span class="tag">{t}</span>
+                      ))}
+                    </div>
+                  </>
+                </article>
+              );
+            });
+          })()
+        }
+      </div>
+    </div>
+  </section>
 
-<section id="skills"><div class="container">
-  <SectionHead title="技能专长" />
-  <div class="grid-4">
-    {zh.skills.map(s => (<article class="card pad skill-card" data-animate="up"><h3>{s.category}</h3><p>{s.desc}</p><ul>{s.items.map(item => <li>{item}</li>)}</ul></article>))}
-  </div>
-</div></section>
-
-<section id="projects"><div class="container">
-  <SectionHead title="项目与作品" />
-  <div class="grid-3">
-    {(() => { const projIndex = {}; c.projects.forEach(p => projIndex[p.id] = p); return zh.projects.map(proj => { const commonProj = projIndex[proj.id] || {}; return (<article class="card pad project-card" data-animate="up"><div><h3>{proj.title}</h3><p>{proj.desc}</p><ul class="project-facts"><li><b>能力</b><span>{proj.abilities}</span></li>{commonProj.link && <li><b>链接</b><span><a href={commonProj.link}>{commonProj.link}</a></span></li>}</ul></div><div class="tag-row">{(commonProj.tags || []).map(t => <span class="tag">{t}</span>)}</div></article>);});})()}
-  </div>
-</div></section>
-
-<section id="contact"><div class="container">
-  <div class="contact-card" data-animate><div><h2>联系与展示</h2><p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p></div>
-  <div class="contact-list"><span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span>GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span><span>School: {edu.school}</span></div></div>
-</div></section>
-
+  <section id="contact">
+    <div class="container">
+      <div class="contact-card" data-animate>
+        <div><h2>联系与展示</h2><p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p></div>
+        <div class="contact-list">
+          <span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span
+            >GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span
+          ><span>School: {edu.school}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero { padding: 108px 0 64px; }
-  .hero h1 { margin: 0; color: var(--primary); font-size: clamp(44px, 8vw, 82px); line-height: 1.02; }
-  .subtitle { margin: 18px 0 0; color: var(--secondary); font-size: clamp(18px, 2.2vw, 24px); font-weight: 750; }
-  .lead { max-width: 680px; margin: 22px 0 0; color: var(--muted); font-size: 17px; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr); gap: 44px; align-items: center; }
-  .portrait-card { position: relative; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: var(--shadow); }
-  .profile-photo { width: 138px; height: 138px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.9); box-shadow: 0 18px 34px rgba(16,42,67,0.18); display: block; }
-  .profile-meta { margin-top: 18px; }
-  .profile-meta strong { display: block; color: var(--primary); font-size: 20px; }
-  .profile-meta span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
-  .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 28px; }
-  .stat { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.28)); }
-  .stat strong { display: block; color: var(--primary); font-size: 28px; line-height: 1.1; }
-  .stat span { color: var(--muted); font-size: 13px; font-weight: 700; }
-  .about-copy { display: grid; gap: 16px; } .about-copy p { margin: 0; }
-  .education-card { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr); gap: 22px; align-items: stretch; }
-  .school { padding: 28px; background: linear-gradient(135deg, rgba(16,42,67,0.96), rgba(47,111,94,0.92)), var(--primary); color: #fff; border-radius: var(--radius); }
-  .school h3 { margin: 0; font-size: 27px; } .school p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .rank-list { display: grid; gap: 12px; }
-  .rank-item { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-weight: 750; }
-  .rank-item span { color: var(--muted); }
-  .interest-card { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
-  .interest-card strong { display: block; color: var(--primary); font-size: 15px; margin-bottom: 4px; }
-  .interest-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.45; }
-  .highlight { position: relative; min-height: 170px; overflow: hidden; }
-  .highlight::after { content: ""; position: absolute; right: -20px; bottom: -20px; width: 60px; height: 60px; border-radius: 50%; border: 12px solid var(--accent-soft); pointer-events: none; }
-  .highlight .num { display: inline-flex; align-items: center; height: 28px; margin-bottom: 20px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft); color: var(--primary); font-size: 13px; font-weight: 900; }
-  .skill-card ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
-  .skill-card li { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: rgba(47,81,104,0.05); color: var(--secondary); font-size: 13px; font-weight: 720; }
-  .project-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; }
-  .project-card .tag-row { margin-top: 18px; }
-  .project-facts { display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
-  .project-facts li { display: grid; grid-template-columns: 78px 1fr; gap: 10px; color: var(--muted); font-size: 14px; }
-  .project-facts b { color: var(--primary); }
-  .contact-card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: center; padding: 28px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; }
-  .contact-card h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); }
-  .contact-card p { margin: 10px 0 0; color: rgba(255,255,255,0.78); }
-  .contact-list { display: grid; gap: 10px; color: #fff; font-weight: 750; white-space: nowrap; overflow-wrap: anywhere; }
-.contact-list span { min-width: 0; }
-  .contact-list a { text-decoration: underline; text-underline-offset: 4px; }
+  .hero {
+    padding: 108px 0 64px;
+  }
+  .hero h1 {
+    margin: 0;
+    color: var(--primary);
+    font-size: clamp(44px, 8vw, 82px);
+    line-height: 1.02;
+  }
+  .subtitle {
+    margin: 18px 0 0;
+    color: var(--secondary);
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 750;
+  }
+  .lead {
+    max-width: 680px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 17px;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 44px;
+    align-items: center;
+  }
+  .portrait-card {
+    position: relative;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+  .profile-photo {
+    width: 138px;
+    height: 138px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 34px rgba(16, 42, 67, 0.18);
+    display: block;
+  }
+  .profile-meta {
+    margin-top: 18px;
+  }
+  .profile-meta strong {
+    display: block;
+    color: var(--primary);
+    font-size: 20px;
+  }
+  .profile-meta span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .stat {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28));
+  }
+  .stat strong {
+    display: block;
+    color: var(--primary);
+    font-size: 28px;
+    line-height: 1.1;
+  }
+  .stat span {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .about-copy {
+    display: grid;
+    gap: 16px;
+  }
+  .about-copy p {
+    margin: 0;
+  }
+  .education-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+  .school {
+    padding: 28px;
+    background: linear-gradient(135deg, rgba(16, 42, 67, 0.96), rgba(47, 111, 94, 0.92)), var(--primary);
+    color: #fff;
+    border-radius: var(--radius);
+  }
+  .school h3 {
+    margin: 0;
+    font-size: 27px;
+  }
+  .school p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .rank-list {
+    display: grid;
+    gap: 12px;
+  }
+  .rank-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-weight: 750;
+  }
+  .rank-item span {
+    color: var(--muted);
+  }
+  .interest-card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .interest-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .interest-card p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .highlight {
+    position: relative;
+    min-height: 170px;
+    overflow: hidden;
+  }
+  .highlight::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 12px solid var(--accent-soft);
+    pointer-events: none;
+  }
+  .highlight .num {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    margin-bottom: 20px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .skill-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .skill-card li {
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(47, 81, 104, 0.05);
+    color: var(--secondary);
+    font-size: 13px;
+    font-weight: 720;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+  }
+  .project-card .tag-row {
+    margin-top: 18px;
+  }
+  .project-facts {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .project-facts li {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .project-facts b {
+    color: var(--primary);
+  }
+  .contact-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+  }
+  .contact-card h2 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 42px);
+  }
+  .contact-card p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .contact-list {
+    display: grid;
+    gap: 10px;
+    color: #fff;
+    font-weight: 750;
+    white-space: nowrap;
+    overflow-wrap: anywhere;
+  }
+  .contact-list span {
+    min-width: 0;
+  }
+  .contact-list a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 
-  [data-animate] { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  [data-animate].revealed { opacity: 1; transform: translateY(0); }
-  [data-animate="right"] { transform: translateX(20px); }
-  [data-animate="right"].revealed { transform: translateX(0); }
-  [data-animate="up"] { transform: translateY(30px); }
-  [data-animate="up"].revealed { transform: translateY(0); }
-  @media (max-width: 940px) { .hero-grid, .education-card, .contact-card { grid-template-columns: 1fr; } }
-  @media (max-width: 640px) { .hero { padding-top: 50px; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+  [data-animate].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-animate='right'] {
+    transform: translateX(20px);
+  }
+  [data-animate='right'].revealed {
+    transform: translateX(0);
+  }
+  [data-animate='up'] {
+    transform: translateY(30px);
+  }
+  [data-animate='up'].revealed {
+    transform: translateY(0);
+  }
+  @media (max-width: 940px) {
+    .hero-grid,
+    .education-card,
+    .contact-card {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 50px;
+    }
+    .stat-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
   /* Parallax layers */
-  .parallax-layer { will-change: transform; transition: transform 0.05s linear; }
-  .hero { position: relative; overflow: hidden; }
+  .parallax-layer {
+    will-change: transform;
+    transition: transform 0.05s linear;
+  }
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
 
   /* 3D Tilt Card */
-  .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
-  .tilt-card:hover { transform: perspective(800px) rotateY(0deg) rotateX(0deg); }
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+  }
+  .tilt-card:hover {
+    transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+  }
 
   /* GitHub Status */
-  .gh-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px; }
-  .gh-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #55d65a; display: inline-block; }
-  .gh-status.loading .dot { animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-
+  .gh-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 12px;
+  }
+  .gh-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #55d65a;
+    display: inline-block;
+  }
+  .gh-status.loading .dot {
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
 </style>
 
 <script>
-  const animObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+  const animObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('revealed');
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+  );
+  document.querySelectorAll('[data-animate]').forEach((el) => animObserver.observe(el));
 
   const h1 = document.querySelector('.hero h1');
-  if (h1) { const t = h1.textContent||''; h1.textContent=''; h1.style.borderRight='3px solid var(--accent)'; let i=0; const tp=()=>{if(i<t.length){h1.textContent+=t[i];i++;setTimeout(tp,60+Math.random()*40)}else{h1.style.borderRight='none'}};setTimeout(tp,300); }
+  if (h1) {
+    const t = h1.textContent || '';
+    h1.textContent = '';
+    h1.style.borderRight = '3px solid var(--accent)';
+    let i = 0;
+    const tp = () => {
+      if (i < t.length) {
+        h1.textContent += t[i];
+        i++;
+        setTimeout(tp, 60 + Math.random() * 40);
+      } else {
+        h1.style.borderRight = 'none';
+      }
+    };
+    setTimeout(tp, 300);
+  }
 
   // Parallax scroll
-  (function(){
-    var layers=document.querySelectorAll('.parallax-layer');
-    window.addEventListener('scroll',function(){
-      var y=window.scrollY;
-      layers.forEach(function(el){var s=parseFloat(el.dataset.speed)||0.1;el.style.transform='translateY('+(y*s)+'px)'})
-    })
+  (function () {
+    var layers = document.querySelectorAll('.parallax-layer');
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      layers.forEach(function (el) {
+        var s = parseFloat(el.dataset.speed) || 0.1;
+        el.style.transform = 'translateY(' + y * s + 'px)';
+      });
+    });
   })();
 
   // 3D Tilt
@@ -208,16 +624,24 @@ const c = common;
   }
 
   // GitHub Status
-  (async function(){
-    var el=document.getElementById('gh-status');if(!el)return;
-    try{
-      var res=await fetch('https://api.github.com/users/XCmiaow/events/public?per_page=1');
-      var events=await res.json();
-      if(events.length){
-        var date=new Date(events[0].created_at),ago=Math.floor((Date.now()-date)/3600000);
-        el.innerHTML='<span class="dot"></span> Active '+(ago<1?'just now':ago<24?ago+'h ago':Math.floor(ago/24)+'d ago')+' on GitHub';
+  (async function () {
+    var el = document.getElementById('gh-status');
+    if (!el) return;
+    try {
+      var res = await fetch('https://api.github.com/users/XCmiaow/events/public?per_page=1');
+      var events = await res.json();
+      if (events.length) {
+        var date = new Date(events[0].created_at),
+          ago = Math.floor((Date.now() - date) / 3600000);
+        el.innerHTML =
+          '<span class="dot"></span> Active ' +
+          (ago < 1 ? 'just now' : ago < 24 ? ago + 'h ago' : Math.floor(ago / 24) + 'd ago') +
+          ' on GitHub';
       }
-    }catch(e){el.textContent='Active on GitHub'}
-    finally{el.classList.remove('loading')}
+    } catch (e) {
+      el.textContent = 'Active on GitHub';
+    } finally {
+      el.classList.remove('loading');
+    }
   })();
 </script>

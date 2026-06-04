@@ -9,10 +9,15 @@ const isZh = lang === 'zh';
 
 <div class="skill-tree-wrap">
   <div class="tree-title">{isZh ? '技能成长树' : 'Skill Tree'}</div>
-  <p class="tree-desc">{isZh ? '从专业基础到交叉方向，每个节点代表一个学习里程碑' : 'From fundamentals to interdisciplinary research — each node marks a milestone'}</p>
+  <p class="tree-desc">
+    {
+      isZh
+        ? '从专业基础到交叉方向，每个节点代表一个学习里程碑'
+        : 'From fundamentals to interdisciplinary research — each node marks a milestone'
+    }
+  </p>
 
   <div class="tree-container">
-
     <!-- Branch 1: 有机化学 -->
     <div class="branch">
       <div class="branch-line"></div>
@@ -97,46 +102,154 @@ const isZh = lang === 'zh';
         <span class="node-status">{isZh ? '学习目标' : 'Learning Goal'}</span>
       </div>
     </div>
-
   </div>
 </div>
 
 <style>
-  .skill-tree-wrap { margin: 0 auto; max-width: 100%; }
+  .skill-tree-wrap {
+    margin: 0 auto;
+    max-width: 100%;
+  }
 
-  .tree-title { font-size: 24px; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 6px; }
-  .tree-desc { font-size: 14px; color: var(--muted); text-align: center; margin-bottom: 40px; }
+  .tree-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .tree-desc {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 40px;
+  }
 
-  .tree-container { display: flex; justify-content: center; gap: 12px; position: relative; padding: 20px 0 0; flex-wrap: wrap; }
+  .tree-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    padding: 20px 0 0;
+    flex-wrap: wrap;
+  }
 
-  .branch { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; min-width: 100px; flex: 1; max-width: 200px; }
-  .branch-line { position: absolute; top: 0; bottom: 10px; left: 50%; width: 2px; background: var(--line); transform: translateX(-50%); z-index: 0; }
+  .branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    min-width: 100px;
+    flex: 1;
+    max-width: 200px;
+  }
+  .branch-line {
+    position: absolute;
+    top: 0;
+    bottom: 10px;
+    left: 50%;
+    width: 2px;
+    background: var(--line);
+    transform: translateX(-50%);
+    z-index: 0;
+  }
 
-  .node { position: relative; z-index: 1; width: 100%; padding: 12px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); text-align: center; cursor: default; transition: transform .2s, box-shadow .2s, border-color .2s; }
-  .node:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .node {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 12px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    text-align: center;
+    cursor: default;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s,
+      border-color 0.2s;
+  }
+  .node:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
 
-  .node-icon { display: block; font-size: 22px; margin-bottom: 3px; }
-  .node-label { display: block; font-size: 12px; font-weight: 700; color: var(--primary); line-height: 1.3; }
-  .node-status { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; }
+  .node-icon {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 3px;
+  }
+  .node-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+  .node-status {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
 
-  .node[data-level="accomplished"] { border-color: var(--green); background: linear-gradient(135deg, var(--paper), rgba(47,111,94,0.06)); }
-  .node[data-level="accomplished"] .node-status { color: var(--green); font-weight: 600; }
-  .node[data-level="accomplished"]:hover { border-color: var(--green); box-shadow: 0 0 12px rgba(47,111,94,0.15); }
+  .node[data-level='accomplished'] {
+    border-color: var(--green);
+    background: linear-gradient(135deg, var(--paper), rgba(47, 111, 94, 0.06));
+  }
+  .node[data-level='accomplished'] .node-status {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .node[data-level='accomplished']:hover {
+    border-color: var(--green);
+    box-shadow: 0 0 12px rgba(47, 111, 94, 0.15);
+  }
 
-  .node[data-level="progressing"] { border-color: var(--secondary); background: linear-gradient(135deg, var(--paper), rgba(47,81,104,0.05)); }
-  .node[data-level="progressing"]:hover { border-color: var(--secondary); box-shadow: 0 0 12px rgba(47,81,104,0.1); }
+  .node[data-level='progressing'] {
+    border-color: var(--secondary);
+    background: linear-gradient(135deg, var(--paper), rgba(47, 81, 104, 0.05));
+  }
+  .node[data-level='progressing']:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 0 12px rgba(47, 81, 104, 0.1);
+  }
 
-  .node[data-level="target"] { border-color: var(--accent); background: linear-gradient(135deg, var(--accent-soft), rgba(201,162,39,0.08)); }
-  .node[data-level="target"] .node-label { color: #8a6f00; }
-  .node[data-level="target"] .node-status { color: var(--accent); font-weight: 600; }
-  .node[data-level="target"]:hover { border-color: var(--accent); box-shadow: 0 0 16px rgba(201,162,39,0.2); }
+  .node[data-level='target'] {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--accent-soft), rgba(201, 162, 39, 0.08));
+  }
+  .node[data-level='target'] .node-label {
+    color: #8a6f00;
+  }
+  .node[data-level='target'] .node-status {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .node[data-level='target']:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(201, 162, 39, 0.2);
+  }
 
   @media (max-width: 640px) {
-    .tree-container { gap: 8px; }
-    .branch { min-width: 80px; }
-    .node { padding: 8px 6px; }
-    .node-icon { font-size: 18px; }
-    .node-label { font-size: 11px; }
-    .node-status { font-size: 9px; }
+    .tree-container {
+      gap: 8px;
+    }
+    .branch {
+      min-width: 80px;
+    }
+    .node {
+      padding: 8px 6px;
+    }
+    .node-icon {
+      font-size: 18px;
+    }
+    .node-label {
+      font-size: 11px;
+    }
+    .node-status {
+      font-size: 9px;
+    }
   }
 </style>

@@ -7,14 +7,22 @@
     "avatar": "/assets/avatar.jpg"
   },
   "education": {
-    "gpa": 3.60,
+    "gpa": 3.6,
     "rankClass": 1,
     "rankMajor": 2
   },
   "projects": [
-    { "id": "modeling", "tags": ["Python","Data Analysis","Academic Writing"], "link": "/modeling" },
-    { "id": "ai-km", "tags": ["AI Workflow","Zotero","Obsidian"], "link": "" },
-    { "id": "resume-site", "tags": ["Astro","HTML","CSS","JavaScript","GitHub Pages","CI/CD"], "link": "https://github.com/XCmiaow" },
-    { "id": "chem-ai-lab", "tags": ["Python","PyTorch","RDKit","ML","Computational Chemistry"], "link": "/chem-ai-lab" }
+    { "id": "modeling", "tags": ["Python", "Data Analysis", "Academic Writing"], "link": "/modeling" },
+    { "id": "ai-km", "tags": ["AI Workflow", "Zotero", "Obsidian"], "link": "" },
+    {
+      "id": "resume-site",
+      "tags": ["Astro", "HTML", "CSS", "JavaScript", "GitHub Pages", "CI/CD"],
+      "link": "https://github.com/XCmiaow"
+    },
+    {
+      "id": "chem-ai-lab",
+      "tags": ["Python", "PyTorch", "RDKit", "ML", "Computational Chemistry"],
+      "link": "/chem-ai-lab"
+    }
   ]
 }
