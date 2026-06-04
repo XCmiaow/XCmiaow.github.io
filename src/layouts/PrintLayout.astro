@@ -177,7 +177,14 @@ const backUrl = isZh ? '/resume-onepage' : '/en/resume-onepage';
         color: #888;
       }
       @media (max-width: 840px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
         body.a4-page {
+          display: block;
           align-items: stretch;
           padding: 12px;
           background: #f2f2f2;
@@ -190,10 +197,23 @@ const backUrl = isZh ? '/resume-onepage' : '/en/resume-onepage';
           padding: 10px 12px;
         }
         .sheet {
+          display: block;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
           min-height: auto;
           padding: 18px;
           box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+        }
+        .sheet * {
+          max-width: 100%;
+          min-width: 0;
+        }
+        .sheet h1 {
+          font-size: clamp(28px, 10vw, 42px);
+          line-height: 1.12;
+          overflow-wrap: anywhere;
         }
         .top {
           flex-direction: column;

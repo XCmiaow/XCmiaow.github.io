@@ -1,34 +1,46 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts
-    .filter((p) => p.data.lang === 'en')
-    .map((p) => ({
-      params: { slug: p.slug },
-      props: { post: p },
-    }));
+    .filter((p) => p.data.lang === 'zh')
+    .map((p) => {
+      const slug = p.slug ?? p.id.replace(/\.md$/, '');
+      return {
+        params: { slug },
+        props: { post: p },
+      };
+    });
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
-<BaseLayout title={`${post.data.title} | Xujie Fang`} description={post.data.description} lang="en">
+<BaseLayout
+  title={`${post.data.title} | 方绪杰`}
+  description={post.data.description}
+  lang="zh"
+  alternateZhUrl="/blog/hello-world"
+  alternateEnUrl="/en/blog/getting-started"
+>
   <section style="padding:60px 0">
     <div class="container" style="max-width:740px">
-      <a href="/en/blog" style="color:var(--muted);font-size:14px;display:inline-block;margin-bottom:20px"
-        >← Back to Blog</a
+      <a
+        href="/blog"
+        class="blog-back"
+        style="display:inline-flex;min-height:40px;align-items:center;margin-bottom:20px;color:var(--muted);font-size:14px"
+        >← 返回博客</a
       >
       <h1 style="font-size:clamp(28px,4vw,40px);color:var(--primary);margin:0">{post.data.title}</h1>
       <div
         style="display:flex;gap:12px;align-items:center;margin-top:10px;color:var(--muted);font-size:14px;flex-wrap:wrap"
       >
-        <time datetime={post.data.date.toISOString()}
-          >{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time
-        >
+        <time datetime={post.data.date.toISOString()}>
+          {post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
         {
           (post.data.tags || []).map((t) => (
             <span class="tag" style="font-size:11px">
@@ -45,6 +57,17 @@ const { Content } = await post.render();
 </BaseLayout>
 
 <style>
+  .blog-back {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .blog-back:hover {
+    color: var(--primary);
+  }
   .blog-content h2 {
     font-size: 22px;
     color: var(--primary);

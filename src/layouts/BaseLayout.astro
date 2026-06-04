@@ -7,9 +7,11 @@ export interface Props {
   title: string;
   description?: string;
   lang: 'zh' | 'en';
+  alternateZhUrl?: string;
+  alternateEnUrl?: string;
 }
 
-const { title, description = '', lang } = Astro.props;
+const { title, description = '', lang, alternateZhUrl, alternateEnUrl } = Astro.props;
 const isZh = lang === 'zh';
 const basePath = isZh ? '' : '/en';
 const labels = i18n.nav[lang];
@@ -21,8 +23,8 @@ const buildDate = new Date().toLocaleDateString(isZh ? 'zh-CN' : 'en-US', {
 const pathWithoutLocale = Astro.url.pathname.replace(/^\/en(?:\/|$)/, '/').replace(/\/+$/, '');
 const currentPage = pathWithoutLocale.replace(/^\/+/, '');
 const pageKey = currentPage === '' || currentPage === 'index' ? '' : currentPage;
-const zhUrl = pageKey ? `/${pageKey}` : '/';
-const enUrl = pageKey ? `/en/${pageKey}` : '/en/';
+const zhUrl = alternateZhUrl ?? (pageKey ? `/${pageKey}` : '/');
+const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
 ---
 
 <!doctype html>
@@ -134,7 +136,8 @@ const enUrl = pageKey ? `/en/${pageKey}` : '/en/';
         &copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'}
         {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a> · <a
           href="/admin/"
-          class="footer-admin">{isZh ? '管理' : 'Admin'}</a>
+          class="footer-admin">{isZh ? '管理' : 'Admin'}</a
+        >
       </div>
     </footer>
 

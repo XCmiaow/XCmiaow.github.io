@@ -1,5 +1,6 @@
 ---
 const imgs: string[] = Astro.props.images;
+const fallbackSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 ---
 
 <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
@@ -7,7 +8,7 @@ const imgs: string[] = Astro.props.images;
   <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous">‹</button>
   <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next">›</button>
   <div class="lightbox-image-wrap">
-    <img id="lb-img" src="" alt="" />
+    <img id="lb-img" src={fallbackSrc} alt="" />
   </div>
   <div class="lightbox-counter" id="lb-counter"></div>
 </div>
@@ -52,9 +53,7 @@ const imgs: string[] = Astro.props.images;
       counter.textContent = currentIdx + 1 + ' / ' + imgs.length;
     }
 
-    document.querySelectorAll('.cert-card').forEach(function (el, i) {
-      var anchor = el.querySelector('a');
-      if (!anchor) return;
+    document.querySelectorAll('a.cert-card').forEach(function (anchor, i) {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         open(i);

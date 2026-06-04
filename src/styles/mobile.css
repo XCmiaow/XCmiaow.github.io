@@ -39,7 +39,21 @@
     min-height: 36px;
   }
   .filter-btn {
+    min-height: 38px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+  .footer-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 36px;
+    min-width: 36px;
+  }
+  .lightbox-close,
+  .lightbox-nav {
+    min-width: 44px;
+    min-height: 44px;
   }
   section {
     padding: 48px 0;
@@ -255,9 +269,9 @@
     gap: 6px;
   }
   .filter-btn {
-    padding: 5px 10px;
+    padding: 7px 11px;
     font-size: 12px;
-    min-height: 32px;
+    min-height: 38px;
   }
   .timeline-track {
     padding-left: 18px;
@@ -299,14 +313,14 @@
   .lightbox-close {
     top: 8px;
     right: 8px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 22px;
   }
   .lightbox-nav {
     font-size: 28px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
   .lightbox-prev {
     left: 4px;
@@ -369,7 +383,11 @@
     font-size: 12px;
   }
   .footer-admin {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    min-width: 36px;
     margin: 0 2px;
   }
 

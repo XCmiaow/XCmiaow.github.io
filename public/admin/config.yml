@@ -35,7 +35,12 @@ collections:
             widget: "list"
             fields:
               - { label: "年份", name: "year", widget: "string" }
-              - { label: "级别 (international/national/provincial/school/college)", name: "level", widget: "select", options: ["international","national","provincial","school","college"] }
+              - {
+                  label: "级别",
+                  name: "level",
+                  widget: "select",
+                  options: ["international", "national", "provincial", "school", "college"],
+                }
               - { label: "奖项名称", name: "title", widget: "string" }
               - { label: "备注", name: "note", widget: "string", required: false }
           - label: "技能"
@@ -44,7 +49,7 @@ collections:
             fields:
               - { label: "分类", name: "category", widget: "string" }
               - { label: "描述", name: "desc", widget: "text" }
-              - { label: "技能项 (逗号分隔)", name: "items", widget: "list" }
+              - { label: "技能项", name: "items", widget: "list" }
           - label: "研究兴趣"
             name: "researchInterests"
             widget: "object"
@@ -78,7 +83,12 @@ collections:
             widget: "list"
             fields:
               - { label: "Year", name: "year", widget: "string" }
-              - { label: "Level", name: "level", widget: "select", options: ["international","national","provincial","school","college"] }
+              - {
+                  label: "Level",
+                  name: "level",
+                  widget: "select",
+                  options: ["international", "national", "provincial", "school", "college"],
+                }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Note", name: "note", widget: "string", required: false }
           - label: "Skills"
@@ -129,7 +139,7 @@ collections:
         label: "UI Labels"
         name: "i18n"
         fields:
-          - label: "导航 (中文)"
+          - label: "导航（中文）"
             name: "nav.zh"
             widget: "object"
             fields:

@@ -42,13 +42,16 @@
         { x: -0.87, y: 0.5, z: 0.5, r: 6, c: '30,80,180', e: 'N' },
       ];
 
-      // Scale and add bonds
+      // Scale first, then add bonds after every atom has a bonds array.
       atoms.forEach(function (a, i) {
         a.x *= s;
         a.y *= s;
         a.z *= s;
         a.id = i;
         a.bonds = [];
+      });
+
+      atoms.forEach(function (a, i) {
         // Calculate distances to find bonds
         atoms.forEach(function (b, j) {
           if (i >= j) return;

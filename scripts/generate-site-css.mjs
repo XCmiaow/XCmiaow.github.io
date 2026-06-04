@@ -5,7 +5,10 @@ const root = process.cwd();
 const sources = [
   'src/styles/global.css',
   'src/layouts/BaseLayout.astro',
+  'src/layouts/PrintLayout.astro',
   'src/components/CompetitionTimeline.astro',
+  'src/components/Lightbox.astro',
+  'src/components/Molecule3D.astro',
   'src/components/ParticlesBackground.astro',
   'src/components/CursorGlow.astro',
   'src/pages/index.astro',

@@ -633,7 +633,7 @@ const c = common;
         const ago = Math.floor((Date.now() - date) / 3600000);
         el.innerHTML = `<span class="dot"></span> Active ${ago < 1 ? 'just now' : ago < 24 ? ago + 'h ago' : Math.floor(ago / 24) + 'd ago'} on GitHub`;
       }
-    } catch (e) {
+    } catch {
       el.textContent = 'Active on GitHub';
       el.classList.remove('loading');
     }

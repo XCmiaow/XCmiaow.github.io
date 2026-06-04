@@ -14,6 +14,10 @@ const routes = [
   '/en/evidence',
   '/resume-onepage',
   '/en/resume-onepage',
+  '/blog',
+  '/blog/hello-world',
+  '/en/blog',
+  '/en/blog/getting-started',
 ];
 
 const responsiveViewports = [
@@ -34,6 +38,10 @@ const expectedHeadings = {
   '/en/evidence': 'Certificate Gallery',
   '/resume-onepage': '\u65b9\u7eea\u6770',
   '/en/resume-onepage': 'Xujie Fang',
+  '/blog': '\u535a\u5ba2',
+  '/blog/hello-world': '\u535a\u5ba2\u5f00\u59cb',
+  '/en/blog': 'Blog',
+  '/en/blog/getting-started': 'Getting Started',
 };
 
 function previewCommand() {
@@ -148,6 +156,50 @@ async function runBrowserChecks() {
   await page.waitForTimeout(900);
   const zhH1 = await page.locator('h1').first().textContent().then((text) => text.trim());
   if (zhH1 !== expectedHeadings['/']) failures.push(`Language switch to Chinese landed on unexpected h1: ${zhH1}`);
+
+  await page.goto(`${base}/evidence`, { waitUntil: 'load' });
+  await page.locator('a.cert-card').first().click();
+  await page.waitForSelector('#lightbox.active', { timeout: 5000 }).catch(() => failures.push('Evidence lightbox did not open'));
+  await page
+    .waitForFunction(() => {
+      const img = document.querySelector('#lb-img');
+      return !!img && img.complete && img.naturalWidth > 1;
+    }, { timeout: 8000 })
+    .catch(() => failures.push('Evidence lightbox image did not load'));
+  await page
+    .waitForFunction(() => getComputedStyle(document.querySelector('#lightbox')).opacity === '1', { timeout: 2000 })
+    .catch(() => failures.push('Evidence lightbox did not become visually visible'));
+  const lightboxState = await page.evaluate(() => ({
+    active: !!document.querySelector('#lightbox.active'),
+    visible: getComputedStyle(document.querySelector('#lightbox')).opacity === '1',
+    overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+    imageReady: (() => {
+      const img = document.querySelector('#lb-img');
+      return !!img && img.complete && img.naturalWidth > 1;
+    })(),
+  }));
+  if (!lightboxState.active) failures.push('Evidence lightbox is not active after clicking a certificate');
+  if (!lightboxState.visible) failures.push('Evidence lightbox is active but visually hidden');
+  if (lightboxState.overflow) failures.push('Evidence lightbox causes horizontal overflow');
+  await page.locator('#lb-close').click();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${base}/resume-onepage`, { waitUntil: 'load' });
+  const onePageMobile = await page.evaluate(() => {
+    const sheet = document.querySelector('.sheet');
+    const h1 = document.querySelector('h1');
+    const sheetBox = sheet?.getBoundingClientRect();
+    const h1Box = h1?.getBoundingClientRect();
+    return {
+      sheetLeft: sheetBox ? Math.round(sheetBox.left) : -1,
+      h1Left: h1Box ? Math.round(h1Box.left) : -1,
+      sheetPaddingLeft: sheet ? parseFloat(getComputedStyle(sheet).paddingLeft) : 0,
+      bodyPaddingLeft: parseFloat(getComputedStyle(document.body).paddingLeft),
+    };
+  });
+  if (onePageMobile.sheetLeft < 8 || onePageMobile.h1Left < 16 || onePageMobile.sheetPaddingLeft < 12) {
+    failures.push(`One-page mobile layout is too close to the viewport edge: ${JSON.stringify(onePageMobile)}`);
+  }
 
   const overflowChecks = [];
   const tapTargetChecks = [];

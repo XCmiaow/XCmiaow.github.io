@@ -638,7 +638,7 @@ const c = common;
           (ago < 1 ? 'just now' : ago < 24 ? ago + 'h ago' : Math.floor(ago / 24) + 'd ago') +
           ' on GitHub';
       }
-    } catch (e) {
+    } catch {
       el.textContent = 'Active on GitHub';
     } finally {
       el.classList.remove('loading');

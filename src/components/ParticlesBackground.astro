@@ -150,10 +150,6 @@
 
       // Fill remaining area with random stars
       allStars = [];
-      var totalConstStars = 0;
-      constellations.forEach(function (c) {
-        totalConstStars += c.stars.length;
-      });
       var extraCount = Math.min(Math.floor((W * H) / 20000), 20);
       for (var i = 0; i < extraCount; i++) {
         allStars.push({
