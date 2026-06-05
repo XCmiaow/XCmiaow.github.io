@@ -1,0 +1,110 @@
+---
+import PrintLayout from '../layouts/PrintLayout.astro';
+import common from '../data/common.json';
+
+const gpa = common.education.gpa.toFixed(2);
+const github = common.person.github;
+const email = common.person.email;
+---
+
+<PrintLayout title="方绪杰 · 保研评优版简历" lang="zh" variant="academic">
+  <header class="top">
+    <div class="top-main">
+      <h1>方绪杰</h1>
+      <p class="sub">南京林业大学 · 化学工程学院 · 林产化工专业 · 本科大二</p>
+      <p class="tagline">保研 / 评优定位：高绩点排名 + 高质量竞赛奖项 + 学生工作与志愿服务</p>
+    </div>
+    <div class="top-contact">
+      <span>Email: {email}</span>
+      <span>GitHub: {github}</span>
+      <span>Location: Nanjing, China</span>
+    </div>
+  </header>
+
+  <div class="metric-strip" aria-label="保研评优核心指标">
+    <div class="metric"><strong>{gpa}</strong><span>GPA</span></div>
+    <div class="metric"><strong>第 1</strong><span>班级排名</span></div>
+    <div class="metric"><strong>第 2</strong><span>专业排名</span></div>
+    <div class="metric"><strong>6+</strong><span>省级以上奖项</span></div>
+  </div>
+
+  <p class="summary">
+    林产化工专业本科生，学习成绩位居年级前列，GPA <strong>{gpa}</strong>，班级第 <strong>1</strong>，专业第
+    <strong>2</strong>。已形成“课程成绩 + 学科竞赛 + 综合荣誉 +
+    学生工作”的评审证据链，适合用于保研预备、奖学金评审、三好学生与综合素质材料展示。
+  </p>
+
+  <div class="row-2">
+    <section>
+      <h2>教育背景</h2>
+      <div class="item">
+        <div class="item-head"><strong>南京林业大学 · 化学工程学院</strong><span>2024.09 - 至今</span></div>
+        <p>林产化工专业 · 本科在读 · 当前年级：大二</p>
+        <p class="keyword-line">GPA {gpa} · 班级第 1 · 专业第 2 · 共青团员</p>
+      </div>
+    </section>
+    <section>
+      <h2>评审优势</h2>
+      <ul class="compact-list">
+        <li>学习成绩稳定突出，排名指标清晰，便于审核人员快速判断学业基础。</li>
+        <li>数学建模、英语论文竞赛和高数竞赛共同证明数理基础与表达能力。</li>
+        <li>班级职务、组织责任人与志愿服务补足综合素质维度。</li>
+      </ul>
+    </section>
+  </div>
+
+  <section>
+    <h2>核心荣誉</h2>
+    <div class="row-2 tight">
+      <ul class="compact-list">
+        <li>2025、2026 年美国大学生数学建模竞赛 MCM/ICM Honorable Mention</li>
+        <li>2024-2025 学年国家励志奖学金</li>
+        <li>2024 年全国大学生数学建模竞赛江苏省一等奖</li>
+        <li>第二十二届江苏省高等数学竞赛本科一级 A 类三等奖</li>
+      </ul>
+      <ul class="compact-list">
+        <li>MathorCup 高校数学建模挑战赛区域赛二等奖</li>
+        <li>2024-2025 学年校三好学生</li>
+        <li>大学生学科竞赛先进个人</li>
+        <li>材料院辩论赛新生杯亚军；白马校区排球新生杯亚军</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>竞赛与学术能力</h2>
+    <div class="item">
+      <div class="item-head"><strong>数学建模竞赛训练</strong><span>CUMCM · MCM/ICM · MathorCup</span></div>
+      <p class="small">
+        多次参与开放式建模竞赛，训练问题理解、变量筛选、模型假设、数据处理、算法求解、可视化分析与论文表达。
+        能够在有限时间内形成结构化方案，并将结果转化为可审核的学术文本。
+      </p>
+    </div>
+    <div class="item">
+      <div class="item-head"><strong>专业基础与学习方向</strong><span>Organic Chemistry · Forest Products</span></div>
+      <p class="small">
+        持续学习有机化学机理、Clayden、March、有机合成切断法与林产化工基础，同时关注计算化学和 AI
+        辅助有机合成，为后续科研训练积累跨学科基础。
+      </p>
+    </div>
+  </section>
+
+  <div class="row-2">
+    <section>
+      <h2>学生工作</h2>
+      <ul class="tiny">
+        <li>班级学习委员（2024.09 - 2025.06）：负责作业收发、学习事务协调和任课教师配合。</li>
+        <li>教学信息员（2024.09 - 2025.06）：负责教学信息传达、课程反馈收集与师生沟通。</li>
+        <li>曾获材料院新生辩论赛亚军，具备公开表达、团队协作和现场应变经验。</li>
+      </ul>
+    </section>
+    <section>
+      <h2>志愿服务与技能</h2>
+      <ul class="tiny">
+        <li>白马校区第一届排球新生杯第一组织责任人；参与“纸牌搭屋”志愿服务与无偿献血。</li>
+        <li>技能：Python、Markdown、LaTeX、Origin、Office/WPS、Zotero、Obsidian、Astro。</li>
+        <li>公开材料：个人学术主页、证据墙、一页简历与项目详情页可用于材料补充说明。</li>
+      </ul>
+    </section>
+  </div>
+</PrintLayout>

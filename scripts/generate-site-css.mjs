@@ -19,6 +19,10 @@ const sources = [
   'src/pages/en/evidence.astro',
   'src/pages/resume-onepage.astro',
   'src/pages/en/resume-onepage.astro',
+  'src/pages/resume-academic.astro',
+  'src/pages/en/resume-academic.astro',
+  'src/pages/resume-career.astro',
+  'src/pages/en/resume-career.astro',
   'src/styles/mobile.css',
 ];
 

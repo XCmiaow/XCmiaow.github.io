@@ -2,10 +2,20 @@
 export interface Props {
   title: string;
   lang: 'zh' | 'en';
+  variant?: 'general' | 'academic' | 'career';
 }
 
-const { title, lang } = Astro.props;
+const { title, lang, variant = 'general' } = Astro.props;
 const isZh = lang === 'zh';
+const variantRoutes = {
+  general: { zh: '/resume-onepage', en: '/en/resume-onepage' },
+  academic: { zh: '/resume-academic', en: '/en/resume-academic' },
+  career: { zh: '/resume-career', en: '/en/resume-career' },
+};
+const variantLabels = isZh
+  ? { general: '通用', academic: '保研评优', career: '求职实习' }
+  : { general: 'General', academic: 'Academic', career: 'Internship' };
+const variantItems = Object.entries(variantLabels) as Array<[keyof typeof variantLabels, string]>;
 ---
 
 <!doctype html>
@@ -19,9 +29,18 @@ const isZh = lang === 'zh';
   <body class="a4-page">
     <div class="toolbar no-print">
       <div class="ls">
-        <a href="/resume-onepage" data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
+        <a href={variantRoutes[variant].zh} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
         <span class="ls-sep">|</span>
-        <a href="/en/resume-onepage" data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
+        <a href={variantRoutes[variant].en} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
+      </div>
+      <div class="variant-switch" aria-label={isZh ? '简历版本' : 'Resume versions'}>
+        {
+          variantItems.map(([key, label]) => (
+            <a href={variantRoutes[key][lang]} class:list={[{ active: key === variant }]}>
+              {label}
+            </a>
+          ))
+        }
       </div>
       <a href={isZh ? '/' : '/en/'} class="btn">← {isZh ? '返回主页' : 'Back home'}</a>
       <button class="btn primary" onclick="window.print()">{isZh ? '打印 / 保存 PDF' : 'Print / Save PDF'}</button>
@@ -105,15 +124,38 @@ const isZh = lang === 'zh';
         gap: 4px;
         font-size: 13px;
       }
+      .variant-switch {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-left: 12px;
+        border-left: 1px solid #e2dcc9;
+        font-size: 13px;
+      }
       .ls a {
         color: #888;
         text-decoration: none;
         padding: 2px 6px;
         border-radius: 4px;
       }
+      .variant-switch a {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        border-radius: 999px;
+        color: #566;
+        font-weight: 750;
+        text-decoration: none;
+      }
       .ls a.active {
         color: #1a1a1a;
         background: #e8e4d4;
+      }
+      .variant-switch a.active {
+        background: #102a43;
+        color: #fff;
       }
       .ls-sep {
         color: #ddd;
@@ -274,6 +316,13 @@ const isZh = lang === 'zh';
           justify-content: center;
           width: 100%;
           padding: 10px 12px;
+        }
+        .variant-switch {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+          padding-left: 0;
+          border-left: 0;
         }
         .sheet {
           display: block;

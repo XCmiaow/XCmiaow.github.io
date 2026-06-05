@@ -28,7 +28,9 @@ const c = common;
         </p>
         <div class="hero-actions no-print">
           <a class="btn primary" href="#honors">查看核心成果</a>
-          <a class="btn" href="/resume-onepage">一页投递版 · PDF</a>
+          <a class="btn" href="/resume-onepage">通用一页版</a>
+          <a class="btn" href="/resume-academic">保研评优版</a>
+          <a class="btn" href="/resume-career">求职实习版</a>
         </div>
         <div class="tag-row">
           <span class="tag">GPA {c.education.gpa}</span><span class="tag">班级第 {c.education.rankClass}</span><span
@@ -65,13 +67,13 @@ const c = common;
               c.education.rankMajor
             }，并有国家励志奖学金、校三好学生和省级建模奖项支撑。
           </p>
-          <a href="#honors">查看荣誉链路</a>
+          <a href="/resume-academic">查看保研评优版</a>
         </article>
         <article class="snapshot-card">
           <span class="snapshot-kicker">求职 / 实习</span>
           <h3>能把问题建模并落到网页作品</h3>
           <p>数学建模、Python、LaTeX、前端和 Astro 项目形成一条完整证据线，能展示学习能力、表达能力和工程落地能力。</p>
-          <a href="#projects">查看项目作品</a>
+          <a href="/resume-career">查看求职实习版</a>
         </article>
         <article class="snapshot-card">
           <span class="snapshot-kicker">科研潜力</span>
@@ -204,6 +206,9 @@ const c = common;
             c.projects.forEach((p) => (projIndex[p.id] = p));
             return zh.projects.map((proj) => {
               const commonProj = projIndex[proj.id] || {};
+              const isExternalLink = typeof commonProj.link === 'string' && commonProj.link.startsWith('http');
+              const detailHref = commonProj.link || '#interests';
+              const detailLabel = commonProj.link ? (isExternalLink ? '查看 GitHub' : '查看详情') : '查看方向';
               return (
                 <article class="card pad project-card" data-animate="up">
                   <>
@@ -233,6 +238,22 @@ const c = common;
                       {(commonProj.tags || []).map((t) => (
                         <span class="tag">{t}</span>
                       ))}
+                    </div>
+                    <div class="project-actions">
+                      <a
+                        class="project-action primary"
+                        href={detailHref}
+                        target={isExternalLink ? '_blank' : undefined}
+                        rel={isExternalLink ? 'noreferrer' : undefined}
+                      >
+                        {detailLabel}
+                      </a>
+                      <a class="project-action" href="/evidence">
+                        证明材料
+                      </a>
+                      <a class="project-action" href="/resume-career">
+                        求职版简历
+                      </a>
                     </div>
                   </>
                 </article>
@@ -532,6 +553,39 @@ const c = common;
   }
   .project-card .tag-row {
     margin-top: 18px;
+  }
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .project-action {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0 12px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 850;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+  .project-action:hover {
+    background: rgba(201, 162, 39, 0.1);
+    border-color: rgba(201, 162, 39, 0.42);
+    transform: translateY(-1px);
+  }
+  .project-action.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
   }
   .project-facts {
     display: grid;

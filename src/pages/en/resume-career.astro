@@ -1,0 +1,106 @@
+---
+import PrintLayout from '../../layouts/PrintLayout.astro';
+import common from '../../data/common.json';
+
+const gpa = common.education.gpa.toFixed(2);
+const github = common.person.github;
+const email = common.person.email;
+---
+
+<PrintLayout title="Xujie Fang · Internship Resume" lang="en" variant="career">
+  <header class="top">
+    <div class="top-main">
+      <h1>Xujie Fang</h1>
+      <p class="sub">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
+      <p class="tagline">
+        Internship track: modeling analysis, frontend implementation, and AI-assisted research tools
+      </p>
+    </div>
+    <div class="top-contact">
+      <span>Email: {email}</span>
+      <span>GitHub: {github}</span>
+      <span>Location: Nanjing, China</span>
+    </div>
+  </header>
+
+  <div class="metric-strip" aria-label="Internship metrics">
+    <div class="metric"><strong>{gpa}</strong><span>GPA</span></div>
+    <div class="metric"><strong>Python</strong><span>Modeling</span></div>
+    <div class="metric"><strong>Astro</strong><span>Web project</span></div>
+    <div class="metric"><strong>ChemAI</strong><span>AI chemistry</span></div>
+  </div>
+
+  <p class="summary">
+    Undergraduate with strong coursework, modeling competition training, and practical website implementation. I can
+    break complex problems into models, data, writing, and deployed web artifacts using Python, LaTeX / Markdown, Astro,
+    and AI-assisted research workflows.
+  </p>
+
+  <div class="row-2">
+    <section>
+      <h2>Education</h2>
+      <div class="item">
+        <div class="item-head"><strong>Nanjing Forestry University</strong><span>2024.09 - Present</span></div>
+        <p>Chemical Engineering of Forest Products · GPA {gpa} · Class rank 1st · Major rank 2nd</p>
+      </div>
+    </section>
+    <section>
+      <h2>Target Roles</h2>
+      <ul class="compact-list">
+        <li>Data / modeling assistant: abstraction, cleaning, visualization, and technical writing.</li>
+        <li>Frontend / static-site work: Astro, HTML, CSS, JavaScript, responsive design, and deployment.</li>
+        <li>AI research toolchain assistant: literature workflows, knowledge bases, chemistry data, and ML basics.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="item">
+      <div class="item-head">
+        <strong>Personal academic resume website</strong><span>Astro · TypeScript · GitHub Pages</span>
+      </div>
+      <p class="small">
+        Built a bilingual portfolio with homepage, evidence gallery, modeling page, ChemAI Lab, blog structure, and
+        three one-page resume variants. Added formatting, linting, Astro check, static QA, and deployment scripts.
+      </p>
+    </div>
+    <div class="item">
+      <div class="item-head">
+        <strong>Mathematical modeling competitions</strong><span>Python · Data analysis · Writing</span>
+      </div>
+      <p class="small">
+        Participated in CUMCM, MCM/ICM, and MathorCup, earning provincial and international awards. Practiced
+        assumptions, data processing, result interpretation, and paper delivery for open-ended problems.
+      </p>
+    </div>
+    <div class="item">
+      <div class="item-head"><strong>ChemAI Lab learning project</strong><span>PyTorch · RDKit · ML</span></div>
+      <p class="small">
+        Learning framework for AI-assisted chemistry research, covering molecular features, model training,
+        explainability, and quantum-chemistry interfaces as preparation for computational chemistry work.
+      </p>
+    </div>
+  </section>
+
+  <div class="row-2">
+    <section>
+      <h2>Skills</h2>
+      <p class="small">
+        <strong>Programming & web:</strong> Python, HTML, CSS, JavaScript, React, Astro, VS Code, Codex.
+      </p>
+      <p class="small">
+        <strong>Modeling & writing:</strong> mathematical modeling, Markdown, LaTeX, Origin, structured papers.
+      </p>
+      <p class="small"><strong>Research tools:</strong> Zotero, Obsidian, Office/WPS, Axglyph, AutoCAD, Aspen Plus.</p>
+    </section>
+    <section>
+      <h2>Awards & Collaboration</h2>
+      <ul class="tiny">
+        <li>2025 and 2026 MCM/ICM Honorable Mention; 2024 CUMCM Jiangsu First Prize.</li>
+        <li>National Inspirational Scholarship, University Merit Student, Outstanding Competition Individual.</li>
+        <li>Academic Representative, Teaching Information Liaison, event organizer, debate and sports experience.</li>
+      </ul>
+    </section>
+  </div>
+</PrintLayout>

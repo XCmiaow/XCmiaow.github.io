@@ -28,7 +28,9 @@ const c = common;
         </p>
         <div class="hero-actions no-print">
           <a class="btn primary" href="#honors">Key Achievements</a>
-          <a class="btn" href="/en/resume-onepage">One-Page PDF</a>
+          <a class="btn" href="/en/resume-onepage">General Resume</a>
+          <a class="btn" href="/en/resume-academic">Academic Resume</a>
+          <a class="btn" href="/en/resume-career">Internship Resume</a>
         </div>
         <div class="tag-row">
           <span class="tag">GPA {c.education.gpa}</span>
@@ -69,7 +71,7 @@ const c = common;
             GPA {c.education.gpa}, class rank #{c.education.rankClass}, major rank #{c.education.rankMajor}, supported
             by scholarship, merit-student recognition, and provincial modeling awards.
           </p>
-          <a href="#honors">Review honors</a>
+          <a href="/en/resume-academic">Review academic resume</a>
         </article>
         <article class="snapshot-card">
           <span class="snapshot-kicker">Internship / work</span>
@@ -78,7 +80,7 @@ const c = common;
             Mathematical modeling, Python, LaTeX, frontend development, and Astro deployment form an evidence chain for
             learning speed, communication, and implementation.
           </p>
-          <a href="#projects">Review projects</a>
+          <a href="/en/resume-career">Review internship resume</a>
         </article>
         <article class="snapshot-card">
           <span class="snapshot-kicker">Research potential</span>
@@ -218,6 +220,13 @@ const c = common;
             c.projects.forEach((p) => (projIndex[p.id] = p));
             return en.projects.map((proj) => {
               const commonProj = projIndex[proj.id] || {};
+              const isExternalLink = typeof commonProj.link === 'string' && commonProj.link.startsWith('http');
+              const detailHref = commonProj.link || '#interests';
+              const detailLabel = commonProj.link
+                ? isExternalLink
+                  ? 'View GitHub'
+                  : 'View details'
+                : 'View direction';
               return (
                 <article class="card pad project-card" data-animate="up">
                   <>
@@ -247,6 +256,22 @@ const c = common;
                       {(commonProj.tags || []).map((t) => (
                         <span class="tag">{t}</span>
                       ))}
+                    </div>
+                    <div class="project-actions">
+                      <a
+                        class="project-action primary"
+                        href={detailHref}
+                        target={isExternalLink ? '_blank' : undefined}
+                        rel={isExternalLink ? 'noreferrer' : undefined}
+                      >
+                        {detailLabel}
+                      </a>
+                      <a class="project-action" href="/en/evidence">
+                        Evidence
+                      </a>
+                      <a class="project-action" href="/en/resume-career">
+                        Internship resume
+                      </a>
                     </div>
                   </>
                 </article>
@@ -546,6 +571,39 @@ const c = common;
   }
   .project-card .tag-row {
     margin-top: 18px;
+  }
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .project-action {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0 12px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 850;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+  .project-action:hover {
+    background: rgba(201, 162, 39, 0.1);
+    border-color: rgba(201, 162, 39, 0.42);
+    transform: translateY(-1px);
+  }
+  .project-action.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
   }
   .project-facts {
     display: grid;
