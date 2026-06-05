@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageTrail from '../components/PageTrail.astro';
 
 const modules = [
   ['data', '分子数据抽象：Molecule、Dataset、FormatConverter'],
@@ -49,6 +50,17 @@ const roadmap = [
       </a>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="项目路径"
+    title="把 ChemAI Lab 放回个人材料体系"
+    description="这页展示长期技术方向，适合从项目区进入，也应能快速返回主页项目区、证据墙和一页简历。"
+    links={[
+      { href: '/#projects', label: '回到项目区', note: '和建模、网站工程化项目放在一起比较' },
+      { href: '/evidence', label: '查看证据墙', note: '核验奖项和综合材料' },
+      { href: '/resume-onepage', label: '打开一页简历', note: '用于投递和 PDF 输出', primary: true },
+    ]}
+  />
 
   <section>
     <div class="container">

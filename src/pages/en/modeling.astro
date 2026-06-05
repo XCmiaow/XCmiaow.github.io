@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageTrail from '../../components/PageTrail.astro';
 ---
 
 <BaseLayout title="Xujie Fang | Mathematical Modeling Case Study" lang="en">
@@ -17,6 +18,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="Material path"
+    title="Move from modeling skills to evidence and resume"
+    description="This page explains the skill formation process. The next step is to verify certificates, review projects, or open the one-page resume."
+    links={[
+      { href: '/en/#projects', label: 'Back to projects', note: 'Review modeling, website, and ChemAI Lab together' },
+      { href: '/en/evidence', label: 'Open certificates', note: 'Check awards and activity evidence', primary: true },
+      { href: '/en/resume-onepage', label: 'One-page resume', note: 'Print, save as PDF, or use for applications' },
+    ]}
+  />
 
   <section>
     <div class="container">

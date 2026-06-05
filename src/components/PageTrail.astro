@@ -1,0 +1,39 @@
+---
+interface TrailLink {
+  href: string;
+  label: string;
+  note: string;
+  primary?: boolean;
+}
+
+export interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  links: TrailLink[];
+}
+
+const { eyebrow, title, description, links } = Astro.props;
+---
+
+<section class="page-trail no-print" aria-labelledby="page-trail-title">
+  <div class="container">
+    <div class="trail-shell">
+      <div class="trail-copy">
+        <span>{eyebrow}</span>
+        <h2 id="page-trail-title">{title}</h2>
+        <p>{description}</p>
+      </div>
+      <div class="trail-links">
+        {
+          links.map((link) => (
+            <a class:list={['trail-link', { primary: link.primary }]} href={link.href}>
+              <strong>{link.label}</strong>
+              <small>{link.note}</small>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

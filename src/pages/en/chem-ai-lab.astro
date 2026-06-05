@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import en from '../../data/en.json';
+import PageTrail from '../../components/PageTrail.astro';
 ---
 
 <BaseLayout title="Xujie Fang | ChemAI Lab" lang="en">
@@ -27,6 +28,22 @@ import en from '../../data/en.json';
       </a>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="Project path"
+    title="Place ChemAI Lab inside the application story"
+    description="This page shows a long-term technical direction. Reviewers can return to the project section, verify certificates, or open the one-page resume."
+    links={[
+      { href: '/en/#projects', label: 'Back to projects', note: 'Compare with modeling and resume-site work' },
+      { href: '/en/evidence', label: 'Open certificates', note: 'Verify awards and supporting materials' },
+      {
+        href: '/en/resume-onepage',
+        label: 'One-page resume',
+        note: 'Print, save, or attach to applications',
+        primary: true,
+      },
+    ]}
+  />
 
   <section>
     <div class="container">

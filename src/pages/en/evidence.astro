@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import PageTrail from '../../components/PageTrail.astro';
 
 const certs = [
   'national-inspirational-scholarship-2025.jpg',
@@ -27,6 +28,22 @@ const imgUrls = certs.map((f) => imgBase + f);
       <p class="lead">Click any certificate to view full size. Navigate with arrow keys.</p>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="Evidence path"
+    title="Use certificates to verify the resume story"
+    description="The gallery helps reviewers check source materials. Return to the honors section for structure, or open the one-page resume for application use."
+    links={[
+      { href: '/en/#honors', label: 'Back to honors', note: 'Review awards by level and year' },
+      {
+        href: '/en/modeling',
+        label: 'Modeling practice',
+        note: 'Understand the skills behind the awards',
+        primary: true,
+      },
+      { href: '/en/resume-onepage', label: 'One-page resume', note: 'Print, save, or attach to applications' },
+    ]}
+  />
 
   <div class="container" style="margin-bottom:60px">
     <div class="grid-3">

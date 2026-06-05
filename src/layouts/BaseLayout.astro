@@ -23,6 +23,7 @@ const buildDate = new Date().toLocaleDateString(isZh ? 'zh-CN' : 'en-US', {
 const pathWithoutLocale = Astro.url.pathname.replace(/^\/en(?:\/|$)/, '/').replace(/\/+$/, '');
 const currentPage = pathWithoutLocale.replace(/^\/+/, '');
 const pageKey = currentPage === '' || currentPage === 'index' ? '' : currentPage;
+const isPage = (key: string) => pageKey === key;
 const zhUrl = alternateZhUrl ?? (pageKey ? `/${pageKey}` : '/');
 const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
 ---
@@ -92,10 +93,31 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
           <a href={`${basePath}/#honors`}>{labels.honors}</a>
           <a href={`${basePath}/#skills`}>{labels.skills}</a>
           <a href={`${basePath}/#projects`}>{labels.projects}</a>
-          <a href={`${basePath}/modeling`}>{labels.modeling}</a>
-          <a href={`${basePath}/evidence`}>{labels.evidence}</a>
-          <a href={`${basePath}/blog`}>{labels.blog}</a>
-          <a href={`${basePath}/#contact`}>{labels.contact}</a>
+          <a
+            href={`${basePath}/modeling`}
+            class:list={[{ active: isPage('modeling') }]}
+            aria-current={isPage('modeling') ? 'page' : undefined}>{labels.modeling}</a
+          >
+          <a
+            href={`${basePath}/chem-ai-lab`}
+            class:list={[{ active: isPage('chem-ai-lab') }]}
+            aria-current={isPage('chem-ai-lab') ? 'page' : undefined}>{labels.chem_ai_lab}</a
+          >
+          <a
+            href={`${basePath}/evidence`}
+            class:list={[{ active: isPage('evidence') }]}
+            aria-current={isPage('evidence') ? 'page' : undefined}>{labels.evidence}</a
+          >
+          <a
+            href={`${basePath}/resume-onepage`}
+            class:list={[{ active: isPage('resume-onepage') }]}
+            aria-current={isPage('resume-onepage') ? 'page' : undefined}>{labels.onepage}</a
+          >
+          <a
+            href={`${basePath}/blog`}
+            class:list={[{ active: pageKey.startsWith('blog') }]}
+            aria-current={pageKey.startsWith('blog') ? 'page' : undefined}>{labels.blog}</a
+          >
         </nav>
         <div class="nav-actions">
           <div class="lang-switch">
@@ -124,8 +146,10 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
             aria-controls="navLinks"
             aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}>☰</button
           >
-          <a class="btn" href={`${basePath}/resume-onepage`}>{labels.onepage}</a>
-          <a class="btn" href={`${basePath}/modeling`}>{labels.modeling}</a>
+          <a class:list={['btn', { active: isPage('resume-onepage') }]} href={`${basePath}/resume-onepage`}
+            >{labels.onepage}</a
+          >
+          <a class:list={['btn', { active: isPage('evidence') }]} href={`${basePath}/evidence`}>{labels.evidence}</a>
           <a class="btn primary" href={`${basePath}/#contact`}>{labels.contact}</a>
         </div>
       </div>
@@ -179,7 +203,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     align-items: center;
     justify-content: space-between;
     min-height: 70px;
-    gap: 24px;
+    gap: 14px;
   }
   .brand {
     display: flex;
@@ -203,7 +227,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 12px;
     color: var(--muted);
     font-size: 14px;
     font-weight: 650;
@@ -211,10 +235,21 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
   .nav-links a:hover {
     color: var(--primary);
   }
+  .nav-links a.active {
+    color: var(--primary);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+  }
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+  }
+  .nav-actions .btn.active {
+    border-color: rgba(201, 162, 39, 0.5);
+    background: var(--accent-soft);
   }
   .icon-btn {
     display: inline-grid;

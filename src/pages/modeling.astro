@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Card from '../components/Card.astro';
+import PageTrail from '../components/PageTrail.astro';
 ---
 
 <BaseLayout title="方绪杰 | 数学建模竞赛实践" lang="zh">
@@ -16,6 +17,17 @@ import Card from '../components/Card.astro';
       </div>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="材料路径"
+    title="从建模能力跳转到证据与投递简历"
+    description="这页负责解释能力形成过程，下一步可以直接查看证书证据、项目作品或一页投递简历。"
+    links={[
+      { href: '/#projects', label: '回到项目区', note: '查看建模、网站与 ChemAI Lab 的并列证据' },
+      { href: '/evidence', label: '查看证据墙', note: '核对证书、奖项与活动材料', primary: true },
+      { href: '/resume-onepage', label: '打开一页简历', note: '用于打印、PDF 和正式投递' },
+    ]}
+  />
 
   <section>
     <div class="container">

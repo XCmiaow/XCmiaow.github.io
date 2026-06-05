@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Lightbox from '../components/Lightbox.astro';
+import PageTrail from '../components/PageTrail.astro';
 
 const certs = [
   'national-inspirational-scholarship-2025.jpg',
@@ -27,6 +28,17 @@ const imgUrls = certs.map((f) => imgBase + f);
       <p class="lead">集中展示竞赛、荣誉、学生工作相关证书。点击查看大图，键盘左右键切换。</p>
     </div>
   </section>
+
+  <PageTrail
+    eyebrow="证据路径"
+    title="证书不是终点，要能回到简历叙事"
+    description="证据墙用于核验材料真实性，回到首页荣誉区可看结构化奖项，打开一页简历可用于投递。"
+    links={[
+      { href: '/#honors', label: '回到荣誉区', note: '按级别查看完整奖项链路' },
+      { href: '/modeling', label: '查看建模能力', note: '理解竞赛奖项背后的能力形成', primary: true },
+      { href: '/resume-onepage', label: '打开一页简历', note: '把证据转化为可投递材料' },
+    ]}
+  />
 
   <div class="container" style="margin-bottom:60px">
     <div class="grid-3">
