@@ -51,6 +51,48 @@ const c = common;
     </div>
   </section>
 
+  <section class="reader-snapshot" aria-labelledby="reader-snapshot-title">
+    <div class="container">
+      <div class="snapshot-head">
+        <span>For reviewers</span>
+        <h2 id="reader-snapshot-title">What different readers can verify quickly</h2>
+        <p>
+          This homepage is structured as a review surface: teachers, supervisors, and collaborators can quickly locate
+          the strongest evidence instead of reading a long biography first.
+        </p>
+      </div>
+      <div class="snapshot-grid">
+        <article class="snapshot-card">
+          <span class="snapshot-kicker">Graduate recommendation</span>
+          <h3>Academic ranking and award evidence are explicit</h3>
+          <p>
+            GPA {c.education.gpa}, class rank #{c.education.rankClass}, major rank #{c.education.rankMajor}, supported
+            by scholarship, merit-student recognition, and provincial modeling awards.
+          </p>
+          <a href="#honors">Review honors</a>
+        </article>
+        <article class="snapshot-card">
+          <span class="snapshot-kicker">Internship / work</span>
+          <h3>Modeling ability connects to an actual web project</h3>
+          <p>
+            Mathematical modeling, Python, LaTeX, frontend work, and Astro deployment form a visible evidence chain for
+            learning speed, communication, and implementation.
+          </p>
+          <a href="#projects">Review projects</a>
+        </article>
+        <article class="snapshot-card">
+          <span class="snapshot-kicker">Research potential</span>
+          <h3>Chemical engineering foundation with AI workflow direction</h3>
+          <p>
+            The page separates current strengths from long-term interests in organic mechanisms, computational
+            chemistry, LLMs, and agent workflows.
+          </p>
+          <a href="#interests">Review interests</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section id="about">
     <div class="container">
       <SectionHead
@@ -274,6 +316,76 @@ const c = common;
     background: var(--paper);
     box-shadow: var(--shadow);
   }
+  .reader-snapshot {
+    padding: 30px 0 52px;
+  }
+  .snapshot-head {
+    display: grid;
+    gap: 8px;
+    max-width: 760px;
+    margin-bottom: 20px;
+  }
+  .snapshot-head span,
+  .snapshot-kicker {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+  }
+  .snapshot-head h2 {
+    margin: 0;
+    color: var(--primary);
+    font-size: clamp(26px, 4vw, 38px);
+    line-height: 1.12;
+  }
+  .snapshot-head p {
+    margin: 0;
+    color: var(--muted);
+    max-width: 64ch;
+  }
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .snapshot-card {
+    display: flex;
+    min-height: 252px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.62)),
+      radial-gradient(circle at top right, rgba(201, 162, 39, 0.16), transparent 14rem);
+    box-shadow: 0 10px 28px rgba(16, 42, 67, 0.07);
+  }
+  .snapshot-card h3 {
+    margin: 10px 0 8px;
+    color: var(--primary);
+    font-size: 18px;
+    line-height: 1.35;
+  }
+  .snapshot-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .snapshot-card a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    margin-top: 14px;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .snapshot-card a::after {
+    content: '→';
+    margin-left: 8px;
+    color: var(--accent);
+  }
   .profile-photo {
     width: 138px;
     height: 138px;
@@ -489,8 +601,8 @@ const c = common;
   }
 
   [data-animate] {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: none;
     transition:
       opacity 0.6s ease,
       transform 0.6s ease;
@@ -500,13 +612,13 @@ const c = common;
     transform: translateY(0);
   }
   [data-animate='right'] {
-    transform: translateX(20px);
+    transform: none;
   }
   [data-animate='right'].revealed {
     transform: translateX(0);
   }
   [data-animate='up'] {
-    transform: translateY(30px);
+    transform: none;
   }
   [data-animate='up'].revealed {
     transform: translateY(0);
@@ -514,7 +626,8 @@ const c = common;
   @media (max-width: 940px) {
     .hero-grid,
     .education-card,
-    .contact-card {
+    .contact-card,
+    .snapshot-grid {
       grid-template-columns: 1fr;
     }
   }
@@ -578,24 +691,6 @@ const c = common;
     { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
   );
   document.querySelectorAll('[data-animate]').forEach((el) => animObserver.observe(el));
-
-  const h1 = document.querySelector('.hero h1');
-  if (h1) {
-    const t = h1.textContent || '';
-    h1.textContent = '';
-    h1.style.borderRight = '3px solid var(--accent)';
-    let i = 0;
-    const tp = () => {
-      if (i < t.length) {
-        h1.textContent += t[i];
-        i++;
-        setTimeout(tp, 60 + Math.random() * 40);
-      } else {
-        h1.style.borderRight = 'none';
-      }
-    };
-    setTimeout(tp, 300);
-  }
 
   // Parallax scroll
   (function () {

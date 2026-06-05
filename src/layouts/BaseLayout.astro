@@ -70,8 +70,12 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
             s && s.remove();
           }, 300);
         }
-        window.addEventListener('load', hide);
-        setTimeout(hide, 3000);
+        if (document.readyState === 'complete') {
+          hide();
+        } else {
+          window.addEventListener('load', hide, { once: true });
+        }
+        setTimeout(hide, 900);
       })();
     </script>
 
