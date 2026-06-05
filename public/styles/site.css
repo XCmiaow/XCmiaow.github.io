@@ -933,6 +933,44 @@ body {
         border-radius: 10px;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
       }
+      .btn {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(47, 81, 104, 0.18);
+        border-radius: 8px;
+        background: #fff;
+        color: #2f5168;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 750;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0 12px;
+        transition:
+          transform 180ms ease,
+          background 180ms ease,
+          border-color 180ms ease;
+      }
+      .btn:hover {
+        background: #f7f3e6;
+        border-color: rgba(201, 162, 39, 0.35);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn:focus-visible,
+      .ls a:focus-visible {
+        outline: 2px solid #c9a227;
+        outline-offset: 2px;
+      }
+      .btn.primary {
+        background: #2f5168;
+        border-color: #2f5168;
+        color: #fff;
+      }
       .ls {
         display: flex;
         align-items: center;
@@ -957,8 +995,11 @@ body {
         width: 210mm;
         min-height: 297mm;
         background: #fff;
-        padding: 19mm;
+        padding: 17mm 18mm 16mm;
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+      }
+      .sheet section {
+        padding: 0;
       }
       .sheet h1 {
         font-size: 24pt;
@@ -1011,10 +1052,38 @@ body {
         text-align: right;
         white-space: nowrap;
       }
+      .metric-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6pt;
+        margin: 6pt 0 8pt;
+      }
+      .metric {
+        border-left: 2pt solid #c9a227;
+        background: #f7f5ef;
+        padding: 5pt 6pt;
+      }
+      .metric strong {
+        display: block;
+        color: #102a43;
+        font-size: 12pt;
+        line-height: 1;
+      }
+      .metric span {
+        color: #555;
+        font-size: 7.4pt;
+        font-weight: 700;
+      }
       .summary {
         font-size: 9pt;
         line-height: 1.35;
         margin-bottom: 8pt;
+      }
+      .tagline {
+        color: #2f5168;
+        font-size: 8.5pt;
+        font-weight: 750;
+        margin: 1pt 0 0;
       }
       .row-2 {
         display: grid;
@@ -1046,6 +1115,17 @@ body {
       .item-head span {
         font-size: 8pt;
         color: #888;
+      }
+      .keyword-line {
+        color: #555;
+        font-size: 8.2pt;
+        margin-top: 2pt;
+      }
+      .compact-list {
+        padding-left: 14px;
+      }
+      .compact-list li {
+        margin-bottom: 1.5pt;
       }
       @media (max-width: 840px) {
         html,
@@ -1099,6 +1179,9 @@ body {
           grid-template-columns: 1fr;
           gap: 8px;
         }
+        .metric-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
         .item-head {
           display: grid;
           gap: 3px;
@@ -1122,13 +1205,14 @@ body {
         }
         .sheet {
           width: 210mm;
-          min-height: auto;
-          padding: 16mm 16mm 14mm 16mm;
+          min-height: 297mm;
+          padding: 14mm 15mm 12mm 15mm;
           box-shadow: none;
           border: none;
+          overflow: hidden;
         }
         .sheet h1 {
-          font-size: 18pt;
+          font-size: 20pt;
         }
         .sheet h2 {
           font-size: 9pt;
@@ -1137,58 +1221,99 @@ body {
         }
         .sheet p,
         .sheet li {
-          font-size: 7.5pt;
+          font-size: 8pt;
           line-height: 1.25;
         }
         .sheet .small {
-          font-size: 7.3pt;
+          font-size: 7.7pt;
         }
         .sheet .tiny {
-          font-size: 7pt;
+          font-size: 7.3pt;
           padding-left: 11px;
         }
         .sheet .tiny li {
           margin-bottom: 1pt;
         }
         .top {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: flex-start;
           margin-bottom: 4pt;
         }
         .top-main h1 {
-          font-size: 18pt;
+          font-size: 20pt;
           margin-bottom: 0.5pt;
         }
         .top-main .sub {
           font-size: 8pt;
         }
         .top-contact {
-          font-size: 7.3pt;
+          text-align: right;
+          white-space: nowrap;
+          font-size: 7.2pt;
           gap: 0;
         }
         .summary {
-          font-size: 7.5pt;
-          line-height: 1.28;
-          margin-bottom: 5pt;
+          font-size: 8pt;
+          line-height: 1.26;
+          margin-bottom: 6pt;
+        }
+        .tagline {
+          font-size: 8pt;
+        }
+        .metric-strip {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .metric-strip {
+          gap: 4pt;
+          margin: 4pt 0 5pt;
+        }
+        .metric {
+          padding: 3.5pt 4pt;
+        }
+        .metric strong {
+          font-size: 10pt;
+        }
+        .metric span {
+          font-size: 6.6pt;
         }
         .row-2 {
+          grid-template-columns: 1fr 1fr;
           gap: 8px;
         }
         .row-2.tight {
+          grid-template-columns: 1fr 1fr;
           gap: 5px;
         }
         .row-2 li {
-          font-size: 7.3pt;
+          font-size: 7.6pt;
           margin-bottom: 1pt;
         }
         .item {
-          margin-bottom: 3pt;
+          margin-bottom: 4pt;
+        }
+        .item-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 6pt;
         }
         .item-head strong {
-          font-size: 7.5pt;
+          font-size: 8pt;
         }
         .item-head span {
           font-size: 7pt;
+          white-space: nowrap;
         }
-        * {
+        .keyword-line {
+          font-size: 7.4pt;
+        }
+        section,
+        .item,
+        .top,
+        .metric {
+          break-inside: avoid;
           page-break-inside: avoid;
         }
       }

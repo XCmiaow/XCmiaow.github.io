@@ -1,27 +1,39 @@
 ---
 import PrintLayout from '../../layouts/PrintLayout.astro';
+import common from '../../data/common.json';
+
+const gpa = common.education.gpa.toFixed(2);
+const github = common.person.github;
+const email = common.person.email;
 ---
 
 <PrintLayout title="Xujie Fang · One-Page Resume" lang="en">
   <header class="top">
     <div class="top-main">
-      <h1>Xujie Fang</h1><p class="sub">
-        Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU
-      </p>
+      <h1>Xujie Fang</h1>
+      <p class="sub">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
+      <p class="tagline">Profile: chemical engineering foundation, mathematical modeling, and AI-assisted workflows</p>
     </div>
     <div class="top-contact">
-      <span>📧 2332797170@njfu.edu.cn</span><span>🐙 github.com/XCmiaow</span><span>📍 Nanjing Forestry University</span
-      >
+      <span>Email: {email}</span>
+      <span>GitHub: {github}</span>
+      <span>Location: Nanjing, China</span>
     </div>
   </header>
 
+  <div class="metric-strip" aria-label="Key metrics">
+    <div class="metric"><strong>{gpa}</strong><span>GPA</span></div>
+    <div class="metric"><strong>1st</strong><span>Class rank</span></div>
+    <div class="metric"><strong>2nd</strong><span>Major rank</span></div>
+    <div class="metric"><strong>2</strong><span>MCM/ICM HMs</span></div>
+  </div>
+
   <p class="summary">
-    Undergraduate in Chemical Engineering with GPA <strong>3.60</strong> (Class <strong>1st</strong>, Major <strong
-      >2nd</strong
-    >). National Inspirational Scholarship recipient. Core math modeling: CUMCM <strong
-      >Jiangsu Provincial First Prize</strong
-    >, consecutive MCM/ICM <strong>Honorable Mentions</strong> (2025, 2026). Proficient in Python modeling, LaTeX writing,
-    and AI toolchain workflows.
+    Sophomore undergraduate in Chemical Engineering of Forest Products at Nanjing Forestry University. Ranked
+    <strong>1st</strong> in class and <strong>2nd</strong> in major with a GPA of <strong>{gpa}</strong>. Recipient of
+    the National Inspirational Scholarship and university merit recognition. Strongest evidence areas: mathematical
+    modeling, Python-based analysis, LaTeX academic writing, organic chemistry mechanisms, and AI-assisted research
+    workflows.
   </p>
 
   <div class="row-2">
@@ -29,71 +41,93 @@ import PrintLayout from '../../layouts/PrintLayout.astro';
       <h2>Education</h2>
       <div class="item">
         <div class="item-head"><strong>Nanjing Forestry University</strong><span>2024.09 - Present</span></div>
-        <p>College of Chemical Engineering</p><p>GPA: 3.60 · Class Rank: 1st · Major Rank: 2nd · Sophomore</p>
+        <p>College of Chemical Engineering · Chemical Engineering of Forest Products · Undergraduate</p>
+        <p class="keyword-line">GPA {gpa} · Class rank 1st · Major rank 2nd · Sophomore</p>
       </div>
     </section>
     <section>
-      <h2>Target Positioning</h2>
+      <h2>Positioning</h2>
       <p class="small">
-        <strong>Graduate School:</strong> Academic performance, math modeling, honors, and research potential.
+        <strong>Graduate recommendation:</strong> academic ranking, scholarship, modeling awards, and leadership record.
       </p>
       <p class="small">
-        <strong>Career:</strong> Python modeling, frontend engineering, AI toolchain, and knowledge management.
+        <strong>Internship / project work:</strong> problem abstraction, data analysis, technical writing, and web implementation.
       </p>
     </section>
   </div>
 
   <section>
-    <h2>Key Honors</h2>
+    <h2>Selected Honors</h2>
     <div class="row-2 tight">
-      <ul>
-        <li>2025 / 2026 MCM/ICM Honorable Mention (H Award)</li><li>2024-2025 National Inspirational Scholarship</li><li
-        >
-          2024 CUMCM Jiangsu Provincial First Prize
-        </li>
+      <ul class="compact-list">
+        <li>2025 and 2026 MCM/ICM Honorable Mention</li>
+        <li>2024-2025 National Inspirational Scholarship</li>
+        <li>2024 CUMCM Jiangsu Provincial First Prize</li>
       </ul>
-      <ul>
-        <li>Jiangsu Advanced Math Competition, 3rd Prize (A-level)</li><li>
-          MathorCup Math Modeling Challenge, Regional 2nd Prize
-        </li><li>University Merit Student · Competition Outstanding Individual</li>
+      <ul class="compact-list">
+        <li>Jiangsu Advanced Mathematics Competition, 3rd Prize, A-level undergraduate track</li>
+        <li>MathorCup Mathematical Modeling Challenge, Regional 2nd Prize</li>
+        <li>University Merit Student and Academic Competition Outstanding Individual</li>
       </ul>
     </div>
   </section>
 
   <section>
-    <h2>Project Experience</h2>
+    <h2>Projects & Competition Practice</h2>
     <div class="item">
       <div class="item-head">
-        <strong>Mathematical Modeling in Practice</strong><span>Python · Academic Writing · Data Analysis</span>
-      </div><p class="small">
-        Applied problem abstraction, model construction, data processing, algorithm solving, result analysis, and paper
-        writing to real-world problems across CUMCM and MCM/ICM competitions.
+        <strong>Mathematical modeling competitions</strong><span>Python · Data analysis · Academic writing</span>
+      </div>
+      <p class="small">
+        Participated in CUMCM, MCM/ICM, and MathorCup. Practiced problem decomposition, variable selection, model
+        assumptions, data processing, algorithmic solving, result interpretation, and paper writing for open-ended
+        applied problems.
       </p>
     </div>
     <div class="item">
       <div class="item-head">
-        <strong>ChemAI Lab</strong><span>PyTorch · RDKit · ML · Computational Chemistry</span>
-      </div><p class="small">
-        A machine learning & quantum chemistry driven chemical research platform integrating RDKit, PyTorch, and
-        Lightning across 16 subpackages.
+        <strong>Personal academic resume website</strong><span>Astro · Responsive design · GitHub Pages</span>
+      </div>
+      <p class="small">
+        Built a bilingual academic profile with homepage, evidence gallery, modeling page, ChemAI Lab page, one-page
+        resume, and blog structure. Added formatting, linting, static QA, and build checks for long-term maintenance.
+      </p>
+    </div>
+    <div class="item">
+      <div class="item-head">
+        <strong>ChemAI Lab</strong><span>Python · PyTorch · RDKit · Computational chemistry</span>
+      </div>
+      <p class="small">
+        Learning-oriented project for AI-assisted chemistry research, covering molecular features, machine learning
+        models, quantum chemistry interfaces, and explainability as preparation for computational chemistry work.
       </p>
     </div>
   </section>
 
   <div class="row-2">
     <section>
-      <h2>Technical Skills</h2>
-      <p class="small"><strong>Domain:</strong> Organic chemistry mechanisms, Clayden, March, disconnection approach</p>
-      <p class="small"><strong>Modeling:</strong> Math modeling, Python, LaTeX, Markdown, Origin</p>
-      <p class="small"><strong>Tools:</strong> HTML, CSS, JavaScript, React, Zotero, Obsidian</p>
+      <h2>Skills</h2>
+      <p class="small">
+        <strong>Discipline:</strong> organic chemistry mechanisms, Clayden, March, disconnection approach, forest product
+        chemical engineering.
+      </p>
+      <p class="small">
+        <strong>Modeling & writing:</strong> mathematical modeling, Python, Markdown, LaTeX, Origin, structured academic writing.
+      </p>
+      <p class="small">
+        <strong>Tools:</strong> HTML, CSS, JavaScript, React, Astro, VS Code, Codex, Zotero, Obsidian.
+      </p>
     </section>
     <section>
-      <h2>Leadership &amp; Service</h2>
+      <h2>Leadership & Service</h2>
       <ul class="tiny">
-        <li>Class Academic Representative (2024-2025): assignment coordination &amp; academic affairs</li><li>
-          Teaching Information Liaison (2024-2025): student-teacher communication
-        </li><li>Primary organizer of the 1st Baima Campus Freshman Volleyball Cup</li><li>
-          "Card House" volunteer service &amp; Red Cross blood donation
+        <li>Class Academic Representative, 2024.09 - 2025.06: assignment coordination and academic affairs support.</li>
+        <li>
+          Teaching Information Liaison, 2024.09 - 2025.06: course feedback collection and student-teacher communication.
+        </li>
+        <li>
+          Primary organizer of the 1st Baima Campus Freshman Volleyball Cup; volunteer service and blood donation
+          participant.
         </li>
       </ul>
     </section>

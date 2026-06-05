@@ -2,7 +2,7 @@
   "person": {
     "name": "Xujie Fang",
     "brandMark": "XF",
-    "tagline": "a student exploring code, modeling and chemistry",
+    "tagline": "undergraduate exploring chemistry, modeling, and research workflows",
     "location": "Nanjing, China"
   },
   "education": {
@@ -16,23 +16,23 @@
   "highlights": [
     {
       "id": "academic",
-      "title": "Outstanding Academics",
-      "desc": "GPA 3.60, ranked 1st in class and 2nd in major with university-level honors."
+      "title": "Academic Strength",
+      "desc": "GPA 3.60, ranked 1st in class and 2nd in major, with scholarship and merit-student recognition."
     },
     {
       "id": "modeling",
-      "title": "Math Modeling",
-      "desc": "CUMCM Provincial First Prize, demonstrating complete modeling workflow proficiency."
+      "title": "Modeling Training",
+      "desc": "CUMCM Jiangsu Provincial First Prize, built through repeated practice in problem framing, assumptions, analysis, and writing."
     },
     {
       "id": "global",
-      "title": "International Competitions",
-      "desc": "Consecutive MCM/ICM Honorable Mentions in 2025 and 2026."
+      "title": "International Exposure",
+      "desc": "Consecutive MCM/ICM Honorable Mentions in 2025 and 2026, with experience in English academic modeling papers."
     },
     {
       "id": "growth",
-      "title": "Well-Rounded Development",
-      "desc": "Class officer, debate competition runner-up, and volleyball event organizer."
+      "title": "Campus Leadership",
+      "desc": "Class academic representative, teaching information liaison, debate runner-up, and campus sports event organizer."
     }
   ],
   "competitions": [
@@ -128,20 +128,20 @@
     {
       "id": "modeling",
       "title": "Mathematical Modeling Practice",
-      "desc": "Applied model construction, data processing, result analysis, and paper writing to real-world problems across CUMCM and MCM/ICM competitions, earning provincial and international awards.",
-      "abilities": "Problem abstraction, model assumption, data analysis, paper writing"
+      "desc": "Worked on open-ended modeling problems across CUMCM, MCM/ICM, and MathorCup. The practice emphasized problem decomposition, assumption design, data processing, result interpretation, and paper writing.",
+      "abilities": "Problem framing, model assumptions, data analysis, academic writing"
     },
     {
       "id": "ai-km",
       "title": "AI-Assisted Learning & Knowledge Management",
-      "desc": "Exploring AI tools, Zotero, Obsidian, Markdown, and LaTeX for literature reading, knowledge organization, learning path planning, and research writing assistance.",
+      "desc": "Built a personal workflow for literature reading and knowledge organization with AI tools, Zotero, Obsidian, Markdown, and LaTeX, aiming to make coursework and research preparation more traceable.",
       "abilities": "Reference management, knowledge organization, research communication, learning reflection",
       "todo": "Obsidian vault screenshots, reading note samples, workflow documentation"
     },
     {
       "id": "resume-site",
       "title": "Personal Academic Resume Website",
-      "desc": "Built a bilingual personal academic homepage with Astro, featuring component-based layout, dark mode, language auto-switching, print styles, and GitHub Actions auto-deployment.",
+      "desc": "Built a bilingual academic resume website with Astro, including portfolio sections, an evidence gallery, project pages, responsive layouts, print-friendly resumes, and automated quality checks.",
       "abilities": "Component architecture, responsive design, static deployment, information architecture, privacy-aware versioning, CI/CD"
     },
     {
@@ -169,24 +169,24 @@
     "2025: Participated in the Red Cross voluntary blood donation activity"
   ],
   "researchInterests": {
-    "tagline": "Organic chemistry as foundation, computational tools as extension, AI as leverage",
-    "summary": "I have a sustained academic interest in organic synthesis methodology, and I am also deeply interested in how LLMs, agent workflows, and deep learning can be applied to chemical research. My long-term goal is to bridge my chemical engineering training with computational and AI capabilities, focusing on the intersection of computational chemistry and AI-assisted organic synthesis.",
+    "tagline": "Organic chemistry as the foundation, computational tools as the extension",
+    "summary": "My current academic interest starts from organic reaction mechanisms and synthetic strategy, then extends toward computational chemistry and AI-assisted research workflows. I am still at an early undergraduate stage, so I treat this direction as a long-term training path: build a solid chemistry foundation first, then learn modeling, programming, and literature workflows that can support future research.",
     "areas": [
       {
         "name": "Organic Synthesis Methodology",
-        "note": "Ongoing study of Clayden, March and related texts; focus on synthetic strategy and reaction mechanisms"
+        "note": "Ongoing study of Clayden, March, and related texts, with focus on synthetic strategy and reaction mechanisms"
       },
       {
         "name": "Computational Chemistry / AI-Assisted Synthesis",
-        "note": "Core research interest — reaction prediction, retrosynthetic planning, molecular property prediction"
+        "note": "Long-term interest in reaction prediction, retrosynthetic planning, and molecular property prediction"
       },
       {
         "name": "LLMs + Agent Workflows",
-        "note": "Exploring LLM applications in literature retrieval, experiment proposal generation, and research knowledge management"
+        "note": "Exploring how LLMs can support literature retrieval, reading notes, and research knowledge management"
       },
       {
         "name": "Deep Learning Fundamentals",
-        "note": "Studying neural network basics, interested in graph neural networks for molecular representation learning"
+        "note": "Studying neural network basics, with interest in graph neural networks for molecular representation learning"
       }
     ]
   }
