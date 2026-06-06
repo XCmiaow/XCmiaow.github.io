@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageTrail from '../components/PageTrail.astro';
+import { materials, type MaterialAudience } from '../data/materials';
+
+const audienceLabels: Record<MaterialAudience, string> = {
+  academic: '保研评优',
+  career: '求职实习',
+  review: '快速审核',
+  portfolio: '项目展示',
+};
+
+const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'portfolio'];
+---
+
+<BaseLayout
+  title="材料下载中心 | 方绪杰"
+  description="方绪杰个人简历网站材料中心，集中整理一页简历、保研评优版、求职实习版、证明材料墙与项目说明页。"
+  lang="zh"
+>
+  <section class="materials-hero">
+    <div class="container">
+      <span class="eyebrow">Materials Hub</span>
+      <h1>材料下载中心</h1>
+      <p class="lead">
+        这里把公开展示版材料按使用场景集中整理：老师审核看保研评优版，实习投递看求职实习版，奖项核验看证明材料墙，项目沟通看详情页。
+      </p>
+      <div class="hub-actions">
+        <a class="btn primary" href="/resume-academic">保研评优版</a>
+        <a class="btn" href="/resume-career">求职实习版</a>
+        <a class="btn" href="/evidence">证明材料墙</a>
+      </div>
+    </div>
+  </section>
+
+  <PageTrail
+    eyebrow="材料路径"
+    title="按场景选择材料"
+    description="公开网页只保留脱敏信息。正式投递时，可以在此基础上补充完整 PDF、证书原件或学院要求的表格。"
+    links={[
+      { href: '/', label: '返回主页' },
+      { href: '/resume-onepage', label: '通用简历' },
+      { href: '/evidence', label: '证据墙' },
+    ]}
+  />
+
+  <section class="materials-section">
+    <div class="container material-groups">
+      {
+        audienceOrder.map((audience) => {
+          const items = materials.filter((item) => item.audience === audience);
+          return (
+            <section class="material-group" aria-labelledby={`materials-${audience}`}>
+              <div class="group-head">
+                <span>{audienceLabels[audience]}</span>
+                <h2 id={`materials-${audience}`}>{audienceLabels[audience]}材料</h2>
+              </div>
+              <div class="material-grid">
+                {items.map((item) => (
+                  <article class="material-card">
+                    <span class="status">{item.zh.status}</span>
+                    <h3>{item.zh.title}</h3>
+                    <p>{item.zh.desc}</p>
+                    <dl>
+                      <div>
+                        <dt>适用场景</dt>
+                        <dd>{item.zh.usage}</dd>
+                      </div>
+                    </dl>
+                    <a class="material-link" href={item.href.zh}>
+                      {item.zh.action}
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="privacy-note">
+    <div class="container">
+      <div class="privacy-card">
+        <h2>公开版与正式投递版的边界</h2>
+        <p>
+          当前材料中心面向公开展示，默认隐藏学号、出生年月、完整电话等敏感信息。若用于正式投递，可在本地打印页面或另行生成完整
+          PDF，并按学院或单位要求补充原始证明材料。
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .materials-hero {
+    padding: 108px 0 54px;
+    background: linear-gradient(135deg, rgba(16, 42, 67, 0.94), rgba(47, 111, 94, 0.88)), var(--primary);
+    color: #fff;
+  }
+  .materials-hero .eyebrow {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .materials-hero h1 {
+    margin: 10px 0 0;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.06;
+  }
+  .materials-hero .lead {
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 17px;
+  }
+  .hub-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .hub-actions .btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  .hub-actions .btn.primary {
+    background: #fff;
+    color: var(--primary);
+    border-color: #fff;
+  }
+  .materials-section {
+    padding: 34px 0 18px;
+  }
+  .material-groups {
+    display: grid;
+    gap: 30px;
+  }
+  .material-group {
+    display: grid;
+    gap: 14px;
+  }
+  .group-head span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+  .group-head h2 {
+    margin: 4px 0 0;
+    color: var(--primary);
+    font-size: clamp(24px, 3.6vw, 34px);
+  }
+  .material-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .material-card {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 0 10px 26px rgba(16, 42, 67, 0.07);
+  }
+  .material-card .status {
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 850;
+  }
+  .material-card h3 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 20px;
+  }
+  .material-card p,
+  .material-card dd {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .material-card dl {
+    margin: 0;
+  }
+  .material-card dt {
+    margin-bottom: 3px;
+    color: var(--secondary);
+    font-size: 13px;
+    font-weight: 850;
+  }
+  .material-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .privacy-note {
+    padding: 10px 0 70px;
+  }
+  .privacy-card {
+    padding: 24px;
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    background: rgba(201, 162, 39, 0.1);
+  }
+  .privacy-card h2 {
+    margin: 0 0 8px;
+    color: var(--primary);
+    font-size: 22px;
+  }
+  .privacy-card p {
+    margin: 0;
+    color: var(--muted);
+  }
+  @media (max-width: 760px) {
+    .materials-hero {
+      padding-top: 62px;
+    }
+    .material-grid {
+      grid-template-columns: 1fr;
+    }
+    .material-card {
+      padding: 18px;
+    }
+  }
+</style>

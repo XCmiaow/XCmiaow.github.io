@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageTrail from '../../components/PageTrail.astro';
+import { materials, type MaterialAudience } from '../../data/materials';
+
+const audienceLabels: Record<MaterialAudience, string> = {
+  academic: 'Academic',
+  career: 'Internship',
+  review: 'Review',
+  portfolio: 'Portfolio',
+};
+
+const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'portfolio'];
+---
+
+<BaseLayout
+  title="Materials Hub | Xujie Fang"
+  description="A centralized materials hub for Xujie Fang, including one-page resumes, academic review resume, internship resume, evidence gallery, and project pages."
+  lang="en"
+>
+  <section class="materials-hero">
+    <div class="container">
+      <span class="eyebrow">Materials Hub</span>
+      <h1>Materials Hub</h1>
+      <p class="lead">
+        A scenario-based entry point for reviewers: academic evaluators can use the academic resume, internship readers
+        can use the career version, and award verification can start from the evidence gallery.
+      </p>
+      <div class="hub-actions">
+        <a class="btn primary" href="/en/resume-academic">Academic Resume</a>
+        <a class="btn" href="/en/resume-career">Internship Resume</a>
+        <a class="btn" href="/en/evidence">Certificate Gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <PageTrail
+    eyebrow="Material path"
+    title="Choose materials by scenario"
+    description="The public site keeps sensitive information sanitized. For formal submission, complete PDFs and original documents can be prepared offline according to the target requirement."
+    links={[
+      { href: '/en/', label: 'Back home' },
+      { href: '/en/resume-onepage', label: 'General resume' },
+      { href: '/en/evidence', label: 'Evidence gallery' },
+    ]}
+  />
+
+  <section class="materials-section">
+    <div class="container material-groups">
+      {
+        audienceOrder.map((audience) => {
+          const items = materials.filter((item) => item.audience === audience);
+          return (
+            <section class="material-group" aria-labelledby={`materials-${audience}`}>
+              <div class="group-head">
+                <span>{audienceLabels[audience]}</span>
+                <h2 id={`materials-${audience}`}>{audienceLabels[audience]} Materials</h2>
+              </div>
+              <div class="material-grid">
+                {items.map((item) => (
+                  <article class="material-card">
+                    <span class="status">{item.en.status}</span>
+                    <h3>{item.en.title}</h3>
+                    <p>{item.en.desc}</p>
+                    <dl>
+                      <div>
+                        <dt>Best used for</dt>
+                        <dd>{item.en.usage}</dd>
+                      </div>
+                    </dl>
+                    <a class="material-link" href={item.href.en}>
+                      {item.en.action}
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="privacy-note">
+    <div class="container">
+      <div class="privacy-card">
+        <h2>Public vs. formal submission materials</h2>
+        <p>
+          This hub is designed for public sharing and keeps sensitive identity information hidden. For formal
+          submission, use these pages as a base and prepare complete PDFs or original proof files locally.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .materials-hero {
+    padding: 108px 0 54px;
+    background: linear-gradient(135deg, rgba(16, 42, 67, 0.94), rgba(47, 111, 94, 0.88)), var(--primary);
+    color: #fff;
+  }
+  .materials-hero .eyebrow {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .materials-hero h1 {
+    margin: 10px 0 0;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.06;
+  }
+  .materials-hero .lead {
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 17px;
+  }
+  .hub-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .hub-actions .btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  .hub-actions .btn.primary {
+    background: #fff;
+    color: var(--primary);
+    border-color: #fff;
+  }
+  .materials-section {
+    padding: 34px 0 18px;
+  }
+  .material-groups {
+    display: grid;
+    gap: 30px;
+  }
+  .material-group {
+    display: grid;
+    gap: 14px;
+  }
+  .group-head span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+  .group-head h2 {
+    margin: 4px 0 0;
+    color: var(--primary);
+    font-size: clamp(24px, 3.6vw, 34px);
+  }
+  .material-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .material-card {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 0 10px 26px rgba(16, 42, 67, 0.07);
+  }
+  .material-card .status {
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 850;
+  }
+  .material-card h3 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 20px;
+  }
+  .material-card p,
+  .material-card dd {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .material-card dl {
+    margin: 0;
+  }
+  .material-card dt {
+    margin-bottom: 3px;
+    color: var(--secondary);
+    font-size: 13px;
+    font-weight: 850;
+  }
+  .material-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .privacy-note {
+    padding: 10px 0 70px;
+  }
+  .privacy-card {
+    padding: 24px;
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    background: rgba(201, 162, 39, 0.1);
+  }
+  .privacy-card h2 {
+    margin: 0 0 8px;
+    color: var(--primary);
+    font-size: 22px;
+  }
+  .privacy-card p {
+    margin: 0;
+    color: var(--muted);
+  }
+  @media (max-width: 760px) {
+    .materials-hero {
+      padding-top: 62px;
+    }
+    .material-grid {
+      grid-template-columns: 1fr;
+    }
+    .material-card {
+      padding: 18px;
+    }
+  }
+</style>

@@ -12,8 +12,8 @@
     "check": "npm run build && npm run qa",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write 'src/**/*.{astro,ts,js,css,json}'",
-    "format:check": "prettier --check 'src/**/*.{astro,ts,js,css,json}'",
+    "format": "prettier --write 'src/**/*.{astro,ts,js,css,json}' README.md package.json",
+    "format:check": "prettier --check 'src/**/*.{astro,ts,js,css,json}' README.md package.json",
     "prepare": "husky"
   },
   "dependencies": {

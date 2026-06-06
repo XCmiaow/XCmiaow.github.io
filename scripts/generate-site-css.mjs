@@ -17,6 +17,8 @@ const sources = [
   'src/pages/en/modeling.astro',
   'src/pages/evidence.astro',
   'src/pages/en/evidence.astro',
+  'src/pages/materials.astro',
+  'src/pages/en/materials.astro',
   'src/pages/resume-onepage.astro',
   'src/pages/en/resume-onepage.astro',
   'src/pages/resume-academic.astro',

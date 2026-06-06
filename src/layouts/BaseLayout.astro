@@ -109,6 +109,11 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
             aria-current={isPage('evidence') ? 'page' : undefined}>{labels.evidence}</a
           >
           <a
+            href={`${basePath}/materials`}
+            class:list={[{ active: isPage('materials') }]}
+            aria-current={isPage('materials') ? 'page' : undefined}>{labels.materials}</a
+          >
+          <a
             href={`${basePath}/resume-onepage`}
             class:list={[{ active: isPage('resume-onepage') }]}
             aria-current={isPage('resume-onepage') ? 'page' : undefined}>{labels.onepage}</a
@@ -149,7 +154,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
           <a class:list={['btn', { active: isPage('resume-onepage') }]} href={`${basePath}/resume-onepage`}
             >{labels.onepage}</a
           >
-          <a class:list={['btn', { active: isPage('evidence') }]} href={`${basePath}/evidence`}>{labels.evidence}</a>
+          <a class:list={['btn', { active: isPage('materials') }]} href={`${basePath}/materials`}>{labels.materials}</a>
           <a class="btn primary" href={`${basePath}/#contact`}>{labels.contact}</a>
         </div>
       </div>

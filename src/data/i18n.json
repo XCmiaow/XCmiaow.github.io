@@ -1,17 +1,18 @@
 {
   "nav": {
     "zh": {
-      "about": "????",
-      "education": "????",
-      "honors": "????",
-      "skills": "????",
-      "projects": "????",
-      "modeling": "????",
-      "evidence": "???",
-      "blog": "??",
-      "contact": "???",
-      "onepage": "???",
-      "fullcv": "???",
+      "about": "关于",
+      "education": "教育",
+      "honors": "荣誉",
+      "skills": "技能",
+      "projects": "项目",
+      "modeling": "建模",
+      "evidence": "证据",
+      "materials": "材料",
+      "blog": "博客",
+      "contact": "联系",
+      "onepage": "一页版",
+      "fullcv": "完整简历",
       "chem_ai_lab": "ChemAI Lab"
     },
     "en": {
@@ -22,6 +23,7 @@
       "projects": "Projects",
       "modeling": "Modeling",
       "evidence": "Evidence",
+      "materials": "Materials",
       "blog": "Blog",
       "contact": "Contact",
       "onepage": "One-Page",
@@ -30,14 +32,14 @@
     }
   },
   "footer": {
-    "zh": "????????",
+    "zh": "个人学术简历网站",
     "en": "Personal Academic Resume Website"
   },
   "hero": {
     "zh": {
-      "subtitle": "?????? ? ?????? ? ?????????",
-      "cta_primary": "??????",
-      "cta_pdf": "????? ? PDF"
+      "subtitle": "南京林业大学 · 化学工程学院 · 林产化工专业本科生",
+      "cta_primary": "查看核心成果",
+      "cta_pdf": "一页简历 · PDF"
     },
     "en": {
       "subtitle": "Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU",
@@ -47,8 +49,8 @@
   },
   "contact": {
     "zh": {
-      "title": "?????",
-      "desc": "??????? GitHub Pages ??????????"
+      "title": "联系与展示",
+      "desc": "公开展示版适合 GitHub Pages 部署或个人主页链接。"
     },
     "en": {
       "title": "Contact & Links",

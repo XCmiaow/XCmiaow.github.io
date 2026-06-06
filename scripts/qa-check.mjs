@@ -12,6 +12,8 @@ const routes = [
   '/en/modeling',
   '/evidence',
   '/en/evidence',
+  '/materials',
+  '/en/materials',
   '/resume-onepage',
   '/en/resume-onepage',
   '/resume-academic',
@@ -40,6 +42,8 @@ const expectedHeadings = {
   '/en/modeling': 'Mathematical Modeling in Practice',
   '/evidence': '\u8bc1\u660e\u6750\u6599\u5899',
   '/en/evidence': 'Certificate Gallery',
+  '/materials': '\u6750\u6599\u4e0b\u8f7d\u4e2d\u5fc3',
+  '/en/materials': 'Materials Hub',
   '/resume-onepage': '\u65b9\u7eea\u6770',
   '/en/resume-onepage': 'Xujie Fang',
   '/resume-academic': '\u65b9\u7eea\u6770',
@@ -51,6 +55,15 @@ const expectedHeadings = {
   '/en/blog': 'Blog',
   '/en/blog/getting-started': 'Getting Started',
 };
+
+const printRoutes = [
+  '/resume-onepage',
+  '/en/resume-onepage',
+  '/resume-academic',
+  '/en/resume-academic',
+  '/resume-career',
+  '/en/resume-career',
+];
 
 function previewCommand() {
   return {
@@ -84,6 +97,11 @@ function localUrl(href) {
   } catch {
     return null;
   }
+}
+
+function pdfPageCount(buffer) {
+  const text = buffer.toString('latin1');
+  return (text.match(/\/Type\s*\/Page\b/g) || []).length;
 }
 
 async function runBrowserChecks() {
@@ -254,8 +272,18 @@ async function runBrowserChecks() {
   const menuDisplay = await page.locator('#navLinks').evaluate((el) => getComputedStyle(el).display);
   if (menuDisplay !== 'flex') failures.push(`Mobile menu did not open; display=${menuDisplay}`);
 
+  const printResults = [];
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  for (const route of printRoutes) {
+    await page.goto(`${base}${route}`, { waitUntil: 'load' });
+    const pdf = await page.pdf({ format: 'A4', printBackground: true });
+    const pages = pdfPageCount(pdf);
+    printResults.push({ route, pages });
+    if (pages !== 1) failures.push(`${route} prints to ${pages} pages instead of 1`);
+  }
+
   await browser.close();
-  return { failures, routeResults, overflowChecks, tapTargetChecks };
+  return { failures, routeResults, overflowChecks, tapTargetChecks, printResults };
 }
 
 const { cmd, args } = previewCommand();
