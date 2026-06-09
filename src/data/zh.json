@@ -56,9 +56,15 @@
       "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
     },
     {
-      "year": "高中",
+      "year": "2023",
       "level": "provincial",
-      "title": "第 37 届中国化学奥林匹克竞赛 江苏赛区二等奖",
+      "title": "第 37 届中国化学奥林匹克（初赛）二等奖",
+      "note": "化学学科基础证明"
+    },
+    {
+      "year": "2022",
+      "level": "provincial",
+      "title": "第 36 届中国化学奥林匹克竞赛（江苏赛区）二等奖",
       "note": "化学学科基础证明"
     },
     { "year": "2024-2025", "level": "school", "title": "校三好学生", "note": "综合素质荣誉" },

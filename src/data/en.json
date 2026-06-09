@@ -77,9 +77,15 @@
       "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
     },
     {
-      "year": "High School",
+      "year": "2023",
       "level": "provincial",
-      "title": "37th China Chemistry Olympiad, Jiangsu 2nd Prize",
+      "title": "37th China Chemistry Olympiad (Preliminary), 2nd Prize",
+      "note": "Chemistry foundation"
+    },
+    {
+      "year": "2022",
+      "level": "provincial",
+      "title": "36th China Chemistry Olympiad (Jiangsu), 2nd Prize",
       "note": "Chemistry foundation"
     },
     { "year": "2024-2025", "level": "school", "title": "University Merit Student", "note": "Comprehensive honor" },
