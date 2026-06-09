@@ -368,6 +368,12 @@ const variantItems = Object.entries(variantLabels) as Array<[keyof typeof varian
           overflow-wrap: anywhere;
         }
       }
+      /* ── Honors table ── */
+      .honors-table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 8.5pt; }
+      .honors-table td { padding: 2.5pt 6pt 2.5pt 0; vertical-align: top; }
+      .honors-table .yr { width: 48pt; font-weight: 700; color: #c9a227; white-space: nowrap; }
+      .honors-table .lvl { width: 36pt; font-weight: 600; color: #2f5168; white-space: nowrap; }
+
       @media print {
         @page {
           size: A4;

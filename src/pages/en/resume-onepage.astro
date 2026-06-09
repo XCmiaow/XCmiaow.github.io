@@ -1,135 +1,92 @@
 ---
 import PrintLayout from '../../layouts/PrintLayout.astro';
-import common from '../../data/common.json';
+import en from '../../data/en.json';
 
-const gpa = common.education.gpa.toFixed(2);
-const github = common.person.github;
-const email = common.person.email;
+const p = en.person;
+const edu = en.education;
+const allAwards = en.competitions;
+function awardLevel(l: string) {
+  if (l === 'international') return 'Intl.';
+  if (l === 'national') return 'Natl.';
+  if (l === 'provincial') return 'Prov.';
+  if (l === 'school') return 'Univ.';
+  return 'Coll.';
+}
 ---
 
-<PrintLayout title="Xujie Fang · One-Page Resume" lang="en" variant="general">
-  <header class="top">
-    <div class="top-main">
-      <h1>Xujie Fang</h1>
-      <p class="sub">Chemical Engineering of Forest Products · College of Chemical Engineering · NJFU</p>
-      <p class="tagline">Profile: chemical engineering foundation, mathematical modeling, and AI-assisted workflows</p>
-    </div>
-    <div class="top-contact">
-      <span>Email: {email}</span>
-      <span>GitHub: {github}</span>
-      <span>Location: Nanjing, China</span>
-    </div>
-  </header>
+<PrintLayout title="Xujie Fang · One-Page Resume" lang="en">
 
-  <div class="metric-strip" aria-label="Key metrics">
-    <div class="metric"><strong>{gpa}</strong><span>GPA</span></div>
-    <div class="metric"><strong>1st</strong><span>Class rank</span></div>
-    <div class="metric"><strong>2nd</strong><span>Major rank</span></div>
-    <div class="metric"><strong>2</strong><span>MCM/ICM HMs</span></div>
+<header class="top">
+  <div class="top-main">
+    <h1>{p.name}</h1>
+    <p class="sub">{edu.major} · {edu.college} · {edu.school}</p>
   </div>
-
-  <p class="summary">
-    Sophomore undergraduate in Chemical Engineering of Forest Products at Nanjing Forestry University. Ranked
-    <strong>1st</strong> in class and <strong>2nd</strong> in major with a GPA of <strong>{gpa}</strong>. Recipient of
-    the National Inspirational Scholarship and university merit recognition. Strongest evidence areas: mathematical
-    modeling, Python-based analysis, LaTeX academic writing, organic chemistry mechanisms, and AI-assisted research
-    workflows.
-  </p>
-
-  <div class="row-2">
-    <section>
-      <h2>Education</h2>
-      <div class="item">
-        <div class="item-head"><strong>Nanjing Forestry University</strong><span>2024.09 - Present</span></div>
-        <p>College of Chemical Engineering · Chemical Engineering of Forest Products · Undergraduate</p>
-        <p class="keyword-line">GPA {gpa} · Class rank 1st · Major rank 2nd · Sophomore</p>
-      </div>
-    </section>
-    <section>
-      <h2>Positioning</h2>
-      <p class="small">
-        <strong>Graduate recommendation:</strong> academic ranking, scholarship, modeling awards, and leadership record.
-      </p>
-      <p class="small">
-        <strong>Internship / project work:</strong> problem abstraction, data analysis, technical writing, and web implementation.
-      </p>
-    </section>
+  <div class="top-contact">
+    <span>📧 2332797170@njfu.edu.cn</span>
+    <span>🐙 github.com/XCmiaow</span>
+    <span>📍 {edu.school}</span>
   </div>
+</header>
 
+<p class="summary">Undergraduate in {edu.major} · GPA <strong>3.60</strong> (Class <strong>1st</strong>, Major <strong>2nd</strong>). National Inspirational Scholarship. Core math modeling: CUMCM <strong>Jiangsu Provincial First Prize</strong>, consecutive MCM/ICM <strong>Honorable Mentions</strong> (2025, 2026). Self-studying Clayden & March in organic chemistry, Python modeling, and deep learning fundamentals. Research interest in computational chemistry and AI-assisted organic synthesis.</p>
+
+<div class="row-2">
   <section>
-    <h2>Selected Honors</h2>
-    <div class="row-2 tight">
-      <ul class="compact-list">
-        <li>2025 and 2026 MCM/ICM Honorable Mention</li>
-        <li>2024-2025 National Inspirational Scholarship</li>
-        <li>2024 CUMCM Jiangsu Provincial First Prize</li>
-      </ul>
-      <ul class="compact-list">
-        <li>Jiangsu Advanced Mathematics Competition, 3rd Prize, A-level undergraduate track</li>
-        <li>MathorCup Mathematical Modeling Challenge, Regional 2nd Prize</li>
-        <li>University Merit Student and Academic Competition Outstanding Individual</li>
-      </ul>
+    <h2>Education</h2>
+    <div class="item">
+      <div class="item-head"><strong>{edu.school} · {edu.college}</strong><span>{edu.period}</span></div>
+      <p>{edu.major} · {edu.degree} · {edu.year}</p>
+      <p>GPA: <strong>3.60</strong> · Class Rank: 1st · Major Rank: 2nd</p>
     </div>
   </section>
-
   <section>
-    <h2>Projects & Competition Practice</h2>
-    <div class="item">
-      <div class="item-head">
-        <strong>Mathematical modeling competitions</strong><span>Python · Data analysis · Academic writing</span>
-      </div>
-      <p class="small">
-        Participated in CUMCM, MCM/ICM, and MathorCup. Practiced problem decomposition, variable selection, model
-        assumptions, data processing, algorithmic solving, result interpretation, and paper writing for open-ended
-        applied problems.
-      </p>
-    </div>
-    <div class="item">
-      <div class="item-head">
-        <strong>Personal academic resume website</strong><span>Astro · Responsive design · GitHub Pages</span>
-      </div>
-      <p class="small">
-        Built a bilingual academic profile with homepage, evidence gallery, modeling page, ChemAI Lab page, one-page
-        resume, and blog structure. Added formatting, linting, static QA, and build checks for long-term maintenance.
-      </p>
-    </div>
-    <div class="item">
-      <div class="item-head">
-        <strong>ChemAI Lab</strong><span>Python · PyTorch · RDKit · Computational chemistry</span>
-      </div>
-      <p class="small">
-        Learning-oriented project for AI-assisted chemistry research, covering molecular features, machine learning
-        models, quantum chemistry interfaces, and explainability as preparation for computational chemistry work.
-      </p>
-    </div>
+    <h2>Research Interest</h2>
+    <p class="small">AI-assisted organic synthesis, computational chemistry, GNNs for molecular representation, and LLM agent workflows for scientific literature retrieval.</p>
   </section>
+</div>
 
-  <div class="row-2">
-    <section>
-      <h2>Skills</h2>
-      <p class="small">
-        <strong>Discipline:</strong> organic chemistry mechanisms, Clayden, March, disconnection approach, forest product
-        chemical engineering.
-      </p>
-      <p class="small">
-        <strong>Modeling & writing:</strong> mathematical modeling, Python, Markdown, LaTeX, Origin, structured academic writing.
-      </p>
-      <p class="small">
-        <strong>Tools:</strong> HTML, CSS, JavaScript, React, Astro, VS Code, Codex, Zotero, Obsidian.
-      </p>
-    </section>
-    <section>
-      <h2>Leadership & Service</h2>
-      <ul class="tiny">
-        <li>Class Academic Representative, 2024.09 - 2025.06: assignment coordination and academic affairs support.</li>
-        <li>
-          Teaching Information Liaison, 2024.09 - 2025.06: course feedback collection and student-teacher communication.
-        </li>
-        <li>
-          Primary organizer of the 1st Baima Campus Freshman Volleyball Cup; volunteer service and blood donation
-          participant.
-        </li>
-      </ul>
-    </section>
+<section>
+  <h2>Awards &amp; Honors</h2>
+  <table class="honors-table">
+    {allAwards.map(a => (
+      <tr><td class="yr">{a.year}</td><td class="lvl">{awardLevel(a.level)}</td><td>{a.title}</td></tr>
+    ))}
+  </table>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <div class="item">
+    <div class="item-head"><strong>Mathematical Modeling Practice</strong></div>
+    <p class="small">Problem abstraction, model construction, data processing, algorithm solving, and academic paper writing across CUMCM, MCM/ICM, and MathorCup competitions.</p>
   </div>
+  <div class="item">
+    <div class="item-head"><strong>ChemAI Lab</strong></div>
+    <p class="small">ML and quantum chemistry research platform integrating RDKit, PyTorch, and Lightning across 16 subpackages for data, feature engineering, modeling, XAI, and QM interfaces.</p>
+  </div>
+  <div class="item">
+    <div class="item-head"><strong>Bilingual Academic Resume Website</strong></div>
+    <p class="small">Astro-powered bilingual site with component architecture, i18n, PWA, dark mode, CI/CD, and automated deployment via GitHub Actions.</p>
+  </div>
+</section>
+
+<div class="row-2">
+  <section>
+    <h2>Skills</h2>
+    <p class="small"><strong>Domain:</strong> Organic chemistry mechanisms, Clayden, March, disconnection approach</p>
+    <p class="small"><strong>Modeling:</strong> Math modeling, Python, LaTeX, Markdown, Origin</p>
+    <p class="small"><strong>Dev tools:</strong> HTML, CSS, JavaScript, React, VS Code, Codex</p>
+    <p class="small"><strong>Engineering:</strong> Office/WPS, Axglyph, AutoCAD, Aspen Plus, Zotero, Obsidian</p>
+  </section>
+  <section>
+    <h2>Experience</h2>
+    <ul class="tiny">
+      <li><b>Class Academic Representative</b> (2024-2025): Assignment management and academic coordination</li>
+      <li><b>Teaching Information Liaison</b> (2024-2025): Student-teacher communication</li>
+      <li>Organizer, 1st Baima Campus Freshman Volleyball Cup</li>
+      <li>"Card House" volunteer service &amp; Red Cross blood donation</li>
+    </ul>
+  </section>
+</div>
+
 </PrintLayout>
