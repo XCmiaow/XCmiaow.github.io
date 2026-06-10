@@ -2,7 +2,7 @@
 export interface Props {
   title: string;
   lang: 'zh' | 'en';
-  variant?: 'general' | 'academic' | 'career';
+  variant?: 'general' | 'academic' | 'career' | 'sioc';
 }
 
 const { title, lang, variant = 'general' } = Astro.props;
@@ -11,11 +11,17 @@ const variantRoutes = {
   general: { zh: '/resume-onepage', en: '/en/resume-onepage' },
   academic: { zh: '/resume-academic', en: '/en/resume-academic' },
   career: { zh: '/resume-career', en: '/en/resume-career' },
+  sioc: { zh: '/resume-sioc-summer', en: '/resume-sioc-summer' },
 };
 const variantLabels = isZh
-  ? { general: '通用', academic: '保研评优', career: '求职实习' }
-  : { general: 'General', academic: 'Academic', career: 'Internship' };
-const variantItems = Object.entries(variantLabels) as Array<[keyof typeof variantLabels, string]>;
+  ? { general: '通用', academic: '保研评优', career: '求职实习', sioc: '上海有机所' }
+  : { general: 'General', academic: 'Academic', career: 'Internship', sioc: 'SIOC' };
+const publicVariantLabels = {
+  general: variantLabels.general,
+  academic: variantLabels.academic,
+  career: variantLabels.career,
+};
+const variantItems = Object.entries(publicVariantLabels) as Array<[keyof typeof publicVariantLabels, string]>;
 ---
 
 <!doctype html>
@@ -46,7 +52,7 @@ const variantItems = Object.entries(variantLabels) as Array<[keyof typeof varian
       <button class="btn primary" onclick="window.print()">{isZh ? '打印 / 保存 PDF' : 'Print / Save PDF'}</button>
     </div>
 
-    <article class="sheet">
+    <article class:list={['sheet', `sheet-${variant}`]}>
       <slot />
     </article>
 
@@ -297,7 +303,7 @@ const variantItems = Object.entries(variantLabels) as Array<[keyof typeof varian
       .compact-list li {
         margin-bottom: 1.5pt;
       }
-      @media (max-width: 840px) {
+      @media screen and (max-width: 840px) {
         html,
         body {
           width: 100%;
@@ -369,10 +375,28 @@ const variantItems = Object.entries(variantLabels) as Array<[keyof typeof varian
         }
       }
       /* ── Honors table ── */
-      .honors-table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 8.5pt; }
-      .honors-table td { padding: 2.5pt 6pt 2.5pt 0; vertical-align: top; }
-      .honors-table .yr { width: 48pt; font-weight: 700; color: #c9a227; white-space: nowrap; }
-      .honors-table .lvl { width: 36pt; font-weight: 600; color: #2f5168; white-space: nowrap; }
+      .honors-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 6pt 0;
+        font-size: 8.5pt;
+      }
+      .honors-table td {
+        padding: 2.5pt 6pt 2.5pt 0;
+        vertical-align: top;
+      }
+      .honors-table .yr {
+        width: 48pt;
+        font-weight: 700;
+        color: #c9a227;
+        white-space: nowrap;
+      }
+      .honors-table .lvl {
+        width: 36pt;
+        font-weight: 600;
+        color: #2f5168;
+        white-space: nowrap;
+      }
 
       @media print {
         @page {
@@ -393,6 +417,11 @@ const variantItems = Object.entries(variantLabels) as Array<[keyof typeof varian
           box-shadow: none;
           border: none;
           overflow: hidden;
+        }
+        .sheet-sioc {
+          height: 297mm;
+          min-height: 297mm;
+          padding: 8mm 10.5mm 7mm;
         }
         .sheet h1 {
           font-size: 20pt;
