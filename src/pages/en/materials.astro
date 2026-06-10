@@ -1,21 +1,34 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageTrail from '../../components/PageTrail.astro';
-import { materials, type MaterialAudience } from '../../data/materials';
+import { materials, type MaterialAccess, type MaterialAudience } from '../../data/materials';
 
 const audienceLabels: Record<MaterialAudience, string> = {
   academic: 'Academic',
   career: 'Internship',
   review: 'Review',
   portfolio: 'Portfolio',
+  local: 'Local Packet',
 };
 
-const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'portfolio'];
+const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'portfolio', 'local'];
+
+const accessLabels: Record<MaterialAccess, string> = {
+  public: 'Public sanitized',
+  restricted: 'Public evidence, review first',
+  local: 'Local only',
+};
+
+const accessNotes: Record<MaterialAccess, string> = {
+  public: 'Safe to share as a public link by default, without phone number, birth date, or student ID fields.',
+  restricted: 'Curated evidence for public verification. Recheck image content before forwarding widely.',
+  local: 'Formal packets may include full identity and proof files, so they are generated and submitted locally.',
+};
 ---
 
 <BaseLayout
   title="Materials Hub | Xujie Fang"
-  description="A centralized materials hub for Xujie Fang, including one-page resumes, academic review resume, internship resume, evidence gallery, and project pages."
+  description="A centralized materials hub for Xujie Fang, separating public sanitized pages, review-only evidence, and local formal packets."
   lang="en"
 >
   <section class="materials-hero">
@@ -23,8 +36,8 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
       <span class="eyebrow">Materials Hub</span>
       <h1>Materials Hub</h1>
       <p class="lead">
-        A scenario-based entry point for reviewers: academic evaluators can use the academic resume, internship readers
-        can use the career version, and award verification can start from the evidence gallery.
+        A scenario-based entry point for reviewers, with a clear boundary between public links, evidence that needs one
+        more check before sharing, and formal application packets that stay local.
       </p>
       <div class="hub-actions">
         <a class="btn primary" href="/en/resume-academic">Academic Resume</a>
@@ -37,7 +50,7 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
   <PageTrail
     eyebrow="Material path"
     title="Choose materials by scenario"
-    description="The public site keeps sensitive information sanitized. For formal submission, complete PDFs and original documents can be prepared offline according to the target requirement."
+    description="The public site keeps sensitive information sanitized. Complete PDFs, original proof files, and application forms are prepared locally for formal submission."
     links={[
       { href: '/en/', label: 'Back home' },
       { href: '/en/resume-onepage', label: 'General resume' },
@@ -45,39 +58,59 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
     ]}
   />
 
+  <section class="access-legend" aria-label="Publication boundary">
+    <div class="container legend-grid">
+      {(Object.keys(accessLabels) as MaterialAccess[]).map((access) => (
+        <article class:list={['legend-item', `access-${access}`]}>
+          <span>{accessLabels[access]}</span>
+          <p>{accessNotes[access]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
   <section class="materials-section">
     <div class="container material-groups">
-      {
-        audienceOrder.map((audience) => {
-          const items = materials.filter((item) => item.audience === audience);
-          return (
-            <section class="material-group" aria-labelledby={`materials-${audience}`}>
-              <div class="group-head">
-                <span>{audienceLabels[audience]}</span>
-                <h2 id={`materials-${audience}`}>{audienceLabels[audience]} Materials</h2>
-              </div>
-              <div class="material-grid">
-                {items.map((item) => (
-                  <article class="material-card">
+      {audienceOrder.map((audience) => {
+        const items = materials.filter((item) => item.audience === audience);
+        if (!items.length) return null;
+
+        return (
+          <section class="material-group" aria-labelledby={`materials-${audience}`}>
+            <div class="group-head">
+              <span>{audienceLabels[audience]}</span>
+              <h2 id={`materials-${audience}`}>{audienceLabels[audience]} Materials</h2>
+            </div>
+            <div class="material-grid">
+              {items.map((item) => (
+                <article class:list={['material-card', `access-${item.access}`]}>
+                  <div class="card-meta">
                     <span class="status">{item.en.status}</span>
-                    <h3>{item.en.title}</h3>
-                    <p>{item.en.desc}</p>
-                    <dl>
-                      <div>
-                        <dt>Best used for</dt>
-                        <dd>{item.en.usage}</dd>
-                      </div>
-                    </dl>
+                    <span class="access-badge">{accessLabels[item.access]}</span>
+                  </div>
+                  <h3>{item.en.title}</h3>
+                  <p>{item.en.desc}</p>
+                  <dl>
+                    <div>
+                      <dt>Best used for</dt>
+                      <dd>{item.en.usage}</dd>
+                    </div>
+                  </dl>
+                  {item.href ? (
                     <a class="material-link" href={item.href.en}>
                       {item.en.action}
                     </a>
-                  </article>
-                ))}
-              </div>
-            </section>
-          );
-        })
-      }
+                  ) : (
+                    <span class="material-link disabled" aria-disabled="true">
+                      {item.en.action}
+                    </span>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   </section>
 
@@ -86,8 +119,9 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
       <div class="privacy-card">
         <h2>Public vs. formal submission materials</h2>
         <p>
-          This hub is designed for public sharing and keeps sensitive identity information hidden. For formal
-          submission, use these pages as a base and prepare complete PDFs or original proof files locally.
+          This website publishes only sanitized public materials. Formal packets such as the SIOC summer program
+          application may contain a phone number, birth date, complete proof files, and form-specific fields, so they
+          remain local and are not linked from the public hub.
         </p>
       </div>
     </div>
@@ -113,7 +147,7 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
     line-height: 1.06;
   }
   .materials-hero .lead {
-    max-width: 760px;
+    max-width: 780px;
     margin: 18px 0 0;
     color: rgba(255, 255, 255, 0.82);
     font-size: 17px;
@@ -133,6 +167,32 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
     background: #fff;
     color: var(--primary);
     border-color: #fff;
+  }
+  .access-legend {
+    padding: 28px 0 0;
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .legend-item {
+    min-height: 132px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .legend-item span {
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .legend-item p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
   }
   .materials-section {
     padding: 34px 0 18px;
@@ -171,14 +231,40 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
     background: var(--paper);
     box-shadow: 0 10px 26px rgba(16, 42, 67, 0.07);
   }
-  .material-card .status {
+  .material-card.access-local {
+    border-style: dashed;
+    background: rgba(226, 231, 238, 0.34);
+    box-shadow: none;
+  }
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .material-card .status,
+  .access-badge {
     width: fit-content;
     padding: 5px 9px;
     border-radius: 999px;
-    background: var(--accent-soft);
-    color: var(--primary);
     font-size: 12px;
     font-weight: 850;
+    line-height: 1.25;
+  }
+  .material-card .status {
+    background: var(--accent-soft);
+    color: var(--primary);
+  }
+  .access-badge {
+    background: rgba(47, 111, 94, 0.1);
+    color: var(--secondary);
+  }
+  .access-restricted .access-badge {
+    background: rgba(201, 162, 39, 0.16);
+    color: #8a6515;
+  }
+  .access-local .access-badge {
+    background: rgba(15, 23, 32, 0.08);
+    color: var(--muted);
   }
   .material-card h3 {
     margin: 0;
@@ -216,6 +302,11 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
     font-weight: 850;
     text-decoration: none;
   }
+  .material-link.disabled {
+    background: rgba(15, 23, 32, 0.08);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
   .privacy-note {
     padding: 10px 0 70px;
   }
@@ -233,6 +324,14 @@ const audienceOrder: MaterialAudience[] = ['review', 'academic', 'career', 'port
   .privacy-card p {
     margin: 0;
     color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .legend-grid {
+      grid-template-columns: 1fr;
+    }
+    .legend-item {
+      min-height: 0;
+    }
   }
   @media (max-width: 760px) {
     .materials-hero {
