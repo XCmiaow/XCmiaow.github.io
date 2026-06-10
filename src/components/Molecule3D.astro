@@ -87,12 +87,13 @@
       p = rotateZ(p, -0.12);
       var depth = 520;
       var scale = depth / (depth + p.z);
+      var fit = Math.min(W / 340, H / 260, 1);
       return {
-        px: W * 0.5 + p.x * scale,
-        py: H * 0.54 + p.y * scale,
+        px: W * 0.5 + p.x * scale * fit,
+        py: H * 0.54 + p.y * scale * fit,
         z: p.z,
         e: atom.e,
-        scale: scale,
+        scale: scale * fit,
       };
     }
 
@@ -138,7 +139,7 @@
       ctx.fillStyle = 'rgba(255,255,255,' + alpha * 0.2 + ')';
       ctx.fill();
 
-      if (atom.e !== 'C') {
+      if (atom.e !== 'C' && r >= 5) {
         ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.9, alpha + 0.08) + ')';
         ctx.font = '700 ' + Math.max(9, r * 1.25) + 'px system-ui, sans-serif';
         ctx.textAlign = 'center';
@@ -183,24 +184,24 @@
 <style>
   #mol-bg {
     position: fixed;
-    top: 86px;
-    right: 24px;
-    width: min(360px, 34vw);
-    height: min(300px, 32vh);
+    top: 72px;
+    right: 0;
+    width: clamp(140px, 12vw, 160px);
+    height: clamp(118px, 12vw, 136px);
     pointer-events: none;
-    z-index: 1;
-    opacity: 0.7;
+    z-index: 0;
+    opacity: 0.42;
   }
   html.minimal-mode #mol-bg {
     display: none !important;
   }
   @media (max-width: 760px) {
     #mol-bg {
-      top: 70px;
-      right: 4px;
-      width: 190px;
-      height: 160px;
-      opacity: 0.4;
+      top: 66px;
+      right: 0;
+      width: 72px;
+      height: 44px;
+      opacity: 0.14 !important;
     }
   }
 </style>
