@@ -21,11 +21,12 @@ The evidence gallery is curated for public review, but certificate images should
 ## Local-only materials
 
 - Root-level PDF exports, including formal application PDFs.
-- `src/pages/resume-sioc-summer.astro` until it is sanitized and approved for publication.
+- `local-only/pages/resume-sioc-summer.astro` until it is sanitized and approved for publication.
 - Scripts that merge or generate full proof/application packets.
+- Temporary packet build output under `.tmp-visual/`.
 - `assets/evidence/private/`
 - `public/assets/evidence/private/`
 
 ## Publish rule
 
-Public routes must not expose phone numbers, birth dates, student IDs, complete proof bundles, or links to local-only application packets. Root-level PDFs are ignored by default; only reviewed assets under `public/` should be published.
+Public routes must not expose phone numbers, birth dates, student IDs, complete proof bundles, or links to local-only application packets. Formal packet source pages should not live in `src/pages/` because Astro will publish every page in that directory. Root-level PDFs are ignored by default; only reviewed assets under `public/` should be published.

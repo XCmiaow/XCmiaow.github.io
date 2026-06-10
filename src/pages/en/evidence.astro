@@ -2,32 +2,29 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import PageTrail from '../../components/PageTrail.astro';
+import evidence from '../../data/evidence.json';
 
-const certs = [
-  'national-inspirational-scholarship-2025.jpg',
-  'cumcm-2024-jiangsu-first.jpg',
-  'mcm-2025-honorable-mention.jpg',
-  'mcm-2026-honorable-mention.jpg',
-  'mathorcup-2025-second.png',
-  'math-competition-2025-third.jpg',
-  'three-good-student-2025.png',
-  'chemistry-olympiad-2023.jpg',
-  'chemistry-olympiad-2022.jpg',
-  'debate-second-2024.jpg',
-  'card-house-volunteer-2024.jpg',
-  'volleyball-freshman-2024-second.jpg',
-  'volleyball-college-2026-fourth.jpg',
-  'high-jump-2025-fourth.jpg',
-];
-const imgBase = '/assets/evidence/public/';
-const imgUrls = certs.map((f) => imgBase + f);
+const { imageBase, categories, items } = evidence;
+const groups = categories
+  .map((category) => ({
+    ...category,
+    cards: items.filter((item) => item.category === category.id),
+  }))
+  .filter((group) => group.cards.length > 0);
+const orderedItems = groups.flatMap((group) => group.cards);
+const imgUrls = orderedItems.map((item) => imageBase + item.file);
+const categoryCount = groups.length;
+const evidenceCount = orderedItems.length;
 ---
 
 <BaseLayout title="Xujie Fang | Certificate Gallery" lang="en">
   <section class="hero">
     <div class="container">
       <h1>Certificate Gallery</h1>
-      <p class="lead">Click any certificate to view full size. Navigate with arrow keys.</p>
+      <p class="lead">
+        A structured gallery for awards, honors, student work, and campus activities. Each certificate is mapped to the
+        resume claim it supports.
+      </p>
     </div>
   </section>
 
@@ -47,17 +44,73 @@ const imgUrls = certs.map((f) => imgBase + f);
     ]}
   />
 
-  <div class="container" style="margin-bottom:60px">
-    <div class="grid-3">
-      {
-        certs.map((f, i) => (
-          <a class="cert-card" href={imgBase + f} target="_blank">
-            <img src={imgBase + f} alt={f} loading="lazy" />
+  <section class="evidence-overview">
+    <div class="container">
+      <div class="evidence-metrics" aria-label="Evidence overview">
+        <div>
+          <span>Public evidence</span>
+          <strong>{evidenceCount}</strong>
+        </div>
+        <div>
+          <span>Categories</span>
+          <strong>{categoryCount}</strong>
+        </div>
+        <div>
+          <span>Boundary</span>
+          <strong>Curated</strong>
+        </div>
+      </div>
+      <nav class="category-rail" aria-label="Evidence categories">
+        {groups.map((group) => (
+          <a href={`#evidence-${group.id}`}>
+            <span>{group.en}</span>
+            <em>{group.cards.length}</em>
           </a>
-        ))
-      }
+        ))}
+      </nav>
     </div>
-  </div>
+  </section>
+
+  <section class="evidence-catalog">
+    <div class="container evidence-groups">
+      {groups.map((group) => (
+        <section class="evidence-group" id={`evidence-${group.id}`} aria-labelledby={`evidence-title-${group.id}`}>
+          <div class="group-head">
+            <span>{group.en}</span>
+            <h2 id={`evidence-title-${group.id}`}>{group.en} Evidence</h2>
+          </div>
+          <div class="evidence-grid">
+            {group.cards.map((item) => (
+              <a class="cert-card evidence-card" href={imageBase + item.file} target="_blank">
+                <div class="cert-thumb">
+                  <img src={imageBase + item.file} alt={`${item.titleEn} certificate`} loading="lazy" />
+                </div>
+                <div class="cert-body">
+                  <div class="cert-meta">
+                    <span>{item.year}</span>
+                    <span>{item.levelEn}</span>
+                    <span>{item.proofTypeEn}</span>
+                  </div>
+                  <h3>{item.titleEn}</h3>
+                  <dl>
+                    <div>
+                      <dt>Issuer / organizer</dt>
+                      <dd>{item.issuerEn}</dd>
+                    </div>
+                    <div>
+                      <dt>Resume claim supported</dt>
+                      <dd>{item.claimEn}</dd>
+                    </div>
+                  </dl>
+                  <span class="access-note">{item.accessEn}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
 
   <Lightbox images={imgUrls} />
 </BaseLayout>
@@ -71,28 +124,181 @@ const imgUrls = certs.map((f) => imgBase + f);
     color: var(--primary);
   }
   .lead {
-    max-width: 600px;
+    max-width: 720px;
     margin-top: 12px;
     color: var(--muted);
   }
-  .cert-card {
-    display: block;
+  .evidence-overview {
+    padding: 8px 0 28px;
+  }
+  .evidence-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .evidence-metrics div {
+    padding: 18px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .evidence-metrics span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .evidence-metrics strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--primary);
+    font-size: 28px;
+    line-height: 1;
+  }
+  .category-rail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .category-rail a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.66);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .category-rail em {
+    display: grid;
+    min-width: 22px;
+    height: 22px;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--primary);
+    font-style: normal;
+  }
+  .evidence-catalog {
+    padding: 0 0 64px;
+  }
+  .evidence-groups {
+    display: grid;
+    gap: 32px;
+  }
+  .evidence-group {
+    scroll-margin-top: 96px;
+  }
+  .group-head span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+  .group-head h2 {
+    margin: 4px 0 14px;
+    color: var(--primary);
+    font-size: clamp(23px, 3vw, 32px);
+  }
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .cert-card {
+    display: grid;
     overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: inherit;
+    text-decoration: none;
     transition:
       transform 0.2s ease,
-      box-shadow 0.2s ease;
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
     cursor: pointer;
+  }
+  .cert-card:hover {
+    border-color: rgba(201, 162, 39, 0.42);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .cert-thumb {
+    display: grid;
+    min-height: 230px;
+    place-items: center;
+    background: #f5f5f5;
   }
   .cert-card img {
     width: 100%;
-    height: 240px;
+    height: 230px;
     object-fit: contain;
-    background: #f5f5f5;
   }
-  .cert-card:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
+  .cert-body {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+  }
+  .cert-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .cert-meta span,
+  .access-note {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(47, 111, 94, 0.1);
+    color: var(--secondary);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.25;
+  }
+  .access-note {
+    background: var(--accent-soft);
+    color: var(--primary);
+  }
+  .cert-card h3 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 17px;
+    line-height: 1.35;
+  }
+  .cert-card dl {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+  }
+  .cert-card dt {
+    color: var(--secondary);
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .cert-card dd {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  @media (max-width: 980px) {
+    .evidence-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .evidence-metrics {
+      grid-template-columns: 1fr;
+    }
+    .evidence-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

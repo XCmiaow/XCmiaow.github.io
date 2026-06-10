@@ -3,10 +3,12 @@ dist/
 .sst/
 .astro/
 *.log
+.tmp-visual/
 *.pdf
 !public/**/*.pdf
 public/build-meta.json
 assets/evidence/private/
 public/assets/evidence/private/
+local-only/
 scripts/build-sioc-application-pdf.py
 src/pages/resume-sioc-summer.astro
