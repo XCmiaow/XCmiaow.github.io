@@ -7,76 +7,61 @@
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    var W,
-      H,
+    var W = 0,
+      H = 0,
       angle = 0,
       animId;
-    var mol = [];
 
-    // Molecule definition: {x,y,z, r, color, label, bonds:[]}
-    // Caffeine structure (simplified 3D)
-    function buildMolecule() {
-      mol = [];
-      var s = 50;
-      // Purine ring system (two fused rings)
-      var atoms = [
-        // Ring 1 (6-membered)
-        { x: 0, y: -1, z: 0, r: 8, c: '60,60,60', e: 'C' },
-        { x: 0.87, y: -0.5, z: 0.5, r: 8, c: '60,60,60', e: 'C' },
-        { x: 0.87, y: 0.5, z: -0.5, r: 8, c: '60,60,60', e: 'C' },
-        { x: 0, y: 1, z: 0, r: 8, c: '60,60,60', e: 'C' },
-        { x: -0.87, y: 0.5, z: 0.5, r: 8, c: '60,60,60', e: 'C' },
-        { x: -0.87, y: -0.5, z: -0.5, r: 8, c: '60,60,60', e: 'C' },
-        // Ring 2 (5-membered)
-        { x: 0.87, y: -0.5, z: 0.5, r: 7, c: '30,80,180', e: 'N' },
-        { x: 1.7, y: 0, z: 0, r: 7, c: '30,80,180', e: 'N' },
-        { x: 0.87, y: 0.5, z: -0.5, r: 7, c: '30,80,180', e: 'N' },
-        // Carbonyl oxygens
-        { x: 0, y: 1.8, z: 0, r: 9, c: '200,50,50', e: 'O' },
-        { x: -1.7, y: 1, z: 0.8, r: 9, c: '200,50,50', e: 'O' },
-        // Methyl groups
-        { x: 2.6, y: 0, z: 0, r: 6, c: '60,60,60', e: 'C' },
-        { x: -1.7, y: -1, z: -0.8, r: 6, c: '60,60,60', e: 'C' },
-        { x: 0.87, y: -1.5, z: 0.8, r: 6, c: '60,60,60', e: 'C' },
-        // Nitrogens in rings
-        { x: -0.87, y: 0.5, z: 0.5, r: 6, c: '30,80,180', e: 'N' },
-      ];
+    var elementStyle = {
+      C: { r: 7, c: '70,78,88', label: 'C' },
+      N: { r: 8, c: '34,92,180', label: 'N' },
+      O: { r: 8, c: '205,68,68', label: 'O' },
+    };
 
-      // Scale first, then add bonds after every atom has a bonds array.
-      atoms.forEach(function (a, i) {
-        a.x *= s;
-        a.y *= s;
-        a.z *= s;
-        a.id = i;
-        a.bonds = [];
-      });
+    // Caffeine, CID 2519: CN1C=NC2=C1C(=O)N(C)C(=O)N2C
+    // Explicit topology avoids the previous distance-based false bonds.
+    var atoms = [
+      { x: -132, y: -78, z: 30, e: 'C' },
+      { x: -76, y: -48, z: 8, e: 'N' },
+      { x: -58, y: 13, z: 0, e: 'C' },
+      { x: 0, y: 31, z: 0, e: 'N' },
+      { x: 47, y: -13, z: 0, e: 'C' },
+      { x: 10, y: -68, z: 0, e: 'C' },
+      { x: 29, y: -130, z: 0, e: 'C' },
+      { x: -9, y: -180, z: -4, e: 'O' },
+      { x: 94, y: -146, z: 0, e: 'N' },
+      { x: 113, y: -208, z: -32, e: 'C' },
+      { x: 141, y: -102, z: 0, e: 'C' },
+      { x: 204, y: -118, z: 4, e: 'O' },
+      { x: 122, y: -40, z: 0, e: 'N' },
+      { x: 169, y: 4, z: 28, e: 'C' },
+    ];
 
-      atoms.forEach(function (a, i) {
-        // Calculate distances to find bonds
-        atoms.forEach(function (b, j) {
-          if (i >= j) return;
-          var dx = a.x - b.x,
-            dy = a.y - b.y,
-            dz = a.z - b.z;
-          var d = Math.hypot(dx, dy, dz);
-          if (d < s * 1.8) {
-            a.bonds.push(j);
-            b.bonds.push(i);
-          }
-        });
-      });
-      mol = atoms;
-    }
+    var bonds = [
+      [0, 1, 1],
+      [1, 2, 1],
+      [2, 3, 2],
+      [3, 4, 1],
+      [4, 5, 2],
+      [5, 1, 1],
+      [5, 6, 1],
+      [6, 7, 2],
+      [6, 8, 1],
+      [8, 9, 1],
+      [8, 10, 1],
+      [10, 11, 2],
+      [10, 12, 1],
+      [12, 4, 1],
+      [12, 13, 1],
+    ];
 
     function resize() {
-      W = window.innerWidth;
-      H = window.innerHeight;
+      var rect = canvas.getBoundingClientRect();
+      W = Math.max(1, Math.round(rect.width));
+      H = Math.max(1, Math.round(rect.height));
       canvas.width = W * 2;
       canvas.height = H * 2;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
       ctx.setTransform(2, 0, 0, 2, 0, 0);
-      buildMolecule();
     }
 
     function rotateX(p, a) {
@@ -95,56 +80,88 @@
       return { x: p.x * c - p.y * s, y: p.x * s + p.y * c, z: p.z };
     }
 
+    function project(atom) {
+      var p = { x: atom.x - 35, y: atom.y + 92, z: atom.z };
+      p = rotateX(p, -0.42 + Math.sin(angle * 0.7) * 0.08);
+      p = rotateY(p, angle);
+      p = rotateZ(p, -0.12);
+      var depth = 520;
+      var scale = depth / (depth + p.z);
+      return {
+        px: W * 0.5 + p.x * scale,
+        py: H * 0.54 + p.y * scale,
+        z: p.z,
+        e: atom.e,
+        scale: scale,
+      };
+    }
+
+    function drawBond(a, b, order) {
+      var dx = b.px - a.px,
+        dy = b.py - a.py;
+      var len = Math.max(1, Math.hypot(dx, dy));
+      var ox = (-dy / len) * 3.2,
+        oy = (dx / len) * 3.2;
+      var alpha = Math.max(0.22, Math.min(a.scale, b.scale) * 0.46);
+
+      ctx.strokeStyle = 'rgba(112,122,137,' + alpha + ')';
+      ctx.lineCap = 'round';
+      ctx.lineWidth = Math.max(1.2, Math.min(a.scale, b.scale) * 1.7);
+
+      if (order === 2) {
+        ctx.beginPath();
+        ctx.moveTo(a.px + ox, a.py + oy);
+        ctx.lineTo(b.px + ox, b.py + oy);
+        ctx.moveTo(a.px - ox, a.py - oy);
+        ctx.lineTo(b.px - ox, b.py - oy);
+        ctx.stroke();
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(a.px, a.py);
+        ctx.lineTo(b.px, b.py);
+        ctx.stroke();
+      }
+    }
+
+    function drawAtom(atom) {
+      var style = elementStyle[atom.e];
+      var r = style.r * atom.scale;
+      var alpha = Math.max(0.42, Math.min(0.88, 0.32 + atom.scale * 0.42));
+
+      ctx.beginPath();
+      ctx.arc(atom.px, atom.py, r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + style.c + ',' + alpha + ')';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(atom.px - r * 0.25, atom.py - r * 0.28, r * 0.42, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,' + alpha * 0.2 + ')';
+      ctx.fill();
+
+      if (atom.e !== 'C') {
+        ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.9, alpha + 0.08) + ')';
+        ctx.font = '700 ' + Math.max(9, r * 1.25) + 'px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(style.label, atom.px, atom.py + 0.3);
+      }
+    }
+
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      angle += 0.005;
+      angle += 0.006;
 
-      // Compute 3D positions with rotation
-      var projected = [];
-      mol.forEach(function (a) {
-        var p = { x: a.x, y: a.y, z: a.z };
-        p = rotateX(p, angle * 0.7);
-        p = rotateY(p, angle);
-        p = rotateZ(p, angle * 0.3);
-        // Perspective projection
-        var scale = 500 / (500 + p.z);
-        var px = W / 2 + p.x * scale;
-        var py = H / 2 + p.y * scale;
-        projected.push({ px: px, py: py, z: p.z, r: a.r * scale, c: a.c, e: a.e, bonds: a.bonds, scale: scale });
+      var projected = atoms.map(project);
+      bonds.forEach(function (bond) {
+        drawBond(projected[bond[0]], projected[bond[1]], bond[2]);
       });
 
-      // Sort by depth (far to near)
-      var sorted = projected.slice().sort(function (a, b) {
-        return b.z - a.z;
-      });
-
-      // Draw bonds first
-      sorted.forEach(function (a) {
-        a.bonds.forEach(function (bi) {
-          var b = projected[bi];
-          if (!b) return;
-          ctx.beginPath();
-          ctx.moveTo(a.px, a.py);
-          ctx.lineTo(b.px, b.py);
-          ctx.strokeStyle = 'rgba(180,180,190,' + Math.min(a.scale, b.scale) * 0.3 + ')';
-          ctx.lineWidth = 1.5 * Math.min(a.scale, b.scale);
-          ctx.stroke();
-        });
-      });
-
-      // Draw atoms
-      sorted.forEach(function (a) {
-        var alpha = 0.3 + a.scale * 0.4;
-        ctx.beginPath();
-        ctx.arc(a.px, a.py, a.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + a.c + ',' + alpha + ')';
-        ctx.fill();
-        // Highlight edge
-        ctx.beginPath();
-        ctx.arc(a.px - a.r * 0.2, a.py - a.r * 0.2, a.r * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,' + alpha * 0.15 + ')';
-        ctx.fill();
-      });
+      projected
+        .slice()
+        .sort(function (a, b) {
+          return a.z - b.z;
+        })
+        .forEach(drawAtom);
 
       animId = requestAnimationFrame(draw);
     }
@@ -155,7 +172,7 @@
     var resizeTimer;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resize, 200);
+      resizeTimer = setTimeout(resize, 120);
     });
     document.addEventListener('astro:after-swap', function () {
       if (animId) cancelAnimationFrame(animId);
@@ -166,11 +183,24 @@
 <style>
   #mol-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 86px;
+    right: 24px;
+    width: min(360px, 34vw);
+    height: min(300px, 32vh);
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
+    opacity: 0.7;
+  }
+  html.minimal-mode #mol-bg {
+    display: none !important;
+  }
+  @media (max-width: 760px) {
+    #mol-bg {
+      top: 70px;
+      right: 4px;
+      width: 190px;
+      height: 160px;
+      opacity: 0.4;
+    }
   }
 </style>
