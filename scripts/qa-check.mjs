@@ -98,6 +98,24 @@ const requiredEvidenceFields = [
   'accessEn',
 ];
 
+const requiredMaterialFields = [
+  'id',
+  'audience',
+  'access',
+  'kind',
+  'status',
+  'evidenceIds',
+  'riskNote',
+  'lastReviewed',
+  'zh',
+  'en',
+];
+
+const requiredMaterialLocaleFields = ['title', 'desc', 'action', 'usage', 'status'];
+const validMaterialAudiences = new Set(['academic', 'career', 'review', 'portfolio', 'local']);
+const validMaterialAccess = new Set(['public', 'restricted', 'local']);
+const validMaterialStatuses = new Set(['ready', 'review-first', 'local-only', 'needs-evidence']);
+
 function previewCommand() {
   return {
     cmd: `npm run preview -- --host ${host} --port ${port}`,
@@ -142,6 +160,15 @@ function hasForbiddenPublicText(value) {
   return forbiddenPublicPatterns.some((pattern) => pattern.re.test(value));
 }
 
+function hasForbiddenPublicTextDeep(value) {
+  if (hasForbiddenPublicText(value)) return true;
+  if (Array.isArray(value)) return value.some((item) => hasForbiddenPublicTextDeep(item));
+  if (value && typeof value === 'object') {
+    return Object.values(value).some((item) => hasForbiddenPublicTextDeep(item));
+  }
+  return false;
+}
+
 function runStaticChecks() {
   const failures = [];
   const localOnlyPublicPage = path.join(root, 'src', 'pages', 'resume-sioc-summer.astro');
@@ -183,6 +210,55 @@ function runStaticChecks() {
     Object.values(item).forEach((value) => {
       if (hasForbiddenPublicText(value)) failures.push(`Evidence item ${item.id} exposes private-looking text`);
     });
+  });
+
+  const materialsPath = path.join(root, 'src', 'data', 'materials.json');
+  if (!fs.existsSync(materialsPath)) {
+    failures.push('Materials data must live in src/data/materials.json');
+    return failures;
+  }
+
+  const materials = JSON.parse(fs.readFileSync(materialsPath, 'utf8'));
+  const evidenceIds = new Set(evidence.items.map((item) => item.id));
+  const materialIds = new Set();
+  if (!Array.isArray(materials.items) || materials.items.length < 1) {
+    failures.push('Materials data must contain at least one item');
+  }
+
+  materials.items?.forEach((item, index) => {
+    requiredMaterialFields.forEach((field) => {
+      if (item[field] === undefined || item[field] === null || item[field] === '') {
+        failures.push(`Material item ${index + 1} is missing ${field}`);
+      }
+    });
+    if (materialIds.has(item.id)) failures.push(`Duplicate material id: ${item.id}`);
+    materialIds.add(item.id);
+    if (!validMaterialAudiences.has(item.audience)) failures.push(`Material ${item.id} has invalid audience: ${item.audience}`);
+    if (!validMaterialAccess.has(item.access)) failures.push(`Material ${item.id} has invalid access: ${item.access}`);
+    if (!validMaterialStatuses.has(item.status)) failures.push(`Material ${item.id} has invalid status: ${item.status}`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(item.lastReviewed || '')) {
+      failures.push(`Material ${item.id} must use YYYY-MM-DD lastReviewed`);
+    }
+    if (!Array.isArray(item.evidenceIds)) failures.push(`Material ${item.id} evidenceIds must be an array`);
+    item.evidenceIds?.forEach((evidenceId) => {
+      if (!evidenceIds.has(evidenceId)) failures.push(`Material ${item.id} references unknown evidence id: ${evidenceId}`);
+    });
+    ['zh', 'en'].forEach((locale) => {
+      requiredMaterialLocaleFields.forEach((field) => {
+        if (!item[locale]?.[field]) failures.push(`Material ${item.id} is missing ${locale}.${field}`);
+      });
+    });
+    if (item.access === 'local' && item.href) failures.push(`Local-only material ${item.id} must not define href`);
+    if (item.access !== 'local' && !item.href) failures.push(`Public material ${item.id} must define href`);
+    if (item.href) {
+      Object.values(item.href).forEach((href) => {
+        if (!href?.startsWith('/')) failures.push(`Material ${item.id} href must be site-root relative: ${href}`);
+        if (localOnlyHrefPatterns.some((pattern) => pattern.re.test(href))) {
+          failures.push(`Material ${item.id} links to local-only route: ${href}`);
+        }
+      });
+    }
+    if (hasForbiddenPublicTextDeep(item)) failures.push(`Material ${item.id} exposes private-looking text`);
   });
 
   return failures;
