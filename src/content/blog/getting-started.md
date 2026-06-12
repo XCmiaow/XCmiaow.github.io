@@ -4,7 +4,7 @@ description: "First blog post - what I'll be writing about"
 date: 2026-05-27
 lang: en
 tags: ['General']
-draft: false
+draft: true
 ---
 
 This is where I'll share what I'm learning and building.
