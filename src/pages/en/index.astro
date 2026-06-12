@@ -156,7 +156,7 @@ const c = common;
 
   <section id="interests">
     <div class="container">
-      <SectionHead title="Research Interests" description={en.researchInterests.tagline} />
+      <SectionHead title="Research Interests" />
       <Card pad animate>
         <p class="interest-summary">{en.researchInterests.summary}</p>
         <div class="grid-2" style="margin-top:20px">
@@ -196,7 +196,7 @@ const c = common;
 
   <section id="honors">
     <div class="container">
-      <SectionHead title="Awards & Competitions" description="Click to expand details, filter by level." />
+      <SectionHead title="Awards & Competitions" />
       <CompetitionTimeline lang="en" competitions={en.competitions} />
     </div>
   </section>
@@ -303,7 +303,7 @@ const c = common;
   <section id="contact">
     <div class="container">
       <div class="contact-card" data-animate>
-        <div><h2>Contact & Links</h2><p>Public version for GitHub Pages deployment.</p></div>
+        <div><h2>Contact & Links</h2></div>
         <div class="contact-list">
           <span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span
             >GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span

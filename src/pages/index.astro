@@ -67,7 +67,6 @@ const c = common;
     <div class="container">
       <div class="review-head">
         <h2 id="review-strip-title">快速判断路径</h2>
-        <p>为老师、导师、项目合作方把关键信息放在同一屏附近：成绩、奖项、项目与材料入口彼此对应。</p>
       </div>
       <div class="review-grid">
         <article class="review-card">
@@ -98,7 +97,7 @@ const c = common;
 
   <section id="about">
     <div class="container">
-      <SectionHead title="个人简介" description="以学业成绩为基础，以数学建模为能力证明。" />
+      <SectionHead title="个人简介" />
       <Card pad animate class="about-copy">
         <p>
           我目前就读于{edu.school}{edu.college}{edu.major}，GPA {c.education.gpa}，排名班级第 {
@@ -139,7 +138,7 @@ const c = common;
 
   <section id="interests">
     <div class="container">
-      <SectionHead title="研究兴趣" description={zh.researchInterests.tagline} />
+      <SectionHead title="研究兴趣" />
       <Card pad animate>
         <p class="interest-summary">{zh.researchInterests.summary}</p>
         <div class="grid-2" style="margin-top:20px">
@@ -179,7 +178,7 @@ const c = common;
 
   <section id="honors">
     <div class="container">
-      <SectionHead title="获奖与竞赛" description="点击展开详情，按级别筛选。" />
+      <SectionHead title="获奖与竞赛" />
       <CompetitionTimeline lang="zh" competitions={zh.competitions} />
     </div>
   </section>
@@ -282,7 +281,7 @@ const c = common;
   <section id="contact">
     <div class="container">
       <div class="contact-card" data-animate>
-        <div><h2>联系与展示</h2><p>公开展示版适合 GitHub Pages 部署或个人主页链接。</p></div>
+        <div><h2>联系与展示</h2></div>
         <div class="contact-list">
           <span>Email: <a href={`mailto:${c.person.email}`}>{c.person.email}</a></span><span
             >GitHub: <a href={`https://${c.person.github}`}>{c.person.github}</a></span
