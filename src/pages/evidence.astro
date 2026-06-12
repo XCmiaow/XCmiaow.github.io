@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Lightbox from '../components/Lightbox.astro';
+import Gallery3D from '../components/Gallery3D.astro';
 import PageTrail from '../components/PageTrail.astro';
 import evidence from '../data/evidence.json';
 
@@ -55,58 +56,68 @@ const evidenceCount = orderedItems.length;
         </div>
       </div>
       <nav class="category-rail" aria-label="证据类别">
-        {groups.map((group) => (
-          <a href={`#evidence-${group.id}`}>
-            <span>{group.zh}</span>
-            <em>{group.cards.length}</em>
-          </a>
-        ))}
+        {
+          groups.map((group) => (
+            <a href={`#evidence-${group.id}`}>
+              <span>{group.zh}</span>
+              <em>{group.cards.length}</em>
+            </a>
+          ))
+        }
       </nav>
     </div>
   </section>
 
   <section class="evidence-catalog">
     <div class="container evidence-groups">
-      {groups.map((group) => (
-        <section class="evidence-group" id={`evidence-${group.id}`} aria-labelledby={`evidence-title-${group.id}`}>
-          <div class="group-head">
-            <span>{group.zh}</span>
-            <h2 id={`evidence-title-${group.id}`}>{group.zh}证据</h2>
-          </div>
-          <div class="evidence-grid">
-            {group.cards.map((item) => (
-              <a class="cert-card evidence-card" href={imageBase + item.file} target="_blank">
-                <div class="cert-thumb">
-                  <img src={imageBase + item.file} alt={`${item.titleZh}证书`} loading="lazy" />
-                </div>
-                <div class="cert-body">
-                  <div class="cert-meta">
-                    <span>{item.year}</span>
-                    <span>{item.levelZh}</span>
-                    <span>{item.proofTypeZh}</span>
+      {
+        groups.map((group) => (
+          <section class="evidence-group" id={`evidence-${group.id}`} aria-labelledby={`evidence-title-${group.id}`}>
+            <div class="group-head">
+              <span>{group.zh}</span>
+              <h2 id={`evidence-title-${group.id}`}>{group.zh}证据</h2>
+            </div>
+            <div class="evidence-grid">
+              {group.cards.map((item) => (
+                <a class="cert-card evidence-card" href={imageBase + item.file} target="_blank">
+                  <div class="cert-thumb">
+                    <img src={imageBase + item.file} alt={`${item.titleZh}证书`} loading="lazy" />
                   </div>
-                  <h3>{item.titleZh}</h3>
-                  <dl>
-                    <div>
-                      <dt>签发 / 主办</dt>
-                      <dd>{item.issuerZh}</dd>
+                  <div class="cert-body">
+                    <div class="cert-meta">
+                      <span>{item.year}</span>
+                      <span>{item.levelZh}</span>
+                      <span>{item.proofTypeZh}</span>
                     </div>
-                    <div>
-                      <dt>对应简历叙事</dt>
-                      <dd>{item.claimZh}</dd>
-                    </div>
-                  </dl>
-                  <span class="access-note">{item.accessZh}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      ))}
+                    <h3>{item.titleZh}</h3>
+                    <dl>
+                      <div>
+                        <dt>签发 / 主办</dt>
+                        <dd>{item.issuerZh}</dd>
+                      </div>
+                      <div>
+                        <dt>对应简历叙事</dt>
+                        <dd>{item.claimZh}</dd>
+                      </div>
+                    </dl>
+                    <span class="access-note">{item.accessZh}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </div>
   </section>
 
   <Lightbox images={imgUrls} />
+
+  <section><div class="container">
+    <h2 style="font-size:20px;color:var(--primary);margin-bottom:8px">🎨 3D 画廊</h2>
+    <p style="color:var(--muted);margin-bottom:16px">拖动旋转视角，点击证书查看大图</p>
+    <Gallery3D />
+  </div></section>
 </BaseLayout>
 
 <style>

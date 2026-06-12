@@ -36,7 +36,7 @@ const levelColors: Record<string, string> = {
   <div class="timeline-track">
     {
       comps.map((competition, index) => {
-        const hasDetails = competition.details?.topic && competition.details.topic !== 'TBD';
+        const hasDetails = Boolean(competition.details?.topic);
         return (
           <div
             class="tl-item fade-in"

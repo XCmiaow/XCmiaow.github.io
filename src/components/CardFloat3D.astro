@@ -1,0 +1,34 @@
+<!-- Pure CSS + JS 3D parallax for cards. No Three.js needed. -->
+<script is:inline>
+  (function() {
+    if (window.innerWidth < 980) return; // mobile: skip
+    var ticking = false;
+
+    document.addEventListener('mousemove', function(e) {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          document.querySelectorAll('[data-float]').forEach(function(el) {
+            var r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) return;
+            var cx = r.left + r.width / 2;
+            var cy = r.top + r.height / 2;
+            var dx = (e.clientX - cx) / (r.width / 2);
+            var dy = (e.clientY - cy) / (r.height / 2);
+            var rx = -dy * 8;   // rotateX
+            var ry = dx * 8;    // rotateY
+            var strength = parseFloat(el.dataset.float) || 1;
+            el.style.transform = 'perspective(600px) rotateX(' + (rx * strength) + 'deg) rotateY(' + (ry * strength) + 'deg) translateZ(' + (strength * 6) + 'px)';
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    document.addEventListener('mouseleave', function() {
+      document.querySelectorAll('[data-float]').forEach(function(el) {
+        el.style.transform = '';
+      });
+    });
+  })();
+</script>

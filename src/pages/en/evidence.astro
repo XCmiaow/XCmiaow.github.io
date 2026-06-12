@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import Gallery3D from '../../components/Gallery3D.astro';
 import PageTrail from '../../components/PageTrail.astro';
 import evidence from '../../data/evidence.json';
 
@@ -61,58 +62,68 @@ const evidenceCount = orderedItems.length;
         </div>
       </div>
       <nav class="category-rail" aria-label="Evidence categories">
-        {groups.map((group) => (
-          <a href={`#evidence-${group.id}`}>
-            <span>{group.en}</span>
-            <em>{group.cards.length}</em>
-          </a>
-        ))}
+        {
+          groups.map((group) => (
+            <a href={`#evidence-${group.id}`}>
+              <span>{group.en}</span>
+              <em>{group.cards.length}</em>
+            </a>
+          ))
+        }
       </nav>
     </div>
   </section>
 
   <section class="evidence-catalog">
     <div class="container evidence-groups">
-      {groups.map((group) => (
-        <section class="evidence-group" id={`evidence-${group.id}`} aria-labelledby={`evidence-title-${group.id}`}>
-          <div class="group-head">
-            <span>{group.en}</span>
-            <h2 id={`evidence-title-${group.id}`}>{group.en} Evidence</h2>
-          </div>
-          <div class="evidence-grid">
-            {group.cards.map((item) => (
-              <a class="cert-card evidence-card" href={imageBase + item.file} target="_blank">
-                <div class="cert-thumb">
-                  <img src={imageBase + item.file} alt={`${item.titleEn} certificate`} loading="lazy" />
-                </div>
-                <div class="cert-body">
-                  <div class="cert-meta">
-                    <span>{item.year}</span>
-                    <span>{item.levelEn}</span>
-                    <span>{item.proofTypeEn}</span>
+      {
+        groups.map((group) => (
+          <section class="evidence-group" id={`evidence-${group.id}`} aria-labelledby={`evidence-title-${group.id}`}>
+            <div class="group-head">
+              <span>{group.en}</span>
+              <h2 id={`evidence-title-${group.id}`}>{group.en} Evidence</h2>
+            </div>
+            <div class="evidence-grid">
+              {group.cards.map((item) => (
+                <a class="cert-card evidence-card" href={imageBase + item.file} target="_blank">
+                  <div class="cert-thumb">
+                    <img src={imageBase + item.file} alt={`${item.titleEn} certificate`} loading="lazy" />
                   </div>
-                  <h3>{item.titleEn}</h3>
-                  <dl>
-                    <div>
-                      <dt>Issuer / organizer</dt>
-                      <dd>{item.issuerEn}</dd>
+                  <div class="cert-body">
+                    <div class="cert-meta">
+                      <span>{item.year}</span>
+                      <span>{item.levelEn}</span>
+                      <span>{item.proofTypeEn}</span>
                     </div>
-                    <div>
-                      <dt>Resume claim supported</dt>
-                      <dd>{item.claimEn}</dd>
-                    </div>
-                  </dl>
-                  <span class="access-note">{item.accessEn}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      ))}
+                    <h3>{item.titleEn}</h3>
+                    <dl>
+                      <div>
+                        <dt>Issuer / organizer</dt>
+                        <dd>{item.issuerEn}</dd>
+                      </div>
+                      <div>
+                        <dt>Resume claim supported</dt>
+                        <dd>{item.claimEn}</dd>
+                      </div>
+                    </dl>
+                    <span class="access-note">{item.accessEn}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </div>
   </section>
 
   <Lightbox images={imgUrls} />
+
+  <section><div class="container">
+    <h2 style="font-size:20px;color:var(--primary);margin-bottom:8px">🎨 3D Gallery</h2>
+    <p style="color:var(--muted);margin-bottom:16px">Drag to rotate, click a certificate to view</p>
+    <Gallery3D />
+  </div></section>
 </BaseLayout>
 
 <style>

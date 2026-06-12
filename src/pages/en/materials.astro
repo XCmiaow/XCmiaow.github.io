@@ -60,57 +60,61 @@ const accessNotes: Record<MaterialAccess, string> = {
 
   <section class="access-legend" aria-label="Publication boundary">
     <div class="container legend-grid">
-      {(Object.keys(accessLabels) as MaterialAccess[]).map((access) => (
-        <article class:list={['legend-item', `access-${access}`]}>
-          <span>{accessLabels[access]}</span>
-          <p>{accessNotes[access]}</p>
-        </article>
-      ))}
+      {
+        (Object.keys(accessLabels) as MaterialAccess[]).map((access) => (
+          <article class:list={['legend-item', `access-${access}`]}>
+            <span>{accessLabels[access]}</span>
+            <p>{accessNotes[access]}</p>
+          </article>
+        ))
+      }
     </div>
   </section>
 
   <section class="materials-section">
     <div class="container material-groups">
-      {audienceOrder.map((audience) => {
-        const items = materials.filter((item) => item.audience === audience);
-        if (!items.length) return null;
+      {
+        audienceOrder.map((audience) => {
+          const items = materials.filter((item) => item.audience === audience);
+          if (!items.length) return null;
 
-        return (
-          <section class="material-group" aria-labelledby={`materials-${audience}`}>
-            <div class="group-head">
-              <span>{audienceLabels[audience]}</span>
-              <h2 id={`materials-${audience}`}>{audienceLabels[audience]} Materials</h2>
-            </div>
-            <div class="material-grid">
-              {items.map((item) => (
-                <article class:list={['material-card', `access-${item.access}`]}>
-                  <div class="card-meta">
-                    <span class="status">{item.en.status}</span>
-                    <span class="access-badge">{accessLabels[item.access]}</span>
-                  </div>
-                  <h3>{item.en.title}</h3>
-                  <p>{item.en.desc}</p>
-                  <dl>
-                    <div>
-                      <dt>Best used for</dt>
-                      <dd>{item.en.usage}</dd>
+          return (
+            <section class="material-group" aria-labelledby={`materials-${audience}`}>
+              <div class="group-head">
+                <span>{audienceLabels[audience]}</span>
+                <h2 id={`materials-${audience}`}>{audienceLabels[audience]} Materials</h2>
+              </div>
+              <div class="material-grid">
+                {items.map((item) => (
+                  <article class:list={['material-card', `access-${item.access}`]}>
+                    <div class="card-meta">
+                      <span class="status">{item.en.status}</span>
+                      <span class="access-badge">{accessLabels[item.access]}</span>
                     </div>
-                  </dl>
-                  {item.href ? (
-                    <a class="material-link" href={item.href.en}>
-                      {item.en.action}
-                    </a>
-                  ) : (
-                    <span class="material-link disabled" aria-disabled="true">
-                      {item.en.action}
-                    </span>
-                  )}
-                </article>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+                    <h3>{item.en.title}</h3>
+                    <p>{item.en.desc}</p>
+                    <dl>
+                      <div>
+                        <dt>Best used for</dt>
+                        <dd>{item.en.usage}</dd>
+                      </div>
+                    </dl>
+                    {item.href ? (
+                      <a class="material-link" href={item.href.en}>
+                        {item.en.action}
+                      </a>
+                    ) : (
+                      <span class="material-link disabled" aria-disabled="true">
+                        {item.en.action}
+                      </span>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      }
     </div>
   </section>
 

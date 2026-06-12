@@ -1,6 +1,7 @@
 ---
 import ClientBehaviors from '../components/ClientBehaviors.astro';
 import Molecule3D from '../components/Molecule3D.astro';
+import CardFloat3D from '../components/CardFloat3D.astro';
 import i18n from '../data/i18n.json';
 
 export interface Props {
@@ -162,6 +163,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
 
     <main id="main" tabindex="-1"><slot /></main>
 
+    <CardFloat3D />
     <Molecule3D />
     <ClientBehaviors />
     <footer role="contentinfo">
@@ -194,7 +196,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgba(247, 245, 239, 0.82);
+    background: rgba(255, 255, 255, 0.84);
     border-bottom: 1px solid rgba(226, 231, 238, 0.85);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
@@ -292,23 +294,6 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
   .lang-switch .sep {
     color: var(--line);
   }
-  #progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    z-index: 9998;
-    background: linear-gradient(90deg, var(--accent, #c9a227), var(--green, #2f6f5e));
-    width: 0;
-    transition: width 0.3s ease;
-  }
-  @keyframes ripple-anim {
-    to {
-      transform: scale(2);
-      opacity: 0;
-    }
-  }
-
   @media (max-width: 980px) {
     .nav {
       position: relative;

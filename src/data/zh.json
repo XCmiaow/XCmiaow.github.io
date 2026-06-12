@@ -24,23 +24,20 @@
       "year": "2026",
       "level": "international",
       "title": "美国大学生数学建模竞赛 MCM/ICM H 奖",
-      "note": "国际级数学建模竞赛",
-      "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
+      "note": "国际级数学建模竞赛"
     },
     {
       "year": "2025",
       "level": "international",
       "title": "美国大学生数学建模竞赛 MCM/ICM H 奖",
-      "note": "国际级数学建模竞赛",
-      "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
+      "note": "国际级数学建模竞赛"
     },
     { "year": "2024-2025", "level": "national", "title": "国家励志奖学金", "note": "国家级奖学金" },
     {
       "year": "2024",
       "level": "provincial",
       "title": "全国大学生数学建模竞赛 江苏省一等奖",
-      "note": "数学建模核心奖项",
-      "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
+      "note": "数学建模核心奖项"
     },
     {
       "year": "2025",
@@ -52,8 +49,7 @@
       "year": "2025",
       "level": "provincial",
       "title": "MathorCup 高校数学建模挑战赛 区域赛二等奖",
-      "note": "数学建模赛事",
-      "details": { "topic": "TBD", "role": "TBD", "model": "TBD" }
+      "note": "数学建模赛事"
     },
     {
       "year": "2023",
