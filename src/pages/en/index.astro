@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CompetitionTimeline from '../../components/CompetitionTimeline.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import Card from '../../components/Card.astro';
+import Avatar3D from '../../components/Avatar3D.astro';
 import en from '../../data/en.json';
 import common from '../../data/common.json';
 
@@ -44,6 +45,7 @@ const c = common;
       </div>
       <aside class="hero-proof" aria-label="Key profile">
         <div class="identity-card">
+          <Avatar3D />
           <img class="profile-photo" src={c.person.avatar} alt={`${p.name}`} loading="eager" />
           <div class="profile-meta">
             <strong>{p.name}</strong>

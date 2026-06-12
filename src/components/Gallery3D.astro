@@ -1,79 +1,78 @@
-<div id="gallery-3d" class="gallery-3d" aria-hidden="true">
-  <div class="g3d-cta">🖱 拖动旋转 · 点击放大</div>
+---
+const { images = [] } = Astro.props as { images: string[] };
+---
+
+<div class="gallery-3d" aria-hidden="true">
+  <div class="g3d-cta">🖱 拖动旋转 · 滚轮缩放 · 点击放大</div>
   <div id="g3d-stage"></div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ images }}>
   (function() {
     var container = document.getElementById('g3d-stage');
-    var wrapper = document.getElementById('gallery-3d');
-    if (!container || !wrapper || window.innerWidth < 640) return;
+    var wrapper = document.querySelector('.gallery-3d');
+    if (!container || !wrapper || images.length < 1 || window.innerWidth < 640) {
+      if (wrapper) wrapper.style.display = 'none';
+      return;
+    }
 
-    // Collect certificate images
-    var images = [];
-    document.querySelectorAll('.cert-card img').forEach(function(img) {
-      // Use data-src or src for the image
-      var src = img.getAttribute('data-src') || img.src || '';
-      if (src && images.indexOf(src) === -1) images.push(src);
-    });
-    if (images.length === 0) { wrapper.style.display = 'none'; return; }
+    // Cache Three.js
+    if (!window.__threeLoaded) {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      s.onload = function() { window.__threeLoaded = true; init(); };
+      document.head.appendChild(s);
+    } else {
+      // Defer to next tick so DOM is ready
+      setTimeout(init, 100);
+    }
 
-    // Load Three.js
-    var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    script.onload = function() {
-
+    function init() {
       var W = container.clientWidth || 600;
-      var H = container.clientHeight || 380;
+      var H = container.clientHeight || 420;
 
-      // Scene
       var scene = new THREE.Scene();
-      scene.background = null;
+      var camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 1000);
+      camera.position.set(0, 0.3, 5.5);
 
-      // Camera
-      var camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
-      camera.position.set(0, 0.5, 6);
-
-      // Renderer
       var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(W, H);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
       container.appendChild(renderer.domElement);
 
       // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-      var key = new THREE.DirectionalLight(0xffffff, 0.9);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      var key = new THREE.DirectionalLight(0xffffff, 1.0);
       key.position.set(3, 4, 5);
       scene.add(key);
-      var back = new THREE.DirectionalLight(0x8888cc, 0.3);
-      back.position.set(-2, 0, -4);
-      scene.add(back);
+      var rim = new THREE.DirectionalLight(0xc9a227, 0.4);
+      rim.position.set(-2, 1, -3);
+      scene.add(rim);
 
-      // Texture loader
-      var loader = new THREE.TextureLoader();
       var cards = [];
-      var radius = 4.2;
+      var radius = 4.0;
       var total = images.length;
-
       var texLoader = new THREE.TextureLoader();
+      var loaded = 0;
 
       images.forEach(function(src, i) {
         texLoader.load(src, function(texture) {
-          // Calculate aspect ratio
           var aspect = texture.image.width / texture.image.height || 1;
-          var h = 2.0;
+          var h = 1.8;
           var w = h * aspect;
 
-          var geom = new THREE.PlaneGeometry(w, h);
-          var mat = new THREE.MeshStandardMaterial({
+          // MeshPhysicalMaterial for realistic gloss
+          var mat = new THREE.MeshPhysicalMaterial({
             map: texture,
-            roughness: 0.4,
+            roughness: 0.35,
             metalness: 0.05,
+            clearcoat: 0.1,
             side: THREE.DoubleSide,
           });
+          var geom = new THREE.PlaneGeometry(w, h);
           var mesh = new THREE.Mesh(geom, mat);
 
-          // Arrange in an arc
           var angle = (i / total) * Math.PI * 2 - Math.PI / 2;
           mesh.position.x = Math.cos(angle) * radius;
           mesh.position.z = Math.sin(angle) * radius;
@@ -84,10 +83,10 @@
           var frameMat = new THREE.MeshStandardMaterial({
             color: 0xc9a227,
             roughness: 0.3,
-            metalness: 0.3,
+            metalness: 0.4,
             side: THREE.DoubleSide,
           });
-          var frameGeom = new THREE.PlaneGeometry(w + 0.08, h + 0.08);
+          var frameGeom = new THREE.PlaneGeometry(w + 0.1, h + 0.1);
           var frame = new THREE.Mesh(frameGeom, frameMat);
           frame.position.copy(mesh.position);
           frame.position.z = mesh.position.z + (mesh.position.z > 0 ? -0.01 : 0.01);
@@ -95,68 +94,72 @@
 
           scene.add(frame);
           scene.add(mesh);
-          cards.push({ mesh: mesh, frame: frame, angle: angle, targetScale: 1 });
+          cards.push({ mesh: mesh, frame: frame, angle: angle });
         });
       });
 
       // Interaction
       var isDragging = false;
-      var prevX = 0;
-      var rotation = 0;
-      var targetRotation = 0;
-      var velocity = 0;
+      var px = 0;
+      var rotation = 0, targetRotation = 0, velocity = 0;
 
-      renderer.domElement.addEventListener('mousedown', function(e) { isDragging = true; prevX = e.clientX; velocity = 0; });
+      renderer.domElement.addEventListener('mousedown', function(e) {
+        isDragging = true; px = e.clientX; velocity = 0;
+      });
       window.addEventListener('mouseup', function() { isDragging = false; });
       window.addEventListener('mousemove', function(e) {
         if (!isDragging) return;
-        var dx = e.clientX - prevX;
-        targetRotation += dx * 0.008;
-        velocity = dx * 0.008;
-        prevX = e.clientX;
+        var dx = e.clientX - px;
+        targetRotation += dx * 0.007;
+        velocity = dx * 0.007;
+        px = e.clientX;
       });
 
-      // Click to view certificate
-      renderer.domElement.addEventListener('click', function(e) {
-        // Simple approach: check if we didn't drag much
-        // Open in lightbox or new tab
+      // Click to open nearest
+      renderer.domElement.addEventListener('click', function() {
         if (Math.abs(velocity) < 0.01) {
-          // Find closest card to camera
-          var minDist = Infinity;
-          var closestSrc = '';
+          var minD = Infinity, best = '';
           cards.forEach(function(c, i) {
-            var angle = c.angle + rotation;
-            var dist = Math.abs(angle % (Math.PI * 2));
-            if (dist < minDist) { minDist = dist; closestSrc = images[i] || ''; }
+            var a = ((c.angle + rotation) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+            var d = Math.min(a, Math.abs(a - Math.PI * 2));
+            if (d < minD) { minD = d; best = images[i] || ''; }
           });
-          if (closestSrc) window.open(closestSrc, '_blank');
+          if (best) window.open(best, '_blank');
         }
       });
 
-      // Touch support
-      var touchX = 0;
+      // Touch
+      var tx = 0;
       renderer.domElement.addEventListener('touchstart', function(e) {
-        touchX = e.touches[0].clientX;
-        velocity = 0;
+        tx = e.touches[0].clientX; velocity = 0;
       }, { passive: true });
       renderer.domElement.addEventListener('touchmove', function(e) {
-        var dx = e.touches[0].clientX - touchX;
-        targetRotation += dx * 0.008;
-        velocity = dx * 0.008;
-        touchX = e.touches[0].clientX;
+        var dx = e.touches[0].clientX - tx;
+        targetRotation += dx * 0.007;
+        velocity = dx * 0.007;
+        tx = e.touches[0].clientX;
       }, { passive: true });
 
-      // Scroll to zoom
+      // Scroll zoom
       renderer.domElement.addEventListener('wheel', function(e) {
         camera.position.z += Math.sign(e.deltaY) * 0.3;
         camera.position.z = Math.max(2.5, Math.min(10, camera.position.z));
       }, { passive: true });
 
-      // Animate
+      // Visibility optimization — pause when offscreen
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          wrapper.dataset.visible = entry.isIntersecting ? '1' : '0';
+          if (!entry.isIntersecting && animId) { cancelAnimationFrame(animId); animId = 0; }
+          else if (entry.isIntersecting && !animId) animate();
+        });
+      }, { threshold: 0.1 });
+      observer.observe(container);
+
       function animate() {
-        rotation += (targetRotation - rotation) * 0.08;
-        // Inertia
-        if (!isDragging) { velocity *= 0.97; targetRotation += velocity; }
+        if (wrapper.dataset.visible === '0') return;
+        rotation += (targetRotation - rotation) * 0.06;
+        if (!isDragging) { velocity *= 0.96; targetRotation += velocity; }
 
         cards.forEach(function(c) {
           var a = c.angle + rotation;
@@ -164,12 +167,10 @@
           c.mesh.position.z = Math.sin(a) * radius;
           c.mesh.lookAt(0, 0, 0);
           c.frame.position.copy(c.mesh.position);
-          c.frame.position.z = c.mesh.position.z + 0.01;
+          c.frame.position.z = c.mesh.position.z + (c.mesh.position.z > 0 ? 0.01 : -0.01);
           c.frame.lookAt(0, 0, 0);
-
-          // Scale cards facing the camera
           var dot = Math.cos(a);
-          var s = 0.6 + dot * 0.4;
+          var s = 0.5 + dot * 0.5;
           c.mesh.scale.set(s, s, 1);
           c.frame.scale.set(s, s, 1);
         });
@@ -180,42 +181,25 @@
       animate();
 
       // Resize
-      var resizeTimer;
+      var rt;
       window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
+        clearTimeout(rt);
+        rt = setTimeout(function() {
           var nw = container.clientWidth || 600;
-          var nh = container.clientHeight || 380;
+          var nh = container.clientHeight || 420;
           camera.aspect = nw / nh;
           camera.updateProjectionMatrix();
           renderer.setSize(nw, nh);
         }, 200);
       });
-    };
-    document.head.appendChild(script);
+    }
   })();
 </script>
 
 <style>
-  .gallery-3d {
-    margin: 20px 0;
-    position: relative;
-  }
-  #g3d-stage {
-    width: 100%;
-    height: 420px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: rgba(16,42,67,0.02);
-  }
+  .gallery-3d { margin: 20px 0; position: relative; }
+  #g3d-stage { width: 100%; height: 420px; border-radius: var(--radius); overflow: hidden; background: rgba(16,42,67,0.02); }
   #g3d-stage canvas { display: block; width: 100% !important; height: 100% !important; }
-  .g3d-cta {
-    text-align: center;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  @media (max-width: 640px) {
-    .gallery-3d { display: none; }
-  }
+  .g3d-cta { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  @media (max-width: 640px) { .gallery-3d { display: none; } }
 </style>
