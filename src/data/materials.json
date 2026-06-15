@@ -165,6 +165,31 @@
       }
     },
     {
+      "id": "ai-km-case",
+      "audience": "portfolio",
+      "access": "public",
+      "kind": "project-case",
+      "status": "needs-evidence",
+      "evidenceIds": [],
+      "riskNote": "Workflow narrative is public, but private vault contents and raw literature files must stay unpublished.",
+      "lastReviewed": "2026-06-15",
+      "href": { "zh": "/ai-km", "en": "/en/ai-km" },
+      "zh": {
+        "title": "AI 辅助科研学习与知识管理案例",
+        "desc": "说明如何使用 AI 工具、Zotero、Obsidian、Markdown 与 LaTeX 组织文献阅读和研究表达。",
+        "action": "查看案例",
+        "usage": "科研兴趣说明、项目作品集、AI 工具链展示、学习方法复盘。",
+        "status": "工作流案例，待补公开证据"
+      },
+      "en": {
+        "title": "AI-KM Workflow Case",
+        "desc": "Explains how AI tools, Zotero, Obsidian, Markdown, and LaTeX support literature reading and research communication.",
+        "action": "View case",
+        "usage": "Research-interest explanation, portfolio review, AI workflow showcase, and learning reflection.",
+        "status": "Workflow case; public evidence pending"
+      }
+    },
+    {
       "id": "chem-ai-lab",
       "audience": "portfolio",
       "access": "public",

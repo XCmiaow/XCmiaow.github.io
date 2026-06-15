@@ -13,6 +13,8 @@ const routes = [
   '/en/',
   '/modeling',
   '/en/modeling',
+  '/ai-km',
+  '/en/ai-km',
   '/chem-ai-lab',
   '/en/chem-ai-lab',
   '/evidence',
@@ -45,6 +47,8 @@ const expectedHeadings = {
   '/en/': 'Xujie Fang',
   '/modeling': '\u6570\u5b66\u5efa\u6a21\u7ade\u8d5b\u5b9e\u8df5',
   '/en/modeling': 'Mathematical Modeling in Practice',
+  '/ai-km': 'AI \u8f85\u52a9\u79d1\u7814\u5b66\u4e60\u4e0e\u77e5\u8bc6\u7ba1\u7406',
+  '/en/ai-km': 'AI-Assisted Learning & Knowledge Management',
   '/chem-ai-lab': 'ChemAI Lab',
   '/en/chem-ai-lab': 'ChemAI Lab',
   '/evidence': '\u8bc1\u660e\u6750\u6599\u5899',
@@ -115,6 +119,26 @@ const requiredMaterialLocaleFields = ['title', 'desc', 'action', 'usage', 'statu
 const validMaterialAudiences = new Set(['academic', 'career', 'review', 'portfolio', 'local']);
 const validMaterialAccess = new Set(['public', 'restricted', 'local']);
 const validMaterialStatuses = new Set(['ready', 'review-first', 'local-only', 'needs-evidence']);
+const requiredClaimFields = [
+  'id',
+  'category',
+  'status',
+  'risk',
+  'evidenceIds',
+  'materialIds',
+  'routes',
+  'zh',
+  'en',
+];
+const requiredClaimLocaleFields = ['title', 'claim', 'boundary'];
+const validClaimCategories = new Set(['academic', 'modeling', 'chemistry', 'workflow', 'portfolio', 'service']);
+const validClaimStatuses = new Set(['evidence-backed', 'case-backed', 'narrative-only']);
+const validClaimRisks = new Set(['low', 'medium']);
+
+function normalizeShellRoute(route) {
+  if (route !== '/' && route.endsWith('/')) return route.slice(0, -1);
+  return route;
+}
 
 function previewCommand() {
   return {
@@ -180,6 +204,30 @@ function runStaticChecks() {
     failures.push('Local-only SIOC route was generated into dist/resume-sioc-summer');
   }
 
+  const swPath = path.join(root, 'public', 'sw.js');
+  if (!fs.existsSync(swPath)) {
+    failures.push('Service worker must live at public/sw.js');
+  } else {
+    const sw = fs.readFileSync(swPath, 'utf8');
+    const shellMatch = sw.match(/const\s+APP_SHELL\s*=\s*\[([\s\S]*?)\];/);
+    if (!shellMatch) {
+      failures.push('Service worker must define APP_SHELL');
+    } else {
+      const shellRoutes = new Set(
+        [...shellMatch[1].matchAll(/['"]([^'"]+)['"]/g)].map((match) => normalizeShellRoute(match[1])),
+      );
+      const requiredShellRoutes = routes
+        .filter((route) => !/^\/(?:en\/)?blog\/.+/.test(route))
+        .map(normalizeShellRoute);
+      requiredShellRoutes.forEach((route) => {
+        if (!shellRoutes.has(route)) failures.push(`APP_SHELL is missing route: ${route}`);
+      });
+      ['/styles/site.css', '/manifest.json'].forEach((asset) => {
+        if (!shellRoutes.has(asset)) failures.push(`APP_SHELL is missing asset: ${asset}`);
+      });
+    }
+  }
+
   const evidencePath = path.join(root, 'src', 'data', 'evidence.json');
   const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf8'));
   const categoryIds = new Set(evidence.categories.map((category) => category.id));
@@ -201,7 +249,8 @@ function runStaticChecks() {
     seenIds.add(item.id);
     if (seenFiles.has(item.file)) failures.push(`Duplicate evidence file: ${item.file}`);
     seenFiles.add(item.file);
-    if (!categoryIds.has(item.category)) failures.push(`Evidence item ${item.id} uses unknown category: ${item.category}`);
+    if (!categoryIds.has(item.category))
+      failures.push(`Evidence item ${item.id} uses unknown category: ${item.category}`);
     if (item.file?.includes('private') || item.file?.includes('..')) {
       failures.push(`Evidence item ${item.id} points outside public evidence assets: ${item.file}`);
     }
@@ -233,15 +282,18 @@ function runStaticChecks() {
     });
     if (materialIds.has(item.id)) failures.push(`Duplicate material id: ${item.id}`);
     materialIds.add(item.id);
-    if (!validMaterialAudiences.has(item.audience)) failures.push(`Material ${item.id} has invalid audience: ${item.audience}`);
+    if (!validMaterialAudiences.has(item.audience))
+      failures.push(`Material ${item.id} has invalid audience: ${item.audience}`);
     if (!validMaterialAccess.has(item.access)) failures.push(`Material ${item.id} has invalid access: ${item.access}`);
-    if (!validMaterialStatuses.has(item.status)) failures.push(`Material ${item.id} has invalid status: ${item.status}`);
+    if (!validMaterialStatuses.has(item.status))
+      failures.push(`Material ${item.id} has invalid status: ${item.status}`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(item.lastReviewed || '')) {
       failures.push(`Material ${item.id} must use YYYY-MM-DD lastReviewed`);
     }
     if (!Array.isArray(item.evidenceIds)) failures.push(`Material ${item.id} evidenceIds must be an array`);
     item.evidenceIds?.forEach((evidenceId) => {
-      if (!evidenceIds.has(evidenceId)) failures.push(`Material ${item.id} references unknown evidence id: ${evidenceId}`);
+      if (!evidenceIds.has(evidenceId))
+        failures.push(`Material ${item.id} references unknown evidence id: ${evidenceId}`);
     });
     ['zh', 'en'].forEach((locale) => {
       requiredMaterialLocaleFields.forEach((field) => {
@@ -259,6 +311,63 @@ function runStaticChecks() {
       });
     }
     if (hasForbiddenPublicTextDeep(item)) failures.push(`Material ${item.id} exposes private-looking text`);
+  });
+
+  const claimsPath = path.join(root, 'src', 'data', 'claims.json');
+  if (!fs.existsSync(claimsPath)) {
+    failures.push('Claims data must live in src/data/claims.json');
+    return failures;
+  }
+
+  const claims = JSON.parse(fs.readFileSync(claimsPath, 'utf8'));
+  const claimIds = new Set();
+  if (!Array.isArray(claims.items) || claims.items.length < 1) {
+    failures.push('Claims data must contain at least one item');
+  }
+
+  claims.items?.forEach((item, index) => {
+    requiredClaimFields.forEach((field) => {
+      if (item[field] === undefined || item[field] === null || item[field] === '') {
+        failures.push(`Claim item ${index + 1} is missing ${field}`);
+      }
+    });
+    if (claimIds.has(item.id)) failures.push(`Duplicate claim id: ${item.id}`);
+    claimIds.add(item.id);
+    if (!validClaimCategories.has(item.category)) failures.push(`Claim ${item.id} has invalid category: ${item.category}`);
+    if (!validClaimStatuses.has(item.status)) failures.push(`Claim ${item.id} has invalid status: ${item.status}`);
+    if (!validClaimRisks.has(item.risk)) failures.push(`Claim ${item.id} has invalid risk: ${item.risk}`);
+    if (!Array.isArray(item.evidenceIds)) failures.push(`Claim ${item.id} evidenceIds must be an array`);
+    if (!Array.isArray(item.materialIds)) failures.push(`Claim ${item.id} materialIds must be an array`);
+    if (!Array.isArray(item.routes)) failures.push(`Claim ${item.id} routes must be an array`);
+    item.evidenceIds?.forEach((evidenceId) => {
+      if (!evidenceIds.has(evidenceId)) failures.push(`Claim ${item.id} references unknown evidence id: ${evidenceId}`);
+    });
+    item.materialIds?.forEach((materialId) => {
+      if (!materialIds.has(materialId)) failures.push(`Claim ${item.id} references unknown material id: ${materialId}`);
+    });
+    item.routes?.forEach((route) => {
+      if (typeof route !== 'string' || !route.startsWith('/')) {
+        failures.push(`Claim ${item.id} route must be site-root relative: ${route}`);
+      }
+      if (localOnlyHrefPatterns.some((pattern) => pattern.re.test(route))) {
+        failures.push(`Claim ${item.id} links to local-only route: ${route}`);
+      }
+    });
+    if (item.status === 'evidence-backed' && !item.evidenceIds?.length) {
+      failures.push(`Evidence-backed claim ${item.id} must define at least one evidence id`);
+    }
+    if (item.status === 'case-backed' && !item.routes?.length) {
+      failures.push(`Case-backed claim ${item.id} must define at least one route`);
+    }
+    if (item.status === 'narrative-only' && !item.zh?.boundary && !item.en?.boundary) {
+      failures.push(`Narrative-only claim ${item.id} must define a boundary note`);
+    }
+    ['zh', 'en'].forEach((locale) => {
+      requiredClaimLocaleFields.forEach((field) => {
+        if (!item[locale]?.[field]) failures.push(`Claim ${item.id} is missing ${locale}.${field}`);
+      });
+    });
+    if (hasForbiddenPublicTextDeep(item)) failures.push(`Claim ${item.id} exposes private-looking text`);
   });
 
   return failures;
@@ -369,6 +478,32 @@ async function runBrowserChecks() {
     .textContent()
     .then((text) => text.trim());
   if (zhH1 !== expectedHeadings['/']) failures.push(`Language switch to Chinese landed on unexpected h1: ${zhH1}`);
+
+  await page.evaluate(() => localStorage.removeItem('resume-layout'));
+  await page.reload({ waitUntil: 'load' });
+  const layoutBefore = await page.evaluate(() => ({
+    minimal: document.documentElement.classList.contains('minimal-mode'),
+    storage: localStorage.getItem('resume-layout'),
+  }));
+  await page.locator('#layoutToggle').click();
+  const layoutAfterOneClick = await page.evaluate(() => ({
+    minimal: document.documentElement.classList.contains('minimal-mode'),
+    storage: localStorage.getItem('resume-layout'),
+  }));
+  await page.locator('#layoutToggle').click();
+  const layoutAfterTwoClicks = await page.evaluate(() => ({
+    minimal: document.documentElement.classList.contains('minimal-mode'),
+    storage: localStorage.getItem('resume-layout'),
+  }));
+  if (layoutBefore.minimal || layoutBefore.storage !== null) {
+    failures.push(`Layout toggle started from unexpected state: ${JSON.stringify(layoutBefore)}`);
+  }
+  if (!layoutAfterOneClick.minimal || layoutAfterOneClick.storage !== 'minimal') {
+    failures.push(`Layout toggle did not enable minimal mode: ${JSON.stringify(layoutAfterOneClick)}`);
+  }
+  if (layoutAfterTwoClicks.minimal || layoutAfterTwoClicks.storage !== 'academic') {
+    failures.push(`Layout toggle did not restore academic mode: ${JSON.stringify(layoutAfterTwoClicks)}`);
+  }
 
   await page.goto(`${base}/evidence`, { waitUntil: 'load' });
   await page.locator('a.cert-card').first().click();

@@ -13,7 +13,7 @@
   },
   "projects": [
     { "id": "modeling", "tags": ["Python", "Data Analysis", "Academic Writing"], "link": "/modeling" },
-    { "id": "ai-km", "tags": ["AI Workflow", "Zotero", "Obsidian"], "link": "" },
+    { "id": "ai-km", "tags": ["AI Workflow", "Zotero", "Obsidian"], "link": "/ai-km" },
     {
       "id": "resume-site",
       "tags": ["Astro", "HTML", "CSS", "JavaScript", "GitHub Pages", "CI/CD"],

@@ -1,12 +1,12 @@
 <script is:inline>
-  (function() {
+  (function () {
     if (window.innerWidth < 980) return;
     var ticking = false;
 
     function updateCards(e) {
       if (!ticking) {
-        requestAnimationFrame(function() {
-          document.querySelectorAll('[data-float]').forEach(function(el) {
+        requestAnimationFrame(function () {
+          document.querySelectorAll('[data-float]').forEach(function (el) {
             var r = el.getBoundingClientRect();
             if (r.width === 0 || r.height === 0) return;
             var cx = r.left + r.width / 2;
@@ -18,11 +18,19 @@
             var strength = parseFloat(el.dataset.float) || 1;
             var rz = strength * 5;
             // Depth layers: rotateX, rotateY, translateZ
-            el.style.transform = 'perspective(800px) rotateX(' + (rx * strength) + 'deg) rotateY(' + (ry * strength) + 'deg) translateZ(' + rz + 'px)';
+            el.style.transform =
+              'perspective(800px) rotateX(' +
+              rx * strength +
+              'deg) rotateY(' +
+              ry * strength +
+              'deg) translateZ(' +
+              rz +
+              'px)';
             // Dynamic shadow based on tilt
             var shadowX = dx * 4;
             var shadowY = dy * 6;
-            el.style.boxShadow = shadowX + 'px ' + shadowY + 'px 24px rgba(16,42,67,0.1), 0 8px 18px rgba(16,42,67,0.06)';
+            el.style.boxShadow =
+              shadowX + 'px ' + shadowY + 'px 24px rgba(16,42,67,0.1), 0 8px 18px rgba(16,42,67,0.06)';
           });
           ticking = false;
         });
@@ -31,8 +39,8 @@
     }
 
     document.addEventListener('mousemove', updateCards);
-    document.addEventListener('mouseleave', function() {
-      document.querySelectorAll('[data-float]').forEach(function(el) {
+    document.addEventListener('mouseleave', function () {
+      document.querySelectorAll('[data-float]').forEach(function (el) {
         el.style.transform = '';
         el.style.boxShadow = '';
       });

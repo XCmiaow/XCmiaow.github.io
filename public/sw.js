@@ -1,13 +1,21 @@
-const CACHE = 'resume-v6';
+const CACHE = 'resume-v7';
 const APP_SHELL = [
   '/',
   '/en/',
   '/resume-onepage',
   '/en/resume-onepage',
+  '/resume-academic',
+  '/en/resume-academic',
+  '/resume-career',
+  '/en/resume-career',
   '/modeling',
   '/en/modeling',
+  '/ai-km',
+  '/en/ai-km',
   '/evidence',
   '/en/evidence',
+  '/materials',
+  '/en/materials',
   '/chem-ai-lab',
   '/en/chem-ai-lab',
   '/styles/site.css',
@@ -17,18 +25,12 @@ const APP_SHELL = [
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL))
-  );
+  e.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
-  );
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))));
   self.clients.claim();
 });
 
@@ -47,7 +49,7 @@ self.addEventListener('fetch', (e) => {
           }
           return res;
         })
-        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('/')))
+        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('/'))),
     );
     return;
   }
@@ -64,6 +66,6 @@ self.addEventListener('fetch', (e) => {
         })
         .catch(() => cached);
       return cached || fetched;
-    })
+    }),
   );
 });

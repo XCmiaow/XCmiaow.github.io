@@ -172,19 +172,6 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
         {buildDate} · <a href="/write/" class="footer-admin">{isZh ? '写文章' : 'Write'}</a>
       </div>
     </footer>
-
-    <script>
-      (function () {
-        var b = document.getElementById('layoutToggle'),
-          r = document.documentElement;
-        if (!b) return;
-        if (localStorage.getItem('resume-layout') === 'minimal') r.classList.add('minimal-mode');
-        b.onclick = function () {
-          r.classList.toggle('minimal-mode');
-          localStorage.setItem('resume-layout', r.classList.contains('minimal-mode') ? 'minimal' : 'academic');
-        };
-      })();
-    </script>
   </body>
 </html>
 

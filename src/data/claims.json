@@ -1,0 +1,130 @@
+{
+  "items": [
+    {
+      "id": "modeling-practice",
+      "category": "modeling",
+      "status": "evidence-backed",
+      "risk": "low",
+      "evidenceIds": [
+        "cumcm-2024-jiangsu-first",
+        "mcm-2025-honorable-mention",
+        "mcm-2026-honorable-mention",
+        "mathorcup-2025-second",
+        "math-competition-2025-third"
+      ],
+      "materialIds": ["modeling-case"],
+      "routes": ["/modeling", "/en/modeling", "/evidence", "/en/evidence"],
+      "zh": {
+        "title": "数学建模训练",
+        "claim": "能把开放问题拆成变量、假设、模型、数据处理和论文表达。",
+        "boundary": "证据来自公开获奖证书；具体赛题论文不在公开站点发布。"
+      },
+      "en": {
+        "title": "Modeling Practice",
+        "claim": "Able to turn open-ended problems into variables, assumptions, models, analysis, and written arguments.",
+        "boundary": "Supported by public award certificates; full competition papers are not published on the public site."
+      }
+    },
+    {
+      "id": "academic-performance",
+      "category": "academic",
+      "status": "evidence-backed",
+      "risk": "low",
+      "evidenceIds": ["national-inspirational-scholarship-2025", "three-good-student-2025"],
+      "materialIds": ["academic-resume", "general-resume"],
+      "routes": ["/resume-academic", "/en/resume-academic", "/evidence", "/en/evidence"],
+      "zh": {
+        "title": "学业表现与综合荣誉",
+        "claim": "GPA、排名、奖学金和校级荣誉共同支撑稳定的学习表现。",
+        "boundary": "公开站点只展示脱敏结果和证书，不展示学号、出生年月或完整评审材料。"
+      },
+      "en": {
+        "title": "Academic Performance",
+        "claim": "GPA, ranking, scholarship, and university merit recognition support sustained academic performance.",
+        "boundary": "The public site shows sanitized outcomes and certificates, not student ID, birth date, or full review files."
+      }
+    },
+    {
+      "id": "chemistry-foundation",
+      "category": "chemistry",
+      "status": "evidence-backed",
+      "risk": "low",
+      "evidenceIds": ["chemistry-olympiad-2022", "chemistry-olympiad-2023"],
+      "materialIds": ["chem-ai-lab"],
+      "routes": ["/chem-ai-lab", "/en/chem-ai-lab", "/evidence", "/en/evidence"],
+      "zh": {
+        "title": "化学学科基础",
+        "claim": "高中阶段化学竞赛训练支撑后续有机化学、计算化学和 AI 化学方向兴趣。",
+        "boundary": "证据限于公开证书；本科阶段研究项目仍以方向说明和学习路径为主。"
+      },
+      "en": {
+        "title": "Chemistry Foundation",
+        "claim": "Chemistry competition training supports later interest in organic chemistry, computational chemistry, and AI chemistry.",
+        "boundary": "Evidence is limited to public certificates; undergraduate research work remains framed as direction and training."
+      }
+    },
+    {
+      "id": "research-workflow",
+      "category": "workflow",
+      "status": "case-backed",
+      "risk": "medium",
+      "evidenceIds": [],
+      "materialIds": ["ai-km-case"],
+      "routes": ["/ai-km", "/en/ai-km", "/materials", "/en/materials"],
+      "zh": {
+        "title": "AI-KM 科研学习工作流",
+        "claim": "能用 AI 工具、Zotero、Obsidian、Markdown 与 LaTeX 管理文献阅读、学习复盘和科研表达。",
+        "boundary": "当前是公开案例说明，不发布私人知识库、原始 PDF、账号信息或未脱敏笔记截图。"
+      },
+      "en": {
+        "title": "AI-KM Research Workflow",
+        "claim": "Uses AI tools, Zotero, Obsidian, Markdown, and LaTeX to manage reading, reflection, and research communication.",
+        "boundary": "This is a public case narrative; private vault content, raw PDFs, account data, and unsanitized note screenshots stay unpublished."
+      }
+    },
+    {
+      "id": "public-portfolio-system",
+      "category": "portfolio",
+      "status": "case-backed",
+      "risk": "low",
+      "evidenceIds": [],
+      "materialIds": ["general-resume", "evidence-gallery", "modeling-case", "chem-ai-lab", "ai-km-case"],
+      "routes": ["/", "/en/", "/materials", "/en/materials"],
+      "zh": {
+        "title": "公开作品集系统",
+        "claim": "能把简历、证据、项目说明、材料入口和自动化 QA 组织成可维护的双语静态站点。",
+        "boundary": "站点本身是项目案例；生产源码和部署记录由仓库与 Actions 维护。"
+      },
+      "en": {
+        "title": "Public Portfolio System",
+        "claim": "Organizes resumes, evidence, project narratives, material routing, and automated QA into a maintainable bilingual static site.",
+        "boundary": "The site itself is the project case; source and deployment records are maintained through the repository and Actions."
+      }
+    },
+    {
+      "id": "campus-collaboration",
+      "category": "service",
+      "status": "evidence-backed",
+      "risk": "low",
+      "evidenceIds": [
+        "debate-second-2024",
+        "card-house-volunteer-2024",
+        "volleyball-freshman-2024-second",
+        "high-jump-2025-fourth",
+        "volleyball-college-2026-fourth"
+      ],
+      "materialIds": ["academic-resume", "general-resume"],
+      "routes": ["/resume-academic", "/en/resume-academic", "/evidence", "/en/evidence"],
+      "zh": {
+        "title": "校园协作与综合发展",
+        "claim": "辩论、志愿服务和体育活动共同支撑表达、协作、组织与长期参与能力。",
+        "boundary": "公开证据只用于说明综合发展，不替代正式学生工作证明或完整活动记录。"
+      },
+      "en": {
+        "title": "Campus Collaboration",
+        "claim": "Debate, volunteer service, and sports activities support communication, collaboration, organization, and sustained participation.",
+        "boundary": "Public evidence explains broader development, not a substitute for formal student-work records."
+      }
+    }
+  ]
+}

@@ -119,11 +119,13 @@ const evidenceCount = orderedItems.length;
 
   <Lightbox images={imgUrls} />
 
-  <section><div class="container">
-    <h2 style="font-size:20px;color:var(--primary);margin-bottom:8px">🎨 3D Gallery</h2>
-    <p style="color:var(--muted);margin-bottom:16px">Drag to rotate, click a certificate to view</p>
-    <Gallery3D images={imgUrls} />
-  </div></section>
+  <section>
+    <div class="container">
+      <h2 style="font-size:20px;color:var(--primary);margin-bottom:8px">🎨 3D Gallery</h2>
+      <p style="color:var(--muted);margin-bottom:16px">Drag to rotate, click a certificate to view</p>
+      <Gallery3D images={imgUrls} />
+    </div>
+  </section>
 </BaseLayout>
 
 <style>

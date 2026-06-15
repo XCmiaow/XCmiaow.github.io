@@ -8,7 +8,7 @@ const { images = [] } = Astro.props as { images: string[] };
 </div>
 
 <script is:inline define:vars={{ images }}>
-  (function() {
+  (function () {
     var container = document.getElementById('g3d-stage');
     var wrapper = document.querySelector('.gallery-3d');
     if (!container || !wrapper || images.length < 1 || window.innerWidth < 640) {
@@ -20,7 +20,10 @@ const { images = [] } = Astro.props as { images: string[] };
     if (!window.__threeLoaded) {
       var s = document.createElement('script');
       s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-      s.onload = function() { window.__threeLoaded = true; init(); };
+      s.onload = function () {
+        window.__threeLoaded = true;
+        init();
+      };
       document.head.appendChild(s);
     } else {
       // Defer to next tick so DOM is ready
@@ -54,10 +57,9 @@ const { images = [] } = Astro.props as { images: string[] };
       var radius = 4.0;
       var total = images.length;
       var texLoader = new THREE.TextureLoader();
-      var loaded = 0;
 
-      images.forEach(function(src, i) {
-        texLoader.load(src, function(texture) {
+      images.forEach(function (src, i) {
+        texLoader.load(src, function (texture) {
           var aspect = texture.image.width / texture.image.height || 1;
           var h = 1.8;
           var w = h * aspect;
@@ -101,13 +103,20 @@ const { images = [] } = Astro.props as { images: string[] };
       // Interaction
       var isDragging = false;
       var px = 0;
-      var rotation = 0, targetRotation = 0, velocity = 0;
+      var rotation = 0,
+        targetRotation = 0,
+        velocity = 0;
+      var animId = 0;
 
-      renderer.domElement.addEventListener('mousedown', function(e) {
-        isDragging = true; px = e.clientX; velocity = 0;
+      renderer.domElement.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        px = e.clientX;
+        velocity = 0;
       });
-      window.addEventListener('mouseup', function() { isDragging = false; });
-      window.addEventListener('mousemove', function(e) {
+      window.addEventListener('mouseup', function () {
+        isDragging = false;
+      });
+      window.addEventListener('mousemove', function (e) {
         if (!isDragging) return;
         var dx = e.clientX - px;
         targetRotation += dx * 0.007;
@@ -116,13 +125,17 @@ const { images = [] } = Astro.props as { images: string[] };
       });
 
       // Click to open nearest
-      renderer.domElement.addEventListener('click', function() {
+      renderer.domElement.addEventListener('click', function () {
         if (Math.abs(velocity) < 0.01) {
-          var minD = Infinity, best = '';
-          cards.forEach(function(c, i) {
-            var a = ((c.angle + rotation) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+          var minD = Infinity,
+            best = '';
+          cards.forEach(function (c, i) {
+            var a = (((c.angle + rotation) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
             var d = Math.min(a, Math.abs(a - Math.PI * 2));
-            if (d < minD) { minD = d; best = images[i] || ''; }
+            if (d < minD) {
+              minD = d;
+              best = images[i] || '';
+            }
           });
           if (best) window.open(best, '_blank');
         }
@@ -130,38 +143,59 @@ const { images = [] } = Astro.props as { images: string[] };
 
       // Touch
       var tx = 0;
-      renderer.domElement.addEventListener('touchstart', function(e) {
-        tx = e.touches[0].clientX; velocity = 0;
-      }, { passive: true });
-      renderer.domElement.addEventListener('touchmove', function(e) {
-        var dx = e.touches[0].clientX - tx;
-        targetRotation += dx * 0.007;
-        velocity = dx * 0.007;
-        tx = e.touches[0].clientX;
-      }, { passive: true });
+      renderer.domElement.addEventListener(
+        'touchstart',
+        function (e) {
+          tx = e.touches[0].clientX;
+          velocity = 0;
+        },
+        { passive: true },
+      );
+      renderer.domElement.addEventListener(
+        'touchmove',
+        function (e) {
+          var dx = e.touches[0].clientX - tx;
+          targetRotation += dx * 0.007;
+          velocity = dx * 0.007;
+          tx = e.touches[0].clientX;
+        },
+        { passive: true },
+      );
 
       // Scroll zoom
-      renderer.domElement.addEventListener('wheel', function(e) {
-        camera.position.z += Math.sign(e.deltaY) * 0.3;
-        camera.position.z = Math.max(2.5, Math.min(10, camera.position.z));
-      }, { passive: true });
+      renderer.domElement.addEventListener(
+        'wheel',
+        function (e) {
+          camera.position.z += Math.sign(e.deltaY) * 0.3;
+          camera.position.z = Math.max(2.5, Math.min(10, camera.position.z));
+        },
+        { passive: true },
+      );
 
       // Visibility optimization — pause when offscreen
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          wrapper.dataset.visible = entry.isIntersecting ? '1' : '0';
-          if (!entry.isIntersecting && animId) { cancelAnimationFrame(animId); animId = 0; }
-          else if (entry.isIntersecting && !animId) animate();
-        });
-      }, { threshold: 0.1 });
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            wrapper.dataset.visible = entry.isIntersecting ? '1' : '0';
+            if (!entry.isIntersecting && animId) {
+              cancelAnimationFrame(animId);
+              animId = 0;
+            } else if (entry.isIntersecting && !animId) animate();
+          });
+        },
+        { threshold: 0.1 },
+      );
       observer.observe(container);
 
       function animate() {
         if (wrapper.dataset.visible === '0') return;
         rotation += (targetRotation - rotation) * 0.06;
-        if (!isDragging) { velocity *= 0.96; targetRotation += velocity; }
+        if (!isDragging) {
+          velocity *= 0.96;
+          targetRotation += velocity;
+        }
 
-        cards.forEach(function(c) {
+        cards.forEach(function (c) {
           var a = c.angle + rotation;
           c.mesh.position.x = Math.cos(a) * radius;
           c.mesh.position.z = Math.sin(a) * radius;
@@ -176,15 +210,15 @@ const { images = [] } = Astro.props as { images: string[] };
         });
 
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+        animId = requestAnimationFrame(animate);
       }
       animate();
 
       // Resize
       var rt;
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         clearTimeout(rt);
-        rt = setTimeout(function() {
+        rt = setTimeout(function () {
           var nw = container.clientWidth || 600;
           var nh = container.clientHeight || 420;
           camera.aspect = nw / nh;
@@ -197,9 +231,31 @@ const { images = [] } = Astro.props as { images: string[] };
 </script>
 
 <style>
-  .gallery-3d { margin: 20px 0; position: relative; }
-  #g3d-stage { width: 100%; height: 420px; border-radius: var(--radius); overflow: hidden; background: rgba(16,42,67,0.02); }
-  #g3d-stage canvas { display: block; width: 100% !important; height: 100% !important; }
-  .g3d-cta { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-  @media (max-width: 640px) { .gallery-3d { display: none; } }
+  .gallery-3d {
+    margin: 20px 0;
+    position: relative;
+  }
+  #g3d-stage {
+    width: 100%;
+    height: 420px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: rgba(16, 42, 67, 0.02);
+  }
+  #g3d-stage canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .g3d-cta {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  @media (max-width: 640px) {
+    .gallery-3d {
+      display: none;
+    }
+  }
 </style>

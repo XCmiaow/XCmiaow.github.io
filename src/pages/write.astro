@@ -67,6 +67,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     var tokenInput = document.getElementById('gh-token');
     if (savedToken && tokenInput) tokenInput.value = savedToken;
 
+    function setStatus(message, type) {
+      var status = document.getElementById('status');
+      if (!status) return;
+      status.textContent = message;
+      status.className = type ? 'status-' + type : '';
+    }
+
     document.getElementById('publish-btn').addEventListener('click', async function () {
       var title = document.getElementById('post-title').value.trim();
       var body = document.getElementById('post-body').value.trim();
@@ -80,25 +87,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         })
         .filter(Boolean);
       var token = tokenInput.value.trim();
-      var status = document.getElementById('status');
 
       if (!title) {
-        status.innerHTML = '<p style="color:var(--accent)">请输入标题</p>';
+        setStatus('请输入标题', 'warn');
         return;
       }
       if (!body) {
-        status.innerHTML = '<p style="color:var(--accent)">请输入正文</p>';
+        setStatus('请输入正文', 'warn');
         return;
       }
       if (!token) {
-        status.innerHTML = '<p style="color:var(--accent)">请输入 GitHub Token</p>';
+        setStatus('请输入 GitHub Token', 'warn');
         return;
       }
 
       // Save token
       localStorage.setItem('gh-blog-token', token);
 
-      status.innerHTML = '<p style="color:var(--muted)">发布中...</p>';
+      setStatus('发布中...', 'muted');
       document.getElementById('publish-btn').disabled = true;
 
       // Generate slug from title
@@ -148,17 +154,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         });
 
         if (res.ok) {
-          status.innerHTML = '<p style="color:var(--green);font-weight:700">✅ 发布成功！正在自动部署...</p>';
+          setStatus('✅ 发布成功！正在自动部署...', 'success');
           document.getElementById('post-title').value = '';
           document.getElementById('post-body').value = '';
           document.getElementById('post-desc').value = '';
           document.getElementById('post-tags').value = '';
         } else {
-          var err = await res.json();
-          status.innerHTML = '<p style="color:#c00">❌ 发布失败: ' + (err.message || '未知错误') + '</p>';
+          var errMessage = '未知错误';
+          try {
+            var err = await res.json();
+            errMessage = err.message || errMessage;
+          } catch {
+            errMessage = res.statusText || errMessage;
+          }
+          setStatus('❌ 发布失败: ' + errMessage, 'error');
         }
       } catch (e) {
-        status.innerHTML = '<p style="color:#c00">❌ 网络错误: ' + e.message + '</p>';
+        setStatus('❌ 网络错误: ' + (e.message || '未知错误'), 'error');
       }
 
       document.getElementById('publish-btn').disabled = false;
@@ -202,8 +214,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     min-height: 200px;
     line-height: 1.6;
   }
-  #status p {
+  #status {
     margin: 12px 0;
     font-size: 15px;
+  }
+  #status:empty {
+    margin: 0;
+  }
+  #status.status-warn {
+    color: var(--accent);
+  }
+  #status.status-muted {
+    color: var(--muted);
+  }
+  #status.status-success {
+    color: var(--green);
+    font-weight: 700;
+  }
+  #status.status-error {
+    color: #c00;
   }
 </style>

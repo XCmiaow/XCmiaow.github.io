@@ -1745,7 +1745,7 @@ body {
     height: clamp(118px, 12vw, 136px);
     pointer-events: none;
     z-index: 0;
-    opacity: 0.42;
+    opacity: 0.5;
   }
   html.minimal-mode #mol-bg {
     display: none !important;

@@ -1,13 +1,16 @@
 <canvas id="mol-bg" aria-hidden="true"></canvas>
 
 <script>
-  (function() {
+  (function () {
     var canvas = document.getElementById('mol-bg');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    var W = 0, H = 0, angle = 0, animId;
+    var W = 0,
+      H = 0,
+      angle = 0,
+      animId;
     var elementStyle = {
       C: { r: 7, c: '70,78,88', label: 'C' },
       N: { r: 8, c: '34,92,180', label: 'N' },
@@ -16,18 +19,38 @@
 
     // Caffeine structure
     var atoms = [
-      { x: -132, y: -78, z: 30, e: 'C' }, { x: -76, y: -48, z: 8, e: 'N' },
-      { x: -58, y: 13, z: 0, e: 'C' }, { x: 0, y: 31, z: 0, e: 'N' },
-      { x: 47, y: -13, z: 0, e: 'C' }, { x: 10, y: -68, z: 0, e: 'C' },
-      { x: 29, y: -130, z: 0, e: 'C' }, { x: -9, y: -180, z: -4, e: 'O' },
-      { x: 94, y: -146, z: 0, e: 'N' }, { x: 113, y: -208, z: -32, e: 'C' },
-      { x: 141, y: -102, z: 0, e: 'C' }, { x: 204, y: -118, z: 4, e: 'O' },
-      { x: 122, y: -40, z: 0, e: 'N' }, { x: 169, y: 4, z: 28, e: 'C' },
+      { x: -132, y: -78, z: 30, e: 'C' },
+      { x: -76, y: -48, z: 8, e: 'N' },
+      { x: -58, y: 13, z: 0, e: 'C' },
+      { x: 0, y: 31, z: 0, e: 'N' },
+      { x: 47, y: -13, z: 0, e: 'C' },
+      { x: 10, y: -68, z: 0, e: 'C' },
+      { x: 29, y: -130, z: 0, e: 'C' },
+      { x: -9, y: -180, z: -4, e: 'O' },
+      { x: 94, y: -146, z: 0, e: 'N' },
+      { x: 113, y: -208, z: -32, e: 'C' },
+      { x: 141, y: -102, z: 0, e: 'C' },
+      { x: 204, y: -118, z: 4, e: 'O' },
+      { x: 122, y: -40, z: 0, e: 'N' },
+      { x: 169, y: 4, z: 28, e: 'C' },
     ];
 
     var bonds = [
-      [0,1,1],[1,2,1],[2,3,2],[3,4,1],[4,5,2],[5,1,1],[5,6,1],
-      [6,7,2],[6,8,1],[8,9,1],[8,10,1],[10,11,2],[10,12,1],[12,4,1],[12,13,1],
+      [0, 1, 1],
+      [1, 2, 1],
+      [2, 3, 2],
+      [3, 4, 1],
+      [4, 5, 2],
+      [5, 1, 1],
+      [5, 6, 1],
+      [6, 7, 2],
+      [6, 8, 1],
+      [8, 9, 1],
+      [8, 10, 1],
+      [10, 11, 2],
+      [10, 12, 1],
+      [12, 4, 1],
+      [12, 13, 1],
     ];
 
     var particles = [];
@@ -43,7 +66,8 @@
       particles = [];
       for (var i = 0; i < 30; i++) {
         particles.push({
-          x: Math.random() * W, y: Math.random() * H,
+          x: Math.random() * W,
+          y: Math.random() * H,
           r: 0.3 + Math.random() * 0.5,
           vx: (Math.random() - 0.5) * 0.05,
           vy: (Math.random() - 0.5) * 0.05,
@@ -52,9 +76,21 @@
       }
     }
 
-    function rotateX(p, a) { var c=Math.cos(a),s=Math.sin(a); return {x:p.x,y:p.y*c-p.z*s,z:p.y*s+p.z*c}; }
-    function rotateY(p, a) { var c=Math.cos(a),s=Math.sin(a); return {x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}; }
-    function rotateZ(p, a) { var c=Math.cos(a),s=Math.sin(a); return {x:p.x*c-p.y*s,y:p.x*s+p.y*c,z:p.z}; }
+    function rotateX(p, a) {
+      var c = Math.cos(a),
+        s = Math.sin(a);
+      return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
+    }
+    function rotateY(p, a) {
+      var c = Math.cos(a),
+        s = Math.sin(a);
+      return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
+    }
+    function rotateZ(p, a) {
+      var c = Math.cos(a),
+        s = Math.sin(a);
+      return { x: p.x * c - p.y * s, y: p.x * s + p.y * c, z: p.z };
+    }
 
     function project(atom) {
       var p = { x: atom.x - 35, y: atom.y + 92, z: atom.z };
@@ -64,22 +100,37 @@
       var depth = 520;
       var scale = depth / (depth + p.z);
       var fit = Math.min(W / 340, H / 260, 1);
-      return { px: W * 0.5 + p.x * scale * fit, py: H * 0.54 + p.y * scale * fit, z: p.z, e: atom.e, scale: scale * fit };
+      return {
+        px: W * 0.5 + p.x * scale * fit,
+        py: H * 0.54 + p.y * scale * fit,
+        z: p.z,
+        e: atom.e,
+        scale: scale * fit,
+      };
     }
 
     function drawBond(a, b, order) {
-      var dx = b.px - a.px, dy = b.py - a.py;
+      var dx = b.px - a.px,
+        dy = b.py - a.py;
       var len = Math.max(1, Math.hypot(dx, dy));
-      var ox = (-dy / len) * 3.2, oy = (dx / len) * 3.2;
+      var ox = (-dy / len) * 3.2,
+        oy = (dx / len) * 3.2;
       var alpha = Math.max(0.22, Math.min(a.scale, b.scale) * 0.46);
       ctx.strokeStyle = 'rgba(112,122,137,' + alpha + ')';
       ctx.lineCap = 'round';
       ctx.lineWidth = Math.max(1.2, Math.min(a.scale, b.scale) * 1.7);
       if (order === 2) {
-        ctx.beginPath(); ctx.moveTo(a.px+ox, a.py+oy); ctx.lineTo(b.px+ox, b.py+oy);
-        ctx.moveTo(a.px-ox, a.py-oy); ctx.lineTo(b.px-ox, b.py-oy); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(a.px + ox, a.py + oy);
+        ctx.lineTo(b.px + ox, b.py + oy);
+        ctx.moveTo(a.px - ox, a.py - oy);
+        ctx.lineTo(b.px - ox, b.py - oy);
+        ctx.stroke();
       } else {
-        ctx.beginPath(); ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(a.px, a.py);
+        ctx.lineTo(b.px, b.py);
+        ctx.stroke();
       }
     }
 
@@ -93,18 +144,21 @@
 
       // Outer glow (for non-carbon: N blue, O red)
       if (atom.e !== 'C') {
-        ctx.beginPath(); ctx.arc(atom.px, atom.py, r * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + style.c + ',' + (alpha * 0.06 * pulse) + ')';
+        ctx.beginPath();
+        ctx.arc(atom.px, atom.py, r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + style.c + ',' + alpha * 0.06 * pulse + ')';
         ctx.fill();
       }
 
       // Core
-      ctx.beginPath(); ctx.arc(atom.px, atom.py, r, 0, Math.PI * 2);
+      ctx.beginPath();
+      ctx.arc(atom.px, atom.py, r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(' + style.c + ',' + alpha + ')';
       ctx.fill();
 
       // Highlight
-      ctx.beginPath(); ctx.arc(atom.px - r*0.25, atom.py - r*0.28, r * 0.42, 0, Math.PI * 2);
+      ctx.beginPath();
+      ctx.arc(atom.px - r * 0.25, atom.py - r * 0.28, r * 0.42, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(255,255,255,' + alpha * 0.2 + ')';
       ctx.fill();
 
@@ -112,62 +166,109 @@
       if (atom.e !== 'C' && r >= 5) {
         ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.9, alpha + 0.08) + ')';
         ctx.font = '700 ' + Math.max(9, r * 1.25) + 'px system-ui, sans-serif';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(style.label, atom.px, atom.py + 0.3);
       }
     }
 
     // Visibility optimization
     var isVisible = true;
-    var visObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) { isVisible = e.isIntersecting; });
+    function stop() {
+      if (!animId) return;
+      cancelAnimationFrame(animId);
+      animId = 0;
+    }
+    function start() {
+      if (animId || !isVisible) return;
+      animId = requestAnimationFrame(draw);
+    }
+
+    var visObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        isVisible = e.isIntersecting;
+        if (isVisible) start();
+        else stop();
+      });
     });
     if (canvas) visObserver.observe(canvas);
 
     function draw() {
-      if (!isVisible) { animId = requestAnimationFrame(draw); return; }
+      if (!isVisible) {
+        animId = 0;
+        return;
+      }
+      animId = 0;
       ctx.clearRect(0, 0, W, H);
       angle += 0.006;
 
       // Draw ambient particles
       for (var i = 0; i < particles.length; i++) {
         var pt = particles[i];
-        pt.x += pt.vx; pt.y += pt.vy;
-        if (pt.x < 0) pt.x = W; if (pt.x > W) pt.x = 0;
-        if (pt.y < 0) pt.y = H; if (pt.y > H) pt.y = 0;
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        if (pt.x < 0) pt.x = W;
+        if (pt.x > W) pt.x = 0;
+        if (pt.y < 0) pt.y = H;
+        if (pt.y > H) pt.y = 0;
         pt.phase += 0.02;
         var pa = 0.08 + Math.sin(pt.phase) * 0.04;
-        ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(201,162,39,' + pa + ')';
         ctx.fill();
       }
 
       // Draw molecule
       var projected = atoms.map(project);
-      bonds.forEach(function(b) { drawBond(projected[b[0]], projected[b[1]], b[2]); });
-      projected.slice().sort(function(a,b) { return a.z - b.z; }).forEach(drawAtom);
+      bonds.forEach(function (b) {
+        drawBond(projected[b[0]], projected[b[1]], b[2]);
+      });
+      projected
+        .slice()
+        .sort(function (a, b) {
+          return a.z - b.z;
+        })
+        .forEach(drawAtom);
 
       animId = requestAnimationFrame(draw);
     }
 
-    resize(); draw();
+    resize();
+    start();
 
     var resizeTimer;
-    window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 120); });
-    document.addEventListener('astro:after-swap', function() { if (animId) cancelAnimationFrame(animId); });
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 120);
+    });
+    document.addEventListener('astro:after-swap', function () {
+      stop();
+    });
   })();
 </script>
 
 <style>
   #mol-bg {
-    position: fixed; top: 72px; right: 0;
+    position: fixed;
+    top: 72px;
+    right: 0;
     width: clamp(140px, 12vw, 160px);
     height: clamp(118px, 12vw, 136px);
-    pointer-events: none; z-index: 0;
+    pointer-events: none;
+    z-index: 0;
     opacity: 0.5;
   }
-  html.minimal-mode #mol-bg { display: none !important; }
+  html.minimal-mode #mol-bg {
+    display: none !important;
+  }
   @media (max-width: 760px) {
-    #mol-bg { top: 66px; right: 0; width: 72px; height: 44px; opacity: 0.14 !important; }
+    #mol-bg {
+      top: 66px;
+      right: 0;
+      width: 72px;
+      height: 44px;
+      opacity: 0.14 !important;
+    }
   }
 </style>
