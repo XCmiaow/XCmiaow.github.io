@@ -58,6 +58,41 @@ function fail(message) {
   failures.push(message);
 }
 
+async function checkDarkRoute(page, route, options = {}) {
+  await page.setViewportSize({ width: options.width || 1440, height: options.height || 1000 });
+  await page.goto(`${base}${route}`, { waitUntil: 'load' });
+  await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+  await waitForSettledPage(page);
+  const check = await page.evaluate(() => {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const h1 = document.querySelector('h1');
+    const cards = [...document.querySelectorAll('.card, .material-card, .blog-card, .legend-item')];
+    const lightCards = cards
+      .map((card) => getComputedStyle(card).backgroundColor)
+      .filter((color) => color === 'rgb(255, 255, 255)');
+    const bodyText = document.body.innerText;
+    return {
+      route: location.pathname,
+      theme: document.documentElement.getAttribute('data-theme'),
+      h1: h1?.textContent?.trim() || '',
+      paper: rootStyle.getPropertyValue('--paper').trim(),
+      cardCount: cards.length,
+      lightCardCount: lightCards.length,
+      overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+      skeletonVisible: !!document.querySelector('#skeleton'),
+      forbiddenText: /\b(?:lorem ipsum|todo|debug|placeholder|undefined|null|NaN)\b/i.test(bodyText),
+    };
+  });
+  if (check.theme !== 'dark') fail(`${route} did not keep dark theme`);
+  if (!check.h1) fail(`${route} rendered without H1`);
+  if (check.paper === '#ffffff') fail(`${route} kept a light paper token in dark mode`);
+  if (check.lightCardCount) fail(`${route} has ${check.lightCardCount} light cards in dark mode`);
+  if (check.overflow) fail(`${route} has horizontal overflow`);
+  if (check.skeletonVisible) fail(`${route} skeleton remained visible`);
+  if (check.forbiddenText) fail(`${route} includes forbidden placeholder/debug text`);
+  checks.push(check);
+}
+
 const child = startPreview();
 
 try {
@@ -99,7 +134,7 @@ try {
         minLinkHeight: Math.min(...linkHeights),
         overflow: document.documentElement.scrollWidth > window.innerWidth + 1,
         skeletonVisible: !!document.querySelector('#skeleton'),
-        forbiddenText: /lorem ipsum|todo|debug|placeholder|undefined|null|NaN/i.test(bodyText),
+        forbiddenText: /\b(?:lorem ipsum|todo|debug|placeholder|undefined|null|NaN)\b/i.test(bodyText),
       };
     });
     if (check.theme !== 'dark') fail(`${route} did not keep dark theme`);
@@ -110,6 +145,20 @@ try {
     if (check.skeletonVisible) fail(`${route} skeleton remained visible`);
     if (check.forbiddenText) fail(`${route} includes forbidden placeholder/debug text`);
     checks.push(check);
+  }
+
+  for (const route of [
+    '/materials',
+    '/en/materials',
+    '/chem-ai-lab',
+    '/en/chem-ai-lab',
+    '/blog',
+    '/en/blog',
+    '/blog/hello-world',
+    '/en/blog/getting-started',
+    '/write',
+  ]) {
+    await checkDarkRoute(page, route);
   }
 
   await page.screenshot({ path: path.join(screenshotDir, 'ai-km-dark-desktop.png'), fullPage: false });
