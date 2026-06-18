@@ -167,7 +167,7 @@ const routeLabels: Record<string, string> = {
   .km-hero .container {
     max-width: 860px;
   }
-  .eyebrow {
+  .km-hero .eyebrow {
     color: var(--accent);
     font-size: 12px;
     font-weight: 900;
@@ -181,7 +181,7 @@ const routeLabels: Record<string, string> = {
     font-size: clamp(36px, 5.6vw, 62px);
     line-height: 1.08;
   }
-  .lead {
+  .km-hero .lead {
     max-width: 700px;
     margin-top: 18px;
     color: var(--muted);
@@ -269,10 +269,18 @@ const routeLabels: Record<string, string> = {
     background: rgba(255, 255, 255, 0.68);
     color: var(--primary);
   }
+  :root[data-theme='dark'] .output-list span,
+  :root.dark .output-list span {
+    background: rgba(255, 255, 255, 0.05);
+  }
   .boundary-panel {
     padding: 22px;
     border-left: 4px solid var(--accent);
     background: rgba(201, 162, 39, 0.1);
+  }
+  :root[data-theme='dark'] .boundary-panel,
+  :root.dark .boundary-panel {
+    background: rgba(224, 189, 78, 0.1);
   }
   .claim-section {
     padding-bottom: 72px;
@@ -292,6 +300,10 @@ const routeLabels: Record<string, string> = {
     background: rgba(201, 162, 39, 0.16);
     color: #8a6515;
   }
+  :root[data-theme='dark'] .status-case-backed .claim-meta span:first-child,
+  :root.dark .status-case-backed .claim-meta span:first-child {
+    color: var(--accent);
+  }
   .claim-card dl {
     display: grid;
     gap: 8px;
@@ -310,10 +322,14 @@ const routeLabels: Record<string, string> = {
   }
   .claim-links a {
     min-height: 36px;
-    padding: 0 11px;
+    padding: 7px 11px;
     background: var(--accent-soft);
     color: var(--primary);
     text-decoration: none;
+  }
+  .claim-links a:hover {
+    border-color: rgba(201, 162, 39, 0.45);
+    background: rgba(201, 162, 39, 0.18);
   }
   @media (max-width: 980px) {
     .workflow-grid,

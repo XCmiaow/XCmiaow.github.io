@@ -8,6 +8,7 @@ const root = process.cwd();
 const host = '127.0.0.1';
 const port = Number(process.env.QA_PORT || 4322);
 const base = `http://${host}:${port}`;
+// Public route list: keep this in sync with service worker APP_SHELL and visual QA critical routes.
 const routes = [
   '/',
   '/en/',
@@ -67,6 +68,66 @@ const expectedHeadings = {
   '/en/blog/getting-started': 'Getting Started',
 };
 
+const homeProfileContracts = {
+  '/': {
+    snippets: [
+      '\u5357\u4eac\u6797\u4e1a\u5927\u5b66',
+      '\u5316\u5b66\u5de5\u7a0b\u5b66\u9662',
+      '\u6797\u4ea7\u5316\u5de5\u4e13\u4e1a',
+      'GPA 3.60',
+      '\u73ed\u7ea7\u7b2c 1',
+      '\u4e13\u4e1a\u7b2c 2',
+      '\u4e2a\u4eba\u7b80\u4ecb',
+      '\u7814\u7a76\u5174\u8da3',
+      '\u6838\u5fc3\u4eae\u70b9',
+      '\u83b7\u5956\u4e0e\u7ade\u8d5b',
+      '\u6280\u80fd\u4e13\u957f',
+      '\u9879\u76ee\u4e0e\u4f5c\u54c1',
+      '\u6570\u5b66\u5efa\u6a21\u7ade\u8d5b\u5b9e\u8df5',
+      'AI \u8f85\u52a9\u79d1\u7814\u5b66\u4e60\u4e0e\u77e5\u8bc6\u7ba1\u7406',
+    ],
+    requiredLinks: ['/resume-onepage', '/materials', '/resume-academic', '/resume-career', '/evidence'],
+  },
+  '/en/': {
+    snippets: [
+      'Nanjing Forestry University',
+      'College of Chemical Engineering',
+      'Chemical Engineering of Forest Products',
+      'GPA 3.60',
+      'ranked 1st in class',
+      '2nd in major',
+      'About Me',
+      'Research Interests',
+      'Profile Highlights',
+      'Awards & Competitions',
+      'Skills',
+      'Projects & Portfolio',
+      'Mathematical Modeling Practice',
+      'AI-Assisted Learning & Knowledge Management',
+    ],
+    requiredLinks: [
+      '/en/resume-onepage',
+      '/en/materials',
+      '/en/resume-academic',
+      '/en/resume-career',
+      '/en/evidence',
+    ],
+  },
+};
+
+const homeProfileRequiredCounts = [
+  { label: 'hero identity card', selector: '.hero-proof .identity-card', min: 1 },
+  { label: 'hero stats', selector: '.hero-proof .stat', min: 4 },
+  { label: 'about paragraphs', selector: '#about .about-copy p', min: 3 },
+  { label: 'education ranks', selector: '#education .rank-item', min: 4 },
+  { label: 'research interest cards', selector: '#interests .interest-card', min: 4 },
+  { label: 'profile highlights', selector: '#highlights .highlight', min: 4 },
+  { label: 'award timeline items', selector: '#honors .tl-item', min: 8 },
+  { label: 'skill cards', selector: '#skills .skill-card', min: 4 },
+  { label: 'project cards', selector: '#projects .project-card', min: 4 },
+  { label: 'contact card', selector: '#contact .contact-card', min: 1 },
+];
+
 const printRoutes = [
   '/resume-onepage',
   '/en/resume-onepage',
@@ -79,6 +140,11 @@ const printRoutes = [
 const forbiddenPublicPatterns = [
   { label: 'mobile phone number', re: /(?:^|\D)1[3-9]\d{9}(?:\D|$)/ },
   { label: 'specific birth month', re: /(?:^|\D)2006(?:[.\-/\s]?0?4|年\s*0?4\s*月)(?:\D|$)/ },
+];
+
+const forbiddenRenderedPatterns = [
+  { label: 'debug placeholder', re: /\b(?:todo|debug|placeholder|lorem ipsum)\b/i },
+  { label: 'undefined/null text', re: /\b(?:undefined|null|NaN)\b/ },
 ];
 
 const localOnlyHrefPatterns = [{ label: 'SIOC local packet route', re: /resume-sioc-summer/i }];
@@ -169,6 +235,22 @@ function localUrl(href) {
     if (url.origin !== base || url.protocol !== 'http:') return null;
     url.hash = '';
     return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+function normalizeRenderedText(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function normalizeLocalPathname(href) {
+  try {
+    const url = new URL(href, base);
+    if (url.origin !== base) return null;
+    let pathname = decodeURIComponent(url.pathname);
+    if (pathname !== '/' && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+    return pathname;
   } catch {
     return null;
   }
@@ -443,6 +525,9 @@ async function runBrowserChecks() {
 
     const hrefs = await page.locator('a[href]').evaluateAll((els) => els.map((a) => a.href));
     for (const pattern of forbiddenPublicPatterns) {
+      if (pattern.re.test(bodyText)) failures.push(`${route} exposes ${pattern.label}`);
+    }
+    for (const pattern of forbiddenRenderedPatterns) {
       if (pattern.re.test(bodyText)) failures.push(`${route} exposes ${pattern.label}`);
     }
     for (const href of hrefs) {
