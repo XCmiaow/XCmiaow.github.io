@@ -66,6 +66,10 @@ function assertNoTokenPersistence() {
   if (/gh-blog-token/.test(writePage)) fail('/write must not use a persistent token storage key');
   if (/localStorage\.setItem\([^)]*token/i.test(writePage)) fail('/write must not persist GitHub tokens');
   if (/localStorage\.getItem\([^)]*token/i.test(writePage)) fail('/write must not restore GitHub tokens');
+  if (/GitHub\s+Token/i.test(writePage)) fail('/write must not ask for a GitHub token');
+  if (/api\.github\.com|Authorization|public_repo|fetch\s*\(/i.test(writePage)) {
+    fail('/write must not publish through browser-side GitHub API calls');
+  }
 }
 
 for (const entry of fs.readdirSync(blogDir)) {

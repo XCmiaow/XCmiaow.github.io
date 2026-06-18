@@ -13,6 +13,7 @@
     "qa:content": "node scripts/content-qa.mjs",
     "qa:pwa": "node scripts/pwa-qa.mjs",
     "qa:visual": "node scripts/visual-qa.mjs",
+    "blog:new": "node scripts/write-blog-post.mjs",
     "write:enable": "node scripts/write-route.mjs enable",
     "write:disable": "node scripts/write-route.mjs disable",
     "check": "npm run build && npm run qa:style && npm run qa:content && npm run qa:pwa && npm run qa && npm run qa:visual",

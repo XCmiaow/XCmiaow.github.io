@@ -2,181 +2,136 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="写新文章" lang="zh">
+<BaseLayout title="Local Blog Composer" lang="en">
   <section class="hero" style="padding:60px 0 20px">
     <div class="container">
-      <h1 style="font-size:clamp(28px,4vw,40px);color:var(--primary);margin:0">写新文章</h1>
-      <p style="color:var(--muted);margin-top:6px">在手机上直接写博客并发布到网站</p>
+      <h1 style="font-size:clamp(28px,4vw,40px);color:var(--primary);margin:0">Local Blog Composer</h1>
+      <p style="color:var(--muted);margin-top:6px">
+        Generate a Markdown post locally, then commit and push it with git.
+      </p>
     </div>
   </section>
 
   <section>
-    <div class="container" style="max-width:640px">
+    <div class="container composer-shell">
       <div id="form-area">
         <div class="field">
-          <label for="post-lang">语言</label>
+          <label for="post-lang">Language</label>
           <select id="post-lang">
-            <option value="zh">中文</option>
+            <option value="zh">Chinese</option>
             <option value="en">English</option>
           </select>
         </div>
         <div class="field">
-          <label for="post-title">标题 *</label>
-          <input id="post-title" type="text" placeholder="文章标题" />
+          <label for="post-title">Title *</label>
+          <input id="post-title" type="text" placeholder="Post title" />
         </div>
         <div class="field">
-          <label for="post-desc">摘要</label>
-          <input id="post-desc" type="text" placeholder="简短描述（可选）" />
+          <label for="post-desc">Description</label>
+          <input id="post-desc" type="text" placeholder="Short summary" />
         </div>
         <div class="field">
-          <label for="post-tags">标签</label>
-          <input id="post-tags" type="text" placeholder="用逗号分隔，如：有机化学,笔记" />
+          <label for="post-tags">Tags</label>
+          <input id="post-tags" type="text" placeholder="Comma separated tags" />
         </div>
         <div class="field">
-          <label for="post-body"
-            >正文 * <span style="font-weight:400;color:var(--muted);font-size:13px">支持 Markdown</span></label
-          >
-          <textarea id="post-body" rows="12" placeholder="在这里写文章内容..."></textarea>
-        </div>
-        <div class="field">
-          <label for="gh-token">GitHub Token</label>
-          <input id="gh-token" type="password" placeholder="personal access token" />
-          <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
-            Token is used only for this publish request and is not saved in the browser. Required scope:
-            <code>public_repo</code>.
-          </p>
+          <label for="post-body">Body * <span>Markdown supported</span></label>
+          <textarea id="post-body" rows="12" placeholder="Write the post body here..."></textarea>
         </div>
         <div id="status"></div>
-        <button
-          class="btn primary"
-          id="publish-btn"
-          type="button"
-          style="width:100%;justify-content:center;min-height:48px">发布文章</button
-        >
-        <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center">
-          发布后 GitHub Actions 会自动构建部署，约 1-2 分钟生效
-        </p>
+        <div class="actions">
+          <button class="btn primary" id="generate-btn" type="button">Generate Markdown</button>
+          <button class="btn" id="copy-btn" type="button" disabled>Copy</button>
+          <button class="btn" id="download-btn" type="button" disabled>Download</button>
+        </div>
       </div>
+
+      <aside class="preview-panel" aria-live="polite">
+        <div class="output-meta">
+          <span id="post-path">src/content/blog/post.md</span>
+        </div>
+        <textarea id="post-output" readonly placeholder="Generated Markdown appears here."></textarea>
+      </aside>
     </div>
   </section>
 </BaseLayout>
 
-<script>
-  (function () {
-    var tokenInput = document.getElementById('gh-token');
+<script type="module">
+  import { composeBlogPost } from '/src/tools/blogComposer.js';
 
-    function setStatus(message, type) {
-      var status = document.getElementById('status');
-      if (!status) return;
-      status.textContent = message;
-      status.className = type ? 'status-' + type : '';
+  const state = { post: null };
+  const fields = {
+    lang: document.getElementById('post-lang'),
+    title: document.getElementById('post-title'),
+    desc: document.getElementById('post-desc'),
+    tags: document.getElementById('post-tags'),
+    body: document.getElementById('post-body'),
+    path: document.getElementById('post-path'),
+    output: document.getElementById('post-output'),
+    copy: document.getElementById('copy-btn'),
+    download: document.getElementById('download-btn'),
+  };
+
+  function setStatus(message, type) {
+    const status = document.getElementById('status');
+    if (!status) return;
+    status.textContent = message;
+    status.className = type ? `status-${type}` : '';
+  }
+
+  function updateOutput(post) {
+    state.post = post;
+    fields.path.textContent = post.path;
+    fields.output.value = post.content;
+    fields.copy.disabled = false;
+    fields.download.disabled = false;
+  }
+
+  document.getElementById('generate-btn').addEventListener('click', () => {
+    try {
+      const post = composeBlogPost({
+        title: fields.title.value,
+        body: fields.body.value,
+        lang: fields.lang.value,
+        description: fields.desc.value,
+        tags: fields.tags.value,
+      });
+      updateOutput(post);
+      setStatus(`Ready: ${post.path}`, 'success');
+    } catch (error) {
+      setStatus(error.message || 'Unable to generate post', 'warn');
     }
+  });
 
-    document.getElementById('publish-btn').addEventListener('click', async function () {
-      var title = document.getElementById('post-title').value.trim();
-      var body = document.getElementById('post-body').value.trim();
-      var lang = document.getElementById('post-lang').value;
-      var desc = document.getElementById('post-desc').value.trim();
-      var tags = document
-        .getElementById('post-tags')
-        .value.split(',')
-        .map(function (t) {
-          return t.trim();
-        })
-        .filter(Boolean);
-      var token = tokenInput.value.trim();
+  fields.copy.addEventListener('click', async () => {
+    if (!state.post) return;
+    await navigator.clipboard.writeText(state.post.content);
+    setStatus('Copied Markdown to clipboard.', 'success');
+  });
 
-      if (!title) {
-        setStatus('请输入标题', 'warn');
-        return;
-      }
-      if (!body) {
-        setStatus('请输入正文', 'warn');
-        return;
-      }
-      if (!token) {
-        setStatus('请输入 GitHub Token', 'warn');
-        return;
-      }
-
-      setStatus('发布中...', 'muted');
-      document.getElementById('publish-btn').disabled = true;
-
-      // Generate slug from title
-      var slug =
-        title
-          .toLowerCase()
-          .replace(/[^\w\s一-鿿-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-|-$/g, '')
-          .substring(0, 80) || 'post';
-
-      // Build frontmatter
-      var frontmatter =
-        '---\ntitle: "' +
-        title +
-        '"\ndescription: "' +
-        (desc || '') +
-        '"\ndate: ' +
-        new Date().toISOString().split('T')[0] +
-        '\nlang: ' +
-        lang +
-        '\ntags: [' +
-        tags
-          .map(function (t) {
-            return '"' + t + '"';
-          })
-          .join(',') +
-        ']\ndraft: false\n---\n\n';
-      var content = frontmatter + body;
-
-      // Encode for GitHub API
-      var encoded = btoa(unescape(encodeURIComponent(content)));
-      var path = 'src/content/blog/' + slug + '.md';
-      var repo = 'XCmiaow/XCmiaow.github.io';
-      var branch = 'main';
-
-      try {
-        var res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-          method: 'PUT',
-          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: 'blog: add ' + slug,
-            content: encoded,
-            branch: branch,
-          }),
-        });
-
-        if (res.ok) {
-          setStatus('✅ 发布成功！正在自动部署...', 'success');
-          document.getElementById('post-title').value = '';
-          document.getElementById('post-body').value = '';
-          document.getElementById('post-desc').value = '';
-          document.getElementById('post-tags').value = '';
-        } else {
-          var errMessage = '未知错误';
-          try {
-            var err = await res.json();
-            errMessage = err.message || errMessage;
-          } catch {
-            errMessage = res.statusText || errMessage;
-          }
-          setStatus('❌ 发布失败: ' + errMessage, 'error');
-        }
-      } catch (e) {
-        setStatus('❌ 网络错误: ' + (e.message || '未知错误'), 'error');
-      }
-
-      document.getElementById('publish-btn').disabled = false;
-    });
-  })();
+  fields.download.addEventListener('click', () => {
+    if (!state.post) return;
+    const blob = new Blob([state.post.content], { type: 'text/markdown;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = state.post.filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
 </script>
 
 <style>
+  .composer-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    gap: 24px;
+    align-items: start;
+  }
+
   .field {
     margin-bottom: 20px;
   }
+
   .field label {
     display: block;
     font-weight: 700;
@@ -184,9 +139,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 6px;
     font-size: 14px;
   }
+
+  .field label span {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
   .field input,
   .field textarea,
-  .field select {
+  .field select,
+  #post-output {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid var(--line);
@@ -198,35 +161,82 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     box-sizing: border-box;
     transition: border-color 0.2s;
   }
+
   .field input:focus,
   .field textarea:focus,
-  .field select:focus {
+  .field select:focus,
+  #post-output:focus {
     outline: none;
     border-color: var(--accent);
   }
+
   .field textarea {
     resize: vertical;
-    min-height: 200px;
+    min-height: 220px;
     line-height: 1.6;
   }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .actions .btn {
+    min-height: 44px;
+  }
+
+  .actions .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .preview-panel {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    padding: 14px;
+  }
+
+  .output-meta {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+  }
+
+  #post-output {
+    min-height: 520px;
+    resize: vertical;
+    line-height: 1.55;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
   #status {
     margin: 12px 0;
     font-size: 15px;
   }
+
   #status:empty {
     margin: 0;
   }
+
   #status.status-warn {
     color: var(--accent);
   }
-  #status.status-muted {
-    color: var(--muted);
-  }
+
   #status.status-success {
     color: var(--green);
     font-weight: 700;
   }
-  #status.status-error {
-    color: #c00;
+
+  @media (max-width: 860px) {
+    .composer-shell {
+      grid-template-columns: 1fr;
+    }
+
+    #post-output {
+      min-height: 320px;
+    }
   }
 </style>
