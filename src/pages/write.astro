@@ -42,7 +42,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <label for="gh-token">GitHub Token</label>
           <input id="gh-token" type="password" placeholder="personal access token" />
           <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
-            仅需输入一次，保存在本地。权限需要 <code>public_repo</code>。
+            Token is used only for this publish request and is not saved in the browser. Required scope:
+            <code>public_repo</code>.
           </p>
         </div>
         <div id="status"></div>
@@ -62,10 +63,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   (function () {
-    // Restore saved token
-    var savedToken = localStorage.getItem('gh-blog-token');
     var tokenInput = document.getElementById('gh-token');
-    if (savedToken && tokenInput) tokenInput.value = savedToken;
 
     function setStatus(message, type) {
       var status = document.getElementById('status');
@@ -100,9 +98,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         setStatus('请输入 GitHub Token', 'warn');
         return;
       }
-
-      // Save token
-      localStorage.setItem('gh-blog-token', token);
 
       setStatus('发布中...', 'muted');
       document.getElementById('publish-btn').disabled = true;

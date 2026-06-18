@@ -44,6 +44,22 @@ function distPathForRoute(route) {
   return path.join(distDir, route.replace(/^\/+/, ''), 'index.html');
 }
 
+function assertNoPublicWriteEntry() {
+  const layoutPath = path.join(root, 'src', 'layouts', 'BaseLayout.astro');
+  const layout = fs.readFileSync(layoutPath, 'utf8');
+  if (/href=["'`{][^"'`}]*(?:\/write\/?)/.test(layout)) {
+    fail('BaseLayout must not expose /write from public navigation or footer');
+  }
+}
+
+function assertNoTokenPersistence() {
+  const writePath = path.join(root, 'src', 'pages', 'write.astro');
+  const writePage = fs.readFileSync(writePath, 'utf8');
+  if (/gh-blog-token/.test(writePage)) fail('/write must not use a persistent token storage key');
+  if (/localStorage\.setItem\([^)]*token/i.test(writePage)) fail('/write must not persist GitHub tokens');
+  if (/localStorage\.getItem\([^)]*token/i.test(writePage)) fail('/write must not restore GitHub tokens');
+}
+
 for (const entry of fs.readdirSync(blogDir)) {
   if (!entry.endsWith('.md')) continue;
   const file = path.join(blogDir, entry);
@@ -86,6 +102,9 @@ const publishedCountByLang = posts.reduce(
   },
   { zh: 0, en: 0 },
 );
+
+assertNoPublicWriteEntry();
+assertNoTokenPersistence();
 
 console.log(JSON.stringify({ failures, posts: posts.length, publishedCountByLang }, null, 2));
 if (failures.length) process.exit(1);
