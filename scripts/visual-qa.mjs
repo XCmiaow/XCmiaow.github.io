@@ -154,8 +154,6 @@ try {
     '/en/chem-ai-lab',
     '/blog',
     '/en/blog',
-    '/blog/hello-world',
-    '/en/blog/getting-started',
     '/write',
   ]) {
     await checkDarkRoute(page, route);

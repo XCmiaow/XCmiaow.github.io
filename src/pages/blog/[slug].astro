@@ -5,7 +5,7 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts
-    .filter((p) => p.data.lang === 'zh')
+    .filter((p) => p.data.lang === 'zh' && !p.data.draft)
     .map((p) => {
       const slug = p.slug ?? p.id.replace(/\.md$/, '');
       return {

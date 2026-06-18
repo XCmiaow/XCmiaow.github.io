@@ -29,9 +29,7 @@ const routes = [
   '/resume-career',
   '/en/resume-career',
   '/blog',
-  '/blog/hello-world',
   '/en/blog',
-  '/en/blog/getting-started',
 ];
 
 const responsiveViewports = [
@@ -63,9 +61,7 @@ const expectedHeadings = {
   '/resume-career': '\u65b9\u7eea\u6770',
   '/en/resume-career': 'Xujie Fang',
   '/blog': '\u535a\u5ba2',
-  '/blog/hello-world': '\u535a\u5ba2\u5f00\u59cb',
   '/en/blog': 'Blog',
-  '/en/blog/getting-started': 'Getting Started',
 };
 
 const homeProfileContracts = {
