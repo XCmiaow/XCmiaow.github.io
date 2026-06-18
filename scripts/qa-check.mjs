@@ -143,7 +143,10 @@ const forbiddenRenderedPatterns = [
   { label: 'undefined/null text', re: /\b(?:undefined|null|NaN)\b/ },
 ];
 
-const localOnlyHrefPatterns = [{ label: 'SIOC local packet route', re: /resume-sioc-summer/i }];
+const localOnlyHrefPatterns = [
+  { label: 'SIOC local packet route', re: /resume-sioc-summer/i },
+  { label: 'write tool route', re: /\/write\/?$/i },
+];
 
 const requiredEvidenceFields = [
   'id',
@@ -275,11 +278,19 @@ function runStaticChecks() {
   const failures = [];
   const localOnlyPublicPage = path.join(root, 'src', 'pages', 'resume-sioc-summer.astro');
   const localOnlyDistRoute = path.join(root, 'dist', 'resume-sioc-summer');
+  const localOnlyWritePage = path.join(root, 'src', 'pages', 'write.astro');
+  const localOnlyWriteDistRoute = path.join(root, 'dist', 'write');
   if (fs.existsSync(localOnlyPublicPage)) {
     failures.push('Local-only SIOC source page must not live under src/pages');
   }
   if (fs.existsSync(localOnlyDistRoute)) {
     failures.push('Local-only SIOC route was generated into dist/resume-sioc-summer');
+  }
+  if (fs.existsSync(localOnlyWritePage)) {
+    failures.push('Local-only write tool source page must not live under src/pages');
+  }
+  if (fs.existsSync(localOnlyWriteDistRoute)) {
+    failures.push('Local-only write route was generated into dist/write');
   }
 
   const swPath = path.join(root, 'public', 'sw.js');

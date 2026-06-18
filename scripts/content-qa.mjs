@@ -47,13 +47,21 @@ function distPathForRoute(route) {
 function assertNoPublicWriteEntry() {
   const layoutPath = path.join(root, 'src', 'layouts', 'BaseLayout.astro');
   const layout = fs.readFileSync(layoutPath, 'utf8');
+  const publicWritePage = path.join(root, 'src', 'pages', 'write.astro');
+  const publicWriteDistRoute = path.join(distDir, 'write');
   if (/href=["'`{][^"'`}]*(?:\/write\/?)/.test(layout)) {
     fail('BaseLayout must not expose /write from public navigation or footer');
+  }
+  if (fs.existsSync(publicWritePage)) {
+    fail('/write source must not live under src/pages in the default public build');
+  }
+  if (fs.existsSync(publicWriteDistRoute)) {
+    fail('/write route must not be generated in the default public build');
   }
 }
 
 function assertNoTokenPersistence() {
-  const writePath = path.join(root, 'src', 'pages', 'write.astro');
+  const writePath = path.join(root, 'src', 'tools', 'write.astro');
   const writePage = fs.readFileSync(writePath, 'utf8');
   if (/gh-blog-token/.test(writePage)) fail('/write must not use a persistent token storage key');
   if (/localStorage\.setItem\([^)]*token/i.test(writePage)) fail('/write must not persist GitHub tokens');

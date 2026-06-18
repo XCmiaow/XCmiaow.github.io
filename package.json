@@ -4,7 +4,7 @@
   "description": "Xujie Fang - Personal Academic Resume Website (Astro)",
   "type": "module",
   "scripts": {
-    "prebuild": "node scripts/generate-site-css.mjs && node scripts/generate-build-meta.mjs",
+    "prebuild": "node scripts/write-route.mjs disable && node scripts/generate-site-css.mjs && node scripts/generate-build-meta.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -13,6 +13,8 @@
     "qa:content": "node scripts/content-qa.mjs",
     "qa:pwa": "node scripts/pwa-qa.mjs",
     "qa:visual": "node scripts/visual-qa.mjs",
+    "write:enable": "node scripts/write-route.mjs enable",
+    "write:disable": "node scripts/write-route.mjs disable",
     "check": "npm run build && npm run qa:style && npm run qa:content && npm run qa:pwa && npm run qa && npm run qa:visual",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",

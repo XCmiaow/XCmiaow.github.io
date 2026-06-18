@@ -154,7 +154,6 @@ try {
     '/en/chem-ai-lab',
     '/blog',
     '/en/blog',
-    '/write',
   ]) {
     await checkDarkRoute(page, route);
   }

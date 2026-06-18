@@ -26,7 +26,6 @@ const publicRoutes = [
   'src/pages/blog/[slug].astro',
   'src/pages/en/blog/index.astro',
   'src/pages/en/blog/[slug].astro',
-  'src/pages/write.astro',
 ];
 const renderedComponents = [
   'src/layouts/BaseLayout.astro',
@@ -45,7 +44,6 @@ const allowedExternalStyles = new Set([
   'src/pages/blog/[slug].astro',
   'src/pages/en/blog/index.astro',
   'src/pages/en/blog/[slug].astro',
-  'src/pages/write.astro',
   'src/components/Gallery3D.astro',
 ]);
 
