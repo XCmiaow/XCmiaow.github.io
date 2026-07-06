@@ -617,6 +617,27 @@ async function runBrowserChecks() {
     }
   }
 
+  await page.goto(`${base}/silicon-ashes/courses`, { waitUntil: 'load' });
+  const courseCta = page.locator('.series-card.status-active .card-cta').first();
+  const expectedCourseHref = '/silicon-ashes/courses/ai-research-efficiency/index.html';
+  const courseHref = await courseCta.getAttribute('href');
+  if (courseHref !== expectedCourseHref) {
+    failures.push(`Active course CTA points to ${courseHref}; expected ${expectedCourseHref}`);
+  }
+  await courseCta.click();
+  await page
+    .waitForURL(`${base}${expectedCourseHref}`, { timeout: 5000 })
+    .catch(() => failures.push(`Active course CTA did not navigate to ${expectedCourseHref}`));
+  const courseDetailH1 = await page
+    .locator('h1')
+    .first()
+    .textContent()
+    .then((text) => text?.trim());
+  const expectedCourseH1 = '\u5e2e\u8001\u5e08\u5efa\u7acb\u81ea\u5df1\u7684\u79d1\u7814 AI \u5de5\u4f5c\u6d41';
+  if (courseDetailH1 !== expectedCourseH1) {
+    failures.push(`Active course detail rendered unexpected h1: ${courseDetailH1}`);
+  }
+
   const xmlResults = [];
   for (const xmlRoute of xmlRoutes) {
     const response = await page.request.get(`${base}${xmlRoute.route}`, { failOnStatusCode: false, timeout: 8000 });
