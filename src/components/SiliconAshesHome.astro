@@ -35,72 +35,34 @@ const t = isZh
       switchHref: '/en/silicon-ashes/',
       switchLabel: 'EN',
       nav: [
-        ['宣言', '#manifesto'],
         ['写作', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
-        ['课程', '#courses'],
+        ['课程', isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'],
         ['资源', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
         ['关于', isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'],
       ],
-      eyebrow: 'Silicon Ashes',
-      title: '在技术狂奔之后，留下人的判断力。',
-      lead: '少谈未来感，多看技术如何重排人。',
-      primary: '进入课程板块',
-      secondary: '查看个人简历',
-      signals: [
-        ['01', '技术批判', 'AI 时代的人与境。'],
-        ['02', 'AI 工作流', '从操作到设计。'],
-        ['03', '化工建模', '化工·建模·表达。'],
-        ['04', '课程产品', '工具变课程。'],
-      ],
+      eyebrow: 'personal brand',
+      title: '硅基余烬',
+      lead: '在技术狂奔之后，留下人的判断力。',
+      primary: '读最新写作',
+      secondary: '课程与资源',
+      heroNotes: ['技术批判', 'AI 工作流', '科研表达'],
       manifestoKicker: 'brand thesis',
       manifestoTitle: '硅基之后，还有余烬。',
-      manifestoBody:
-        '硅基是速度，余烬是判断。不反技术，反对停止思考。',
+      manifestoBody: '硅基是速度，余烬是判断。不反技术，反对停止思考。',
       creed: [
-        ['不迷信技术', '工具越强，越需要判断力、边界感和复核机制。'],
-        ['不美化效率', '效率如果只让强者更强，就不该被轻易称为进步。'],
-        ['不把人写成背景', '技术叙事里最该被看见的，是被系统重新安排的人。'],
-      ],
-      territoriesTitle: '主站的四条内容线',
-      territoriesIntro: '批判·方法·底盘·课程。',
-      territories: [
-        {
-          index: 'A',
-          title: '技术与文明批判',
-          body: '写 AI、教育、劳动和平台系统：技术改变谁，遗漏谁，重新分配什么。',
-          tags: ['AI 时代', '教育滞后', '普通人处境'],
-        },
-        {
-          index: 'B',
-          title: 'AI 工作流与认知工具',
-          body: '从会点按钮，推进到会定义问题、组织上下文、设计验收。',
-          tags: ['Prompt', 'Context', 'Harness', 'Loop'],
-        },
-        {
-          index: 'C',
-          title: '化工、建模与科研表达',
-          body: '保留化工、有机、建模、写作和数据表达的专业底色。',
-          tags: ['化工', '建模', '科研训练'],
-        },
-        {
-          index: 'D',
-          title: '课程与教学产品',
-          body: '把工具链和 AI 方法整理成非计算机背景也能进入的课程。',
-          tags: ['教师培训', '课程设计', '工作流包'],
-        },
+        ['不迷信技术', '工具越强，越需要判断力。'],
+        ['不美化效率', '效率必须经得起人的追问。'],
+        ['不把人写成背景', '技术叙事的主角仍然是人。'],
       ],
       coursesKicker: 'course section',
-      coursesTitle: '课程是主站的一条内容线。',
-      coursesIntro:
-        '面向化工教师的零基础 AI 课程。',
+      coursesTitle: '把 AI 方法做成可进入的课程。',
+      coursesIntro: '面向非计算机背景，少讲玄学，多做工作流。',
       courseName: 'AI 编程与科研效率基础课',
-      courseBody:
-        '8 小时，可扩至 12 小时。交付一套个人 AI 工作流。',
+      courseBody: '8 小时起步。目标不是学会所有工具，而是搭出自己的可复用流程。',
       courseFacts: [
-        ['受众', '化学、化工及相关学科教师'],
-        ['系统', 'Windows 优先，兼顾 macOS'],
-        ['工具', 'WorkBuddy、Claude Code、Codex、DeepSeek、GitHub'],
-        ['交付', '工作流图、工具选择表、Prompt 模板、验收清单'],
+        ['对象', '教师与研究者'],
+        ['方式', '工具链实操'],
+        ['交付', '模板、清单、工作流'],
       ],
       courseLinks: [
         ['全部课程', `${localizedRoot}/silicon-ashes/courses/`],
@@ -111,8 +73,8 @@ const t = isZh
         ['PDF 讲义', `${courseBase}course-handout.pdf`],
       ],
       profileKicker: 'profile',
-      profileTitle: '个人资料',
-      profileIntro: '履历、项目、材料。',
+      profileTitle: '入口',
+      profileIntro: '需要简历、材料或证明，从这里走。',
       profileLinks: [
         ['个人简历首页', homeHref],
         ['通用一页版', `${localizedRoot}/resume-onepage`],
@@ -130,79 +92,34 @@ const t = isZh
       switchHref: '/silicon-ashes/',
       switchLabel: '中文',
       nav: [
-        ['Manifesto', '#manifesto'],
         ['Writing', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
-        ['Course', '#courses'],
+        ['Course', isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'],
         ['Resources', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
         ['About', isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'],
       ],
-      eyebrow: 'Silicon Ashes',
-      title: 'Keep human judgment after technology starts running.',
-      lead: 'Less futurism, more human consequence.',
-      primary: 'Enter course section',
-      secondary: 'View resume',
-      signals: [
-        ['01', 'Technology criticism', 'AI, education, and human stakes.'],
-        ['02', 'AI workflows', 'Prompt, context, harness, loop.'],
-        ['03', 'Chemistry and modeling', 'Linking chemistry, modeling, and research expression.'],
-        ['04', 'Course products', 'Tools to courses.'],
-      ],
+      eyebrow: 'personal brand',
+      title: 'Silicon Ashes',
+      lead: 'Keep human judgment after technology starts running.',
+      primary: 'Read latest writing',
+      secondary: 'Courses and resources',
+      heroNotes: ['Technology criticism', 'AI workflows', 'Research expression'],
       manifestoKicker: 'brand thesis',
       manifestoTitle: 'After silicon, there are still ashes.',
-      manifestoBody:
-        'Silicon is speed. Ashes are judgment. Not anti-technology, anti-surrender.',
+      manifestoBody: 'Silicon is speed. Ashes are judgment. Not anti-technology, anti-surrender.',
       creed: [
-        ['Do not worship technology', 'Stronger tools demand stronger judgment, boundaries, and verification.'],
-        [
-          'Do not romanticize efficiency',
-          'Efficiency that only makes the strong stronger is not enough to call progress.',
-        ],
-        [
-          'Do not turn people into background',
-          'The people rearranged by systems are the real subject of technical stories.',
-        ],
-      ],
-      territoriesTitle: 'Four lines of the main site',
-      territoriesIntro:
-        'Criticism · method · grounding · courses.',
-      territories: [
-        {
-          index: 'A',
-          title: 'Technology and civilization criticism',
-          body: 'Writing about AI, education, labor, and platforms: who technology changes, omits, and redistributes.',
-          tags: ['AI age', 'Education lag', 'Ordinary people'],
-        },
-        {
-          index: 'B',
-          title: 'AI workflows and cognitive tools',
-          body: 'From operating to designing.',
-          tags: ['Prompt', 'Context', 'Harness', 'Loop'],
-        },
-        {
-          index: 'C',
-          title: 'Chemistry, modeling, and research expression',
-          body: 'Chemistry, modeling, expression.',
-          tags: ['Chemistry', 'Modeling', 'Research practice'],
-        },
-        {
-          index: 'D',
-          title: 'Courses and teaching products',
-          body: 'Turning AI methods and toolchains into courses for non-CS learners.',
-          tags: ['Teacher training', 'Course design', 'Workflow kit'],
-        },
+        ['Do not worship technology', 'Stronger tools demand stronger judgment.'],
+        ['Do not romanticize efficiency', 'Efficiency still needs a human question.'],
+        ['Do not turn people into background', 'People remain the subject of technical stories.'],
       ],
       coursesKicker: 'course section',
-      coursesTitle: 'The course is a content line.',
-      coursesIntro:
-        'A zero-basis AI course for chemistry teachers.',
+      coursesTitle: 'AI methods, shaped as teachable workflows.',
+      coursesIntro: 'For non-CS learners: fewer myths, more working systems.',
       courseName: 'AI Programming and Research Efficiency Basics',
-      courseBody:
-        '8 hours, expandable to 12. Output: a personal AI workflow.',
+      courseBody: 'Starts at 8 hours. The goal is a reusable personal workflow, not a pile of tools.',
       courseFacts: [
-        ['Audience', 'Chemistry, chemical engineering, and related-field teachers'],
-        ['Systems', 'Windows first, macOS compatible'],
-        ['Tools', 'WorkBuddy, Claude Code, Codex, DeepSeek, GitHub'],
-        ['Output', 'Workflow map, tool table, prompt templates, review checklist'],
+        ['Audience', 'Teachers and researchers'],
+        ['Mode', 'Hands-on toolchain'],
+        ['Output', 'Templates, checklists, workflow'],
       ],
       courseLinks: [
         ['All courses', `${localizedRoot}/silicon-ashes/courses/`],
@@ -213,8 +130,8 @@ const t = isZh
         ['PDF handout', `${courseBase}course-handout.pdf`],
       ],
       profileKicker: 'profile',
-      profileTitle: 'Personal profile',
-      profileIntro: 'Resume, projects, materials.',
+      profileTitle: 'Entry points',
+      profileIntro: 'Resume, materials, and proof pages.',
       profileLinks: [
         ['Resume home', homeHref],
         ['One-page resume', `${localizedRoot}/resume-onepage`],
@@ -253,27 +170,14 @@ const t = isZh
         <h1 id="sa-title">{t.title}</h1>
         <p class="lead">{t.lead}</p>
         <div class="actions" aria-label={isZh ? '主要入口' : 'Primary links'}>
-          <a class="sa-button primary" href={isZh ? "/silicon-ashes/courses/" : "/en/silicon-ashes/courses/"}>{t.primary}</a>
-          <a class="sa-button quiet" href={homeHref}>{t.secondary}</a>
+          <a class="sa-button primary" href={isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'}>{t.primary}</a>
+          <a class="sa-button quiet" href={isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'}>{t.secondary}</a>
         </div>
       </div>
-      <aside class="hero-index" aria-label={isZh ? '品牌内容索引' : 'Brand content index'}>
-        <div class="type-lockup" aria-hidden="true">
-          <span>{t.brand}</span>
-          <span>Silicon Ashes</span>
-        </div>
-        <div class="signal-list">
-          {
-            t.signals.map(([number, title, body]) => (
-              <article>
-                <span>{number}</span>
-                <div>
-                  <h2>{title}</h2>
-                  <p>{body}</p>
-                </div>
-              </article>
-            ))
-          }
+      <aside class="hero-aside" aria-label={isZh ? '品牌关键词' : 'Brand keywords'}>
+        <p>{isZh ? '少一点未来感，多一点人的处境。' : 'Less futurism. More human consequence.'}</p>
+        <div>
+          {t.heroNotes.map((item) => <span>{item}</span>)}
         </div>
       </aside>
     </section>
@@ -298,33 +202,6 @@ const t = isZh
       </div>
     </section>
 
-    <section id="territories" class="territories" aria-labelledby="territories-title">
-      <div class="section-copy wide">
-        <p class="kicker">territories</p>
-        <h2 id="territories-title">{t.territoriesTitle}</h2>
-        <p>{t.territoriesIntro}</p>
-      </div>
-      <div class="territory-ledger">
-        {
-          t.territories.map((item) => (
-            <article>
-              <span class="territory-index">{item.index}</span>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </div>
-              <ul>
-                {item.tags.map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    
     {latestPosts.length > 0 && (
       <section class="writing-preview" aria-labelledby="writing-title">
         <div class="section-copy wide">
@@ -815,8 +692,7 @@ const t = isZh
     padding: 58px 0 78px;
   }
 
-  .hero-copy,
-  .hero-index {
+  .hero-copy {
     position: relative;
     z-index: 2;
   }
@@ -974,55 +850,6 @@ const t = isZh
     outline-offset: 3px;
   }
 
-  .hero-index {
-    border-left: 1px solid rgba(218, 166, 86, 0.26);
-    padding-left: 28px;
-  }
-
-  .type-lockup {
-    display: grid;
-    gap: 8px;
-    margin-bottom: 36px;
-  }
-
-  .type-lockup span:first-child {
-    color: #f2dfbd;
-    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: 58px;
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  .type-lockup span:last-child {
-    color: rgba(168, 177, 176, 0.68);
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 14px;
-  }
-
-  .signal-list {
-    display: grid;
-    gap: 0;
-    border-top: 1px solid rgba(218, 166, 86, 0.18);
-  }
-
-  .signal-list article {
-    display: grid;
-    grid-template-columns: 46px 1fr;
-    gap: 16px;
-    border-bottom: 1px solid rgba(218, 166, 86, 0.18);
-    padding: 18px 0;
-  }
-
-  .signal-list article > span,
-  .territory-index {
-    color: #a8b1b0;
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 14px;
-    font-weight: 800;
-  }
-
-  .signal-list h2,
-  .territory-ledger h3,
   .creed-list h3,
   .course-panel h3 {
     margin: 0;
@@ -1031,10 +858,8 @@ const t = isZh
     line-height: 1.24;
   }
 
-  .signal-list p,
   .manifesto-body p,
   .section-copy p,
-  .territory-ledger p,
   .course-main p,
   .course-facts dd,
   .creed-list p,
@@ -1043,13 +868,7 @@ const t = isZh
     line-height: 1.78;
   }
 
-  .signal-list p {
-    margin: 7px 0 0;
-    font-size: 14px;
-  }
-
   .manifesto,
-  .territories,
   .courses,
   .profile {
     border-top: 1px solid rgba(218, 166, 86, 0.18);
@@ -1098,45 +917,6 @@ const t = isZh
 
   .creed-list p {
     margin: 8px 0 0;
-  }
-
-  .territory-ledger {
-    display: grid;
-    margin-top: 42px;
-    border-top: 1px solid rgba(218, 166, 86, 0.2);
-  }
-
-  .territory-ledger article {
-    display: grid;
-    grid-template-columns: 72px minmax(0, 1fr) minmax(220px, 0.32fr);
-    gap: 32px;
-    align-items: start;
-    border-bottom: 1px solid rgba(218, 166, 86, 0.2);
-    padding: 30px 0;
-  }
-
-  .territory-ledger p {
-    max-width: 720px;
-    margin: 12px 0 0;
-    font-size: 16px;
-  }
-
-  .territory-ledger ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .territory-ledger li {
-    border: 1px solid rgba(168, 177, 176, 0.24);
-    border-radius: 4px;
-    padding: 6px 9px;
-    color: rgba(220, 228, 224, 0.72);
-    font-size: 13px;
   }
 
   .course-panel {
@@ -1270,22 +1050,6 @@ const t = isZh
       opacity: 0.48;
     }
 
-    .hero-index {
-      border-left: 0;
-      border-top: 1px solid rgba(218, 166, 86, 0.22);
-      padding-top: 30px;
-      padding-left: 0;
-    }
-
-    .territory-ledger article {
-      grid-template-columns: 56px 1fr;
-    }
-
-    .territory-ledger ul {
-      grid-column: 2;
-      justify-content: flex-start;
-    }
-
     .sa-footer div {
       justify-content: flex-start;
     }
@@ -1337,14 +1101,9 @@ const t = isZh
     }
 
     .manifesto,
-    .territories,
     .courses,
     .profile {
       padding: 60px 0;
-    }
-
-    .type-lockup span:first-child {
-      font-size: 42px;
     }
 
     .actions,
@@ -1354,15 +1113,9 @@ const t = isZh
       grid-template-columns: 1fr;
     }
 
-    .signal-list article,
-    .territory-ledger article,
     .course-facts div {
       grid-template-columns: 1fr;
       gap: 10px;
-    }
-
-    .territory-ledger ul {
-      grid-column: auto;
     }
 
     .course-panel {
@@ -1465,4 +1218,407 @@ const t = isZh
     color: #ffe4aa;
   }
 
+  /* homepage redesign override */
+  .sa-shell {
+    background:
+      radial-gradient(circle at 78% 30%, rgba(207, 91, 34, 0.24), transparent 34rem),
+      radial-gradient(circle at 16% 78%, rgba(94, 129, 124, 0.16), transparent 28rem),
+      linear-gradient(180deg, #090807 0%, #11100d 48%, #090908 100%);
+  }
+
+  .sa-shell::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.28;
+    background-image:
+      linear-gradient(rgba(242, 223, 189, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242, 223, 189, 0.045) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: radial-gradient(circle at 50% 20%, #000 0 34%, transparent 72%);
+  }
+
+  .sa-nav,
+  main,
+  .sa-footer {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 56px, 1320px);
+  }
+
+  .sa-nav {
+    min-height: 82px;
+    border-bottom-color: rgba(242, 223, 189, 0.14);
+    background: rgba(9, 8, 7, 0.68);
+  }
+
+  .brand-mark {
+    border-color: rgba(220, 154, 80, 0.52);
+    background: rgba(246, 204, 128, 0.08);
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
+  .sa-nav nav {
+    gap: 4px;
+  }
+
+  .sa-nav nav a {
+    color: rgba(233, 224, 208, 0.66);
+    font-weight: 760;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 0.96fr) minmax(230px, 0.3fr);
+    gap: clamp(32px, 5vw, 76px);
+    min-height: min(840px, calc(100dvh - 82px));
+    padding: clamp(68px, 10vh, 112px) 0 clamp(78px, 12vh, 126px);
+  }
+
+  .flame-field {
+    right: max(-18vw, -260px);
+    bottom: -18px;
+    width: min(64vw, 860px);
+    height: min(80vh, 780px);
+    opacity: 0.72;
+    filter: saturate(0.96) contrast(1.04);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 82%, transparent 100%);
+  }
+
+  .eyebrow,
+  .kicker,
+  .course-label {
+    color: #7da8a3;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 920px;
+    margin-top: 18px;
+    font-size: clamp(5.4rem, 15vw, 13rem);
+    line-height: 0.9;
+  }
+
+  .lead {
+    max-width: 560px;
+    margin-top: 30px;
+    color: rgba(239, 230, 213, 0.78);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.35rem, 2.2vw, 2rem);
+    line-height: 1.6;
+  }
+
+  .actions {
+    gap: 10px;
+    margin-top: 34px;
+  }
+
+  .sa-button,
+  .course-actions a,
+  .profile-links a {
+    border-radius: 2px;
+    min-height: 44px;
+    border-color: rgba(242, 223, 189, 0.22);
+    background: rgba(242, 223, 189, 0.035);
+    color: #f0dfbf;
+  }
+
+  .sa-button.primary {
+    border-color: #f0c978;
+    background: #f0c978;
+    color: #15100a;
+  }
+
+  .sa-button:hover,
+  .course-actions a:hover,
+  .profile-links a:hover {
+    transform: translateY(-2px);
+    border-color: rgba(125, 168, 163, 0.72);
+    background: rgba(125, 168, 163, 0.1);
+  }
+
+  .hero-aside {
+    position: relative;
+    z-index: 2;
+    align-self: end;
+    padding: 0 0 10px 22px;
+    border-left: 1px solid rgba(125, 168, 163, 0.36);
+  }
+
+  .hero-aside p {
+    max-width: 280px;
+    margin: 0;
+    color: rgba(233, 224, 208, 0.76);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 22px;
+    line-height: 1.46;
+  }
+
+  .hero-aside div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .hero-aside span {
+    border: 1px solid rgba(242, 223, 189, 0.16);
+    border-radius: 2px;
+    padding: 6px 9px;
+    color: rgba(230, 238, 232, 0.68);
+    font-size: 12px;
+  }
+
+  .manifesto,
+  .writing-preview,
+  .courses,
+  .profile {
+    border-top-color: rgba(242, 223, 189, 0.12);
+    padding: clamp(72px, 10vw, 116px) 0;
+  }
+
+  .manifesto {
+    grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.74fr);
+  }
+
+  .section-copy h2 {
+    max-width: 780px;
+    font-size: clamp(2.5rem, 6vw, 5.6rem);
+    line-height: 0.98;
+  }
+
+  .section-copy > p:not(.kicker) {
+    color: rgba(233, 224, 208, 0.62);
+  }
+
+  .manifesto-body > p {
+    max-width: 620px;
+    color: rgba(242, 223, 189, 0.84);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.35rem, 2.5vw, 2.3rem);
+    line-height: 1.42;
+  }
+
+  .creed-list {
+    border: 0;
+    background: transparent;
+    gap: 0;
+    margin-top: 40px;
+  }
+
+  .creed-list article {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.34fr) 1fr;
+    gap: 26px;
+    border-top: 1px solid rgba(242, 223, 189, 0.12);
+    padding: 18px 0;
+    background: transparent;
+  }
+
+  .creed-list h3 {
+    color: #f2dfbd;
+    font-size: 18px;
+  }
+
+  .creed-list p {
+    margin: 0;
+    color: rgba(233, 224, 208, 0.62);
+  }
+
+  .writing-list {
+    margin-top: 34px;
+  }
+
+  .writing-card {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.22fr) minmax(0, 1fr);
+    gap: 28px;
+    padding: 26px 0;
+    border-bottom-color: rgba(242, 223, 189, 0.1);
+  }
+
+  .writing-card:hover {
+    background: linear-gradient(90deg, rgba(125, 168, 163, 0.055), transparent);
+  }
+
+  .writing-meta {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    margin: 0;
+  }
+
+  .writing-card h3 {
+    font-size: clamp(1.35rem, 2.6vw, 2.25rem);
+  }
+
+  .writing-card p {
+    max-width: 760px;
+    color: rgba(233, 224, 208, 0.58);
+  }
+
+  .course-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr);
+    border: 0;
+    border-top: 1px solid rgba(242, 223, 189, 0.14);
+    border-radius: 0;
+    padding: 34px 0 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .course-panel h3 {
+    max-width: 760px;
+    font-size: clamp(2rem, 4.6vw, 4.2rem);
+    line-height: 1;
+  }
+
+  .course-main > p:not(.course-label) {
+    max-width: 680px;
+  }
+
+  .course-facts {
+    border-top-color: rgba(125, 168, 163, 0.24);
+  }
+
+  .course-facts div {
+    grid-template-columns: 74px 1fr;
+    border-bottom-color: rgba(125, 168, 163, 0.2);
+  }
+
+  .course-facts dt {
+    color: #7da8a3;
+  }
+
+  .profile-links {
+    max-width: 920px;
+  }
+
+  .sa-footer {
+    border-top-color: rgba(242, 223, 189, 0.12);
+  }
+
+  @media (max-width: 1040px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-aside {
+      max-width: 640px;
+      align-self: start;
+    }
+
+    .flame-field {
+      right: -28vw;
+      width: 96vw;
+      opacity: 0.38;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .sa-nav,
+    main,
+    .sa-footer {
+      width: min(100% - 28px, 1320px);
+    }
+
+    .hero {
+      padding: 58px 0 64px;
+    }
+
+    h1 {
+      font-size: clamp(4.35rem, 23vw, 7.2rem);
+    }
+
+    .lead {
+      font-size: 1.25rem;
+    }
+
+    .hero-aside {
+      padding-left: 16px;
+    }
+
+    .hero-aside p {
+      font-size: 19px;
+    }
+
+    .manifesto {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+
+    .creed-list article,
+    .writing-card,
+    .course-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .actions,
+    .course-actions,
+    .profile-links {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .actions,
+    .course-actions,
+    .profile-links {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* final visual pass */
+  .hero {
+    overflow: hidden;
+    border-bottom: 1px solid rgba(242, 223, 189, 0.12);
+    min-height: min(720px, calc(100dvh - 82px));
+    padding: clamp(48px, 8vh, 82px) 0 clamp(58px, 10vh, 98px);
+    background:
+      linear-gradient(90deg, rgba(9, 8, 7, 0.98) 0%, rgba(9, 8, 7, 0.9) 48%, rgba(9, 8, 7, 0.52) 100%),
+      radial-gradient(circle at 85% 78%, rgba(223, 105, 39, 0.18), transparent 28rem);
+  }
+
+  .flame-field {
+    right: max(-9vw, -132px);
+    bottom: -28px;
+    width: min(48vw, 640px);
+    height: min(70vh, 640px);
+    mix-blend-mode: normal;
+    opacity: 0.86;
+    mask-image: radial-gradient(ellipse at 58% 64%, #000 0 52%, transparent 78%);
+  }
+
+  h1 {
+    max-width: none;
+    font-size: clamp(4.8rem, 10.5vw, 9.6rem);
+    white-space: nowrap;
+  }
+
+  .hero-aside {
+    margin-bottom: clamp(22px, 6vh, 72px);
+  }
+
+  @media (max-width: 720px) {
+    .hero {
+      background: linear-gradient(180deg, rgba(9, 8, 7, 0.96), rgba(9, 8, 7, 0.74));
+    }
+
+    .flame-field {
+      right: -44vw;
+      width: 112vw;
+      opacity: 0.34;
+    }
+
+    h1 {
+      white-space: normal;
+    }
+  }
 </style>
