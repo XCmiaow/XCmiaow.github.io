@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'zh' && !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
@@ -11,9 +11,19 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const isZh = post.data.lang === 'zh';
-const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
-const writingHref = isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/';
+const homeHref = '/silicon-ashes/';
+const writingHref = '/silicon-ashes/writing/';
+const articleBase = '/silicon-ashes/writing/';
+const allPosts = (await getCollection('blog', ({ data }) => data.lang === 'zh' && !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const currentIndex = allPosts.findIndex((item) => item.id === post.id);
+const newerPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+const olderPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+const relatedPosts = post.data.series
+  ? allPosts.filter((item) => item.id !== post.id && item.data.series === post.data.series).slice(0, 3)
+  : [];
+const articleHref = (item: (typeof allPosts)[number]) => `${articleBase}${item.id}/`;
 
 const formatDate = (date: Date) => {
   const y = date.getFullYear();
@@ -23,45 +33,93 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<div class="ad-shell">
-  <header class="ad-nav">
-    <a class="ad-brand" href={homeHref}>
-      <span class="brand-mark">SA</span>
-      <span class="brand-name">{isZh ? '硅基余烬' : 'Silicon Ashes'}</span>
-    </a>
-    <nav>
-      <a href={writingHref}>{isZh ? '写作' : 'Writing'}</a>
-      <a href={isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'}>{isZh ? '课程' : 'Courses'}</a>
-      <a href={isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'}>{isZh ? '资源' : 'Resources'}</a>
-      <a href={isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'}>{isZh ? '关于' : 'About'}</a>
-    </nav>
-  </header>
-
-  <main id="main" class="article-main">
-    <article>
-      <header class="article-header">
-        {post.data.series && <p class="series-label">{post.data.series}</p>}
-        <h1>{post.data.title}</h1>
-        <div class="article-meta">
-          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-          {post.data.readingTime && <span>{post.data.readingTime} min read</span>}
-        </div>
-        {post.data.tags && (
-          <ul class="tag-list">
-            {post.data.tags.map((tag: string) => <li>{tag}</li>)}
-          </ul>
-        )}
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{post.data.title} | 硅基余烬</title>
+    {post.data.description && <meta name="description" content={post.data.description} />}
+    <meta name="theme-color" content="#050504" />
+    <link rel="stylesheet" href="/styles/site.css" />
+    <meta property="og:title" content={`${post.data.title} | 硅基余烬`} />
+    {post.data.description && <meta property="og:description" content={post.data.description} />}
+    <meta property="og:type" content="article" />
+  </head>
+  <body>
+    <div class="ad-shell">
+      <header class="ad-nav">
+        <a class="ad-brand" href={homeHref}>
+          <span class="brand-mark">SA</span>
+          <span class="brand-name">硅基余烬</span>
+        </a>
+        <nav>
+          <a href={writingHref}>写作</a>
+          <a href="/silicon-ashes/courses/">课程</a>
+          <a href="/silicon-ashes/resources/">资源</a>
+          <a href="/silicon-ashes/about/">关于</a>
+        </nav>
       </header>
-      <div class="prose">
-        <Content />
-      </div>
-    </article>
-  </main>
 
-  <footer class="ad-footer">
-    <a href={writingHref}>{isZh ? '← 返回写作中心' : '← Back to writing'}</a>
-  </footer>
-</div>
+      <main id="main" class="article-main">
+        <article>
+          <header class="article-header">
+            {post.data.series && <p class="series-label">{post.data.series}</p>}
+            <h1>{post.data.title}</h1>
+            <div class="article-meta">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+              {post.data.readingTime && <span>{post.data.readingTime} 分钟阅读</span>}
+            </div>
+            {post.data.tags && (
+              <ul class="tag-list">
+                {post.data.tags.map((tag: string) => <li>{tag}</li>)}
+              </ul>
+            )}
+          </header>
+          <div class="prose">
+            <Content />
+          </div>
+        </article>
+
+        {(newerPost || olderPost || relatedPosts.length > 0) && (
+          <nav class="article-nav" aria-label="文章导航">
+            <div class="next-prev">
+              {newerPost && (
+                <a href={articleHref(newerPost)}>
+                  <span>上一篇</span>
+                  <strong>{newerPost.data.title}</strong>
+                </a>
+              )}
+              {olderPost && (
+                <a href={articleHref(olderPost)}>
+                  <span>下一篇</span>
+                  <strong>{olderPost.data.title}</strong>
+                </a>
+              )}
+            </div>
+            {relatedPosts.length > 0 && (
+              <section class="related" aria-labelledby="related-title">
+                <h2 id="related-title">同系列继续读</h2>
+                <div>
+                  {relatedPosts.map((item) => (
+                    <a href={articleHref(item)}>
+                      <time datetime={item.data.date.toISOString()}>{formatDate(item.data.date)}</time>
+                      <span>{item.data.title}</span>
+                    </a>
+                  ))}
+                </div>
+              </section>
+            )}
+          </nav>
+        )}
+      </main>
+
+      <footer class="ad-footer">
+        <a href={writingHref}>← 返回写作中心</a>
+      </footer>
+    </div>
+  </body>
+</html>
 
 <style>
   :global(html) { scroll-behavior: smooth; background: #080705; }
@@ -118,10 +176,23 @@ const formatDate = (date: Date) => {
   .ad-footer { padding: 24px 0 40px; border-top: 1px solid rgba(218,166,86,0.18); }
   .ad-footer a { color: rgba(233,224,208,0.72); font-size: 14px; text-decoration: none; }
   .ad-footer a:hover { color: #f2dfbd; }
+  .article-nav { border-top: 1px solid rgba(218,166,86,0.18); margin-top: 72px; padding-top: 28px; }
+  .next-prev { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .next-prev a, .related a { border: 1px solid rgba(218,166,86,0.18); border-radius: 6px; background: rgba(13,12,10,0.78); text-decoration: none; transition: border-color 160ms ease, background 160ms ease; }
+  .next-prev a { display: grid; min-height: 108px; align-content: start; gap: 8px; padding: 18px; }
+  .next-prev a:hover, .related a:hover { border-color: rgba(241,223,189,0.38); background: rgba(18,16,12,0.96); }
+  .next-prev span, .related time { color: rgba(168,177,176,0.62); font-family: Consolas, monospace; font-size: 12px; font-weight: 800; }
+  .next-prev strong, .related span { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 17px; line-height: 1.35; }
+  .related { margin-top: 28px; }
+  .related h2 { margin: 0 0 14px; color: #d8aa63; font-family: Consolas, monospace; font-size: 13px; font-weight: 900; text-transform: uppercase; }
+  .related div { display: grid; gap: 10px; }
+  .related a { display: grid; min-height: 64px; align-content: center; gap: 4px; padding: 14px 16px; }
 
   @media (max-width: 720px) {
     .ad-nav, .article-main, .ad-footer { width: min(100% - 28px, 780px); }
     .ad-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
+    .ad-nav nav { display: flex; flex-wrap: wrap; }
     .article-main { padding: 48px 0 80px; }
+    .next-prev { grid-template-columns: 1fr; }
   }
 </style>
