@@ -1,5 +1,6 @@
 ---
 import common from '../data/common.json';
+import BurningCircuitVisual from './BurningCircuitVisual.astro';
 
 export interface Props {
   lang: 'zh' | 'en';
@@ -152,9 +153,12 @@ const t = isZh
 
   <main id="main">
     <section class="hero" aria-labelledby="ch-title">
-      <p class="eyebrow">{t.eyebrow}</p>
-      <h1 id="ch-title">{t.title}</h1>
-      <p class="lead">{t.lead}</p>
+      <BurningCircuitVisual variant="course" />
+      <div class="hero-copy">
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1 id="ch-title">{t.title}</h1>
+        <p class="lead">{t.lead}</p>
+      </div>
     </section>
 
     <section class="series" aria-labelledby="series-title">
@@ -341,7 +345,20 @@ const t = isZh
 
   /* ── hero ── */
   .hero {
-    padding: 100px 0 60px;
+    position: relative;
+    overflow: hidden;
+    max-width: none;
+    min-height: min(560px, calc(100dvh - 76px));
+    border-bottom: 1px solid rgba(218, 166, 86, 0.14);
+    padding: 100px 0 72px;
+    background:
+      linear-gradient(90deg, rgba(8, 7, 5, 0.96) 0%, rgba(8, 7, 5, 0.78) 54%, rgba(8, 7, 5, 0.36) 100%),
+      radial-gradient(circle at 84% 48%, rgba(226, 92, 24, 0.18), transparent 30rem);
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
     max-width: 880px;
   }
 
@@ -630,7 +647,11 @@ const t = isZh
     }
 
     .hero {
-      padding: 58px 0 42px;
+      min-height: auto;
+      padding: 58px 0 52px;
+      background:
+        linear-gradient(180deg, rgba(8, 7, 5, 0.96), rgba(8, 7, 5, 0.68)),
+        radial-gradient(circle at 86% 45%, rgba(226, 92, 24, 0.12), transparent 22rem);
     }
 
     h1 {

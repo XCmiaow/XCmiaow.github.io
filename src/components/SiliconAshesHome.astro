@@ -1,6 +1,7 @@
 ---
 import common from '../data/common.json';
 import { getCollection } from 'astro:content';
+import BurningCircuitVisual from './BurningCircuitVisual.astro';
 
 export interface Props {
   lang: 'zh' | 'en';
@@ -161,10 +162,7 @@ const t = isZh
 
   <main id="main">
     <section class="hero" aria-labelledby="sa-title">
-      <div class="flame-field" aria-hidden="true">
-        <canvas class="flame-canvas" data-flame-canvas></canvas>
-        <div class="flame-body"></div>
-      </div>
+      <BurningCircuitVisual variant="hero" />
       <div class="hero-copy">
         <p class="eyebrow">{t.eyebrow}</p>
         <h1 id="sa-title">{t.title}</h1>
@@ -174,12 +172,6 @@ const t = isZh
           <a class="sa-button quiet" href={isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'}>{t.secondary}</a>
         </div>
       </div>
-      <aside class="hero-aside" aria-label={isZh ? '品牌关键词' : 'Brand keywords'}>
-        <p>{isZh ? '少一点未来感，多一点人的处境。' : 'Less futurism. More human consequence.'}</p>
-        <div>
-          {t.heroNotes.map((item) => <span>{item}</span>)}
-        </div>
-      </aside>
     </section>
 
     <section id="manifesto" class="manifesto">
