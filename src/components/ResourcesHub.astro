@@ -1,5 +1,6 @@
 ---
 import common from '../data/common.json';
+import { resourceTemplates } from '../data/siliconAshesResources';
 
 export interface Props {
   lang: 'zh' | 'en';
@@ -14,6 +15,13 @@ const aboutHref = isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/';
 const email = common.person.email;
 
 const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
+const templateBase = isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/';
+const templateCards = resourceTemplates.map((template) => ({
+  title: template[lang].title,
+  body: template[lang].summary,
+  meta: template[lang].meta,
+  href: `${templateBase}${template.slug}/`,
+}));
 
 const t = isZh
   ? {
@@ -49,6 +57,8 @@ const t = isZh
           href: `${courseBase}reference.html`,
         },
       ],
+      templatesTitle: '模板速取',
+      templatesLead: '把常用流程先做成模板，下一次就不用从空白页开始。',
       groupsTitle: '资源分层',
       groups: [
         {
@@ -117,6 +127,8 @@ const t = isZh
           href: `${courseBase}reference.html`,
         },
       ],
+      templatesTitle: 'Templates',
+      templatesLead: 'Reusable workflow templates so the next task does not start from a blank page.',
       groupsTitle: 'Resource layers',
       groups: [
         {
@@ -182,6 +194,25 @@ const t = isZh
       <div class="featured-grid">
         {t.featured.map((item) => (
           <a class="featured-card" href={item.href}>
+            <div class="resource-meta">
+              {item.meta.map((meta) => <span>{meta}</span>)}
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="templates" aria-labelledby="templates-title">
+      <div class="section-head wide">
+        <p class="kicker">templates</p>
+        <h2 id="templates-title">{t.templatesTitle}</h2>
+        <p>{t.templatesLead}</p>
+      </div>
+      <div class="template-grid">
+        {templateCards.map((item) => (
+          <a class="template-card" href={item.href}>
             <div class="resource-meta">
               {item.meta.map((meta) => <span>{meta}</span>)}
             </div>
@@ -422,6 +453,7 @@ const t = isZh
   }
 
   .featured,
+  .templates,
   .groups,
   .route {
     border-top: 1px solid rgba(218, 166, 86, 0.18);
@@ -437,11 +469,58 @@ const t = isZh
     max-width: 860px;
   }
 
+  .section-head p {
+    max-width: 700px;
+    margin: 16px 0 0;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 16px;
+    line-height: 1.74;
+  }
+
   .featured-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
     margin-top: 36px;
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .template-card {
+    min-height: 240px;
+    border: 1px solid rgba(218, 166, 86, 0.18);
+    border-radius: 8px;
+    padding: 22px;
+    background: rgba(13, 12, 10, 0.76);
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .template-card:hover,
+  .template-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(241, 223, 189, 0.38);
+    background: rgba(18, 16, 12, 0.94);
+    outline: none;
+  }
+
+  .template-card h3 {
+    font-size: 21px;
+  }
+
+  .template-card p {
+    margin: 14px 0 0;
+    color: rgba(233, 224, 208, 0.68);
+    font-size: 15px;
+    line-height: 1.72;
   }
 
   .featured-card {
@@ -615,6 +694,7 @@ const t = isZh
 
   @media (max-width: 960px) {
     .featured-grid,
+    .template-grid,
     .route-list {
       grid-template-columns: 1fr;
     }
@@ -657,6 +737,7 @@ const t = isZh
     }
 
     .featured,
+    .templates,
     .groups,
     .route {
       padding: 54px 0;

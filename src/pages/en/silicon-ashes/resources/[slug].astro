@@ -1,0 +1,32 @@
+---
+import ResourceTemplatePage from '../../../../components/ResourceTemplatePage.astro';
+import { resourceTemplates } from '../../../../data/siliconAshesResources';
+
+export function getStaticPaths() {
+  return resourceTemplates.map((template) => ({
+    params: { slug: template.slug },
+    props: { template },
+  }));
+}
+
+const { template } = Astro.props;
+const data = template.en;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{data.title} | Silicon Ashes Resources</title>
+    <meta name="description" content={data.summary} />
+    <meta name="theme-color" content="#050504" />
+    <link rel="stylesheet" href="/styles/site.css" />
+    <meta property="og:title" content={`${data.title} | Silicon Ashes Resources`} />
+    <meta property="og:description" content={data.summary} />
+    <meta property="og:type" content="article" />
+  </head>
+  <body>
+    <ResourceTemplatePage lang="en" template={template} />
+  </body>
+</html>

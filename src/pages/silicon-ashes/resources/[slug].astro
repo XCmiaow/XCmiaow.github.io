@@ -1,0 +1,32 @@
+---
+import ResourceTemplatePage from '../../../components/ResourceTemplatePage.astro';
+import { resourceTemplates } from '../../../data/siliconAshesResources';
+
+export function getStaticPaths() {
+  return resourceTemplates.map((template) => ({
+    params: { slug: template.slug },
+    props: { template },
+  }));
+}
+
+const { template } = Astro.props;
+const data = template.zh;
+---
+
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{data.title} | 硅基余烬资源</title>
+    <meta name="description" content={data.summary} />
+    <meta name="theme-color" content="#050504" />
+    <link rel="stylesheet" href="/styles/site.css" />
+    <meta property="og:title" content={`${data.title} | 硅基余烬资源`} />
+    <meta property="og:description" content={data.summary} />
+    <meta property="og:type" content="article" />
+  </head>
+  <body>
+    <ResourceTemplatePage lang="zh" template={template} />
+  </body>
+</html>
