@@ -73,6 +73,20 @@ const xmlRoutes = [
   },
 ];
 
+const activeCourseResources = [
+  '/silicon-ashes/courses/ai-research-efficiency/index.html',
+  '/silicon-ashes/courses/ai-research-efficiency/schedule.html',
+  '/silicon-ashes/courses/ai-research-efficiency/foundations.html',
+  '/silicon-ashes/courses/ai-research-efficiency/toolchain.html',
+  '/silicon-ashes/courses/ai-research-efficiency/workflow-lab.html',
+  '/silicon-ashes/courses/ai-research-efficiency/project-lab.html',
+  '/silicon-ashes/courses/ai-research-efficiency/instructor.html',
+  '/silicon-ashes/courses/ai-research-efficiency/code-review.html',
+  '/silicon-ashes/courses/ai-research-efficiency/reference.html',
+  '/silicon-ashes/courses/ai-research-efficiency/handout.html',
+  '/silicon-ashes/courses/ai-research-efficiency/course-handout.pdf',
+];
+
 const responsiveViewports = [
   { name: 'desktop', width: 1440, height: 1000 },
   { name: 'iphone-se', width: 320, height: 568 },
@@ -619,15 +633,35 @@ async function runBrowserChecks() {
 
   await page.goto(`${base}/silicon-ashes/courses`, { waitUntil: 'load' });
   const courseCta = page.locator('.series-card.status-active .card-cta').first();
-  const expectedCourseHref = '/silicon-ashes/courses/ai-research-efficiency/index.html';
+  const expectedCourseHref = activeCourseResources[0];
   const courseHref = await courseCta.getAttribute('href');
   if (courseHref !== expectedCourseHref) {
     failures.push(`Active course CTA points to ${courseHref}; expected ${expectedCourseHref}`);
+  }
+  const gatewayHrefs = await page
+    .locator('.course-gateway .gateway-link')
+    .evaluateAll((links) => links.map((link) => new URL(link.getAttribute('href'), window.location.href).pathname));
+  const gatewayLinkCount = await page.locator('.course-gateway .gateway-link').count();
+  if (gatewayLinkCount < activeCourseResources.length) {
+    failures.push(`Course gateway exposes ${gatewayLinkCount} links; expected at least ${activeCourseResources.length}`);
+  }
+  for (const resourceRoute of activeCourseResources) {
+    if (!gatewayHrefs.includes(resourceRoute)) {
+      failures.push(`Course gateway is missing resource link: ${resourceRoute}`);
+    }
+    const response = await page.request.get(`${base}${resourceRoute}`, { failOnStatusCode: false, timeout: 8000 });
+    if (response.status() >= 400) {
+      failures.push(`Active course resource ${resourceRoute} returned HTTP ${response.status()}`);
+    }
   }
   await courseCta.click();
   await page
     .waitForURL(`${base}${expectedCourseHref}`, { timeout: 5000 })
     .catch(() => failures.push(`Active course CTA did not navigate to ${expectedCourseHref}`));
+  const parentCourseHref = await page.locator('a.parent-link').first().getAttribute('href');
+  if (parentCourseHref !== '../') {
+    failures.push(`Active course detail parent link points to ${parentCourseHref}; expected ../`);
+  }
   const courseDetailH1 = await page
     .locator('h1')
     .first()

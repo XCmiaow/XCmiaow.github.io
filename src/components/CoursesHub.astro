@@ -12,6 +12,7 @@ const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
 const email = common.person.email;
 const github = common.person.github;
 const githubUrl = `https://${github}`;
+const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
 
 const t = isZh
   ? {
@@ -37,7 +38,7 @@ const t = isZh
           tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
           status: 'active',
           statusLabel: '已开课',
-          href: '/silicon-ashes/courses/ai-research-efficiency/index.html',
+          href: `${courseBase}index.html`,
         },
         {
           index: '02',
@@ -73,6 +74,44 @@ const t = isZh
           href: null,
         },
       ],
+      gateway: {
+        kicker: '已开课课程包',
+        title: 'AI 编程与科研效率基础课',
+        body: '不是一个孤立网页，而是一套可以直接进入、打印、复用和扩展的课程资料包。',
+        stats: [
+          ['标准课', '8 小时'],
+          ['扩展版', '12 小时'],
+          ['主工具', 'WorkBuddy'],
+        ],
+        groups: [
+          {
+            title: '先进入',
+            links: [
+              ['课程总览', `${courseBase}index.html`],
+              ['课程安排', `${courseBase}schedule.html`],
+              ['基础概念', `${courseBase}foundations.html`],
+            ],
+          },
+          {
+            title: '再实操',
+            links: [
+              ['工具实操', `${courseBase}toolchain.html`],
+              ['工作流工坊', `${courseBase}workflow-lab.html`],
+              ['项目实战', `${courseBase}project-lab.html`],
+            ],
+          },
+          {
+            title: '交付与复用',
+            links: [
+              ['讲师手册', `${courseBase}instructor.html`],
+              ['代码审阅', `${courseBase}code-review.html`],
+              ['速查附录', `${courseBase}reference.html`],
+              ['打印讲义', `${courseBase}handout.html`],
+              ['PDF 讲义', `${courseBase}course-handout.pdf`],
+            ],
+          },
+        ],
+      },
       footerNote: '硅基余烬 · 课程体系',
     }
   : {
@@ -98,7 +137,7 @@ const t = isZh
           tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
           status: 'active',
           statusLabel: 'Active',
-          href: '/silicon-ashes/courses/ai-research-efficiency/index.html',
+          href: `${courseBase}index.html`,
         },
         {
           index: '02',
@@ -134,6 +173,44 @@ const t = isZh
           href: null,
         },
       ],
+      gateway: {
+        kicker: 'Active course pack',
+        title: 'AI Programming and Research Efficiency Basics',
+        body: 'A directly usable course package: overview, schedule, toolchain labs, instructor notes, printable handout, and PDF.',
+        stats: [
+          ['Core', '8 hours'],
+          ['Extended', '12 hours'],
+          ['Main tool', 'WorkBuddy'],
+        ],
+        groups: [
+          {
+            title: 'Start',
+            links: [
+              ['Overview', `${courseBase}index.html`],
+              ['Schedule', `${courseBase}schedule.html`],
+              ['Foundations', `${courseBase}foundations.html`],
+            ],
+          },
+          {
+            title: 'Practice',
+            links: [
+              ['Toolchain', `${courseBase}toolchain.html`],
+              ['Workflow lab', `${courseBase}workflow-lab.html`],
+              ['Project lab', `${courseBase}project-lab.html`],
+            ],
+          },
+          {
+            title: 'Reuse',
+            links: [
+              ['Instructor notes', `${courseBase}instructor.html`],
+              ['Code review', `${courseBase}code-review.html`],
+              ['Reference', `${courseBase}reference.html`],
+              ['Printable handout', `${courseBase}handout.html`],
+              ['PDF handout', `${courseBase}course-handout.pdf`],
+            ],
+          },
+        ],
+      },
       footerNote: 'Silicon Ashes · Course system',
     };
 ---
@@ -158,6 +235,34 @@ const t = isZh
         <p class="eyebrow">{t.eyebrow}</p>
         <h1 id="ch-title">{t.title}</h1>
         <p class="lead">{t.lead}</p>
+      </div>
+    </section>
+
+    <section class="course-gateway" aria-labelledby="gateway-title">
+      <div class="gateway-copy">
+        <p class="kicker">{t.gateway.kicker}</p>
+        <h2 id="gateway-title">{t.gateway.title}</h2>
+        <p>{t.gateway.body}</p>
+        <dl class="gateway-stats">
+          {t.gateway.stats.map(([label, value]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div class="gateway-links">
+        {t.gateway.groups.map((group) => (
+          <article>
+            <h3>{group.title}</h3>
+            <div>
+              {group.links.map(([label, href]) => (
+                <a class="gateway-link" href={href}>{label}</a>
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 
@@ -404,10 +509,110 @@ const t = isZh
     text-wrap: pretty;
   }
 
+  /* ── course gateway ── */
+  .course-gateway {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    gap: clamp(34px, 6vw, 72px);
+    border-bottom: 1px solid rgba(218, 166, 86, 0.16);
+    padding: clamp(56px, 7vw, 84px) 0;
+  }
+
+  .gateway-copy h2 {
+    max-width: 620px;
+    margin-top: 14px;
+    font-size: clamp(2rem, 4.5vw, 4.2rem);
+    line-height: 1;
+  }
+
+  .gateway-copy > p:not(.kicker) {
+    max-width: 560px;
+    margin: 22px 0 0;
+    color: rgba(233, 224, 208, 0.66);
+    font-size: 17px;
+    line-height: 1.78;
+  }
+
+  .gateway-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 28px 0 0;
+    border: 1px solid rgba(218, 166, 86, 0.14);
+    background: rgba(218, 166, 86, 0.14);
+  }
+
+  .gateway-stats div {
+    padding: 16px;
+    background: rgba(8, 7, 5, 0.9);
+  }
+
+  .gateway-stats dt {
+    color: rgba(168, 177, 176, 0.72);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .gateway-stats dd {
+    margin: 7px 0 0;
+    color: #f2dfbd;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .gateway-links {
+    display: grid;
+    gap: 16px;
+  }
+
+  .gateway-links article {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.24fr) 1fr;
+    gap: 22px;
+    align-items: start;
+    border-top: 1px solid rgba(218, 166, 86, 0.14);
+    padding-top: 18px;
+  }
+
+  .gateway-links h3 {
+    color: rgba(242, 223, 189, 0.78);
+    font-size: 18px;
+  }
+
+  .gateway-links article > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .gateway-link {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    border: 1px solid rgba(218, 166, 86, 0.18);
+    border-radius: 3px;
+    padding: 0 13px;
+    background: rgba(13, 12, 10, 0.72);
+    color: rgba(233, 224, 208, 0.78);
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  .gateway-link:hover,
+  .gateway-link:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(218, 166, 86, 0.46);
+    background: rgba(218, 166, 86, 0.1);
+    color: #ffe4aa;
+    outline: none;
+  }
+
   /* ── series section ── */
   .series {
     padding: 60px 0 120px;
-    border-top: 1px solid rgba(218, 166, 86, 0.18);
   }
 
   .series-head {
@@ -625,6 +830,10 @@ const t = isZh
     .series-grid {
       grid-template-columns: 1fr;
     }
+
+    .course-gateway {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 720px) {
@@ -660,6 +869,15 @@ const t = isZh
 
     .series {
       padding: 48px 0 80px;
+    }
+
+    .course-gateway {
+      padding: 48px 0;
+    }
+
+    .gateway-stats,
+    .gateway-links article {
+      grid-template-columns: 1fr;
     }
 
     .series-card {
