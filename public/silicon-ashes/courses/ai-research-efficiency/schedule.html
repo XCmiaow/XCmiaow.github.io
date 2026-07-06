@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta name="author" content="AI 教师课程组">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:title" content="AI 编程与科研效率基础课 · 课程安排">
+  <meta property="og:description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23181a1f'/%3E%3Cpath d='M7 22h18M9 10h14M9 16h10' stroke='%23f3efe6' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>AI 编程与科研效率基础课 · 课程安排</title>
+</head>
+<body class="">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="返回课程首页">
+      <span class="brand-mark">AI</span>
+      <span>
+        <strong>AI 编程与科研效率基础课</strong>
+        <em>给计算机零基础教师的 AI 认知、工具实操与 WorkBuddy 科研工作流教程</em>
+      </span>
+    </a>
+    <nav class="top-nav" aria-label="主导航"><a class="nav-link" href="index.html">总览</a><a class="nav-link active" href="schedule.html">课程安排</a><a class="nav-link" href="foundations.html">基础概念</a><a class="nav-link" href="toolchain.html">工具实操</a><a class="nav-link" href="workflow-lab.html">工作流工坊</a><a class="nav-link" href="instructor.html">讲师手册</a><a class="nav-link" href="reference.html">速查附录</a><a class="nav-link" href="handout.html">打印讲义</a></nav>
+    <button class="theme-toggle" type="button" onclick="cycleTheme()" aria-label="切换明暗主题">
+      <i class="fa-solid fa-circle-half-stroke"></i>
+    </button>
+  </header>
+  <main id="main" class="page-shell">
+    
+    <section class="page-hero compact-hero">
+      <span class="kicker">课程安排</span>
+      <h1>标准 8 小时，拆成 2 天半天</h1>
+      <p>Day 1 先建立 AI 认知和指挥方法，Day 2 再做工具实操和 WorkBuddy 科研工作流。这样比把安装、概念和项目硬塞进 6 小时更稳。</p>
+    </section>
+    <section class="lesson-block">
+        <div class="lesson-side">
+          <span>D1 AM</span>
+          <strong>2 小时</strong>
+        </div>
+        <div class="lesson-body">
+          <h2>AI 认知与基础概念</h2>
+          <p>让计算机小白先建立地图，不急着装工具，先知道 AI、API、服务器、中转站和终端这些词到底在说什么。</p>
+          <div class="agenda-grid">
+            <div><strong>AI 发展史</strong><span>专家系统、搜索引擎、深度学习、ChatGPT、Claude、DeepSeek、Agent 工具。</span></div><div><strong>LLM 基础</strong><span>模型、token、上下文窗口、幻觉、推理模型、费用、速率限制。</span></div><div><strong>通俗概念</strong><span>API、API Key、Prompt、Coding Plan、服务器、中转站、CLI/GUI。</span></div><div><strong>AI 工具地图</strong><span>聊天助手、搜索增强、科研阅读、WorkBuddy 类工作台、编程 Agent、自动化工具。</span></div>
+          </div>
+          <div class="two-cols compact">
+            <div><h3>课堂产物</h3><p>一张“AI 工具地图”和一张“我能听懂的术语表”。</p></div>
+            <div><h3>验收方式</h3><p>能用生活化语言解释 API、Prompt、Coding Plan、服务器、中转站、CLI/GUI 和幻觉。</p></div>
+          </div>
+        </div>
+      </section><section class="lesson-block">
+        <div class="lesson-side">
+          <span>D1 PM</span>
+          <strong>2 小时</strong>
+        </div>
+        <div class="lesson-body">
+          <h2>AI 指挥方法</h2>
+          <p>先学会怎么把任务讲清楚，再去使用具体工具；让老师从“问一句”升级到“设计一套可检查的任务”。</p>
+          <div class="agenda-grid">
+            <div><strong>Prompt Engineering</strong><span>目标、材料、限制、输出格式、验收标准。</span></div><div><strong>Context Engineering</strong><span>把资料、文件、示例、错误信息摆上桌，让模型少猜。</span></div><div><strong>Coding Plan / Harness / Loop</strong><span>先计划，再执行；用检查表、权限、日志和人工确认把 AI 放进工作装置。</span></div><div><strong>科研任务拆解</strong><span>文献综述、论文润色、数据分析、课程资料整理、实验方案讨论。</span></div>
+          </div>
+          <div class="two-cols compact">
+            <div><h3>课堂产物</h3><p>三个可复用 prompt 模板、一个 AI 执行任务前检查表、一个科研任务拆解案例。</p></div>
+            <div><h3>验收方式</h3><p>能把一个模糊科研需求改写成带材料、约束和验收标准的任务单。</p></div>
+          </div>
+        </div>
+      </section><section class="lesson-block">
+        <div class="lesson-side">
+          <span>D2 AM</span>
+          <strong>2 小时</strong>
+        </div>
+        <div class="lesson-body">
+          <h2>工具实操：Claude Code / WorkBuddy / Codex / GitHub</h2>
+          <p>让老师知道工具怎么跑、怎么选、怎么避免把电脑搞乱；WorkBuddy 是教师友好的主力入口，Codex 是工程化对照。</p>
+          <div class="agenda-grid">
+            <div><strong>Claude Code + DeepSeek</strong><span>终端里的 Agent，能读文件、改文件、跑命令；只讲必要配置和安全边界。</span></div><div><strong>WorkBuddy</strong><span>教师更友好的主力工具，重点讲 Ask / Plan / Craft 或对应工作模式。</span></div><div><strong>Codex</strong><span>作为 WorkBuddy 的工程化平替，用来对比更接近程序员工具的 Agent 工作方式。</span></div><div><strong>Git / GitHub / Pages / VPN</strong><span>版本检查点、成果展示、网络路径和合规风险，只讲够用部分。</span></div>
+          </div>
+          <div class="two-cols compact">
+            <div><h3>课堂产物</h3><p>完成一次工具可用性检查，并用 WorkBuddy 或 Claude Code 跑一次“先计划、再执行”的真实任务。</p></div>
+            <div><h3>验收方式</h3><p>能说清 WorkBuddy、Claude Code、Codex 的分工，并知道 GitHub Pages 只是可选展示方式。</p></div>
+          </div>
+        </div>
+      </section><section class="lesson-block">
+        <div class="lesson-side">
+          <span>D2 PM</span>
+          <strong>2 小时</strong>
+        </div>
+        <div class="lesson-body">
+          <h2>WorkBuddy 科研效率工作流</h2>
+          <p>把工具变成老师自己的科研流程，而不是停留在“会打开软件”。</p>
+          <div class="agenda-grid">
+            <div><strong>WorkBuddy 主力场景</strong><span>文献阅读与综述、论文写作、实验方案、数据整理、课程资料、项目申请。</span></div><div><strong>工具分工</strong><span>WorkBuddy 适合科研任务和流程编排；Claude Code / Codex 适合代码项目和文件级修改。</span></div><div><strong>个人科研 AI 工作流</strong><span>输入材料、工具处理、AI 输出、人工检查、保存结果、复用方式。</span></div><div><strong>结课工作坊</strong><span>每位老师画出自己的工作流，并形成安全与验收清单。</span></div>
+          </div>
+          <div class="two-cols compact">
+            <div><h3>课堂产物</h3><p>个人科研 AI 工作流图、工具选择表、三个个人 prompt 模板、上下文材料清单、安全与验收 checklist。</p></div>
+            <div><h3>验收方式</h3><p>能用自己的真实科研任务说明：输入是什么、交给哪个工具、哪里人工检查、结果怎么保存和复用。</p></div>
+          </div>
+        </div>
+      </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">可选加课</span>
+    <h2>什么时候值得加到 10-12 小时</h2>
+    <p>不要为了显得完整而加课。只有当安装排雷、WorkBuddy 深水区或成果发布确实会阻塞学习时再加。</p>
+  </div>
+      <div class="option-grid"><article class="option-card"><h3>加 2 小时：安装排雷诊所</h3><p>适合老师设备差异大、网络环境复杂时使用。专门处理 Node、Git、PowerShell 权限、代理、API 余额等问题。</p></article><article class="option-card"><h3>加 2 小时：WorkBuddy 深水区</h3><p>围绕文献综述、论文写作、数据整理和课程材料做更多真实案例。</p></article><article class="option-card"><h3>加 2 小时：成果发布与 GitHub Pages</h3><p>如果希望把工作流说明、课程资料或个人主页发布出来，再扩展 GitHub Pages 与静态网页。</p></article></div>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">课前准备</span>
+    <h2>把课堂时间留给理解和练习</h2>
+    <p>注册账号和下载安装最容易吞掉课堂时间，尽量提前一天完成。</p>
+  </div>
+      <div class="check-panel">
+        <label><input type="checkbox"> GitHub 账号</label><label><input type="checkbox"> DeepSeek 账号和 API Key</label><label><input type="checkbox"> Node.js</label><label><input type="checkbox"> Git</label><label><input type="checkbox"> VS Code</label><label><input type="checkbox"> Claude Code</label><label><input type="checkbox"> WorkBuddy</label><label><input type="checkbox"> Codex</label><label><input type="checkbox"> 可用网络或学校允许的 VPN/代理方案</label>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div>
+      <strong>AI 编程与科研效率基础课</strong>
+      <span>最后更新：2026-07-04</span>
+    </div>
+    <div class="footer-links">
+      <a href="reference.html#sources">资料来源</a>
+      <a href="handout.html">打印讲义</a>
+      <a href="overview.html">旧版讨论稿</a>
+    </div>
+  </footer>
+  <script src="theme.js"></script>
+</body>
+</html>

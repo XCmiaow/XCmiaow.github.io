@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta name="author" content="AI 教师课程组">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:title" content="AI 编程与科研效率基础课 · 讲师手册">
+  <meta property="og:description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23181a1f'/%3E%3Cpath d='M7 22h18M9 10h14M9 16h10' stroke='%23f3efe6' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>AI 编程与科研效率基础课 · 讲师手册</title>
+</head>
+<body class="">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="返回课程首页">
+      <span class="brand-mark">AI</span>
+      <span>
+        <strong>AI 编程与科研效率基础课</strong>
+        <em>给计算机零基础教师的 AI 认知、工具实操与 WorkBuddy 科研工作流教程</em>
+      </span>
+    </a>
+    <nav class="top-nav" aria-label="主导航"><a class="nav-link" href="index.html">总览</a><a class="nav-link" href="schedule.html">课程安排</a><a class="nav-link" href="foundations.html">基础概念</a><a class="nav-link" href="toolchain.html">工具实操</a><a class="nav-link" href="workflow-lab.html">工作流工坊</a><a class="nav-link active" href="instructor.html">讲师手册</a><a class="nav-link" href="reference.html">速查附录</a><a class="nav-link" href="handout.html">打印讲义</a></nav>
+    <button class="theme-toggle" type="button" onclick="cycleTheme()" aria-label="切换明暗主题">
+      <i class="fa-solid fa-circle-half-stroke"></i>
+    </button>
+  </header>
+  <main id="main" class="page-shell">
+    
+    <section class="page-hero compact-hero">
+      <span class="kicker">讲师手册</span>
+      <h1>这门课的关键不是炫技，是降低恐惧</h1>
+      <p>计算机小白最怕“我是不是做错了”。讲师要把每个黑箱拆成可观察的步骤，让老师知道哪里能试、哪里不能乱碰。</p>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">讲法原则</span>
+    <h2>先给直觉，再给术语</h2>
+    <p>每个新概念都按“生活类比 -> 软件例子 -> 最小操作 -> 常见错误”讲。</p>
+  </div>
+      <div class="principle-grid">
+        <article><h3>少讲定义</h3><p>比如 API 先讲“点餐口”，再讲软件接口。</p></article>
+        <article><h3>慢讲 Git</h3><p>Git 是小白最大坡度。只讲检查点，不讲复杂分支模型。</p></article>
+        <article><h3>不现场硬刚安装</h3><p>个别电脑卡住时先用备用演示机，课后再排雷。</p></article>
+        <article><h3>每 20 分钟给成果</h3><p>能解释一个概念、能跑一次计划、能完成一张工作流卡片，信心才会起来。</p></article>
+      </div>
+    </section>
+    <section class="split-section">
+      <div class="logic-card">
+        <h2>常见卡点</h2>
+        <ul class="check-list">
+          <li>PowerShell 不认识 <code>npm</code>：Node.js 没装好或终端没重启。</li>
+          <li><code>claude</code> 无法调用：环境变量只在当前窗口生效，或 API Key/余额有问题。</li>
+          <li>可选 GitHub Pages 404：仓库名、入口文件、Pages 分支、等待时间四选一。</li>
+          <li>AI 乱改文件：任务太大、没有计划、没有 Git 检查点。</li>
+          <li>WorkBuddy 输出太泛：缺输入材料、缺角色边界、缺人工验收标准。</li>
+        </ul>
+      </div>
+      <div class="logic-card">
+        <h2>课堂节奏</h2>
+        <ul class="check-list">
+          <li>每节课开头 5 分钟复盘上一节成果。</li>
+          <li>新概念最多连续讲 15 分钟，随后给操作或例子。</li>
+          <li>演示时只保留一个终端窗口和一个浏览器窗口。</li>
+          <li>下课前必须让学员保存成果，不把半成品留在临时状态。</li>
+        </ul>
+      </div>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">讲师话术</span>
+    <h2>几句能稳定课堂的话</h2>
+    <p>这些话不是口号，是给小白建立安全边界。</p>
+  </div>
+      <div class="quote-wall">
+        <blockquote>“终端不是让你背命令，是让 AI 和电脑有一张可复制的任务单。”</blockquote>
+        <blockquote>“Git 不是程序员仪式感，它是撤回按钮的高级版。”</blockquote>
+        <blockquote>“API Key 不是密码但比密码更容易花钱，所以按密码对待。”</blockquote>
+        <blockquote>“WorkBuddy 不是神奇按钮，它是工作台；材料摆得越清楚，产出越像样。”</blockquote>
+        <blockquote>“会提问不等于会写 prompt；会给材料、会验收，才叫会用 AI。”</blockquote>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div>
+      <strong>AI 编程与科研效率基础课</strong>
+      <span>最后更新：2026-07-04</span>
+    </div>
+    <div class="footer-links">
+      <a href="reference.html#sources">资料来源</a>
+      <a href="handout.html">打印讲义</a>
+      <a href="overview.html">旧版讨论稿</a>
+    </div>
+  </footer>
+  <script src="theme.js"></script>
+</body>
+</html>

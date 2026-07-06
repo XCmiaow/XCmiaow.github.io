@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M5 · 网络基础与安全</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="index.html">前置课程</a><span class="sep">›</span>
+  <span class="current">M5 · 网络基础与安全</span>
+</nav>
+
+<h1>M5 · 网络基础与安全</h1>
+<p class="subtitle">网关 / 端口 / HTTPS / 防火墙 / VPN —— 用生活类比一次性讲清楚</p>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 20 分钟</div></div>
+<div class="meta-card"><div class="label">关键词</div><div class="value">IP、网关、端口、HTTPS、防火墙、VPN、API Key 安全</div></div>
+</div>
+
+<!-- ==================== Why this matters ==================== -->
+<h2>引言：为什么你需要知道这些？</h2>
+
+<p>你不是网络工程师，但你需要知道你的数据怎么流动、有什么风险、怎么保护 API Key。下面四个"层"，从最基本的 IP 到最实用的 VPN，用生活类比一次性讲清楚。</p>
+
+<div class="metaphor">
+<div class="mt">核心类比：你家 <i class="fa-solid fa-arrow-right"></i> 公司</div>
+<div class="mb">
+你把整个互联网想象成"从你家去公司"的旅程：<br>
+<strong>IP = 门牌号</strong>（你要去哪栋楼）<br>
+<strong>网关 = 小区大门</strong>（你从哪个出口出去）<br>
+<strong>端口 = 部门分机号</strong>（进到楼里找哪个办公室）<br>
+<strong>HTTPS = 密封信封</strong>（你寄的东西别人能不能看）<br>
+<strong>防火墙 = 门禁</strong>（谁可以进来）<br>
+<strong>VPN = 国际快递中转站</strong>（你走哪条路过去）<br><br>
+后面我们逐一展开。
+</div>
+</div>
+
+<!-- ==================== Layer 1: IP & Gateway ==================== -->
+<h2>1. 第一层：IP 与网关</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">类比</div><div class="value">IP = 门牌号，网关 = 小区大门</div></div>
+</div>
+
+<h3>IP 地址：互联网上的"门牌号"</h3>
+
+<p>互联网上的每一台设备（你的电脑、手机、服务器）都有一个唯一的 IP 地址——就像每个建筑物有一个门牌号。比如 <code>192.168.1.100</code> 或 <code>10.0.0.1</code>。</p>
+
+<p><strong>公网 IP vs 私有 IP：</strong></p>
+
+<table>
+<tr><th>概念</th><th>类比</th><th>科研意义</th></tr>
+<tr>
+  <td>公网 IP</td>
+  <td>你家的真实地址（快递员能找到）</td>
+  <td>你的学校/机构的对外地址；DeepSeek 服务器也有一个公网 IP</td>
+</tr>
+<tr>
+  <td>私有 IP</td>
+  <td>同一栋楼内的房间号（只有楼里的人知道）</td>
+  <td>你实验室电脑的 192.168.x.x——外界看不到，只有校园网内的设备能找到</td>
+</tr>
+</table>
+
+<div class="box box-concept">
+<strong>IPv4 vs IPv6</strong><br><br>
+<table>
+<tr><th></th><th>类比</th><th>说明</th></tr>
+<tr><td><strong>IPv4</strong></td><td>老式 6 位数座机号</td><td>全球只有约 43 亿个地址（早已不够用）</td></tr>
+<tr><td><strong>IPv6</strong></td><td>16 位手机号</td><td>地址数量多到可以给地球上每一粒沙分配一个 IP</td></tr>
+</table>
+</div>
+
+<h3>网关：小区的"大门"</h3>
+
+<div class="metaphor">
+<div class="mt">网关 = 小区大门</div>
+<div class="mb">
+你家住在 XX 小区 3 栋 501。快递员送快递，先找到小区大门（网关），然后由门卫告诉你"3 栋在那边"。<br><br>
+在互联网中：你的数据包要访问外网（比如 DeepSeek 的服务器），必须先经过你所在网络的"大门"——网关。网关的地址通常是 <code>192.168.1.1</code> 或 <code>10.0.0.1</code>。<br><br>
+<strong>在你的科研中</strong>：当你调用 DeepSeek API 时，请求的路线是：<br>
+你的电脑（192.168.x.x 私有 IP）<i class="fa-solid fa-arrow-right"></i> 学校网关（公网 IP）<i class="fa-solid fa-arrow-right"></i> 互联网骨干 <i class="fa-solid fa-arrow-right"></i> DeepSeek 服务器。
+</div>
+</div>
+
+<!-- ==================== Layer 2: Ports ==================== -->
+<h2>2. 第二层：端口</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">类比</div><div class="value">端口 = 公司分机号</div></div>
+</div>
+
+<h3>端口：你打总机号码之后，要拨的分机号</h3>
+
+<div class="metaphor">
+<div class="mt">端口 = 公司分机号</div>
+<div class="mb">
+你打"010-12345678"找到了一家公司的大门。但前台接起来会问："您找哪个部门？销售部按 1、技术部按 2、财务部按 3。"<br><br>
+<strong>IP 地址让你找到这台服务器。端口号让你找到服务器上运行的具体服务。</strong><br><br>
+同一台服务器同时运行着：网站服务（端口 80）、加密网站（端口 443）、文件传输（端口 22）、数据库（端口 3306）。端口号就是区分"你找的是哪个服务"。
+</div>
+</div>
+
+<h3>你必须认识的常见端口</h3>
+
+<table>
+<tr><th>端口</th><th>服务</th><th>类比</th><th>科研中的例子</th></tr>
+<tr>
+  <td><strong>80</strong></td>
+  <td>HTTP（网页）</td>
+  <td>公司前台——处理普通访客</td>
+  <td>访问一个非加密网站（不推荐用于科研数据传输）</td>
+</tr>
+<tr>
+  <td><strong>443</strong></td>
+  <td>HTTPS（加密网页）</td>
+  <td>公司 VIP 通道——加密验证身份</td>
+  <td>访问 DeepSeek、ChatGPT、任何安全 API</td>
+</tr>
+<tr>
+  <td><strong>22</strong></td>
+  <td>SSH（远程登录）</td>
+  <td>给你一把万能钥匙，从远处打开自己的办公室</td>
+  <td>远程连接学校服务器跑计算任务</td>
+</tr>
+<tr>
+  <td><strong>3000</strong></td>
+  <td>开发预览</td>
+  <td>内部演示室</td>
+  <td>WorkBuddy 本地预览 <code>localhost:3000</code>——3000 就是端口号</td>
+</tr>
+<tr>
+  <td><strong>8080</strong></td>
+  <td>备用 HTTP</td>
+  <td>公司侧门</td>
+  <td>很多科研软件的管理后台使用此端口</td>
+</tr>
+</table>
+
+<div class="box box-warn">
+<strong>端口扫描：坏人用自动拨号器试你的每一个分机号</strong><br><br>
+有一种网络攻击叫"端口扫描"：攻击者对你的 IP 地址，从端口 1 到端口 65535 逐个测试——看看哪个端口开着、哪个端口跑的是什么服务、哪个服务有已知漏洞。<br><br>
+好消息是：<strong>你学校的网络通常有防火墙做第一层保护</strong>，外部扫描无法直接看到你实验室内部的端口。<br><br>
+坏消息是：<strong>如果你的电脑连接了不安全的公共 WiFi（咖啡馆、酒店、机场），</strong>你的端口就可能暴露给同一个 WiFi 下的所有人。
+</div>
+
+<!-- ==================== Layer 3: Security ==================== -->
+<h2>3. 第三层：网络安全</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 6 分钟</div></div>
+<div class="meta-card"><div class="label">核心</div><div class="value">HTTP vs HTTPS、防火墙、API Key 安全</div></div>
+</div>
+
+<h3>HTTP vs HTTPS：明信片 vs 密封信封</h3>
+
+<div class="metaphor">
+<div class="mt">HTTP = 明信片，HTTPS = 密封信封</div>
+<div class="mb">
+你寄一封信：<br>
+<strong>HTTP</strong> = 写在明信片上寄出去。任何经手的邮递员都能看到内容。<br>
+<strong>HTTPS</strong> = 装在密封信封里寄出去。只有收件人能看到内容。<br><br>
+当你使用 HTTP 网站时，你和服务器之间的所有数据——包括密码、API Key、研究数据——都以"明文"传输。任何在你和服务器之间的人（你的 ISP、WiFi 提供者、中间节点）理论上都能看到。<br><br>
+当你使用 HTTPS 网站时，数据在传输之前先加密。只有目标服务器有密钥能解密。中间人看到的是乱码。
+</div>
+</div>
+
+<div class="box box-key">
+<strong>一个简单规则，帮你避免 80% 的网络风险：</strong><br>
+浏览器地址栏最左边有一个小锁图标 <i class="fa-solid fa-lock"></i>。看到它 = 这个网站用了 HTTPS。<br>
+<strong>千万不要在地址栏没有小锁的网站上输入任何密码或敏感信息。</strong>
+</div>
+
+<h3>防火墙：小区的"门禁系统"</h3>
+
+<p>防火墙就像小区门禁：只有持有门禁卡（被授权的流量）的人才能进入，其他人（未经授权的流量）一律挡在外面。学校、企业、甚至你个人的操作系统（Windows Defender 防火墙）都有一层防火墙。</p>
+
+<h3>API Key 安全 —— 全课最重要的安全提醒</h3>
+
+<div class="box box-warn">
+<strong><i class="fa-solid fa-triangle-exclamation"></i> API Key = 银行卡密码 —— 绝对不能泄露的四条铁律</strong><br><br>
+API Key 是访问 AI 服务的"数字身份"——谁持有你的 API Key，谁就能以你的身份调用服务（产生费用，可能数万元；访问你的数据）。<br><br>
+<strong>铁律一：绝不写在代码里贴出去</strong><br>
+<code>api_key = "sk-abc123def456"</code> <i class="fa-solid fa-arrow-left"></i> 这段代码绝对不能发到 GitHub、朋友圈、微信群。<br><br>
+<strong>铁律二：绝不截图发到群里</strong><br>
+很多人习惯截图问"这个报错怎么回事"——结果截图中 API Key 清晰可见。一个 500 人的微信群，瞬间 500 个人有了你的 Key。<br><br>
+<strong>铁律三：使用环境变量或 .env 文件 + .gitignore</strong><br>
+把 API Key 写在 <code>.env</code> 文件里，把 <code>.env</code> 加到 <code>.gitignore</code> 中。代码中用 <code>os.getenv("API_KEY")</code> 读取。上传 GitHub 时 <code>.env</code> 不会跟着上去。<br><br>
+<strong>铁律四：不在公共 WiFi 下使用未加密的 API 调用</strong><br>
+咖啡馆的 WiFi 密码可能是 "coffee123"，这意味着同一 WiFi 下的任何人都可能截获你的网络流量。你的 API Key 在传输中如果是明文（HTTP）就可能被窃取。<br><br>
+<strong>如果 API Key 已经泄露了怎么办？</strong><br>
+立即登录服务商平台 <i class="fa-solid fa-arrow-right"></i> API 管理 <i class="fa-solid fa-arrow-right"></i> 找到这个 Key <i class="fa-solid fa-arrow-right"></i> 点击"撤销/重新生成"。Key 一旦撤销，旧 Key 立即失效。
+</div>
+
+<div class="box box-concept">
+<strong>环境变量的设置方法（Windows 示例）</strong><br><br>
+<strong>方法一：系统环境变量</strong><br>
+Win+R <i class="fa-solid fa-arrow-right"></i> 输入 <code>sysdm.cpl</code> <i class="fa-solid fa-arrow-right"></i> 高级 <i class="fa-solid fa-arrow-right"></i> 环境变量 <i class="fa-solid fa-arrow-right"></i> 新建用户变量<br>
+变量名：<code>DEEPSEEK_API_KEY</code><br>
+变量值：<code>sk-你的实际key</code><br><br>
+<strong>方法二：.env 文件（推荐）</strong><br>
+在项目目录下创建 <code>.env</code> 文件：<br>
+<code>DEEPSEEK_API_KEY=sk-你的实际key</code><br><br>
+然后在 <code>.gitignore</code> 中添加一行：<br>
+<code>.env</code><br><br>
+这样你就永远不会把 API Key 上传到 GitHub 了。
+</div>
+
+<h3>公共 WiFi 的风险</h3>
+
+<table>
+<tr><th>风险</th><th>原理</th><th>防护</th></tr>
+<tr>
+  <td>中间人攻击</td>
+  <td>攻击者在同一 WiFi 下伪装成路由器，截获你的所有流量</td>
+  <td>使用 HTTPS 网站、避免在公共 WiFi 上登录重要账号</td>
+</tr>
+<tr>
+  <td>恶意热点</td>
+  <td>攻击者架设一个"Starbucks_Free"热点，你连上之后所有数据被监控</td>
+  <td>确认 WiFi 名称（问店员）、使用手机热点</td>
+</tr>
+<tr>
+  <td>密码重用</td>
+  <td>你在咖啡厅登录了一个弱安全性的网站<i class="fa-solid fa-arrow-right"></i>密码被截<i class="fa-solid fa-arrow-right"></i>攻击者用同样密码试你的邮箱/银行/学术账号</td>
+  <td>使用密码管理器、每个网站不同密码</td>
+</tr>
+</table>
+
+<!-- ==================== Layer 4: VPN ==================== -->
+<h2>4. 第四层：VPN</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 3 分钟</div></div>
+<div class="meta-card"><div class="label">类比</div><div class="value">VPN = 国际快递中转站</div></div>
+</div>
+
+<h3>VPN 是什么？</h3>
+
+<div class="metaphor">
+<div class="mt">VPN = 国际快递中转站</div>
+<div class="mb">
+你在北京（私有 IP），直接发快递给纽约的客户，路上有十几个中转站，每个都能看到你的包裹信息。<br><br>
+你改用 VPN：先把包裹发到上海的一个中转仓（VPN 服务器），中转仓把你的包裹换个外包装、换个寄件地址（VPN 服务器的公网 IP），再从上海发往纽约。<br><br>
+纽约客户看到的是：来自上海中转仓的包裹。纽约客户回复 <i class="fa-solid fa-arrow-right"></i> 上海中转仓 <i class="fa-solid fa-arrow-right"></i> 重新封装 <i class="fa-solid fa-arrow-right"></i> 回到北京的你。<br><br>
+<strong>VPN 做了两件事：</strong><br>
+1. <strong>隐藏你真实的 IP 地址</strong>（收件人看到的是 VPN 服务器的 IP）<br>
+2. <strong>加密传输</strong>（你的设备和 VPN 服务器之间是加密隧道）
+</div>
+</div>
+
+<h3>合法 vs 非法使用</h3>
+
+<table>
+<tr><th>使用场景</th><th>合法性</th><th>说明</th></tr>
+<tr>
+  <td>学校 VPN —— 在校外访问图书馆数据库</td>
+  <td>合法</td>
+  <td>你通过学校的 VPN 服务器进入校园内网，等同于你在校内上网</td>
+</tr>
+<tr>
+  <td>公司 VPN —— 远程办公访问内网</td>
+  <td>合法</td>
+  <td>公司授权员工从外部安全接入内部系统</td>
+</tr>
+<tr>
+  <td>个人 VPN —— 保护公共 WiFi 下的隐私</td>
+  <td>合法（在大多数国家）</td>
+  <td>相当于给自己的网络流量加了一层"防护膜"</td>
+</tr>
+<tr>
+  <td>用 VPN 访问被国家法律法规禁止的内容</td>
+  <td>非法</td>
+  <td>任何技术工具都不应被用来违反国家法律</td>
+</tr>
+</table>
+
+<div class="box box-key">
+<strong>重要提示：DeepSeek 等国产 AI 服务不需要 VPN</strong><br><br>
+DeepSeek、通义千问、文心一言、Kimi、智谱清言等国产大模型服务均部署在国内服务器上，你直接从中国网络即可正常访问。<br><br>
+你不需要 VPN 就能使用这些 AI 服务。而且你的数据不经过海外网络，在数据安全上更有保障。<br><br>
+WorkBuddy 课程中使用的 AI 服务优先推荐国内可直连的服务。
+</div>
+
+<!-- ==================== Layer 5: API 调用 ==================== -->
+<h2>5. 第五层：API 调用在网络层面是怎么工作的</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">核心</div><div class="value">API 请求的完整数据流、安全三原则</div></div>
+</div>
+
+<div class="box box-concept">
+<strong>承上启下：</strong>前面四层讲了"数据怎么在网络中流动"。现在回答一个具体问题——"你用 AI 工具时，数据到底经过了哪些地方？"
+</div>
+
+<div class="metaphor">
+<div class="mt"><i class="fa-solid fa-globe"></i> 一个完整的 API 调用之旅</div>
+<div class="mb">
+想象你用 Claude Code 向 DeepSeek 发送一个问题："请解释 Arrhenius 方程"。数据流是这样的：<br><br>
+<strong>1. 你的电脑</strong>（IP: 192.168.1.5，内网地址）<br>
+<i class="fa-solid fa-arrow-down"></i><br>
+<strong>2. 你的路由器/网关</strong>（IP: 公网地址，由运营商分配）——把内网地址转成公网地址（NAT）<br>
+<i class="fa-solid fa-arrow-down"></i><br>
+<strong>3. 经过多个中间路由器</strong>——像快递经过多个分拣中心，每一跳检查"目的地是哪里"<br>
+<i class="fa-solid fa-arrow-down"></i><br>
+<strong>4. HTTPS 加密</strong>（端口 443）——你的问题在整个路途中都是加密的，中途任何人截获都看不懂<br>
+<i class="fa-solid fa-arrow-down"></i><br>
+<strong>5. DeepSeek 的 API 服务器</strong>——验证你的 API Key（"房卡对不对"）<i class="fa-solid fa-arrow-right"></i> 处理请求 <i class="fa-solid fa-arrow-right"></i> 生成回复<br>
+<i class="fa-solid fa-arrow-down"></i><br>
+<strong>6. 原路返回</strong>——同样的加密通道，把"Arrhenius 方程是 ln(k) = ln(A) - Ea/RT…"送回你的电脑<br><br>
+<strong>整个过程：通常不到 3 秒。经过了 10+ 个路由器。全程加密。你的 API Key 只在第 5 步被验证了一次。</strong>
+</div>
+</div>
+
+<div class="box box-warn">
+<strong>科研场景中 API 安全最重要的三件事：</strong><br>
+① <strong>API Key 绝不上传公开仓库</strong>——GitHub 有爬虫 24 小时扫描公开仓库里的 API Key，被盗刷后几小时内余额清零<br>
+② <strong>用环境变量存储 API Key</strong>——不要把 Key 写死在代码里。用 <code>.env</code> 文件 + <code>.gitignore</code>（不上传到 GitHub）<br>
+③ <strong>设置 API 调用限额</strong>——DeepSeek 等平台允许你设置每日消费上限，防止意外超支
+</div>
+
+<div class="box box-key">
+<strong>API、端口、HTTPS 三者的关系：</strong>API 是 <strong>"你找谁"</strong>（DeepSeek 的服务器地址），端口是 <strong>"走哪个通道"</strong>（HTTPS 走 443），HTTPS 是 <strong>"路上有没有被偷看"</strong>（加密了，没有）。三者缺一不可。
+</div>
+
+<!-- ==================== 总结 ==================== -->
+<h2>总结：四层网络安全的"一句话"</h2>
+
+<table>
+<tr><th>层级</th><th>概念</th><th>一句话总结</th><th>你记住什么？</th></tr>
+<tr>
+  <td>第一层</td>
+  <td>IP & 网关</td>
+  <td>IP 是门牌号，网关是小区大门</td>
+  <td>你的数据从私有 IP 经学校网关出入互联网</td>
+</tr>
+<tr>
+  <td>第二层</td>
+  <td>端口</td>
+  <td>端口是公司分机号</td>
+  <td>443 安全，80 不安全；避免端口暴露在公共网络</td>
+</tr>
+<tr>
+  <td>第三层</td>
+  <td>安全</td>
+  <td>HTTPS 是密封信封</td>
+  <td>API Key = 银行卡密码，永不在公共环境中裸奔</td>
+</tr>
+<tr>
+  <td>第四层</td>
+  <td>VPN</td>
+  <td>VPN 是国际快递中转站</td>
+  <td>合法使用（学校/公司 VPN）；国产 AI 不需要 VPN</td>
+</tr>
+</table>
+
+<div class="box box-summary">
+<strong>学完这一讲的你应该具备的网络安全常识：</strong><br><br>
+<i class="fa-solid fa-check"></i> 知道自己的数据流经了哪些环节（你的电脑 <i class="fa-solid fa-arrow-right"></i> 网关 <i class="fa-solid fa-arrow-right"></i> 互联网 <i class="fa-solid fa-arrow-right"></i> 目标服务器）<br>
+<i class="fa-solid fa-check"></i> 能识别安全的网络连接（URL 前有 <i class="fa-solid fa-lock"></i> 小锁 = HTTPS = 安全）<br>
+<i class="fa-solid fa-check"></i> API Key 绝不在代码/截图/群聊/公共 WiFi 中暴露<br>
+<i class="fa-solid fa-check"></i> 知道 VPN 的正确和错误用法<br>
+<i class="fa-solid fa-check"></i> 理解 <code>localhost:3000</code> 中的 3000 是"端口的第 3000 号分机"<br><br>
+<strong>这些不是"程序员才需要知道的"。这些是每个用 AI 工具做科研的人都应该知道的——因为你的研究数据、你的 API Key、你的学术成果，都跑在这些网络上。</strong>
+</div>
+
+<!-- Page navigation -->
+<nav class="page-nav">
+  <a href="M4-科研加速.html"><i class="fa-solid fa-arrow-left"></i> 上一模块：AI 如何加速科研</a>
+  <a href="M6-Git部署.html">下一模块：Git 极简 + Pages 部署 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+
+<script src="../theme.js"></script>
+</body>
+</html>

@@ -30,6 +30,16 @@ const routes = [
   '/en/resume-career',
   '/blog',
   '/en/blog',
+  '/silicon-ashes',
+  '/en/silicon-ashes',
+  '/silicon-ashes/writing',
+  '/en/silicon-ashes/writing',
+  '/silicon-ashes/courses',
+  '/en/silicon-ashes/courses',
+  '/silicon-ashes/resources',
+  '/en/silicon-ashes/resources',
+  '/silicon-ashes/about',
+  '/en/silicon-ashes/about',
 ];
 
 const responsiveViewports = [
@@ -62,6 +72,16 @@ const expectedHeadings = {
   '/en/resume-career': 'Xujie Fang',
   '/blog': '\u535a\u5ba2',
   '/en/blog': 'Blog',
+  '/silicon-ashes': '\u5728\u6280\u672f\u72c2\u5954\u4e4b\u540e\uff0c\u7559\u4e0b\u4eba\u7684\u5224\u65ad\u529b\u3002',
+  '/en/silicon-ashes': 'Keep human judgment after technology starts running.',
+  '/silicon-ashes/writing': '\u5c11\u8c08\u672a\u6765\u611f\uff0c\u591a\u770b\u6280\u672f\u5982\u4f55\u91cd\u6392\u4eba',
+  '/en/silicon-ashes/writing': 'Less futurism, more human consequence',
+  '/silicon-ashes/courses': '\u4ece\u4e00\u4e2a\u8bfe\u7a0b\u5230\u4e00\u5957\u4f53\u7cfb',
+  '/en/silicon-ashes/courses': 'From one course to a full system',
+  '/silicon-ashes/resources': '\u8d44\u6e90\u4e0d\u662f\u4ed3\u5e93\uff0c\u662f\u5de5\u4f5c\u6d41\u7684\u5165\u53e3',
+  '/en/silicon-ashes/resources': 'Resources are workflow entry points',
+  '/silicon-ashes/about': '\u65b9\u7eea\u6770',
+  '/en/silicon-ashes/about': 'Xujie Fang',
 };
 
 const homeProfileContracts = {

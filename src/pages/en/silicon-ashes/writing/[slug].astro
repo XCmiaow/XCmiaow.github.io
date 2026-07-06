@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const isZh = post.data.lang === 'zh';
+const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
+const writingHref = isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/';
+
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+---
+
+<div class="ad-shell">
+  <header class="ad-nav">
+    <a class="ad-brand" href={homeHref}>
+      <span class="brand-mark">SA</span>
+      <span class="brand-name">{isZh ? '硅基余烬' : 'Silicon Ashes'}</span>
+    </a>
+    <nav>
+      <a href={writingHref}>{isZh ? '写作' : 'Writing'}</a>
+      <a href={isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'}>{isZh ? '课程' : 'Courses'}</a>
+      <a href={isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'}>{isZh ? '资源' : 'Resources'}</a>
+      <a href={isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'}>{isZh ? '关于' : 'About'}</a>
+    </nav>
+  </header>
+
+  <main id="main" class="article-main">
+    <article>
+      <header class="article-header">
+        {post.data.series && <p class="series-label">{post.data.series}</p>}
+        <h1>{post.data.title}</h1>
+        <div class="article-meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          {post.data.readingTime && <span>{post.data.readingTime} min read</span>}
+        </div>
+        {post.data.tags && (
+          <ul class="tag-list">
+            {post.data.tags.map((tag: string) => <li>{tag}</li>)}
+          </ul>
+        )}
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+
+  <footer class="ad-footer">
+    <a href={writingHref}>{isZh ? '← 返回写作中心' : '← Back to writing'}</a>
+  </footer>
+</div>
+
+<style>
+  :global(html) { scroll-behavior: smooth; background: #080705; }
+  :global(body) { margin: 0; background: #080705; color: #e9e0d0; font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+  :global(*), :global(*::before), :global(*::after) { box-sizing: border-box; }
+  :global(a) { color: inherit; }
+
+  .ad-shell {
+    min-height: 100dvh;
+    background:
+      linear-gradient(90deg, rgba(226,187,116,0.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(226,187,116,0.028) 1px, transparent 1px),
+      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
+    background-size: 64px 64px, 64px 64px, auto, auto;
+  }
+
+  .ad-nav, .article-main, .ad-footer { width: min(100% - 44px, 780px); margin: 0 auto; }
+  .ad-nav { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(218,166,86,0.2); background: rgba(8,7,5,0.86); backdrop-filter: blur(18px); position: sticky; top: 0; z-index: 12; }
+  .ad-brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(218,166,86,0.7); border-radius: 5px; background: linear-gradient(135deg, rgba(238,181,92,0.22), transparent 50%), #11100d; color: #ffe4aa; font-family: Consolas, monospace; font-size: 13px; font-weight: 900; }
+  .brand-name { color: #f3e3c5; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 20px; font-weight: 800; }
+  .ad-nav nav { display: flex; gap: 6px; }
+  .ad-nav nav a { display: inline-flex; min-height: 38px; align-items: center; border-radius: 4px; padding: 0 10px; color: rgba(233,224,208,0.72); font-size: 14px; font-weight: 700; text-decoration: none; }
+  .ad-nav nav a:hover { background: rgba(218,166,86,0.1); color: #ffe2aa; }
+
+  .article-main { padding: 80px 0 120px; }
+  .article-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid rgba(218,166,86,0.18); }
+  .series-label { margin: 0 0 12px; color: #d8aa63; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; }
+  h1 { margin: 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15; }
+  .article-meta { display: flex; gap: 16px; margin-top: 16px; }
+  .article-meta time, .article-meta span { color: rgba(168,177,176,0.6); font-family: Consolas, monospace; font-size: 13px; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .tag-list li { border: 1px solid rgba(168,177,176,0.18); border-radius: 3px; padding: 3px 8px; color: rgba(220,228,224,0.55); font-size: 12px; }
+
+  .prose { color: rgba(233,224,208,0.85); font-size: 17px; line-height: 1.9; }
+  .prose :global(h2) { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 26px; font-weight: 800; margin: 48px 0 18px; }
+  .prose :global(h3) { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 21px; font-weight: 800; margin: 36px 0 14px; }
+  .prose :global(p) { margin: 0 0 18px; }
+  .prose :global(a) { color: #d8aa63; text-decoration: underline; text-underline-offset: 3px; }
+  .prose :global(a:hover) { color: #ffe4aa; }
+  .prose :global(blockquote) { margin: 24px 0; padding: 16px 24px; border-left: 3px solid #d8aa63; background: rgba(218,166,86,0.06); border-radius: 0 6px 6px 0; }
+  .prose :global(blockquote p) { margin: 0; }
+  .prose :global(code) { background: rgba(218,166,86,0.1); border-radius: 3px; padding: 2px 6px; font-size: 0.9em; }
+  .prose :global(pre) { background: rgba(0,0,0,0.4); border: 1px solid rgba(218,166,86,0.15); border-radius: 6px; padding: 20px; overflow-x: auto; margin: 24px 0; }
+  .prose :global(pre code) { background: none; padding: 0; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin: 24px 0; }
+  .prose :global(th), .prose :global(td) { padding: 10px 14px; border-bottom: 1px solid rgba(218,166,86,0.15); text-align: left; }
+  .prose :global(th) { color: #d8aa63; font-weight: 800; font-size: 14px; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 24px; margin: 0 0 18px; }
+  .prose :global(li) { margin-bottom: 6px; }
+  .prose :global(strong) { color: #f2dfbd; }
+  .prose :global(hr) { border: none; border-top: 1px solid rgba(218,166,86,0.18); margin: 40px 0; }
+
+  .ad-footer { padding: 24px 0 40px; border-top: 1px solid rgba(218,166,86,0.18); }
+  .ad-footer a { color: rgba(233,224,208,0.72); font-size: 14px; text-decoration: none; }
+  .ad-footer a:hover { color: #f2dfbd; }
+
+  @media (max-width: 720px) {
+    .ad-nav, .article-main, .ad-footer { width: min(100% - 28px, 780px); }
+    .ad-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
+    .article-main { padding: 48px 0 80px; }
+  }
+</style>

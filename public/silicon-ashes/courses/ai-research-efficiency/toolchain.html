@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta name="author" content="AI 教师课程组">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:title" content="AI 编程与科研效率基础课 · 工具实操">
+  <meta property="og:description" content="一套面向 Windows 优先、兼顾 macOS 的 8 小时课程体系，帮助化学化工背景教师理解 LLM、API、Prompt、Coding Plan、Claude Code、WorkBuddy、Codex、GitHub，并设计个人科研 AI 工作流。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23181a1f'/%3E%3Cpath d='M7 22h18M9 10h14M9 16h10' stroke='%23f3efe6' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>AI 编程与科研效率基础课 · 工具实操</title>
+</head>
+<body class="">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="返回课程首页">
+      <span class="brand-mark">AI</span>
+      <span>
+        <strong>AI 编程与科研效率基础课</strong>
+        <em>给计算机零基础教师的 AI 认知、工具实操与 WorkBuddy 科研工作流教程</em>
+      </span>
+    </a>
+    <nav class="top-nav" aria-label="主导航"><a class="nav-link" href="index.html">总览</a><a class="nav-link" href="schedule.html">课程安排</a><a class="nav-link" href="foundations.html">基础概念</a><a class="nav-link active" href="toolchain.html">工具实操</a><a class="nav-link" href="workflow-lab.html">工作流工坊</a><a class="nav-link" href="instructor.html">讲师手册</a><a class="nav-link" href="reference.html">速查附录</a><a class="nav-link" href="handout.html">打印讲义</a></nav>
+    <button class="theme-toggle" type="button" onclick="cycleTheme()" aria-label="切换明暗主题">
+      <i class="fa-solid fa-circle-half-stroke"></i>
+    </button>
+  </header>
+  <main id="main" class="page-shell">
+    
+    <section class="page-hero">
+      <span class="kicker">Day 2 上午核心材料</span>
+      <h1>工具实操：WorkBuddy 主力，Codex 对照</h1>
+      <p>工具实操课的目标不是让每个人记住安装命令，而是让老师知道 WorkBuddy、Claude Code、Codex、GitHub 各自负责什么，出了错该看网络、账号、API Key 还是工具权限。</p>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">工具顺序</span>
+    <h2>先选入口，再讲底层</h2>
+    <p>Day 2 上午不追求把每个工具讲深，而是让老师知道遇到任务该先打开 WorkBuddy，什么时候才需要 Claude Code、Codex 或 GitHub。</p>
+  </div>
+      <div class="flow">
+        <div><span>1</span>WorkBuddy</div><div><span>2</span>Claude Code</div><div><span>3</span>DeepSeek API</div><div><span>4</span>Codex</div><div><span>5</span>Git / GitHub</div><div><span>6</span>GitHub Pages</div><div><span>7</span>VPN / 网络</div><div><span>8</span>安全边界</div>
+      </div>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">工具分工</span>
+    <h2>WorkBuddy 是主力，Codex 是工程化对照</h2>
+    <p>不要把工具讲成排名。对老师来说，关键是任务匹配：科研文档先找 WorkBuddy，代码和文件级修改再考虑 Claude Code / Codex。</p>
+  </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>工具</th><th>适合什么</th><th>课堂定位</th></tr></thead><tbody><tr><td>WorkBuddy</td><td>科研任务、文档任务、流程编排、非程序员友好操作</td><td>主力工具；优先用于老师日常科研效率。</td></tr><tr><td>Claude Code</td><td>终端里的 Agent，能读文件、改文件、跑命令</td><td>用于理解 Agent 工具和 DeepSeek API 接入。</td></tr><tr><td>Codex</td><td>更工程化的代码 Agent，适合项目文件修改和验证</td><td>作为 WorkBuddy 的工程化平替与对照。</td></tr><tr><td>Git / GitHub</td><td>保存检查点、同步成果、追踪版本</td><td>辅助能力；不展开复杂分支。</td></tr><tr><td>GitHub Pages</td><td>把静态网页发布到公网</td><td>可选展示方式，不是最终必交成果。</td></tr></tbody></table>
+      </div>
+    </section>
+    <section class="split-section">
+      <div>
+        <div class="section-head">
+    <span class="kicker">Claude Code + DeepSeek</span>
+    <h2>用来理解终端 Agent 和 API 接入</h2>
+    <p>Claude Code 是终端里的 Agent，能读文件、改文件、跑命令。DeepSeek API 接入只讲必要配置、安全边界和常见错误，不把它变成安装排雷大会。</p>
+  </div>
+        <div class="code-card"><div class="code-label">Windows PowerShell</div><pre><code>$env:ANTHROPIC_BASE_URL=&quot;https://api.deepseek.com/anthropic&quot;
+$env:ANTHROPIC_AUTH_TOKEN=&quot;&lt;你的 DeepSeek API Key&gt;&quot;
+$env:ANTHROPIC_MODEL=&quot;deepseek-v4-pro[1m]&quot;
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL=&quot;deepseek-v4-pro[1m]&quot;
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL=&quot;deepseek-v4-pro[1m]&quot;
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL=&quot;deepseek-v4-flash&quot;
+$env:CLAUDE_CODE_SUBAGENT_MODEL=&quot;deepseek-v4-flash&quot;
+$env:CLAUDE_CODE_EFFORT_LEVEL=&quot;max&quot;
+claude --version
+claude</code></pre></div>
+        <div class="code-card"><div class="code-label">macOS / Linux</div><pre><code>export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+export ANTHROPIC_AUTH_TOKEN=&quot;&lt;你的 DeepSeek API Key&gt;&quot;
+export ANTHROPIC_MODEL='deepseek-v4-pro[1m]'
+export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
+export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro[1m]'
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+export CLAUDE_CODE_EFFORT_LEVEL=max
+claude --version
+claude</code></pre></div>
+      </div>
+      <aside class="logic-card danger">
+        <h3>API Key 安全红线</h3>
+        <ul class="check-list">
+          <li>不截图发群。</li>
+          <li>不写进 <code>index.html</code>、README 或课件截图。</li>
+          <li>不提交到 GitHub。</li>
+          <li>报错时可以贴错误码，不要贴完整 key。</li>
+        </ul>
+      </aside>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">WorkBuddy / Codex 对照</span>
+    <h2>一个更像科研工作台，一个更像工程工具箱</h2>
+    <p>WorkBuddy 更适合非程序员老师做文献、写作、数据和流程编排；Codex 更适合代码项目、文件级修改和自动验证。</p>
+  </div>
+      <div class="principle-grid">
+        <article><i class="fa-solid fa-chalkboard-user"></i><h3>WorkBuddy：老师优先入口</h3><p>先用 Ask / Plan / Craft 或对应模式处理科研文档、课程材料、数据解释和流程设计。</p></article>
+        <article><i class="fa-solid fa-terminal"></i><h3>Codex：工程化平替</h3><p>当任务需要改文件、跑命令、看 diff、做静态网页或代码工具时，再切到 Codex。</p></article>
+        <article><i class="fa-solid fa-fingerprint"></i><h3>共同安全规则</h3><p>三步以上先要计划；涉及文件先看范围；改动后要人工检查；API Key 不进文档和 Git。</p></article>
+      </div>
+    </section>
+    <section class="split-section">
+      <div class="logic-card">
+        <h2>Git / GitHub 的定位</h2>
+        <p>Git 不是本课主角，只是保存检查点。老师第一天只需要知道：状态、添加、提交、推送、拉取。</p>
+        <div class="code-card"><pre><code>git status
+git add .
+git commit -m &quot;feat: create course homepage&quot;
+git branch -M main
+git remote add origin https://github.com/&lt;username&gt;/&lt;repo&gt;.git
+git push -u origin main</code></pre></div>
+      </div>
+      <div class="logic-card">
+        <h2>GitHub Pages 是可选展示</h2>
+        <p>如果老师想公开展示个人工作流、课程资料或主页，再用 Pages。它不是最终必交成果。</p>
+        <div class="code-card"><pre><code>仓库名：&lt;username&gt;.github.io
+入口文件：index.html
+Settings -&gt; Pages -&gt; Build and deployment -&gt; Deploy from a branch
+分支：main
+目录：/root
+访问：https://&lt;username&gt;.github.io</code></pre></div>
+      </div>
+    </section>
+    <section class="content-band">
+      <div class="section-head">
+    <span class="kicker">VPN 与网络</span>
+    <h2>它解决网络路径问题，不解决账号和权限问题</h2>
+    <p>VPN 像一条加密隧道，可能改变网络出口。它不能凭空给你 API 额度，也不能绕过 GitHub 账号权限。</p>
+  </div>
+      <div class="warning-grid">
+        <div><strong>什么时候讲</strong><p>下载工具失败、API 访问不稳定、公共 Wi-Fi、学校远程资源访问。</p></div>
+        <div><strong>讲到哪里停</strong><p>讲原理、合规使用和风险，不在课堂现场临时找复杂线路。</p></div>
+        <div><strong>常见误解</strong><p>VPN 不是万能隐身。免费 VPN、来路不明配置和共享账号都可能带来风险。</p></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div>
+      <strong>AI 编程与科研效率基础课</strong>
+      <span>最后更新：2026-07-04</span>
+    </div>
+    <div class="footer-links">
+      <a href="reference.html#sources">资料来源</a>
+      <a href="handout.html">打印讲义</a>
+      <a href="overview.html">旧版讨论稿</a>
+    </div>
+  </footer>
+  <script src="theme.js"></script>
+</body>
+</html>

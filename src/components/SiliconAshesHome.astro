@@ -1,0 +1,1468 @@
+---
+import common from '../data/common.json';
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  lang: 'zh' | 'en';
+}
+
+
+const { lang } = Astro.props;
+
+const latestPosts = (await getCollection('blog', ({ data }) => {
+  return data.lang === lang && !data.draft;
+})).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+const isZh = lang === 'zh';
+const localizedRoot = isZh ? '' : '/en';
+const homeHref = isZh ? '/' : '/en/';
+const email = common.person.email;
+const github = common.person.github;
+const githubUrl = `https://${github}`;
+const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
+const courseIndex = `${courseBase}index.html`;
+
+const t = isZh
+  ? {
+      htmlLabel: '个人品牌主站',
+      brand: '硅基余烬',
+      switchHref: '/en/silicon-ashes/',
+      switchLabel: 'EN',
+      nav: [
+        ['宣言', '#manifesto'],
+        ['写作', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
+        ['课程', '#courses'],
+        ['资源', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
+        ['关于', isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'],
+      ],
+      eyebrow: 'Silicon Ashes',
+      title: '在技术狂奔之后，留下人的判断力。',
+      lead: '少谈未来感，多看技术如何重排人。',
+      primary: '进入课程板块',
+      secondary: '查看个人简历',
+      signals: [
+        ['01', '技术批判', 'AI 时代的人与境。'],
+        ['02', 'AI 工作流', '从操作到设计。'],
+        ['03', '化工建模', '化工·建模·表达。'],
+        ['04', '课程产品', '工具变课程。'],
+      ],
+      manifestoKicker: 'brand thesis',
+      manifestoTitle: '硅基之后，还有余烬。',
+      manifestoBody:
+        '硅基是速度，余烬是判断。不反技术，反对停止思考。',
+      creed: [
+        ['不迷信技术', '工具越强，越需要判断力、边界感和复核机制。'],
+        ['不美化效率', '效率如果只让强者更强，就不该被轻易称为进步。'],
+        ['不把人写成背景', '技术叙事里最该被看见的，是被系统重新安排的人。'],
+      ],
+      territoriesTitle: '主站的四条内容线',
+      territoriesIntro: '批判·方法·底盘·课程。',
+      territories: [
+        {
+          index: 'A',
+          title: '技术与文明批判',
+          body: '写 AI、教育、劳动和平台系统：技术改变谁，遗漏谁，重新分配什么。',
+          tags: ['AI 时代', '教育滞后', '普通人处境'],
+        },
+        {
+          index: 'B',
+          title: 'AI 工作流与认知工具',
+          body: '从会点按钮，推进到会定义问题、组织上下文、设计验收。',
+          tags: ['Prompt', 'Context', 'Harness', 'Loop'],
+        },
+        {
+          index: 'C',
+          title: '化工、建模与科研表达',
+          body: '保留化工、有机、建模、写作和数据表达的专业底色。',
+          tags: ['化工', '建模', '科研训练'],
+        },
+        {
+          index: 'D',
+          title: '课程与教学产品',
+          body: '把工具链和 AI 方法整理成非计算机背景也能进入的课程。',
+          tags: ['教师培训', '课程设计', '工作流包'],
+        },
+      ],
+      coursesKicker: 'course section',
+      coursesTitle: '课程是主站的一条内容线。',
+      coursesIntro:
+        '面向化工教师的零基础 AI 课程。',
+      courseName: 'AI 编程与科研效率基础课',
+      courseBody:
+        '8 小时，可扩至 12 小时。交付一套个人 AI 工作流。',
+      courseFacts: [
+        ['受众', '化学、化工及相关学科教师'],
+        ['系统', 'Windows 优先，兼顾 macOS'],
+        ['工具', 'WorkBuddy、Claude Code、Codex、DeepSeek、GitHub'],
+        ['交付', '工作流图、工具选择表、Prompt 模板、验收清单'],
+      ],
+      courseLinks: [
+        ['全部课程', `${localizedRoot}/silicon-ashes/courses/`],
+        ['课程首页', courseIndex],
+        ['课程安排', `${courseBase}schedule.html`],
+        ['工具实操', `${courseBase}toolchain.html`],
+        ['打印讲义', `${courseBase}handout.html`],
+        ['PDF 讲义', `${courseBase}course-handout.pdf`],
+      ],
+      profileKicker: 'profile',
+      profileTitle: '个人资料',
+      profileIntro: '履历、项目、材料。',
+      profileLinks: [
+        ['个人简历首页', homeHref],
+        ['通用一页版', `${localizedRoot}/resume-onepage`],
+        ['保研评优版', `${localizedRoot}/resume-academic`],
+        ['求职实习版', `${localizedRoot}/resume-career`],
+        ['资源与工具', `${localizedRoot}/silicon-ashes/resources/`],
+        ['材料中心', `${localizedRoot}/materials`],
+        ['证明材料', `${localizedRoot}/evidence`],
+      ],
+      footerNote: '硅基余烬。',
+    }
+  : {
+      htmlLabel: 'personal brand site',
+      brand: 'Silicon Ashes',
+      switchHref: '/silicon-ashes/',
+      switchLabel: '中文',
+      nav: [
+        ['Manifesto', '#manifesto'],
+        ['Writing', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
+        ['Course', '#courses'],
+        ['Resources', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
+        ['About', isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'],
+      ],
+      eyebrow: 'Silicon Ashes',
+      title: 'Keep human judgment after technology starts running.',
+      lead: 'Less futurism, more human consequence.',
+      primary: 'Enter course section',
+      secondary: 'View resume',
+      signals: [
+        ['01', 'Technology criticism', 'AI, education, and human stakes.'],
+        ['02', 'AI workflows', 'Prompt, context, harness, loop.'],
+        ['03', 'Chemistry and modeling', 'Linking chemistry, modeling, and research expression.'],
+        ['04', 'Course products', 'Tools to courses.'],
+      ],
+      manifestoKicker: 'brand thesis',
+      manifestoTitle: 'After silicon, there are still ashes.',
+      manifestoBody:
+        'Silicon is speed. Ashes are judgment. Not anti-technology, anti-surrender.',
+      creed: [
+        ['Do not worship technology', 'Stronger tools demand stronger judgment, boundaries, and verification.'],
+        [
+          'Do not romanticize efficiency',
+          'Efficiency that only makes the strong stronger is not enough to call progress.',
+        ],
+        [
+          'Do not turn people into background',
+          'The people rearranged by systems are the real subject of technical stories.',
+        ],
+      ],
+      territoriesTitle: 'Four lines of the main site',
+      territoriesIntro:
+        'Criticism · method · grounding · courses.',
+      territories: [
+        {
+          index: 'A',
+          title: 'Technology and civilization criticism',
+          body: 'Writing about AI, education, labor, and platforms: who technology changes, omits, and redistributes.',
+          tags: ['AI age', 'Education lag', 'Ordinary people'],
+        },
+        {
+          index: 'B',
+          title: 'AI workflows and cognitive tools',
+          body: 'From operating to designing.',
+          tags: ['Prompt', 'Context', 'Harness', 'Loop'],
+        },
+        {
+          index: 'C',
+          title: 'Chemistry, modeling, and research expression',
+          body: 'Chemistry, modeling, expression.',
+          tags: ['Chemistry', 'Modeling', 'Research practice'],
+        },
+        {
+          index: 'D',
+          title: 'Courses and teaching products',
+          body: 'Turning AI methods and toolchains into courses for non-CS learners.',
+          tags: ['Teacher training', 'Course design', 'Workflow kit'],
+        },
+      ],
+      coursesKicker: 'course section',
+      coursesTitle: 'The course is a content line.',
+      coursesIntro:
+        'A zero-basis AI course for chemistry teachers.',
+      courseName: 'AI Programming and Research Efficiency Basics',
+      courseBody:
+        '8 hours, expandable to 12. Output: a personal AI workflow.',
+      courseFacts: [
+        ['Audience', 'Chemistry, chemical engineering, and related-field teachers'],
+        ['Systems', 'Windows first, macOS compatible'],
+        ['Tools', 'WorkBuddy, Claude Code, Codex, DeepSeek, GitHub'],
+        ['Output', 'Workflow map, tool table, prompt templates, review checklist'],
+      ],
+      courseLinks: [
+        ['All courses', `${localizedRoot}/silicon-ashes/courses/`],
+        ['Course home', courseIndex],
+        ['Schedule', `${courseBase}schedule.html`],
+        ['Toolchain', `${courseBase}toolchain.html`],
+        ['Printable handout', `${courseBase}handout.html`],
+        ['PDF handout', `${courseBase}course-handout.pdf`],
+      ],
+      profileKicker: 'profile',
+      profileTitle: 'Personal profile',
+      profileIntro: 'Resume, projects, materials.',
+      profileLinks: [
+        ['Resume home', homeHref],
+        ['One-page resume', `${localizedRoot}/resume-onepage`],
+        ['Academic resume', `${localizedRoot}/resume-academic`],
+        ['Career resume', `${localizedRoot}/resume-career`],
+        ['Resources', `${localizedRoot}/silicon-ashes/resources/`],
+        ['Materials hub', `${localizedRoot}/materials`],
+        ['Evidence gallery', `${localizedRoot}/evidence`],
+      ],
+      footerNote: 'Silicon Ashes.',
+    };
+---
+
+<div class="sa-shell" data-lang={lang}>
+  <a class="skip-link" href="#main">{isZh ? '跳到正文' : 'Skip to content'}</a>
+
+  <header class="sa-nav" aria-label={t.htmlLabel}>
+    <a class="sa-brand" href={isZh ? '/silicon-ashes/' : '/en/silicon-ashes/'} aria-label={t.brand}>
+      <span class="brand-mark">SA</span>
+      <span class="brand-name">{t.brand}</span>
+    </a>
+    <nav aria-label={isZh ? '主站导航' : 'Main navigation'}>
+      {t.nav.map(([label, href]) => <a href={href}>{label}</a>)}
+      <a href={t.switchHref}>{t.switchLabel}</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="sa-title">
+      <div class="flame-field" aria-hidden="true">
+        <canvas class="flame-canvas" data-flame-canvas></canvas>
+        <div class="flame-body"></div>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1 id="sa-title">{t.title}</h1>
+        <p class="lead">{t.lead}</p>
+        <div class="actions" aria-label={isZh ? '主要入口' : 'Primary links'}>
+          <a class="sa-button primary" href={isZh ? "/silicon-ashes/courses/" : "/en/silicon-ashes/courses/"}>{t.primary}</a>
+          <a class="sa-button quiet" href={homeHref}>{t.secondary}</a>
+        </div>
+      </div>
+      <aside class="hero-index" aria-label={isZh ? '品牌内容索引' : 'Brand content index'}>
+        <div class="type-lockup" aria-hidden="true">
+          <span>{t.brand}</span>
+          <span>Silicon Ashes</span>
+        </div>
+        <div class="signal-list">
+          {
+            t.signals.map(([number, title, body]) => (
+              <article>
+                <span>{number}</span>
+                <div>
+                  <h2>{title}</h2>
+                  <p>{body}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </aside>
+    </section>
+
+    <section id="manifesto" class="manifesto">
+      <div class="section-copy">
+        <p class="kicker">{t.manifestoKicker}</p>
+        <h2>{t.manifestoTitle}</h2>
+      </div>
+      <div class="manifesto-body">
+        <p>{t.manifestoBody}</p>
+        <div class="creed-list">
+          {
+            t.creed.map(([title, body]) => (
+              <article>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="territories" class="territories" aria-labelledby="territories-title">
+      <div class="section-copy wide">
+        <p class="kicker">territories</p>
+        <h2 id="territories-title">{t.territoriesTitle}</h2>
+        <p>{t.territoriesIntro}</p>
+      </div>
+      <div class="territory-ledger">
+        {
+          t.territories.map((item) => (
+            <article>
+              <span class="territory-index">{item.index}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+              <ul>
+                {item.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    
+    {latestPosts.length > 0 && (
+      <section class="writing-preview" aria-labelledby="writing-title">
+        <div class="section-copy wide">
+          <p class="kicker">{isZh ? '最新写作' : 'Latest writing'}</p>
+          <h2 id="writing-title">{isZh ? '最新文章' : 'Recent articles'}</h2>
+        </div>
+        <div class="writing-list">
+          {latestPosts.map((post) => (
+            <a class="writing-card" href={isZh ? `/silicon-ashes/writing/${post.id}/` : `/en/silicon-ashes/writing/${post.id}/`}>
+              <div class="writing-meta">
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                {post.data.readingTime && <span>{post.data.readingTime} min</span>}
+              </div>
+              <h3>{post.data.title}</h3>
+              {post.data.description && <p>{post.data.description}</p>}
+            </a>
+          ))}
+        </div>
+        <div class="writing-more">
+          <a href={isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'}>{isZh ? '全部文章 →' : 'All articles →'}</a>
+        </div>
+      </section>
+    )}
+
+    <section id="courses" class="courses" aria-labelledby="courses-title">
+      <div class="section-copy wide">
+        <p class="kicker">{t.coursesKicker}</p>
+        <h2 id="courses-title">{t.coursesTitle}</h2>
+        <p>{t.coursesIntro}</p>
+      </div>
+      <article class="course-panel">
+        <div class="course-main">
+          <p class="course-label">{isZh ? '已接入课程' : 'Connected course'}</p>
+          <h3>{t.courseName}</h3>
+          <p>{t.courseBody}</p>
+          <div class="course-actions">
+            {t.courseLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+          </div>
+        </div>
+        <dl class="course-facts">
+          {
+            t.courseFacts.map(([label, value]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </article>
+    </section>
+
+    <section id="profile" class="profile" aria-labelledby="profile-title">
+      <div class="section-copy wide">
+        <p class="kicker">{t.profileKicker}</p>
+        <h2 id="profile-title">{t.profileTitle}</h2>
+        <p>{t.profileIntro}</p>
+      </div>
+      <div class="profile-links">
+        {t.profileLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+      </div>
+    </section>
+  </main>
+
+  <footer class="sa-footer">
+    <p>{t.footerNote}</p>
+    <div>
+      <a href={`mailto:${email}`}>{email}</a>
+      <a href={githubUrl} target="_blank" rel="noreferrer">{github}</a>
+    </div>
+  </footer>
+</div>
+
+﻿<script>
+  const flameCanvas = document.querySelector("[data-flame-canvas]");
+
+  if (flameCanvas instanceof HTMLCanvasElement) {
+    const host = flameCanvas.parentElement;
+    const context = flameCanvas.getContext("2d", { alpha: true });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (host && context) {
+      const particles = [];
+      let width = 0;
+      let height = 0;
+      let frameId = 0;
+      let lastTime = performance.now();
+
+      const rand = (min, max) => min + Math.random() * (max - min);
+
+      const resize = () => {
+        const rect = host.getBoundingClientRect();
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        flameCanvas.width = Math.floor(width * ratio);
+        flameCanvas.height = Math.floor(height * ratio);
+        flameCanvas.style.width = width + "px";
+        flameCanvas.style.height = height + "px";
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      };
+
+      /* ── particle types: 0=flame, 1=ember, 2=spark, 3=smoke ── */
+
+      const emitFlame = (time) => {
+        const cx = width * 0.54 + Math.sin(time * 0.0012) * width * 0.04;
+        particles.push({
+          type: 0,
+          x: cx + rand(-width * 0.18, width * 0.18),
+          y: height * rand(0.74, 0.92),
+          vx: rand(-0.6, 0.6),
+          vy: rand(-3.2, -1.2),
+          size: rand(3, 11),
+          life: 0,
+          maxLife: rand(900, 2000),
+          heat: rand(0, 1),
+          drift: rand(0.002, 0.005),
+          seed: rand(0, 1000),
+        });
+      };
+
+      const emitEmber = () => {
+        particles.push({
+          type: 1,
+          x: width * 0.54 + rand(-width * 0.12, width * 0.12),
+          y: height * rand(0.6, 0.88),
+          vx: rand(-0.3, 0.3),
+          vy: rand(-1.6, -0.5),
+          size: rand(1.2, 3.2),
+          life: 0,
+          maxLife: rand(1800, 3800),
+          heat: rand(0.6, 1),
+          drift: rand(0.001, 0.003),
+          seed: rand(0, 1000),
+        });
+      };
+
+      const emitSpark = () => {
+        particles.push({
+          type: 2,
+          x: width * 0.54 + rand(-width * 0.08, width * 0.08),
+          y: height * rand(0.5, 0.82),
+          vx: rand(-1.8, 1.8),
+          vy: rand(-6, -3),
+          size: rand(0.6, 2),
+          life: 0,
+          maxLife: rand(600, 1400),
+          heat: 1,
+          drift: rand(0.003, 0.008),
+          seed: rand(0, 1000),
+          gravity: rand(0.008, 0.018),
+        });
+      };
+
+      const emitSmoke = () => {
+        particles.push({
+          type: 3,
+          x: width * 0.54 + rand(-width * 0.14, width * 0.14),
+          y: height * rand(0.25, 0.55),
+          vx: rand(-0.15, 0.15),
+          vy: rand(-0.8, -0.25),
+          size: rand(18, 48),
+          life: 0,
+          maxLife: rand(2600, 5000),
+          heat: 0,
+          drift: rand(0.0008, 0.002),
+          seed: rand(0, 1000),
+        });
+      };
+
+      /* ── draw flame body (inner glow, 4 layers) ── */
+      const drawBody = (time) => {
+        const cx = width * 0.54;
+        const by = height * 0.92;
+        const wave = Math.sin(time * 0.0018) * width * 0.03;
+        context.save();
+        context.globalCompositeOperation = "lighter";
+
+        const layerData = [
+          { spread: 0.38, topBase: 0.12, alpha: 0.14, colors: ["255,250,220", "255,200,80", "220,80,20"] },
+          { spread: 0.28, topBase: 0.20, alpha: 0.20, colors: ["255,235,170", "235,100,30", "200,60,15"] },
+          { spread: 0.18, topBase: 0.30, alpha: 0.28, colors: ["255,210,100", "200,60,15", "150,35,10"] },
+          { spread: 0.09, topBase: 0.40, alpha: 0.36, colors: ["255,245,200", "255,160,50", "180,40,10"] },
+        ];
+
+        for (let layer = 0; layer < 4; layer += 1) {
+          const d = layerData[layer];
+          const spread = d.spread * width;
+          const top = height * (d.topBase + Math.sin(time * 0.0015 + layer * 1.3) * 0.02);
+          const g = context.createLinearGradient(cx, top, cx, by);
+          g.addColorStop(0, "rgba(" + d.colors[0] + "," + d.alpha + ")");
+          g.addColorStop(0.35, "rgba(" + d.colors[1] + "," + (d.alpha * 0.85) + ")");
+          g.addColorStop(0.7, "rgba(" + d.colors[2] + "," + (d.alpha * 0.4) + ")");
+          g.addColorStop(1, "rgba(100,20,8,0)");
+
+          const wobble = wave * (layer + 1) * 0.22;
+          context.beginPath();
+          context.moveTo(cx + wobble, top);
+          context.bezierCurveTo(
+            cx - spread * 0.38, height * (0.38 + layer * 0.04),
+            cx - spread, height * 0.66, cx, by
+          );
+          context.bezierCurveTo(
+            cx + spread, height * 0.66,
+            cx + spread * 0.34, height * (0.37 + layer * 0.04),
+            cx + wobble * 0.8, top
+          );
+          context.closePath();
+          context.fillStyle = g;
+          context.filter = "blur(" + (6 + layer * 5) + "px)";
+          context.fill();
+        }
+        context.restore();
+      };
+
+      /* ── draw each particle type ── */
+      const drawFlame = (p, time) => {
+        const progress = p.life / p.maxLife;
+        const alpha = Math.max(0, Math.pow(1 - progress, 1.5));
+        const pulse = 1 + Math.sin(time * p.drift + p.seed) * 0.22;
+        const r = p.size * (1 + progress * 2.8) * pulse;
+        const g = context.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 2.8);
+        g.addColorStop(0, "rgba(255,250,200," + (alpha * 0.8) + ")");
+        g.addColorStop(0.18, "rgba(255,220,120," + (alpha * 0.55) + ")");
+        g.addColorStop(0.4, "rgba(255," + Math.floor(130 + p.heat * 80) + ",40," + (alpha * 0.3) + ")");
+        g.addColorStop(1, "rgba(120,30,8,0)");
+        context.beginPath();
+        context.fillStyle = g;
+        context.arc(p.x, p.y, r * 2.8, 0, Math.PI * 2);
+        context.fill();
+      };
+
+      const drawEmber = (p, time) => {
+        const progress = p.life / p.maxLife;
+        const alpha = Math.max(0, Math.pow(1 - progress, 0.9));
+        const flicker = 0.7 + Math.sin(time * 0.006 + p.seed) * 0.3;
+        const r = p.size * (1 + progress * 0.8);
+        const g = context.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 4);
+        g.addColorStop(0, "rgba(255,240,160," + (alpha * flicker) + ")");
+        g.addColorStop(0.3, "rgba(255," + Math.floor(160 + p.heat * 60) + ",30," + (alpha * 0.4 * flicker) + ")");
+        g.addColorStop(1, "rgba(160,40,10,0)");
+        context.beginPath();
+        context.fillStyle = g;
+        context.arc(p.x, p.y, r * 4, 0, Math.PI * 2);
+        context.fill();
+      };
+
+      const drawSpark = (p) => {
+        const progress = p.life / p.maxLife;
+        const alpha = Math.max(0, 1 - progress);
+        context.save();
+        context.globalAlpha = alpha;
+        context.fillStyle = "#fff8e0";
+        context.shadowColor = "rgba(255,200,60,0.8)";
+        context.shadowBlur = 8;
+        context.beginPath();
+        context.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+      };
+
+      const drawSmoke = (p) => {
+        const progress = p.life / p.maxLife;
+        const alpha = Math.max(0, Math.pow(1 - progress, 0.6)) * 0.08;
+        const r = p.size * (1 + progress * 1.8);
+        const g = context.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        g.addColorStop(0, "rgba(180,170,155," + alpha + ")");
+        g.addColorStop(1, "rgba(120,110,100,0)");
+        context.beginPath();
+        context.fillStyle = g;
+        context.arc(p.x, p.y, r, 0, Math.PI * 2);
+        context.fill();
+      };
+
+      const renderStatic = () => {
+        context.clearRect(0, 0, width, height);
+        drawBody(performance.now());
+      };
+
+      const tick = (time) => {
+        const delta = Math.min(40, time - lastTime);
+        lastTime = time;
+        context.clearRect(0, 0, width, height);
+        drawBody(time);
+        context.globalCompositeOperation = "lighter";
+
+        /* emission rates */
+        const narrow = width < 420;
+        for (let i = 0; i < (narrow ? 4 : 8); i++) emitFlame(time);
+        for (let i = 0; i < (narrow ? 2 : 4); i++) emitEmber();
+        if (Math.random() < (narrow ? 0.15 : 0.3)) emitSpark();
+        if (Math.random() < (narrow ? 0.06 : 0.12)) emitSmoke();
+
+        /* update + draw */
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life += delta;
+          const turbX = Math.sin(time * p.drift + p.seed) * 0.6;
+          const turbY = Math.cos(time * p.drift * 0.7 + p.seed * 0.5) * 0.15;
+          const wind = Math.sin(time * 0.0004) * 0.25;
+          p.x += p.vx + turbX + wind;
+          p.y += p.vy + turbY;
+          p.vx *= 0.99;
+          p.vy *= p.type === 2 ? 0.985 : 0.993;
+          if (p.type === 2 && p.gravity) p.vy += p.gravity;
+
+          if (p.life >= p.maxLife || p.y < -80) {
+            particles.splice(i, 1);
+          } else if (p.type === 0) {
+            drawFlame(p, time);
+          } else if (p.type === 1) {
+            drawEmber(p, time);
+          } else if (p.type === 2) {
+            drawSpark(p);
+          } else {
+            drawSmoke(p);
+          }
+        }
+        while (particles.length > 600) particles.shift();
+        frameId = window.requestAnimationFrame(tick);
+      };
+
+      const start = () => {
+        window.cancelAnimationFrame(frameId);
+        particles.length = 0;
+        resize();
+        if (reducedMotion.matches) {
+          renderStatic();
+          return;
+        }
+        lastTime = performance.now();
+        frameId = window.requestAnimationFrame(tick);
+      };
+
+      const observer = new ResizeObserver(start);
+      observer.observe(host);
+      reducedMotion.addEventListener("change", start);
+      window.addEventListener("pagehide", () => window.cancelAnimationFrame(frameId), { once: true });
+      start();
+    }
+  }
+</script>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+    background: #080705;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: #080705;
+    color: #e9e0d0;
+    font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  }
+
+  :global(*),
+  :global(*::before),
+  :global(*::after) {
+    box-sizing: border-box;
+  }
+
+  :global(a) {
+    color: inherit;
+  }
+
+  .sa-shell {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+      linear-gradient(90deg, rgba(226, 187, 116, 0.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(226, 187, 116, 0.028) 1px, transparent 1px),
+      linear-gradient(112deg, transparent 0 56%, rgba(168, 103, 38, 0.09) 56.2%, transparent 56.5%),
+      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
+    background-size:
+      64px 64px,
+      64px 64px,
+      auto,
+      auto;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 20;
+    transform: translateY(-160%);
+    border: 1px solid #d6a04f;
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: #e3b66c;
+    color: #100d09;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 180ms ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .sa-nav,
+  main,
+  .sa-footer {
+    width: min(100% - 44px, 1240px);
+    margin: 0 auto;
+  }
+
+  .sa-nav {
+    position: sticky;
+    top: 0;
+    z-index: 12;
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.2);
+    background: rgba(8, 7, 5, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .sa-brand {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgba(218, 166, 86, 0.7);
+    border-radius: 5px;
+    background: linear-gradient(135deg, rgba(238, 181, 92, 0.22), transparent 50%), #11100d;
+    color: #ffe4aa;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .brand-name {
+    color: #f3e3c5;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .sa-nav nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sa-nav nav a {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    border-radius: 4px;
+    padding: 0 10px;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+
+  .sa-nav nav a:hover,
+  .sa-nav nav a:focus-visible {
+    background: rgba(218, 166, 86, 0.1);
+    color: #ffe2aa;
+    outline: none;
+  }
+
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.55fr);
+    gap: 58px;
+    align-items: center;
+    min-height: min(820px, calc(100dvh - 76px));
+    padding: 58px 0 78px;
+  }
+
+  .hero-copy,
+  .hero-index {
+    position: relative;
+    z-index: 2;
+  }
+
+  .flame-field {
+    position: absolute;
+    right: max(-9vw, -130px);
+    bottom: 24px;
+    z-index: 0;
+    width: min(56vw, 710px);
+    height: min(74vh, 720px);
+    min-height: 440px;
+    pointer-events: none;
+    opacity: 0.9;
+    mix-blend-mode: screen;
+    filter: saturate(1.08);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 86%, transparent 100%);
+  }
+
+  .flame-canvas,
+  .flame-body {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .flame-canvas {
+    z-index: 2;
+  }
+
+  .flame-body {
+    z-index: 1;
+    background:
+      radial-gradient(ellipse at 50% 86%, rgba(255, 183, 72, 0.42), transparent 34%),
+      radial-gradient(ellipse at 54% 58%, rgba(209, 59, 21, 0.2), transparent 46%),
+      radial-gradient(ellipse at 56% 36%, rgba(255, 232, 154, 0.1), transparent 34%);
+    filter: blur(18px);
+    transform-origin: 50% 84%;
+    animation: flame-breathe 5.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes flame-breathe {
+    from {
+      transform: scaleX(0.92) scaleY(0.98) translateY(8px);
+      opacity: 0.72;
+    }
+
+    to {
+      transform: scaleX(1.04) scaleY(1.02) translateY(-7px);
+      opacity: 0.96;
+    }
+  }
+
+  .eyebrow,
+  .kicker,
+  .course-label {
+    margin: 0;
+    color: #d8aa63;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2 {
+    margin: 0;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  h1 {
+    max-width: 880px;
+    margin-top: 22px;
+    font-size: clamp(5.1rem, 7.2vw, 6.35rem);
+  }
+
+  .lead {
+    max-width: 720px;
+    margin: 28px 0 0;
+    color: rgba(233, 224, 208, 0.76);
+    font-size: 20px;
+    line-height: 1.88;
+    text-wrap: pretty;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .sa-button,
+  .course-actions a,
+  .profile-links a {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(218, 166, 86, 0.42);
+    border-radius: 4px;
+    padding: 0 18px;
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease,
+      color 160ms ease;
+  }
+
+  .sa-button.primary {
+    border-color: #d8aa63;
+    background: #d8aa63;
+    color: #15100a;
+  }
+
+  .sa-button.quiet,
+  .course-actions a,
+  .profile-links a {
+    color: #f1dfbd;
+  }
+
+  .sa-button:hover,
+  .course-actions a:hover,
+  .profile-links a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(241, 223, 189, 0.72);
+    background: rgba(241, 223, 189, 0.08);
+  }
+
+  .sa-button:active,
+  .course-actions a:active,
+  .profile-links a:active {
+    transform: translateY(0);
+  }
+
+  .sa-button:focus-visible,
+  .course-actions a:focus-visible,
+  .profile-links a:focus-visible {
+    outline: 2px solid #f1c36f;
+    outline-offset: 3px;
+  }
+
+  .hero-index {
+    border-left: 1px solid rgba(218, 166, 86, 0.26);
+    padding-left: 28px;
+  }
+
+  .type-lockup {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .type-lockup span:first-child {
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .type-lockup span:last-child {
+    color: rgba(168, 177, 176, 0.68);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 14px;
+  }
+
+  .signal-list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+  }
+
+  .signal-list article {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 16px;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 18px 0;
+  }
+
+  .signal-list article > span,
+  .territory-index {
+    color: #a8b1b0;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .signal-list h2,
+  .territory-ledger h3,
+  .creed-list h3,
+  .course-panel h3 {
+    margin: 0;
+    color: #f2dfbd;
+    font-size: 22px;
+    line-height: 1.24;
+  }
+
+  .signal-list p,
+  .manifesto-body p,
+  .section-copy p,
+  .territory-ledger p,
+  .course-main p,
+  .course-facts dd,
+  .creed-list p,
+  .sa-footer p {
+    color: rgba(233, 224, 208, 0.72);
+    line-height: 1.78;
+  }
+
+  .signal-list p {
+    margin: 7px 0 0;
+    font-size: 14px;
+  }
+
+  .manifesto,
+  .territories,
+  .courses,
+  .profile {
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 92px 0;
+  }
+
+  .manifesto {
+    display: grid;
+    grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.78fr);
+    gap: 70px;
+  }
+
+  .section-copy h2 {
+    margin-top: 14px;
+    max-width: 760px;
+    font-size: 56px;
+  }
+
+  .section-copy.wide {
+    max-width: 860px;
+  }
+
+  .section-copy > p:not(.kicker) {
+    max-width: 720px;
+    margin: 22px 0 0;
+    font-size: 18px;
+  }
+
+  .manifesto-body > p {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .creed-list {
+    display: grid;
+    gap: 1px;
+    margin-top: 34px;
+    border: 1px solid rgba(218, 166, 86, 0.16);
+    background: rgba(218, 166, 86, 0.16);
+  }
+
+  .creed-list article {
+    padding: 22px;
+    background: rgba(14, 13, 11, 0.94);
+  }
+
+  .creed-list p {
+    margin: 8px 0 0;
+  }
+
+  .territory-ledger {
+    display: grid;
+    margin-top: 42px;
+    border-top: 1px solid rgba(218, 166, 86, 0.2);
+  }
+
+  .territory-ledger article {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) minmax(220px, 0.32fr);
+    gap: 32px;
+    align-items: start;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.2);
+    padding: 30px 0;
+  }
+
+  .territory-ledger p {
+    max-width: 720px;
+    margin: 12px 0 0;
+    font-size: 16px;
+  }
+
+  .territory-ledger ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .territory-ledger li {
+    border: 1px solid rgba(168, 177, 176, 0.24);
+    border-radius: 4px;
+    padding: 6px 9px;
+    color: rgba(220, 228, 224, 0.72);
+    font-size: 13px;
+  }
+
+  .course-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(310px, 0.44fr);
+    gap: 40px;
+    margin-top: 42px;
+    border: 1px solid rgba(218, 166, 86, 0.28);
+    border-radius: 8px;
+    padding: 34px;
+    background: linear-gradient(135deg, rgba(216, 170, 99, 0.12), transparent 42%), rgba(13, 12, 10, 0.92);
+    box-shadow: 0 34px 84px rgba(0, 0, 0, 0.28);
+  }
+
+  .course-panel h3 {
+    margin-top: 14px;
+    font-size: 36px;
+  }
+
+  .course-main > p:not(.course-label) {
+    max-width: 720px;
+    margin: 18px 0 0;
+    font-size: 17px;
+  }
+
+  .course-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .course-actions a {
+    min-height: 40px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  .course-facts {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+  }
+
+  .course-facts div {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    gap: 18px;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 17px 0;
+  }
+
+  .course-facts dt {
+    color: #d8aa63;
+    font-weight: 850;
+  }
+
+  .course-facts dd {
+    margin: 0;
+  }
+
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 34px;
+  }
+
+  .profile-links a {
+    min-height: 42px;
+    padding: 0 14px;
+    background: rgba(241, 223, 189, 0.035);
+    font-size: 14px;
+  }
+
+  .sa-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: start;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 28px 0 40px;
+  }
+
+  .sa-footer p {
+    max-width: 560px;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .sa-footer div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: flex-end;
+  }
+
+  .sa-footer a {
+    display: inline-flex;
+    min-height: 36px;
+    min-width: 36px;
+    align-items: center;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .sa-footer a:hover {
+    color: #f2dfbd;
+  }
+
+  @media (max-width: 1040px) {
+    .hero,
+    .manifesto,
+    .course-panel,
+    .sa-footer {
+      grid-template-columns: 1fr;
+    }
+
+    .hero {
+      min-height: auto;
+    }
+
+    .flame-field {
+      right: -18vw;
+      bottom: auto;
+      top: 22px;
+      width: min(92vw, 620px);
+      height: 520px;
+      opacity: 0.48;
+    }
+
+    .hero-index {
+      border-left: 0;
+      border-top: 1px solid rgba(218, 166, 86, 0.22);
+      padding-top: 30px;
+      padding-left: 0;
+    }
+
+    .territory-ledger article {
+      grid-template-columns: 56px 1fr;
+    }
+
+    .territory-ledger ul {
+      grid-column: 2;
+      justify-content: flex-start;
+    }
+
+    .sa-footer div {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .sa-nav,
+    main,
+    .sa-footer {
+      width: min(100% - 28px, 1240px);
+    }
+
+    .sa-nav {
+      position: static;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 14px 0;
+    }
+
+    .sa-nav nav {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .hero {
+      gap: 42px;
+      padding: 58px 0 52px;
+    }
+
+    .flame-field {
+      right: -36vw;
+      top: 18px;
+      width: 124vw;
+      height: 440px;
+      min-height: 360px;
+      opacity: 0.34;
+    }
+
+    h1 {
+      font-size: 3.65rem;
+    }
+
+    .lead {
+      font-size: 17px;
+    }
+
+    .section-copy h2 {
+      font-size: 2.6rem;
+    }
+
+    .manifesto,
+    .territories,
+    .courses,
+    .profile {
+      padding: 60px 0;
+    }
+
+    .type-lockup span:first-child {
+      font-size: 42px;
+    }
+
+    .actions,
+    .course-actions,
+    .profile-links {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .signal-list article,
+    .territory-ledger article,
+    .course-facts div {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .territory-ledger ul {
+      grid-column: auto;
+    }
+
+    .course-panel {
+      padding: 22px;
+    }
+
+    .course-panel h3 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    h1 {
+      font-size: 3.05rem;
+    }
+
+    .section-copy h2 {
+      font-size: 2.15rem;
+    }
+
+    .brand-name {
+      font-size: 18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flame-body {
+      animation: none;
+    }
+  }
+
+  /* writing preview */
+  .writing-preview {
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 92px 0;
+  }
+
+  .writing-list {
+    display: grid;
+    gap: 0;
+    margin-top: 42px;
+  }
+
+  .writing-card {
+    display: block;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.12);
+    text-decoration: none;
+    transition: background 160ms ease;
+  }
+
+  .writing-card:hover {
+    background: rgba(218, 166, 86, 0.03);
+  }
+
+  .writing-meta {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .writing-meta time,
+  .writing-meta span {
+    color: rgba(168, 177, 176, 0.6);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+  }
+
+  .writing-card h3 {
+    margin: 0;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  .writing-card p {
+    margin: 8px 0 0;
+    color: rgba(233, 224, 208, 0.6);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .writing-more {
+    margin-top: 28px;
+  }
+
+  .writing-more a {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    color: #d8aa63;
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .writing-more a:hover {
+    color: #ffe4aa;
+  }
+
+</style>

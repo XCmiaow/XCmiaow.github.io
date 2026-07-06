@@ -1,4 +1,4 @@
-const CACHE = 'resume-v7';
+const CACHE = 'resume-v8';
 const APP_SHELL = [
   '/',
   '/en/',
@@ -22,6 +22,16 @@ const APP_SHELL = [
   '/manifest.json',
   '/blog/',
   '/en/blog/',
+  '/silicon-ashes/',
+  '/en/silicon-ashes/',
+  '/silicon-ashes/writing/',
+  '/en/silicon-ashes/writing/',
+  '/silicon-ashes/courses/',
+  '/en/silicon-ashes/courses/',
+  '/silicon-ashes/resources/',
+  '/en/silicon-ashes/resources/',
+  '/silicon-ashes/about/',
+  '/en/silicon-ashes/about/',
 ];
 
 self.addEventListener('install', (e) => {

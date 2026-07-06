@@ -1,0 +1,679 @@
+---
+import common from '../data/common.json';
+
+export interface Props {
+  lang: 'zh' | 'en';
+}
+
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
+const email = common.person.email;
+const github = common.person.github;
+const githubUrl = `https://${github}`;
+
+const t = isZh
+  ? {
+      htmlLabel: '课程体系',
+      brand: '硅基余烬',
+      nav: [
+        ['主站', homeHref],
+        ['宣言', homeHref + '#manifesto'],
+        ['资源', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
+        ['简历', isZh ? '/' : '/en/'],
+      ],
+      eyebrow: '课程体系',
+      title: '从一个课程到一套体系',
+      lead: '面向化工教师与零基础用户，把 AI 方法和工具链整理成可进入的课程。',
+      seriesLabel: '课程系列',
+      series: [
+        {
+          index: '01',
+          title: 'AI 编程与科研效率基础课',
+          body: '8 小时标准课，可扩至 12 小时。交付一套个人 AI 工作流。',
+          audience: '化学、化工教师',
+          duration: '8–12 小时',
+          tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
+          status: 'active',
+          statusLabel: '已开课',
+          href: '/silicon-ashes/courses/ai-research-efficiency/',
+        },
+        {
+          index: '02',
+          title: 'AI 工作流设计进阶',
+          body: '从会用工具到会设计任务：Prompt、Context、Harness、Loop 的实战深化。',
+          audience: '已有 AI 基础的教师',
+          duration: '6 小时',
+          tools: ['Claude Code', 'Codex', 'DeepSeek'],
+          status: 'planned',
+          statusLabel: '筹备中',
+          href: null,
+        },
+        {
+          index: '03',
+          title: '化工建模与科研表达',
+          body: '连接化工专业、数据建模与论文写作，保留专业底色的同时提升表达力。',
+          audience: '化工、有机化学研究者',
+          duration: '规划中',
+          tools: ['Python', 'LaTeX', 'Origin'],
+          status: 'concept',
+          statusLabel: '规划中',
+          href: null,
+        },
+        {
+          index: '04',
+          title: '教师 AI 素养内训师',
+          body: '培训培训师：把上述课程体系转化为可复制的教学包。',
+          audience: '高校教师发展中心',
+          duration: '规划中',
+          tools: ['课程设计', '教学包'],
+          status: 'concept',
+          statusLabel: '规划中',
+          href: null,
+        },
+      ],
+      footerNote: '硅基余烬 · 课程体系',
+    }
+  : {
+      htmlLabel: 'Course system',
+      brand: 'Silicon Ashes',
+      nav: [
+        ['Main site', homeHref],
+        ['Manifesto', homeHref + '#manifesto'],
+        ['Resources', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
+        ['Resume', isZh ? '/' : '/en/'],
+      ],
+      eyebrow: 'Course system',
+      title: 'From one course to a full system',
+      lead: 'Turning AI methods and toolchains into courses for chemistry teachers and zero-basis learners.',
+      seriesLabel: 'Course series',
+      series: [
+        {
+          index: '01',
+          title: 'AI Programming and Research Efficiency Basics',
+          body: '8 hours, expandable to 12. Output: a personal AI workflow kit.',
+          audience: 'Chemistry and chemical-engineering teachers',
+          duration: '8–12 hours',
+          tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
+          status: 'active',
+          statusLabel: 'Active',
+          href: '/silicon-ashes/courses/ai-research-efficiency/',
+        },
+        {
+          index: '02',
+          title: 'Advanced AI Workflow Design',
+          body: 'From using tools to designing tasks: Prompt, Context, Harness, Loop in practice.',
+          audience: 'Teachers with AI basics',
+          duration: '6 hours',
+          tools: ['Claude Code', 'Codex', 'DeepSeek'],
+          status: 'planned',
+          statusLabel: 'Planned',
+          href: null,
+        },
+        {
+          index: '03',
+          title: 'Chemical Modeling and Research Expression',
+          body: 'Linking chemical engineering, data modeling, and thesis writing with professional depth.',
+          audience: 'Chemical engineering and organic chemistry researchers',
+          duration: 'TBD',
+          tools: ['Python', 'LaTeX', 'Origin'],
+          status: 'concept',
+          statusLabel: 'Concept',
+          href: null,
+        },
+        {
+          index: '04',
+          title: 'Teacher AI Literacy Trainer',
+          body: 'Train the trainer: converting the above course system into a replicable teaching kit.',
+          audience: 'University faculty development centers',
+          duration: 'TBD',
+          tools: ['Course design', 'Teaching kit'],
+          status: 'concept',
+          statusLabel: 'Concept',
+          href: null,
+        },
+      ],
+      footerNote: 'Silicon Ashes · Course system',
+    };
+---
+
+<div class="ch-shell" data-lang={lang}>
+  <a class="skip-link" href="#main">{isZh ? '跳到正文' : 'Skip to content'}</a>
+
+  <header class="ch-nav" aria-label={t.htmlLabel}>
+    <a class="ch-brand" href={homeHref} aria-label={t.brand}>
+      <span class="brand-mark">SA</span>
+      <span class="brand-name">{t.brand}</span>
+    </a>
+    <nav aria-label={isZh ? '课程导航' : 'Course navigation'}>
+      {t.nav.map(([label, href]) => <a href={href}>{label}</a>)}
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="ch-title">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1 id="ch-title">{t.title}</h1>
+      <p class="lead">{t.lead}</p>
+    </section>
+
+    <section class="series" aria-labelledby="series-title">
+      <div class="series-head">
+        <p class="kicker">{t.seriesLabel}</p>
+        <h2 id="series-title">{isZh ? '四个系列，从基础到深化' : 'Four series, from basics to depth'}</h2>
+      </div>
+
+      <div class="series-grid">
+        {t.series.map((s) => (
+          <article class={`series-card status-${s.status}`}>
+            <div class="card-head">
+              <span class="card-index">{s.index}</span>
+              <span class={`status-badge status-${s.status}`}>{s.statusLabel}</span>
+            </div>
+            <h3>{s.title}</h3>
+            <p class="card-body">{s.body}</p>
+            <dl class="card-meta">
+              <div>
+                <dt>{isZh ? '受众' : 'Audience'}</dt>
+                <dd>{s.audience}</dd>
+              </div>
+              <div>
+                <dt>{isZh ? '时长' : 'Duration'}</dt>
+                <dd>{s.duration}</dd>
+              </div>
+            </dl>
+            <ul class="card-tools">
+              {s.tools.map((tool) => <li>{tool}</li>)}
+            </ul>
+            {s.href && (
+              <a class="card-cta" href={s.href}>
+                {isZh ? '进入课程 →' : 'Enter course →'}
+              </a>
+            )}
+            {!s.href && (
+              <span class="card-cta disabled">
+                {isZh ? '敬请期待' : 'Coming soon'}
+              </span>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <footer class="ch-footer">
+    <p>{t.footerNote}</p>
+    <div>
+      <a href={githubUrl}>GitHub</a>
+      <a href={`mailto:${email}`}>Email</a>
+    </div>
+  </footer>
+</div>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+    background: #080705;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: #080705;
+    color: #e9e0d0;
+    font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  }
+
+  :global(*),
+  :global(*::before),
+  :global(*::after) {
+    box-sizing: border-box;
+  }
+
+  :global(a) {
+    color: inherit;
+  }
+
+  .ch-shell {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+      linear-gradient(90deg, rgba(226, 187, 116, 0.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(226, 187, 116, 0.028) 1px, transparent 1px),
+      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
+    background-size: 64px 64px, 64px 64px, auto, auto;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 20;
+    transform: translateY(-160%);
+    border: 1px solid #d6a04f;
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: #e3b66c;
+    color: #100d09;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 180ms ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .ch-nav,
+  main,
+  .ch-footer {
+    width: min(100% - 44px, 1240px);
+    margin: 0 auto;
+  }
+
+  .ch-nav {
+    position: sticky;
+    top: 0;
+    z-index: 12;
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.2);
+    background: rgba(8, 7, 5, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .ch-brand {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgba(218, 166, 86, 0.7);
+    border-radius: 5px;
+    background: linear-gradient(135deg, rgba(238, 181, 92, 0.22), transparent 50%), #11100d;
+    color: #ffe4aa;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .brand-name {
+    color: #f3e3c5;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .ch-nav nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ch-nav nav a {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    border-radius: 4px;
+    padding: 0 10px;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 160ms ease, color 160ms ease;
+  }
+
+  .ch-nav nav a:hover,
+  .ch-nav nav a:focus-visible {
+    background: rgba(218, 166, 86, 0.1);
+    color: #ffe2aa;
+    outline: none;
+  }
+
+  /* ── hero ── */
+  .hero {
+    padding: 100px 0 60px;
+    max-width: 880px;
+  }
+
+  .eyebrow,
+  .kicker {
+    margin: 0;
+    color: #d8aa63;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2 {
+    margin: 0;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  h1 {
+    max-width: 880px;
+    margin-top: 22px;
+    font-size: clamp(3.2rem, 5.5vw, 4.8rem);
+  }
+
+  .lead {
+    max-width: 680px;
+    margin: 28px 0 0;
+    color: rgba(233, 224, 208, 0.76);
+    font-size: 20px;
+    line-height: 1.88;
+    text-wrap: pretty;
+  }
+
+  /* ── series section ── */
+  .series {
+    padding: 60px 0 120px;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+  }
+
+  .series-head {
+    margin-bottom: 48px;
+  }
+
+  .series-head h2 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    margin-top: 14px;
+  }
+
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .series-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(218, 166, 86, 0.18);
+    border-radius: 8px;
+    padding: 32px;
+    background: rgba(13, 12, 10, 0.6);
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .series-card:hover {
+    border-color: rgba(218, 166, 86, 0.36);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+  }
+
+  .series-card.status-active {
+    border-color: rgba(218, 166, 86, 0.32);
+    background:
+      linear-gradient(135deg, rgba(216, 170, 99, 0.08), transparent 40%),
+      rgba(13, 12, 10, 0.7);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .card-index {
+    color: #a8b1b0;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.35;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .status-badge.status-active {
+    background: rgba(108, 190, 120, 0.15);
+    color: #6cbe78;
+    border: 1px solid rgba(108, 190, 120, 0.3);
+  }
+
+  .status-badge.status-planned {
+    background: rgba(218, 166, 86, 0.12);
+    color: #d8aa63;
+    border: 1px solid rgba(218, 166, 86, 0.28);
+  }
+
+  .status-badge.status-concept {
+    background: rgba(168, 177, 176, 0.08);
+    color: rgba(168, 177, 176, 0.68);
+    border: 1px solid rgba(168, 177, 176, 0.18);
+  }
+
+  h3 {
+    margin: 0;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .card-body {
+    margin: 14px 0 0;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 16px;
+    line-height: 1.78;
+  }
+
+  .card-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 24px 0 0;
+    border-top: 1px solid rgba(218, 166, 86, 0.12);
+  }
+
+  .card-meta div {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.12);
+    padding: 14px 0;
+  }
+
+  .card-meta div:first-child {
+    padding-right: 16px;
+    border-right: 1px solid rgba(218, 166, 86, 0.12);
+  }
+
+  .card-meta dt {
+    color: #d8aa63;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .card-meta dd {
+    margin: 0;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 14px;
+  }
+
+  .card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card-tools li {
+    border: 1px solid rgba(168, 177, 176, 0.2);
+    border-radius: 4px;
+    padding: 5px 9px;
+    color: rgba(220, 228, 224, 0.68);
+    font-size: 13px;
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    margin-top: auto;
+    padding-top: 20px;
+    color: #f1dfbd;
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .card-cta:hover {
+    color: #ffe4aa;
+  }
+
+  .card-cta.disabled {
+    color: rgba(168, 177, 176, 0.4);
+    cursor: default;
+  }
+
+  /* ── footer ── */
+  .ch-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: start;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 28px 0 40px;
+  }
+
+  .ch-footer p {
+    max-width: 560px;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .ch-footer div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: flex-end;
+  }
+
+  .ch-footer a {
+    display: inline-flex;
+    min-height: 36px;
+    min-width: 36px;
+    align-items: center;
+    color: rgba(233, 224, 208, 0.72);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .ch-footer a:hover {
+    color: #f2dfbd;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 860px) {
+    .series-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .ch-nav,
+    main,
+    .ch-footer {
+      width: min(100% - 28px, 1240px);
+    }
+
+    .ch-nav {
+      position: static;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 14px 0;
+    }
+
+    .ch-nav nav {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .hero {
+      padding: 58px 0 42px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+    }
+
+    .series {
+      padding: 48px 0 80px;
+    }
+
+    .series-card {
+      padding: 24px;
+    }
+
+    .card-index {
+      font-size: 28px;
+    }
+
+    .card-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .card-meta div:first-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    .ch-footer {
+      grid-template-columns: 1fr;
+    }
+
+    .ch-footer div {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 420px) {
+    h1 {
+      font-size: 2.3rem;
+    }
+
+    .brand-name {
+      font-size: 18px;
+    }
+  }
+</style>

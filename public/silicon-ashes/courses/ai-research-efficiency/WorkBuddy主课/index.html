@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="WorkBuddy科研加速实战课——5讲10小时，从平台认知到全流程实战，亲手把AI嵌入科研流程。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230f1a2e'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23faf9f6'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy 主课：科研加速实战课</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.wb-hero{text-align:center;padding:44px 0 34px}
+.wb-hero h1{font-size:2rem;border:0;margin-bottom:12px;background:linear-gradient(135deg,var(--ink),var(--sienna));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wb-hero h1::after{display:none}
+.wb-hero .tagline{font-size:1.05rem;color:var(--slate);max-width:650px;margin:0 auto 18px;font-family:"Noto Serif SC","Georgia",serif;font-style:italic}
+.wb-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:22px 0 30px}
+.wb-ov-card{background:transparent;border:1px solid var(--border);border-radius:var(--radius-md);padding:20px 16px;text-align:center;transition:border-color var(--duration-slow) var(--ease-out),transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out)}
+.wb-ov-card:hover{transform:translateY(-2px);border-color:var(--sienna)}
+.wb-ov-card .ov-icon{font-size:1.5rem;margin-bottom:8px;color:var(--sienna)}
+.wb-ov-card .ov-val{font-size:1.3rem;font-weight:700;color:var(--ink)}
+.wb-ov-card .ov-label{font-size:.78rem;color:var(--muted);margin-top:4px}
+.lecture-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:22px 0}
+.lecture-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;background:transparent;transition:border-color var(--duration-slow) var(--ease-out),transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out)}
+.lecture-card:hover{transform:translateY(-2px);border-color:var(--sienna)}
+.lecture-card .lec-num{font-size:.78rem;color:var(--sienna);font-weight:600;margin-bottom:6px}
+.lecture-card h3{font-size:1.05rem;border:0;padding:0;margin:0 0 10px;color:var(--ink)}
+.lecture-card .lec-desc{font-size:.86rem;color:var(--slate);margin-bottom:16px;line-height:1.75}
+.lecture-card a{display:inline-block;color:var(--paper);background:var(--ink);padding:8px 20px;border-radius:var(--radius-sm);text-decoration:none;font-size:.84rem;font-weight:500;transition:background var(--duration-fast) var(--ease-out),transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out)}
+.lecture-card a:hover{background:var(--sienna);transform:translateY(-1px);box-shadow:var(--shadow-sm);text-decoration:none}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">跳转到内容</a>
+
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+
+<main id="main-content">
+
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <span class="current">WorkBuddy 主课</span>
+</nav>
+
+<div class="wb-hero">
+<h1>WorkBuddy 主课：科研加速实战课</h1>
+<p class="tagline">从"我知道 AI 能做什么"到"我每天都在用 AI 高效工作"——亲手把 AI 嵌入你的科研流程</p>
+</div>
+
+<div class="wb-overview">
+  <div class="wb-ov-card">
+    <div class="ov-icon"><i class="fa-solid fa-book-open"></i></div>
+    <div class="ov-val">5 讲</div>
+    <div class="ov-label">系统课程</div>
+  </div>
+  <div class="wb-ov-card">
+    <div class="ov-icon"><i class="fa-regular fa-clock"></i></div>
+    <div class="ov-val">10 小时</div>
+    <div class="ov-label">实操时长</div>
+  </div>
+  <div class="wb-ov-card">
+    <div class="ov-icon"><i class="fa-solid fa-users"></i></div>
+    <div class="ov-val">&le;5 人</div>
+    <div class="ov-label">小班教学</div>
+  </div>
+  <div class="wb-ov-card">
+    <div class="ov-icon"><i class="fa-solid fa-flask"></i></div>
+    <div class="ov-val">实操为主</div>
+    <div class="ov-label">80% 动手</div>
+  </div>
+  <div class="wb-ov-card">
+    <div class="ov-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+    <div class="ov-val">单一导师</div>
+    <div class="ov-label">全程指导</div>
+  </div>
+</div>
+
+<div class="box-concept">
+<h3 style="font-size:.95rem;color:var(--success);margin:0 0 8px"><i class="fa-solid fa-lightbulb" style="margin-right:5px"></i> 课程哲学</h3>
+<p>很多科研工作者听说过 AI 工具，甚至用过 ChatGPT，但 <strong>"知道 AI 存在"和"让 AI 成为你工作流的一部分"之间有一条鸿沟</strong>。这门课的目的就是带你跨过去。</p>
+<p>我们不做"功能介绍"，只做"带着你做"：每节课都有一个可交付的成果；每节课都解决一个真实的科研痛点；每节课都让你带着"回家就能用"的技能离开。</p>
+</div>
+
+<h2><i class="fa-solid fa-list-check" style="color:var(--sienna);margin-right:8px;font-size:1rem"></i> 课程大纲</h2>
+
+<div class="lecture-grid">
+
+<div class="lecture-card">
+  <div class="lec-num">第 1 讲</div>
+  <h3>平台认知 · 模式选择 · 快速上手</h3>
+  <div class="lec-desc">WorkBuddy 是什么？Ask / Plan / Craft 三种模式怎么选？亲手完成第一个任务——做出课题组介绍网页。</div>
+  <a href="WB-第1讲-平台认知.html"><i class="fa-solid fa-arrow-right" style="margin-right:4px"></i> 进入第 1 讲</a>
+</div>
+
+<div class="lecture-card">
+  <div class="lec-num">第 2 讲</div>
+  <h3>科研写作 · 文献管理 · 知识沉淀</h3>
+  <div class="lec-desc">论文翻译/润色/格式/投稿四件套。Zotero 联动，批量文献分类。封装你的第一个科研 Skill。</div>
+  <a href="WB-第2讲-科研写作.html"><i class="fa-solid fa-arrow-right" style="margin-right:4px"></i> 进入第 2 讲</a>
+</div>
+
+<div class="lecture-card">
+  <div class="lec-num">第 3 讲</div>
+  <h3>数据分析 · 可视化 · 实验设计</h3>
+  <div class="lec-desc">真实催化数据跑完"清洗→统计→图表→文字"全链路。六类科研图表模板。AI 辅助实验设计。</div>
+  <a href="WB-第3讲-数据分析.html"><i class="fa-solid fa-arrow-right" style="margin-right:4px"></i> 进入第 3 讲</a>
+</div>
+
+<div class="lecture-card">
+  <div class="lec-num">第 4 讲</div>
+  <h3>高级功能：Skills · MCP · Agent 协作</h3>
+  <div class="lec-desc">从安装 Skill 到创造 Skill。MCP 连接第三方工具。多 Agent 并行协作。手机远程遥控 PC。</div>
+  <a href="WB-第4讲-高级功能.html"><i class="fa-solid fa-arrow-right" style="margin-right:4px"></i> 进入第 4 讲</a>
+</div>
+
+<div class="lecture-card">
+  <div class="lec-num">第 5 讲</div>
+  <h3>科研全流程实战 · 工作流沉淀 · 结课</h3>
+  <div class="lec-desc">一篇论文的 AI 加速全链路复盘。设计你的"个人科研 AI 工作流"。成果展示、互评、结课。</div>
+  <a href="WB-第5讲-全流程实战.html"><i class="fa-solid fa-arrow-right" style="margin-right:4px"></i> 进入第 5 讲</a>
+</div>
+
+</div>
+
+<div class="box-key" style="margin-top:28px">
+<p style="margin:0"><i class="fa-solid fa-circle-info" style="color:var(--sienna);margin-right:5px"></i> <strong>前置要求：</strong>建议先完成<a href="../前置课程/index.html">前置课程「AI 认知基础营」</a>的学习，建立对 AI 的基本认知。如果已经了解 LLM、Token、上下文窗口等基本概念，可以直接开始。</p>
+</div>
+
+<nav class="page-nav">
+  <a href="../index.html"><i class="fa-solid fa-arrow-left" style="margin-right:4px"></i> 返回课程首页</a>
+  <a href="WB-第1讲-平台认知.html">开始第 1 讲 <i class="fa-solid fa-arrow-right" style="margin-left:4px"></i></a>
+</nav>
+
+</main>
+
+<script src="../theme.js"></script>
+
+</body>
+</html>

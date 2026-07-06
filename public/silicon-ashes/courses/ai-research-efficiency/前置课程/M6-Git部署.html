@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M6 · Git 极简 + Pages 部署</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="index.html">前置课程</a><span class="sep">›</span>
+  <span class="current">M6 · Git 极简 + Pages 部署</span>
+</nav>
+
+<h1>M6 · Git 极简 + Pages 部署</h1>
+<p class="subtitle">5 分钟理解版本控制 + 10 分钟获得第一个公开网站</p>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 15 分钟</div></div>
+<div class="meta-card"><div class="label">成果</div><div class="value">一个全世界可访问的个人学术页面</div></div>
+</div>
+
+<!-- ==================== Part 1: Git 5min ==================== -->
+<h2>第一部分：Git 在 5 分钟内——只讲概念</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">关键词</div><div class="value">版本控制、init、add、commit、push</div></div>
+</div>
+
+<h3>Git 是什么？</h3>
+
+<div class="metaphor">
+<div class="mt">Git = Word 修订模式，但聪明 100 倍</div>
+<div class="mb">
+你在 Word 里写论文，打开修订模式。每次修改都有一个记录：谁改的、什么时候改的、改了什么。你可以随时回退到昨天的版本。<br><br>
+<strong>Git 就是全自动的修订模式——你的整个项目文件夹。</strong><br><br>
+写代码、写论文、做数据分析——每一次保存（commit）都有记录。三个月前的版本随时可以恢复。和同事协作时，谁改了哪一行一清二楚。<br><br>
+区别在于：Word 修订模式的记录是一次性的（关闭就没了），Git 的记录是<strong>永久</strong>的、<strong>可以跳转到任意历史节点</strong>的。
+</div>
+</div>
+
+<h3>GitHub 是什么？</h3>
+
+<div class="metaphor">
+<div class="mt">GitHub = 网盘 + 社交网络，只是里面装的是代码（和 HTML 网页）</div>
+<div class="mb">
+<strong>网盘功能</strong>：把你的项目上传到云上，换电脑也能继续工作，丢了电脑代码还在。<br>
+<strong>社交功能</strong>：别人可以看到你的项目、给你提建议（Issue）、帮你改代码（Pull Request）。<br><br>
+更重要的是：<strong>GitHub Pages 可以免费把你的 HTML 文件变成一个真正的网站。</strong>Web 地址是 <code>你的用户名.github.io/项目名</code>——全世界任何人都能访问。
+</div>
+</div>
+
+<h3>全部只学四个词</h3>
+
+<table>
+<tr><th>命令</th><th>翻译</th><th>什么时候用</th><th>生活类比</th></tr>
+<tr>
+  <td><code>git init</code></td>
+  <td><strong>初始化</strong>：在这个文件夹启用版本控制</td>
+  <td>创建一个新项目的第一步</td>
+  <td>买一本新的工作笔记，在第一页写上"XX 项目工作日志"</td>
+</tr>
+<tr>
+  <td><code>git add .</code></td>
+  <td><strong>暂存</strong>：把修改加入"待保存清单"</td>
+  <td>改完文件之后、存档之前</td>
+  <td>把要打印的文件放在打印机的"待打印"队列里</td>
+</tr>
+<tr>
+  <td><code>git commit -m "做了什么"</code></td>
+  <td><strong>提交</strong>：正式存档，附带说明</td>
+  <td>每次完成一个可描述的修改</td>
+  <td>在笔记本上写下一行"7月3日：完成了文献综述大纲"</td>
+</tr>
+<tr>
+  <td><code>git push</code></td>
+  <td><strong>推送</strong>：把本地存档同步到 GitHub 云端</td>
+  <td>想让别人看到你的更新时</td>
+  <td>把笔记本复印一份放到档案室（云端备份）</td>
+</tr>
+</table>
+
+<div class="box box-concept">
+<strong>Git 工作流的完整循环：</strong><br><br>
+<strong>改文件</strong>（你在本地编辑）<i class="fa-solid fa-arrow-right"></i> <strong>add</strong>（告诉 Git "我要保存这些修改"）<i class="fa-solid fa-arrow-right"></i> <strong>commit</strong>（正式存档，写一句说明）<i class="fa-solid fa-arrow-right"></i> <strong>push</strong>（同步到 GitHub 云端）<br><br>
+<strong>重复这个循环</strong>，每次 commit 都是项目的<strong>一个快照</strong>。三个月后，你可以回到任何一个 commit 的版本。
+</div>
+
+<div class="box box-warn">
+<strong>明确声明：不讲分支、合并、冲突</strong><br><br>
+Git 是一个强大的工具，但本课只需要你掌握上面四个操作。分支（branch）、合并（merge）、冲突解决（conflict resolution）是 Git 的高级功能——这些留给有需要的同学课后自学。<br><br>
+<strong>你现在需要的 Git 知识，就是这 4 个词 + 1 个循环。</strong>足够你在接下来的 WorkBuddy 课程中正常使用。
+</div>
+
+<!-- ==================== Part 2: Pages Deployment ==================== -->
+<h2>第二部分：Pages 部署——10 分钟获得你的第一个网站</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 10 分钟</div></div>
+<div class="meta-card"><div class="label">成果</div><div class="value">一个全世界可访问的 URL</div></div>
+</div>
+
+<p>下面每一步请跟着操作。最终你会得到一个网址，用手机扫二维码就能访问你的个人学术页面。</p>
+
+<!-- Step 1 -->
+<h3>第一步：创建 GitHub 仓库</h3>
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-body">
+<p><strong>创建 GitHub 账号并新建仓库（约 2 分钟）</strong></p>
+<ol>
+  <li>打开 <code>github.com</code>，注册账号（如果有账号，直接登录）</li>
+  <li>登录后，点击右上角的 <strong>"+"号 <i class="fa-solid fa-arrow-right"></i> New repository</strong></li>
+  <li>Repository name 填写：<code>my-lab-page</code></li>
+  <li>Description 填写：<code>My academic lab introduction page</code></li>
+  <li>选择 <strong>Public</strong>（公开仓库——免费且符合 Pages 要求）</li>
+  <li>勾选 <strong>"Add a README file"</strong></li>
+  <li>点击 <strong>"Create repository"</strong></li>
+</ol>
+</div>
+</div>
+
+<!-- Step 2 -->
+<h3>第二步：上传 HTML 网页模板</h3>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-body">
+<p><strong>在仓库中创建你的个人实验室介绍页面（约 2 分钟）</strong></p>
+<ol>
+  <li>在仓库页面，点击 <strong>"Add file" <i class="fa-solid fa-arrow-right"></i> "Create new file"</strong></li>
+  <li>文件名填写：<code>index.html</code></li>
+  <li>将老师提供的实验室介绍 HTML 模板粘贴到编辑区（或你自行编写一个简单的页面）</li>
+  <li>修改模板中的内容：你的名字、研究方向、联系方式</li>
+  <li>页面底部 <strong>"Commit new file"</strong> 区域，填写 commit message："创建个人实验室介绍页面"</li>
+  <li>点击 <strong>"Commit new file"</strong></li>
+</ol>
+</div>
+</div>
+
+<div class="box box-key">
+<strong>模板内容参考</strong>——你的 <code>index.html</code> 至少应该包含：<br>
+- 你的姓名和职称<br>
+- 研究方向（一句话）<br>
+- 所在学校/学院<br>
+- 联系邮箱<br>
+- 一张个人/实验室照片（可选）<br><br>
+<strong>不要担心页面简单。</strong>一个只有姓名和研究方向的页面，已经比 95% 的化学老师在网上有更强的可见度了。后续 WorkBuddy 课程会大幅丰富它。
+</div>
+
+<!-- Step 3 -->
+<h3>第三步：启用 GitHub Pages</h3>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-body">
+<p><strong>让仓库变成一个真正的网站（约 1 分钟）</strong></p>
+<ol>
+  <li>在仓库页面，点击顶部导航的 <strong>"Settings"</strong></li>
+  <li>在左侧菜单找到并点击 <strong>"Pages"</strong>（在 "Code and automation" 分组下）</li>
+  <li>"Source" 下拉菜单选择 <strong>"Deploy from a branch"</strong></li>
+  <li>"Branch" 下拉菜单选择 <strong>"main"</strong>，旁边选择 <strong>"/ (root)"</strong></li>
+  <li>点击 <strong>"Save"</strong></li>
+</ol>
+</div>
+</div>
+
+<!-- Step 4 -->
+<h3>第四步：等待部署，访问你的网站</h3>
+
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-body">
+<p><strong>等待 30-60 秒，刷新页面（约 2 分钟）</strong></p>
+<ol>
+  <li>保存后，Pages 设置页面会显示一条信息："Your site is being built..."</li>
+  <li>等待约 30-60 秒，刷新页面</li>
+  <li>当显示 <strong>"Your site is live at"</strong> 时，你的网站已经部署完成</li>
+  <li>网址格式：<code>https://你的用户名.github.io/my-lab-page/</code></li>
+  <li>点击链接——这就是你的个人学术网站！</li>
+</ol>
+</div>
+</div>
+
+<!-- Step 5 -->
+<h3>第五步：用手机扫码——见证"我的页面在互联网上了!"</h3>
+
+<div class="step">
+<div class="step-num">5</div>
+<div class="step-body">
+<p><strong>关键瞬间（约 2 分钟）</strong></p>
+<ol>
+  <li>打开浏览器，访问 <code>https://你的用户名.github.io/my-lab-page/</code></li>
+  <li>在地址栏左侧会看到一个"二维码"图标（或用浏览器自带的分享功能生成二维码）</li>
+  <li>用手机扫描二维码</li>
+  <li>手机会自动打开你的个人页面</li>
+</ol>
+<br>
+<div class="box box-summary">
+<strong>这一刻，请停下来感受一下：</strong><br><br>
+你刚刚把一段 HTML 代码变成了一个<strong>全世界任何人都能访问的真实网站</strong>。<br><br>
+你在实验室的电脑前改了一行字 <i class="fa-solid fa-arrow-right"></i> commit <i class="fa-solid fa-arrow-right"></i> push <i class="fa-solid fa-arrow-right"></i> 30 秒后，地球另一端的某个人打开你的页面就能看到更新。<br><br>
+<strong>这不是程序员才有的能力。这是你，一个化学/化工研究者，在前置课程中就能做到的事。</strong>
+</div>
+</div>
+</div>
+
+<!-- ==================== Part 3: Significance ==================== -->
+<h2>第三部分：这页面的意义</h2>
+
+<div class="box box-summary">
+<strong>这是你前置课程的成果交付——一个全世界都能访问的个人学术页面。你的第一个"AI 辅助产物"。</strong><br><br>
+这不是一个练习。这是一个<strong>真正上线、运转着、可以被引用和传播的东西</strong>。<br><br>
+你可以在你的邮件签名里加上这个链接。<br>
+你可以在学术会议上告诉别人<br>"我是 XX 大学的 XXX，这是我的主页"<br>——然后对方扫二维码就看到你的研究方向。<br>
+你可以把它放在论文的作者介绍里。<br>
+你可以用它来展示你的研究成果、论文列表、课题组动态。<br><br>
+<strong>这是你在互联网上的"数字学术存在"的起点。</strong>
+</div>
+
+<h3>从"简单页面"到"丰富的学术网站"</h3>
+
+<p>现在你的页面还很朴素——姓名、研究方向、联系方式。但这只是起点：</p>
+
+<table>
+<tr><th>接下来可以添加</th><th>用到的 WorkBuddy 技能</th><th>在哪一课</th></tr>
+<tr>
+  <td>发表论文列表（自动按年份排列）</td>
+  <td>WorkBuddy 帮你从 BibTeX 生成 HTML 列表</td>
+  <td>WorkBuddy 主课</td>
+</tr>
+<tr>
+  <td>课题组研究方向展示（多图 + 配文）</td>
+  <td>WorkBuddy 帮你生成图文并茂的页面区块</td>
+  <td>WorkBuddy 主课</td>
+</tr>
+<tr>
+  <td>研究成果轮播图 / 新闻公告</td>
+  <td>WorkBuddy 帮你加入动态元素</td>
+  <td>WorkBuddy 主课</td>
+</tr>
+<tr>
+  <td>响应式设计（手机也能好看地展示）</td>
+  <td>WorkBuddy 帮你优化 CSS</td>
+  <td>WorkBuddy 主课</td>
+</tr>
+<tr>
+  <td>学生招募 / 合作联系表单</td>
+  <td>WorkBuddy 帮你嵌入表单</td>
+  <td>WorkBuddy 主课</td>
+</tr>
+</table>
+
+<div class="box box-key">
+<strong>下一次课，用 WorkBuddy 把它做得更好、更丰富。</strong><br><br>
+你现在有了：<br>
+<i class="fa-solid fa-check"></i> 一个 GitHub 账号<br>
+<i class="fa-solid fa-check"></i> 一个 Git 仓库<br>
+<i class="fa-solid fa-check"></i> 一个运行中的网站<br>
+<i class="fa-solid fa-check"></i> 修改 <i class="fa-solid fa-arrow-right"></i> commit <i class="fa-solid fa-arrow-right"></i> push <i class="fa-solid fa-arrow-right"></i> 网站自动更新的工作流<br><br>
+<strong>前置课程到此结束。下一站：WorkBuddy 主课——让 AI 成为你的科研伙伴。</strong>
+</div>
+
+<!-- Page navigation -->
+<nav class="page-nav">
+  <a href="M5-网络基础.html"><i class="fa-solid fa-arrow-left"></i> 上一模块：网络基础与安全</a>
+  <a href="../WorkBuddy主课/index.html">下一模块：WorkBuddy 主课 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+
+<script src="../theme.js"></script>
+</body>
+</html>

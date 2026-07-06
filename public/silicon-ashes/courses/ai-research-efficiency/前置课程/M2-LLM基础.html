@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2 · LLM 基础知识</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="index.html">前置课程</a><span class="sep">›</span>
+  <span class="current">M2 · LLM 基础知识</span>
+</nav>
+
+<h1>M2 · LLM 基础知识</h1>
+<p class="subtitle">七个核心术语，每个配一个生活类比</p>
+
+<div class="toc">
+<h3>本模块目录</h3>
+<ol>
+  <li><a href="#intro">从 AI 史到 LLM</a></li>
+  <li><a href="#essence">LLM 的本质：超级填字游戏</a></li>
+  <li><a href="#terms">七个核心术语</a></li>
+  <li><a href="#myths">常见误区</a></li>
+</ol>
+</div>
+
+<!-- ==================== 1. 过渡 ==================== -->
+<h2 id="intro">1. 从 AI 史到 LLM</h2>
+
+<p>前面 M1 我们花了将近一个小时，穿越了 AI 从 1943 年感知机到 2026 年 DeepSeek V4-Pro 的 70 年历程。你可能会想："历史很有意思，但跟我有什么关系？"</p>
+
+<p>关系是：<strong>现在我要聚焦到和你最相关的那个东西上——大语言模型，也就是 Large Language Model，缩写 LLM。</strong></p>
+
+<p>为什么 LLM 是今天 AI 的绝对主角？因为它是唯一一个<strong>不需要专业训练就能直接使用的 AI 技术</strong>。你不需要学编程、不需要准备数据集、不需要配环境——打开网页，打字，它就干活。这对各位老师来说，是 AI 历史上第一次真正"零门槛"的技术。</p>
+
+<p>这一讲 25 分钟，我们不讲历史，不讲公式，只聚焦一件事：<strong>把 LLM 的核心概念彻底搞清楚</strong>。六个术语，每个配一个生活类比，听完你就能自信地和学生、同事、审稿人讨论 AI 了。</p>
+
+<!-- ==================== 2. LLM 本质 ==================== -->
+<h2 id="essence">2. LLM 的本质：超级填字游戏</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">核心概念</div><div class="value">LLM = 给定上文，预测下一个最可能的词</div></div>
+</div>
+
+<p>我要给你一个最简单、最准确的定义：</p>
+
+<div class="box box-concept">
+<strong>LLM = 一个超级填字游戏引擎</strong><br><br>
+给定一段上文，它预测下一个最可能出现的词（token）是什么。<br>
+不是"理解"，不是"思考"，是<strong>统计预测</strong>。
+</div>
+
+<p>举个例子：</p>
+
+<p>你在输入框里打了几个字——<strong>"今天天气真"</strong></p>
+
+<p>LLM 内部发生了什么？它计算了所有可能跟在"今天天气真"后面的词的<strong>概率</strong>：</p>
+
+<table>
+<tr><th>候选词</th><th>概率</th><th>为什么</th></tr>
+<tr><td>好</td><td>80%</td><td>最常用的搭配，"今天天气真好"</td></tr>
+<tr><td>热</td><td>8%</td><td>也是常见搭配</td></tr>
+<tr><td>差</td><td>5%</td><td>可能，但概率低一些</td></tr>
+<tr><td>糟糕</td><td>3%</td><td>更少见</td></tr>
+<tr><td>蓝</td><td>2%</td><td>语法上不够通顺</td></tr>
+<tr><td>…</td><td>2%</td><td>其他可能性</td></tr>
+</table>
+
+<p>然后它选概率最高的那个——"好"，输出。然后 <strong>把"好"拼接到结尾</strong>，变成"今天天气真好___"，再预测下一个词。如此循环，一篇文章就写出来了。</p>
+
+<div class="box box-note">
+<strong>关键认知</strong>：LLM 不是在"理解"你的问题后给出"答案"，而是在看过了海量文本之后，学会了<strong>"人类在收到这种问题后，通常接下来会写什么"</strong>。<br><br>
+它不是在检索知识库（像百度搜索），也不是在运用因果推理（像科学推导）。它是统计的、概率的、模式匹配的。
+</div>
+
+<p>用化学语境举个例子：</p>
+
+<div class="metaphor">
+<div class="mt">化学语境中的词预测</div>
+<div class="mb">
+输入：<strong>"催化剂在反应中___"</strong><br><br>
+LLM 预测：<br>
+"降低活化能" <i class="fa-solid fa-arrow-right"></i> 65%（化学教材里最常见的说法）<br>
+"不被消耗" <i class="fa-solid fa-arrow-right"></i> 15%（也常见）<br>
+"加快反应速率" <i class="fa-solid fa-arrow-right"></i> 10%<br>
+"参与反应" <i class="fa-solid fa-arrow-right"></i> 5%<br>
+"变色" <i class="fa-solid fa-arrow-right"></i> 3%<br><br>
+LLM 不是"记得"化学课上学过什么，而是它在<strong>20TB 的训练数据里看到过几亿次"催化剂在反应中降低活化能"这个句式</strong>——所以它的统计模型判断：这个答案的概率最高。
+</div>
+</div>
+
+<p>这个填字游戏的核心逻辑，适用于你现在用的每一个 AI 工具——ChatGPT、DeepSeek、Kimi、文心一言、通义千问，底层全是一样的：<strong>预测下一个词</strong>。</p>
+
+<!-- ==================== 3. 六个核心术语 ==================== -->
+<h2 id="terms">3. 七个核心术语</h2>
+
+<p>下面七个术语，是理解和使用 LLM 的最基本词汇。每个我只用 3-4 分钟，配一个生活类比。你不用全部记住——但至少要知道"每个术语在说什么"。</p>
+
+<hr class="divider">
+
+<h3>3.1 Token（词元）—— "切好的食材"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">切好的食材</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">LLM 处理文本的最小单位</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">厨房类比</div>
+<div class="mb">
+你去厨房炒菜，不可能把一根完整的葱、一个完整的土豆扔进锅里。你需要先"切"——葱切段，土豆切块，姜切片。<br><br>
+LLM 也一样——它不能直接处理汉字，必须先把文本"切"成小块。这些小块就叫 <strong>Token</strong>。炒一份菜需要几十块食材，写一篇文章需要几千个 Token。
+</div>
+</div>
+
+<p><strong>一个 Token 有多大？</strong></p>
+<ul>
+  <li>英文：1 个单词 ≈ 1.3 个 Token。比如 "catalyst" 是一个 token。</li>
+  <li>中文：1 个汉字 ≈ 0.75 个 Token。比如"催化剂"三个字大约是 2-3 个 Token。</li>
+  <li>一个标点符号、一个数字、一个 emoji 也都是 Token。</li>
+</ul>
+
+<div class="box box-key">
+<strong>为什么你在乎 Token？</strong><br><br>
+因为 <strong>API 按 Token 收费</strong>。你用 ChatGPT API、DeepSeek API 跑一个任务，账单是按"输入 Token 数 + 输出 Token 数"计算的。<br><br>
+举个例子：你上传一篇 5000 字的论文让 AI 翻译。这 5000 字输入约 4000 Token，翻译结果约 3500 Token，总共约 7500 Token。不同模型价格不同：<br>
+- GPT-4o：每百万 Token 约 $2.50-$10（输入/输出不同价）<br>
+- DeepSeek V3：每百万 Token 约 $0.27-$1.10<br>
+- 所以这篇翻译任务，GPT-4o 大概花费 $0.02-$0.08，DeepSeek 大概 $0.002-$0.008。<br><br>
+便宜得令人发指，但如果你一天跑几千次，或者处理的论文是几百页的综述，Token 账单就会变得很大。这就是为什么你要理解 Token。
+</div>
+
+<p>另外，Token 也决定了<strong>模型的"内存"上限</strong>——这就引出了下一个概念。</p>
+
+<hr class="divider">
+
+<h3>3.2 上下文窗口（Context Window）—— "短期记忆容量"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">短期记忆容量</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">LLM 一次能"看到"的最大 Token 数量</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">小型会议类比</div>
+<div class="mb">
+想象你在开一个课题组组会。你最多同时能关注多少内容？如果讨论拖了三个小时，前面十五分钟讨论的事情你可能已经忘了——你的"上下文窗口"满了。<br><br>
+LLM 也一样：它一次只能记住一定数量 Token 以内的内容。超过上限，<strong>前面的内容会被"忘掉"或"截断"</strong>。
+</div>
+</div>
+
+<p><strong>上下文窗口的进化史：</strong></p>
+
+<table>
+<tr><th>年份</th><th>模型</th><th>上下文窗口</th><th>能放多少</th></tr>
+<tr><td>2018</td><td>GPT-1</td><td>512 Token</td><td>约两段话</td></tr>
+<tr><td>2020</td><td>GPT-3</td><td>2,048 Token</td><td>约一页 A4</td></tr>
+<tr><td>2023</td><td>GPT-4 Turbo</td><td>128K Token</td><td>约一本中篇小说</td></tr>
+<tr><td>2024</td><td>Gemini 1.5 Pro</td><td>1M Token</td><td>约 70 万字（一整本《红楼梦》）</td></tr>
+<tr><td>2025-2026</td><td>主流模型</td><td>百万级</td><td>百万 Token 成为标配</td></tr>
+</table>
+
+<div class="box box-warn">
+<strong>为什么 AI 会"忘记"之前的对话？</strong><br><br>
+因为你的对话历史也在占用上下文窗口！每一次新的对话轮次，之前所有的输入和输出都还在窗口里。随着对话越来越长，早期内容会被"挤出去"。<br><br>
+这就是为什么你和 AI 聊了 50 轮之后让它"回到之前说的那个催化剂方案"，它说想不起来了——不是它懒，是存储空间用光了。
+</div>
+
+<p><strong>对科研的意义</strong>：在 2025-2026 年，百万 Token 上下文窗口意味着你可以：</p>
+<ul>
+  <li>一次性把整本 200 页的有机化学教材扔给 AI，让它回答任何章节相关问题。</li>
+  <li>上传一篇带补充材料的完整论文（含晶体数据、光谱图），让 AI 跨信息源综合分析。</li>
+  <li>复盘整整一周的实验笔记，让 AI 帮忙找出失败批次之间的共性问题。</li>
+</ul>
+
+<p>但也要记住：<strong>上下文越满，处理速度越慢，成本越高</strong>。不是所有任务都需要把上下文塞满。</p>
+
+<hr class="divider">
+
+<h3>3.3 幻觉（Hallucination）—— "很自信但记错了的朋友"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">很自信但记错了的朋友</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">LLM 生成看似合理但事实错误的内容</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">朋友聊天类比</div>
+<div class="mb">
+你有个朋友老王，特别爱聊天，记忆力超好，看过无数本书。你问他什么他都能侃侃而谈。<br><br>
+但有一天你问他："谢苗诺夫是哪一年拿的诺贝尔化学奖？"<br>
+老王说："1965 年！"语气非常笃定。你觉得不太对，一查——谢苗诺夫是 1956 年拿的，和他共用的是 Hinshelwood。<br><br>
+老王不是故意骗你，他是<strong>真的以为自己记得</strong>。他脑海里有一些碎片信息（苏联化学家 + 诺贝尔 + 60 年代），大脑自动把它们拼在一起，并且对这个"拼出来的答案"非常自信。<br><br>
+LLM 的幻觉就是这样产生的。
+</div>
+</div>
+
+<div class="box box-warn">
+<strong>为什么 LLM 会产生幻觉？</strong><br><br>
+还记得它的本质吗——<strong>预测下一个词，不是检索事实</strong>。<br><br>
+当你问"谢苗诺夫哪年拿诺贝尔化学奖？"，LLM 不是去查数据库，而是预测："人类在回答这个问题时，接下来最常写的是哪个年份？"<br><br>
+大多数人写对了，模型就学会了正确答案。但总有一部分数据是错误的、模糊的、矛盾的。当模型在这些噪声中"猜"下一个词时，就可能猜出一个看似合理但事实错误的答案。<br><br>
+而且——由于训练过程中它见过大量正确信息，所以它对错误答案也"充满信心"。这就是幻觉最危险的地方：<strong>它犯错了，但表现得好像完全正确</strong>。
+</div>
+
+<p><strong>为什么这对科研特别危险？</strong></p>
+
+<div class="box box-warn">
+<strong>科研场景中的幻觉灾难</strong>：<br><br>
+AI："根据文献，Cu-ZSM-5 催化剂在 300°C 时 NO 转化率达 98.7%。"<br>
+你把这句写进论文。审稿人让你提供引用来源。你回去查——根本没有这篇文章，这个数字是 AI 编的。<br><br>
+这已经发生了。美国律师 Steven Schwartz 2023 年用 ChatGPT 写诉讼材料，引用了 6 个不存在的判例——被法官发现，差点被吊销律师执照。<br><br>
+<strong>科研人的底线</strong>：参考 AI 的建议可以，但每一个事实性陈述都必须由你亲自验证来源。
+</div>
+
+<p><strong>怎么减少幻觉？</strong></p>
+<ul>
+  <li>让 AI 标注信息来源——"这段话的依据是什么？"</li>
+  <li>用检索增强生成（RAG）——先让 AI 搜索相关文献，再基于搜索结果回答。</li>
+  <li>问完之后，自己复述一遍——"你是说谢苗诺夫 1956 年，对吗？"让 AI 有机会自我纠正。</li>
+  <li>最重要的是——<strong>永远不要完全信任 AI 的事实性输出</strong>。</li>
+</ul>
+
+<hr class="divider">
+
+<h3>3.4 Embedding（嵌入向量）—— "给每个词画含义地图"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">含义地图</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">把词语/句子/分子编码为一组数字，使语义相近的物体在地图上靠在一起</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">化学元素周期表类比</div>
+<div class="mb">
+你的学生第一次看元素周期表，他看到的是一堆符号。<br>
+你告诉他："同一列的元素化学性质相似。看第一列——锂、钠、钾——都是+1价，都很活泼。"<br>
+他立刻就懂了：<strong>周期表是一个"化学含义地图"，位置相邻 = 性质相似。</strong><br><br>
+Embedding 就是给每个词、每个句子、每个分子画这样一张"含义地图"。位置相近的东西，意义上也相近。
+</div>
+</div>
+
+<p>具体来说：Embedding 把一个词变成一组数字——比如 768 个或 1536 个数字组成的一个向量。你可以把这个向量想象成"含义的 GPS 坐标"。</p>
+
+<div class="box box-concept">
+<strong>类比演示</strong><br><br>
+"苹果"这个词的 Embedding，在含义地图上：
+<ul>
+  <li>离"香蕉"很近——都是水果</li>
+  <li>离"手机"也很近——都是品牌</li>
+  <li>离"梨子"比较近——和"香蕉"相似度高</li>
+  <li>离"催化剂"很远——化学和水果几乎不相关</li>
+</ul>
+这就是 Embedding 在做的事：<strong>把含义编码成距离</strong>。
+</div>
+
+<p><strong>化学上的应用</strong>：Embedding 不只用于文字。分子的 SMILES 字符串、分子指纹、催化反应的条件参数——都可以被编码成 Embedding 向量。一旦编码完成，你就可以：</p>
+<ul>
+  <li>在 1 亿个化合物中，找出和你目标催化剂"含义最接近"的 100 个——几秒钟。</li>
+  <li>把一篇论文的所有反应条件做 Embedding，然后输入你的新底物，找到文献中最相似的实验条件。</li>
+</ul>
+
+<div class="box box-key">
+<strong>语义搜索的基础</strong>：当你用知网或 Web of Science 搜索关键词时，是"精确匹配"——搜"催化加氢"只能找到包含这四个字的论文。而基于 Embedding 的语义搜索，搜"催化加氢"也能找到"过渡金属催化氢化反应"——因为它"理解"这是同一件事的不同说法。<br><br>
+这就是为什么现在的 AI 文献工具（如 Semantic Scholar、Elicit）能比传统关键词搜索聪明得多。
+</div>
+
+<hr class="divider">
+
+<h3>3.5 预训练 vs 微调 —— "全科医生 <i class="fa-solid fa-arrow-right"></i> 心脏科专家"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">全科医生 vs 心脏科专家</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">预训练 = 通识教育，微调 = 专业化训练</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">医学教育类比</div>
+<div class="mb">
+一个医生怎么养成的？<br><br>
+<strong>预训练</strong> = 医学院 5 年。学习解剖、生理、病理、药理……所有科室的基础知识都要学。这时候他什么都会一点，什么病都能初步判断，但都不精。<br><br>
+<strong>微调</strong> = 3 年住院医师规范化培训 + 专科培训。选了心脏科，接下来每天只看心脏病人，每台手术都是心脏手术。他不再是一个"什么都会一点"的全科医生，他是心脏科专家。<br><br>
+LLM 的训练和这完全一样。
+</div>
+</div>
+
+<p><strong>预训练</strong>：把一个空的神经网络（随机权重）放到海量文本数据（互联网上所有公开的网页、书籍、论文、代码……）上训练。耗时数月，花费数千万到数亿美元。训练结束后的模型就是一个"什么都知道一点"的基础模型——就像刚毕业的医学院学生。</p>
+
+<p><strong>微调</strong>：拿这个基础模型，在一个特定领域的高质量数据集上进行额外训练。比如用 10 万篇催化领域的论文微调一个"催化科学助手"。微调后的模型在该领域表现显著提升，但一般能力可能会轻微下降。</p>
+
+<p><strong>和化学老师的关系</strong>：</p>
+
+<table>
+<tr><th>方式</th><th>预训练</th><th>微调</th></tr>
+<tr><td>谁来干</td><td>大公司（OpenAI、DeepSeek）</td><td>理论上课题组也可以</td></tr>
+<tr><td>要多久</td><td>几个月</td><td>几小时到几天</td></tr>
+<tr><td>多少钱</td><td>千万到亿美元级</td><td>几百到几千美元（或免费）</td></tr>
+<tr><td>数据量</td><td>几十 TB</td><td>几千到几十万条</td></tr>
+<tr><td>结果</td><td>什么都会一点</td><td>领域专精</td></tr>
+</table>
+
+<div class="box box-note">
+<strong>2026 年的变化</strong>：现在你<strong>不一定需要微调</strong>。百万 Token 上下文窗口意味着你可以直接把 10 篇相关论文粘贴进对话，让通用模型在对话过程中临时"专精"——这叫 <strong>上下文学习（In-Context Learning）</strong>，不需要训练。<br><br>
+另外，你还可以把自己的专业知识写成 <strong>Skill（技能包）</strong>——这在 WorkBuddy 课程中会详细教。Skill 本质上是一种"不用训练的微调"，通过预设提示词和知识库来引导模型行为。
+</div>
+
+<hr class="divider">
+
+<h3>3.6 推理模型（Reasoning Model）—— "快枪手 vs 谋士"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">快枪手 vs 谋士</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">在回答前先内部推理的模型，擅长复杂任务，慢但更准确</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">西部快枪手 vs 军师谋士</div>
+<div class="mb">
+<strong>快枪手（标准 LLM，如 GPT-4o、DeepSeek V3）</strong>：你刚说完问题，话还没落地，他已经掏枪了——"答案是这个！"速度快，简单问题上漂亮。<br><br>
+<strong>谋士（推理模型，如 o1、DeepSeek R1）</strong>：你说完问题，他沉默。他在脑子里一条条推演："第一步这样做，第二步会遇到什么障碍，绕过障碍有几种方法……"想了 30 秒甚至 3 分钟，然后说："经过思考，我的建议是……"<br><br>
+速度慢，但复杂问题上的可靠性远高于快枪手。
+</div>
+</div>
+
+<p><strong>推理模型做的事——链式思维（Chain-of-Thought）</strong>：</p>
+
+<p>推理模型在给出最终答案之前，会在内部生成一长串中间推理步骤。这些步骤你通常看不到（部分模型如 DeepSeek R1 会显示），但你可以感受到：好问题等几秒，超长问题等几分钟。</p>
+
+<div class="box box-concept">
+<strong>推理模型 vs 标准模型：什么场景用什么？</strong><br><br>
+<table>
+<tr><th>场景</th><th>推荐模型</th><th>原因</th></tr>
+<tr><td>"乙醇的沸点是多少？"</td><td>标准模型</td><td>这是检索题，不需要推理</td></tr>
+<tr><td>"帮我润色这段摘要"</td><td>标准模型</td><td>语言任务，标准模型足够</td></tr>
+<tr><td>"设计一条合成路线"</td><td>推理模型</td><td>多步推演，需要验证每一步</td></tr>
+<tr><td>"分析这三组实验数据为什么矛盾"</td><td>推理模型</td><td>需要跨数据源因果推理</td></tr>
+<tr><td>"写一份基金申请书框架"</td><td>标准模型</td><td>结构性写作，不是推理</td></tr>
+<tr><td>"推导这个反应机理"</td><td>推理模型</td><td>需要化学反应逻辑链</td></tr>
+</table>
+</div>
+
+<p><strong>给化学老师的建议</strong>：</p>
+<ul>
+  <li>日常文献总结、翻译、格式调整 <i class="fa-solid fa-arrow-right"></i> 用标准模型（速度快、便宜）。</li>
+  <li>实验设计、反应机理推导、数据分析诊断 <i class="fa-solid fa-arrow-right"></i> 用推理模型（慢但靠谱）。</li>
+  <li>一个实用技巧：<strong>先让推理模型分析问题，把分析结果喂给标准模型写初稿</strong>。推理质量 + 写作速度，两者兼得。</li>
+</ul>
+
+<hr class="divider">
+
+<h3>3.7 API —— "程序的酒店房卡"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">类比</div><div class="value">酒店房卡</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">程序之间通信的标准接口</div></div>
+</div>
+
+<h4>⑦ API —— "程序的酒店房卡"</h4>
+
+<div class="metaphor">
+<div class="mt">🏨 什么是 API</div>
+<div class="mb">
+<strong>Application Programming Interface = 应用程序接口。</strong>简单说：<strong>API 是程序之间"对话"的规则。</strong><br><br>
+<strong>类比：酒店房卡。</strong>你不是前台，不能直接进客房系统查你的订房信息。但你有房卡——刷卡，门就开了。房卡 = API Key，刷卡这个动作 = API 调用，门锁系统 = API 服务。<br><br>
+<strong>为什么你必须理解 API：</strong>你后续课程中遇到的每一次"AI 工具联动"，底层全是 API——<br>
+• Claude Code 调用 DeepSeek 的模型 <i class="fa-solid fa-arrow-right"></i> API<br>
+• WorkBuddy 读取你的 Zotero 文献库 <i class="fa-solid fa-arrow-right"></i> API<br>
+• 你手机上的天气 App 显示明天几度 <i class="fa-solid fa-arrow-right"></i> API 从气象局拿的数据<br><br>
+<strong>你不需要写 API，但你需要知道：</strong>① 每个 AI 服务都有自己的 API 端点（就像不同的酒店有不同的前台）② API Key 是"房卡"——只属于你一个人，丢了别人可以冒充你 ③ 免费额度通常用 API 调用次数计算——一次"你好"和一次"帮我写 5000 字论文"消耗的 token 数不同，但都是一次 API 调用。
+</div>
+</div>
+
+<table>
+<tr><th style="width:14%">术语</th><th style="width:28%">一句话解释</th><th>类比</th><th>为什么必须知道</th></tr>
+<tr>
+<td><strong>API</strong></td>
+<td>程序之间通信的标准接口——A 程序通过 API "请求"B 程序的服务</td>
+<td><strong>"酒店房卡"</strong>——刷卡进门，卡对进门，卡错被拒。API Key = 你的专属房卡</td>
+<td>所有 AI 工具的底层联动都是 API。不理解 API，就无法理解"为什么 Claude Code 能用 DeepSeek"——因为 Claude Code 通过 API 把问题发给 DeepSeek，再通过 API 把答案拿回来。</td>
+</tr>
+</table>
+
+<!-- ==================== 4. 常见误区 ==================== -->
+<h2 id="myths">4. 常见误区</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">目标</div><div class="value">破除三个流传最广的 LLM 误解</div></div>
+</div>
+
+<p>每次我给化学老师讲 AI，总有几个误解反复出现。今天一次性澄清。</p>
+
+<div class="box box-warn">
+<strong>误区一："LLM 就是一个超级搜索引擎"</strong><br><br>
+<strong>错</strong>。搜索引擎是去索引库里"找"已有信息。LLM 是去参数里面"生成"新文本。它没有访问网络（除非特意配了联网功能），不能"查找"，只能"预测"。<br><br>
+更准确的说法：搜索引擎 = 图书馆管理员帮你找书。LLM = 一个读过整个图书馆的人凭记忆给你写总结。<strong>记忆可能出错，总结可能歪曲</strong>。两者不是同一个东西。
+</div>
+
+<div class="box box-warn">
+<strong>误区二："AI 写的都是对的，因为是机器"</strong><br><br>
+<strong>大错特错</strong>。AI 是一个设计用来"生成看起来合理的内容"的机器，不是一个"输出事实"的机器。它不知道什么是对、什么是错——它只知道"人类在这种情况下通常会怎么说"。<br><br>
+你在做催化剂表征时知道要用标准样品校正仪器。用 AI 也一样——<strong>你需要"校正"它的输出</strong>：用你自己的专业知识、文献检索、实验验证作为校正标准。
+</div>
+
+<div class="box box-warn">
+<strong>误区三："模型越大越好，参数量越多越厉害"</strong><br><br>
+<strong>不一定</strong>。GPT-4 有 1.8 万亿参数，但很多专用的小模型（几百亿参数）在自己的领域里能打赢 GPT-4。就像你不需要用核磁共振仪来称量——任务有其适合的工具。<br><br>
+具体原则：<br>
+- 写论文、翻译、总结文献：通用大模型（GPT-4o、Claude、DeepSeek V3）最好。<br>
+- 推导反应机理、做数学计算：推理模型（o1、DeepSeek R1）更好。<br>
+- 想在自己电脑上跑图分类、分子性质预测：专用小模型（几亿参数）更快更便宜。<br>
+<strong>选择工具，不是追求"最大"——而是追求"最合适"。</strong>
+</div>
+
+<div class="box box-summary">
+<strong>M2 核心收获</strong><br><br>
+七个术语，请带着它们进入后面的课程：<br>
+<strong>Token</strong>：最小单位，决定成本和容量。<br>
+<strong>上下文窗口</strong>：短期记忆，决定 AI 一次能处理多少内容。<br>
+<strong>幻觉</strong>：AI 会编造事实——科研中必须验证。<br>
+<strong>Embedding</strong>：含义地图，语义搜索的基础。<br>
+<strong>预训练 vs 微调</strong>：全科 <i class="fa-solid fa-arrow-right"></i> 专科，通用能力 <i class="fa-solid fa-arrow-right"></i> 领域专精。<br>
+<strong>推理模型</strong>：快枪手 vs 谋士，复杂任务用推理。<br><br>
+下一讲，我们进入正题——AI 在化学中的具体应用。<strong>1969 年的 DENDRAL 等了 50 年，现在终于到了 AI4Science 全面爆发的时刻。</strong>
+</div>
+
+<!-- Page navigation -->
+<nav class="page-nav">
+  <a href="M1-AI发展史.html"><i class="fa-solid fa-arrow-left"></i> 上一模块：AI 发展史完整时间线</a>
+  <a href="M3-AI4Science.html">下一模块：AI4Science：化学中的 AI 革命 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+
+<script src="../theme.js"></script>
+</body>
+</html>

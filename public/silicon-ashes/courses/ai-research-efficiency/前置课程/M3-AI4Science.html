@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 · AI4Science：化学/化工中的 AI 革命</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* page-specific minimal styles only if absolutely needed */
+table.app-table td:first-child{white-space:nowrap;font-weight:600;color:var(--primary)}
+</style>
+</head>
+<body>
+
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="index.html">前置课程</a><span class="sep">›</span>
+  <span class="current">M3 · AI4Science：化学中的 AI 革命</span>
+</nav>
+
+<h1>M3 · AI4Science：化学/化工中的 AI 革命</h1>
+<p class="subtitle">从诺贝尔化学奖到你的实验室 —— AI 如何重塑化学研究</p>
+
+<div class="toc">
+<h3>本模块目录</h3>
+<ol>
+  <li><a href="#nobel">开场震动：2024 年诺贝尔化学奖</a></li>
+  <li><a href="#alphafold">AlphaFold 的故事</a></li>
+  <li><a href="#basics">化学信息学三大基础</a></li>
+  <li><a href="#frontier">五大前沿应用</a></li>
+  <li><a href="#message">核心信息：你可以现在就开始</a></li>
+</ol>
+</div>
+
+<!-- ==================== 1. 诺贝尔化学奖 ==================== -->
+<h2 id="nobel">1. 开场震动：2024 年诺贝尔化学奖</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">关键词</div><div class="value">诺贝尔化学奖、AlphaFold、蛋白质折叠</div></div>
+</div>
+
+<p>2024 年 10 月 9 日，瑞典皇家科学院宣布：将 2024 年诺贝尔化学奖授予 <strong>David Baker</strong>（华盛顿大学）、<strong>Demis Hassabis</strong> 和 <strong>John Jumper</strong>（Google DeepMind），以表彰他们在<strong>蛋白质结构预测</strong>和<strong>计算蛋白质设计</strong>方面的贡献。</p>
+
+<div class="box box-key">
+<strong>这是历史上第一次，诺贝尔化学奖颁发给了一个 AI 工具。</strong><br><br>
+不是颁发给一个化学反应、一种新元素、一个合成方法——而是颁发给了一个用 AI 预测蛋白质结构的算法。<br><br>
+瑞典皇家科学院的评语用了"革命性的"（revolutionary）这个词——这个词在诺贝尔颁奖词中极其罕见。
+</div>
+
+<p>这件事对化学界的冲击，怎么形容都不过分。每一个做结构生物学、药物化学、酶工程的老师都知道这意味着什么：<strong>一个 50 年没解决的核心科学问题，被 AI 在几天内几乎完全解决了。</strong></p>
+
+<p>这次颁奖也是对整个"AI 不是真科学"论调的终极回应。当诺贝尔化学奖委员会用行动投票的时候，争论该结束了。</p>
+
+<!-- ==================== 2. AlphaFold ==================== -->
+<h2 id="alphafold">2. AlphaFold 的故事</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">关键词</div><div class="value">蛋白质折叠、CASP、2 亿结构</div></div>
+</div>
+
+<h3>2.1 蛋白质折叠：一个 50 年的难题</h3>
+
+<p>每个化学老师都教过：蛋白质的功能取决于它的三维结构。氨基酸序列（一级结构）通过折叠形成 α-螺旋、β-折叠（二级结构），再进一步折叠成完整的三维构象（三级结构）。关键问题是——<strong>只给你氨基酸序列，你能不能预测它最终折叠成什么形状？</strong></p>
+
+<div class="metaphor">
+<div class="mt">折纸类比</div>
+<div class="mb">
+给你一条长长的纸条，上面写满了 20 种氨基酸的排列顺序。这条纸条会自己折叠成一个立体形状——可能是球形的、长条形的、或者一个复杂的几何体。<br><br>
+一维的氨基酸序列 <i class="fa-solid fa-arrow-right"></i> 三维的蛋白质结构。<br><br>
+这个折叠过程完全由物理化学作用力决定：氢键、疏水作用、范德华力、离子键、二硫键……理论上，如果你能把所有这些力的作用全部计算清楚，你就能从序列预测结构。<br><br>
+但实际上——一个 200 个氨基酸的蛋白质，可能折叠方式的数量比宇宙中的原子数量还多。传统方法穷举不通。
+</div>
+</div>
+
+<p>传统的蛋白质结构解析方法：</p>
+<ul>
+  <li><strong>X 射线晶体学</strong>：需要先结晶，不是所有蛋白质都能结晶。耗时长，可能一年做一个。</li>
+  <li><strong>冷冻电镜（Cryo-EM）</strong>：2017 年获诺贝尔奖的技术，但设备昂贵（上千万），操作复杂。</li>
+  <li><strong>核磁共振（NMR）</strong>：只适用于小蛋白。</li>
+</ul>
+
+<p>解析一个蛋白结构：<strong>平均耗时 2-5 年，花费 $10,000 - $100,000</strong>。人类用半个世纪，总共解出了约 20 万个蛋白结构。</p>
+
+<h3>2.2 AlphaFold：从序列到结构，只需几分钟</h3>
+
+<p>2018 年，DeepMind 的 AlphaFold 第一次参加 <strong>CASP</strong>（蛋白质结构预测关键评估，每两年举行一次，是蛋白质结构预测领域的"奥林匹克"）。在此之前，CASP 的最高准确率大约 40%。AlphaFold 拿到了约 <strong>60%</strong>——碾压所有对手。</p>
+
+<p>2020 年，AlphaFold 2 再次参加 CASP。这次的 GDT（全局距离测试）中位分数达到了 <strong>92.4</strong>——基本达到了实验方法的分辨率水平。CASP 的组织者宣布："蛋白质折叠问题，基本解决了。"</p>
+
+<p>2021 年 7 月：DeepMind 将 AlphaFold 完全开源，并将<strong>用 AlphaFold 预测的全人类蛋白质组（98.5%）</strong>——约 2 亿个蛋白质结构——<strong>全部免费公开</strong>。</p>
+
+<div class="box box-concept">
+<strong>这个数字有多震撼？</strong><br><br>
+人类用传统实验方法，花了 50 年，解出约 20 万个蛋白结构。<br>
+AlphaFold 在几个月内，预测了 <strong>2 亿个</strong>结构，差距是 <strong>1000 倍</strong>。<br><br>
+300 万研究人员已经在使用 AlphaFold 数据库。这意味着你现在写的每一篇和蛋白结构相关的论文——无论你是做酶催化、药物设计还是材料科学——都可以从一个"几乎所有蛋白结构已知"的起点开始。
+</div>
+
+<p>2024 年，AlphaFold 3 发布，不仅能预测蛋白质，还能预测<strong>蛋白质与小分子（药物）、核酸（DNA/RNA）、离子的复合物结构</strong>。对于做药物化学、配位化学的老师来说，这个升级直接让 AlphaFold 从"蛋白质科学家的工具"变成了"几乎所有化学家的工具"。</p>
+
+<div class="box box-note">
+<strong>一个重要的补充：AlphaFold 不是万能的</strong><br><br>
+它是结构预测工具，不是万能化学家。它预测的是静态结构，而蛋白质的真正工作方式是动态的（构象变化、变构调控）。它不能告诉你哪些氨基酸是催化位点，也不能预测 pH、温度、溶剂环境对结构的影响。<br><br>
+但即使有这些局限——从"大部分蛋白结构未知"到"大部分已知"，这已经是化学史上最大的知识加速事件之一。
+</div>
+
+<!-- ==================== 3. 化学信息学三大基础 ==================== -->
+<h2 id="basics">3. 化学信息学三大基础</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 12 分钟</div></div>
+<div class="meta-card"><div class="label">适用水平</div><div class="value">零基础友好，入门级讲解</div></div>
+</div>
+
+<p>AlphaFold 让人惊叹，但大多数化学老师不会每天做蛋白折叠。那么在更贴近你日常工作的领域——有机合成、催化剂设计、材料筛选——AI 到底怎么"看懂"一个分子？</p>
+
+<p>这需要三个基础知识：<strong>SMILES、分子指纹、GNN</strong>。我不要求你会写代码，但你需要知道它们在干什么——就像你不懂 X 射线衍射仪的电路，但知道它怎么检测晶体。</p>
+
+<h3>3.1 SMILES —— "分子的条形码"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">用一串字符表示完整的分子结构</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">条形码类比</div>
+<div class="mb">
+超市里的每一件商品都有一个条形码——一串黑白条纹，但扫描一下就包含了这件商品的全部信息：品类、价格、产地。<br><br>
+<strong>SMILES 就是分子的条形码。</strong>它用一串字符把整个分子结构"编码"成一行文字。在 AI 的世界里，分子 = 一串字符。
+</div>
+</div>
+
+<p>看几个例子：</p>
+
+<table>
+<tr><th>分子</th><th>SMILES</th><th>解读</th></tr>
+<tr><td>乙醇</td><td><code>CCO</code></td><td>C-C-O，碳-碳-氧链</td></tr>
+<tr><td>乙酸</td><td><code>CC(=O)O</code></td><td>=O 是双键氧（羰基）</td></tr>
+<tr><td>苯</td><td><code>c1ccccc1</code></td><td>小写 c 是芳香碳，数字标注环闭合</td></tr>
+<tr><td>阿司匹林（乙酰水杨酸）</td><td><code>CC(=O)OC1=CC=CC=C1C(=O)O</code></td><td>苯环 + 乙酰基 + 羧基</td></tr>
+<tr><td>紫杉醇（抗癌药）</td><td>（超过 300 字符）</td><td>大分子，SMILES 也更长</td></tr>
+</table>
+
+<p>SMILES 的妙处在于：<strong>它是一个字符串，而 AI 最擅长的就是处理字符串。</strong>2017 年的 Transformer 架构（还记得吗？）最初就是为文本设计的——所以化学家自然而然地把分子写成 SMILES 字符串，然后让文本 AI 来处理分子。这两个领域就这样奇妙地汇合了。</p>
+
+<div class="box box-key">
+<strong>化学老师可以立即做的</strong>：<br>
+打开浏览器，访问 <strong>PubChem</strong>（pubchem.ncbi.nlm.nih.gov）。搜索 "aspirin"（阿司匹林）。在阿司匹林的页面上，你会看到它的 <strong>SMILES</strong> 字段。<br><br>
+任何人都可以免费访问 PubChem 上 1.1 亿个化合物的 SMILES。你现在就有了进入 AI 化学世界的"入场券"——这 1.1 亿个 SMILES 字符串，就是 AI 模型最主要的"化学食材"。
+</div>
+
+<h3>3.2 分子指纹 —— "分子的身份证"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">用一串 0 和 1 编码分子的结构特征</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">安检指纹类比</div>
+<div class="mb">
+你过海关，安检员不会看你的长相、身高、体重来确认你的身份。他只看一件事：<strong>你的指纹是不是在数据库里</strong>。<br><br>
+指纹不能描述你长什么样（多高、多胖、什么发型），但它能非常高效地判断"你是不是你"。<br><br>
+<strong>分子指纹</strong>就是这样：你不需要知道分子的完整 3D 结构，只需要一个紧凑的"特征码"，就能快速判断这个分子"跟哪些分子像"。
+</div>
+</div>
+
+<p><strong>分子指纹怎么做？</strong>一个简单的方法（Morgan 指纹）：</p>
+<ul>
+  <li>拿出一个分子。以每个原子为中心，画出一定半径内的局部结构（就像一圈圈的同心圆）。</li>
+  <li>给每个局部结构模式生成一个编号。</li>
+  <li>如果某个模式在分子中出现过一次以上，就在指纹向量的对应位置记为 1，否则记为 0。</li>
+</ul>
+
+<p>结果：<strong>每个分子变成一个固定长度的 0/1 向量</strong>（比如 2048 位）。</p>
+
+<div class="box box-concept">
+<strong>Tanimoto 相似度：判断"两个分子有多像"的一把尺子</strong><br><br>
+分子 A 的指纹：[1, 0, 1, 1, 0, 1, 0, 0, ...]<br>
+分子 B 的指纹：[1, 0, 1, 0, 0, 1, 1, 0, ...]<br><br>
+Tanimoto 系数 =（A 和 B 同时为 1 的位数）÷（A 或 B 中至少有一个为 1 的位数）<br><br>
+如果系数接近 1 = 两个分子结构高度相似。<br>
+如果系数接近 0 = 几乎完全不同。<br><br>
+这个计算的妙处是：<strong>它极其快</strong>。在一个 1 亿个化合物的数据库里，找出和你目标化合物最相似的 100 个——<strong>几秒钟</strong>。这在传统化学方法中需要数月甚至数年。
+</div>
+
+<p>分子指纹的化学意义：</p>
+<ul>
+  <li><strong>虚拟筛选</strong>：从百万级化合物库中快速找出潜在的药物候选物。</li>
+  <li><strong>相似性搜索</strong>：找到一个有趣的催化剂 <i class="fa-solid fa-arrow-right"></i> 用指纹搜相似分子 <i class="fa-solid fa-arrow-right"></i> 找到可能同样有效的替代品。</li>
+  <li><strong>多样性采样</strong>：确保你测试的 100 个分子不是彼此高度相似的——用 Tanimoto 系数取距离最远的组合。</li>
+</ul>
+
+<h3>3.3 GNN（图神经网络）—— "读图专家"</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">定义</div><div class="value">一种直接把分子当作"图"来处理的人工智能方法</div></div>
+</div>
+
+<div class="metaphor">
+<div class="mt">社交网络类比</div>
+<div class="mb">
+微信有个功能叫"你可能认识的人"。它怎么算的？很简单：<br>
+你和张三有 15 个共同好友 <i class="fa-solid fa-arrow-right"></i> "你可能认识张三"<br>
+你和李四有 3 个共同好友 <i class="fa-solid fa-arrow-right"></i> 推荐优先级低一些<br><br>
+GNN 做的事和这完全一样：它把分子看成一个图——<strong>原子是节点，化学键是边</strong>——然后通过节点之间互相传递信息来理解分子。
+</div>
+</div>
+
+<p><strong>信息传递（Message Passing）——GNN 的核心操作</strong>：</p>
+
+<p>GNN 的工作流程可以理解为"每轮每个原子跟邻居说句话"：</p>
+
+<ol>
+  <li><strong>第一轮</strong>：每个原子只知道自己的信息。"我是碳，原子序数 6，sp² 杂化。"</li>
+  <li><strong>第二轮</strong>：每个原子收集直接邻居的信息。"我和一个氧原子用双键连接，和另一个碳原子用单键连接 <i class="fa-solid fa-arrow-right"></i> 我可能是羰基碳。"</li>
+  <li><strong>第三轮</strong>：信息传得更远。"我的邻居的邻居是苯环上的碳 <i class="fa-solid fa-arrow-right"></i> 我可能是一个连在苯环上的羰基碳。"</li>
+  <li><strong>重复 N 轮后</strong>：整个分子的全部结构信息被整合成一个"全局描述"。</li>
+</ol>
+
+<div class="box box-key">
+<strong>你不需要写 GNN 代码，但需要知道它在做什么</strong>：<br><br>
+当你读到一篇论文说"我们用 GNN 预测了催化剂的活性"，你不会一头雾水。你知道他们在用图的方式处理分子，让每个原子从它的邻居那里收集信息。<br><br>
+就像你不需要知道 GC-MS 的电路设计，但你知道它把混合物分离后打碎成离子，然后按质荷比检测。<strong>理解的层次够了就行。</strong>
+</div>
+
+<p><strong>为什么 GNN 比传统方法好？</strong></p>
+<ul>
+  <li><strong>传统方法</strong>：需要人先设计分子描述符（指纹、拓扑指数、量子化学参数……）<i class="fa-solid fa-arrow-right"></i> 人的认知局限决定了信息的天花板。</li>
+  <li><strong>GNN</strong>：直接从分子图的结构中端到端学习 <i class="fa-solid fa-arrow-right"></i> 自动发现人类没想到的特征。</li>
+</ul>
+
+<p>三种基础的对比总结：</p>
+
+<table>
+<tr><th>概念</th><th>类比</th><th>做什么用</th></tr>
+<tr><td>SMILES</td><td>分子条形码</td><td>让 AI 用"文字"的方式读取分子</td></tr>
+<tr><td>分子指纹</td><td>分子身份证</td><td>快速比较两个分子多像</td></tr>
+<tr><td>GNN</td><td>读图专家</td><td>让 AI 从分子结构图中自主学习</td></tr>
+</table>
+
+<!-- ==================== 4. 五大前沿应用 ==================== -->
+<h2 id="frontier">4. 五大前沿应用</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 20 分钟</div></div>
+<div class="meta-card"><div class="label">覆盖范围</div><div class="value">催化、反应预测、逆合成、性质预测、流程优化</div></div>
+</div>
+
+<p>AlphaFold 拿了诺贝尔奖，但 AI 在化学领域的渗透远不止蛋白质折叠。下面五个方向，每一个都是活跃的研究前沿——不是"可能有用"，而是已经在发表高水平论文、拿经费、改变化学品研发流程。</p>
+
+<p>我会讲清楚每个方向的 <strong>核心方法 + AI 做了什么 + 真实案例 + 和你的关系</strong>。</p>
+
+<table>
+<tr><th>应用方向</th><th>核心 AI 方法</th><th>AI 做的事</th><th>代表性成果</th><th>和你的关系</th></tr>
+<tr>
+  <td>催化剂发现</td>
+  <td>GNN + DFT + Active Learning</td>
+  <td>从海量候选材料中预测最优催化剂</td>
+  <td>清华王笑楠团队 2025 多尺度 AI 预测框架</td>
+  <td>你做多相催化、电催化、光催化——AI 能帮你缩小候选材料范围 100-1000 倍</td>
+</tr>
+<tr>
+  <td>反应预测</td>
+  <td>Transformer（反应 = 翻译）</td>
+  <td>输入反应物 + 条件，输出可能产物</td>
+  <td>IBM RXN 平台、Molecular Transformer</td>
+  <td>有机合成老师：反应杂质预测、从底物推主产物</td>
+</tr>
+<tr>
+  <td>逆合成分析</td>
+  <td>RL + MCTS</td>
+  <td>从目标产物反向推最优合成路线</td>
+  <td>MIT ASKCOS 系统</td>
+  <td>有机化学、药物化学——设计合成路线，评估难易程度</td>
+</tr>
+<tr>
+  <td>分子性质预测</td>
+  <td>GNN + MolFormer</td>
+  <td>从结构预测毒性、溶解度、催化活性</td>
+  <td>DeepMind GNoME（38 万新晶体）、华为盘古药物分子</td>
+  <td>任何做材料筛选、药物设计的老师——不用合成就能评估分子</td>
+</tr>
+<tr>
+  <td>流程优化与自主实验</td>
+  <td>RL + 贝叶斯优化 + PINN</td>
+  <td>自动优化反应条件，机器人自主做实验</td>
+  <td>CATL 电池材料优化、CMU 自主实验机器人</td>
+  <td>化工老师——工艺参数优化、质量预测、节能减排</td>
+</tr>
+</table>
+
+<hr class="divider">
+
+<h3>4.1 催化剂发现</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 5 分钟</div></div>
+<div class="meta-card"><div class="label">核心方法</div><div class="value">GNN + DFT + Active Learning</div></div>
+</div>
+
+<p>催化剂发现可能是化学领域中 AI 渗透最深的方向之一。原因很简单：催化空间的组合爆炸太过巨大，人脑已经处理不过来了。</p>
+
+<p>以一个多相催化剂的典型搜索空间为例：</p>
+<ul>
+  <li>可选的金属元素：~30 种（过渡金属 + 贵金属）</li>
+  <li>可能的载体材料：~200 种（各种氧化物、碳材料、分子筛……）</li>
+  <li>可能的助催化剂：~50 种</li>
+  <li>可能的预处理条件组合：温度 × 气氛 × 时间 = 数千种</li>
+</ul>
+
+<p>把这些乘起来：<strong>超过 10 亿种可能的催化剂组合</strong>。你怎么选？传统方法是靠经验（"铁基催化剂加钾助催化剂效果不错，试试旁边那个铷"）——这种试错法能覆盖的空间连 0.001% 都不到。</p>
+
+<div class="box box-concept">
+<strong>AI 催化发现的工作流</strong><br><br>
+<strong>第一步</strong>：用 DFT 计算为 ~5000 个代表性催化剂算出关键描述符（吸附能、d 带中心、活化能……）。花费 3 个月，烧掉几十万 CPU 小时。<br>
+<strong>第二步</strong>：用这 5000 个数据训练 GNN 模型。模型学会了"从结构特征预测催化活性"。<br>
+<strong>第三步</strong>：用训练好的模型在 10 亿候选空间中<strong>快速扫描</strong>——选出预测活性最好的 100 个。<br>
+<strong>第四步（Active Learning）</strong>：对其中不确定性最大的 10 个候选做 DFT 精确计算，把新数据加入训练集，模型更新后重新推荐。<br>
+<strong>第五步</strong>：人工合成功率最高的 5 个，实验验证。<br><br>
+<strong>从 10 亿 <i class="fa-solid fa-arrow-right"></i> 100 <i class="fa-solid fa-arrow-right"></i> 10 <i class="fa-solid fa-arrow-right"></i> 5，这 5 个里有 2 个可能显著优于当前最好催化剂。</strong>这在传统流程中可能需要一个博士生的整个博士生涯。
+</div>
+
+<p><strong>真实案例：清华王笑楠团队 2025</strong></p>
+
+<p>清华大学化学工程系王笑楠副教授团队在 2025 年发表了一项标志性工作：构建了一个面向多相催化的<strong>多尺度 AI 预测框架</strong>。这个框架的独特之处在于它整合了从原子尺度（DFT 计算）到介观尺度（反应动力学）再到宏观尺度（反应器设计）的多个信息层级，通过 AI 在不同层级间建立桥梁。</p>
+
+<p>这个方向的核心信息：AI 不是替代你做 DFT 计算，而是帮你决定<strong>哪些催化体系值得你花时间去算、去做实验</strong>。</p>
+
+<hr class="divider">
+
+<h3>4.2 反应预测</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">核心方法</div><div class="value">Transformer（把反应当作翻译）</div></div>
+</div>
+
+<p>你给学生出题："苯甲醛 + 丙酮 + NaOH <i class="fa-solid fa-arrow-right"></i> ？" 你知道答案是苯亚甲基丙酮（Aldol 缩合）。你是凭什么知道的？凭你脑子里积累了 20 年的几万个反应案例。</p>
+
+<p>AI 做反应预测的逻辑和这一模一样——但它读的不是几万个案例，而是<strong>数百万个</strong>。</p>
+
+<div class="metaphor">
+<div class="mt">翻译类比</div>
+<div class="mb">
+AI 做反应预测，就像做翻译。<br><br>
+英文 <i class="fa-solid fa-arrow-right"></i> 中文 = "catalyst" <i class="fa-solid fa-arrow-right"></i> "催化剂"<br>
+反应物 <i class="fa-solid fa-arrow-right"></i> 产物 = "CCO.Cl >>" <i class="fa-solid fa-arrow-right"></i> "CCCl"（乙醇 + HCl <i class="fa-solid fa-arrow-right"></i> 氯乙烷）<br><br>
+同一个 Transformer 架构（又是它！），做英文翻译和做反应预测，底层数学完全一样：<strong>输入一串字符，预测输出一串字符</strong>。
+</div>
+</div>
+
+<p><strong>Molecular Transformer</strong>：IBM Research 和瑞士伯尔尼大学在 2019 年发表了这个模型。他们用 100 万个专利反应作为训练数据，用 Transformer 预测反应产物。在标准基准测试上的 top-1 准确率达到了 ~90%——即每 10 个反应物组合，它猜对 9 个主产物。</p>
+
+<p><strong>IBM RXN 平台</strong>：IBM 把 Molecular Transformer 部署为一个免费在线平台。你现在可以：</p>
+<ul>
+  <li>在浏览器里画反应物结构。</li>
+  <li>点击"预测产物"。</li>
+  <li>AI 告诉你可能的主产物和副产物。</li>
+</ul>
+
+<div class="box box-key">
+<strong>你现在就能用的工具</strong>：<strong>IBM RXN for Chemistry</strong>（rxn.res.ibm.com）——免费，不需要注册，不需要安装任何软件。画结构 <i class="fa-solid fa-arrow-right"></i> 预测产物，画产物 <i class="fa-solid fa-arrow-right"></i> 逆推合成路线。你备课的时候打开给学生演示，就是一个非常好的教学案例。
+</div>
+
+<p>反应预测对化学老师最直接的价值：</p>
+<ul>
+  <li><strong>预测反应杂质</strong>：不只告诉你主产物，还预测可能的副产物——对有机合成实验课非常有价值。</li>
+  <li><strong>预测新底物</strong>：你有一个成熟的反应路线，想试试新的底物——AI 能预估哪些底物能用、哪些不行。</li>
+  <li><strong>教学演示</strong>：课堂上有机反应"为什么这样走不那样走"——AI 能快速给出多种可能路径供讨论。</li>
+</ul>
+
+<hr class="divider">
+
+<h3>4.3 逆合成分析</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">核心方法</div><div class="value">强化学习 + 蒙特卡洛树搜索</div></div>
+</div>
+
+<p>如果"反应预测"是"给你原料，猜能做什么"，那<strong>"逆合成分析"就是"给你一个分子，规划怎么最快最便宜地合成它"</strong>。</p>
+
+<p>这是有机化学的核心技能之一，也是 E.J. Corey 凭此拿到 1990 年诺贝尔化学奖的领域。Corey 在 1960 年代提出了<strong>逆合成分析</strong>（Retrosynthetic Analysis）的逻辑框架，但没有强大的计算工具帮助他生成和评估海量可能路线。现在 AI 补上了这个短板。</p>
+
+<div class="metaphor">
+<div class="mt">迷宫类比</div>
+<div class="mb">
+正着走迷宫很难——出口只有一个，入口却有无穷无尽的分岔。<br>
+倒着走迷宫突然就简单了——从出口出发，每一步往入口方向退一步。<br><br>
+逆合成分析就是"从产物倒着推"。但这个倒推过程仍然面临组合爆炸：每个逆合成步骤都有多种可能的断键方式，每层分支选择一到两步就变成几十条备选路径。三到四步以后就是几千上万条。<br><br>
+强化学习擅长这种探索：它派出多条"探针"沿不同路径往下走，同时用值函数评估"沿着这条路径走，走到容易买到的原料的概率有多大"，逐步聚焦到最优路径上。
+</div>
+</div>
+
+<p><strong>MIT ASKCOS 系统</strong>：这是 MIT 化学工程系 Connor Coley 团队开发的开源逆合成分析平台。输入一个目标分子，它能在几分钟内给出多条备选合成路线，并评估每条路线的可行性、步骤数和预计成本。</p>
+
+<p>ASKCOS 底层用的是强化学习的<strong>蒙特卡洛树搜索（MCTS）</strong>——和 AlphaGo 下围棋用的是同一种算法。只是 AlphaGo 搜索的是"落子策略"，ASKCOS 搜索的是"断键策略"。</p>
+
+<div class="box box-note">
+<strong>不是代替你，是给你建议</strong><br><br>
+AI 给出的合成路线不一定是"最好的"——它基于文献库中的已有反应，而文献库有偏（发表偏倚：成功反应多，失败反应少）。但它能帮你<strong>快速生成多种备选路线</strong>，你再用自己的化学直觉判断哪条值得尝试。<br><br>
+把 10 条路线的生成时间从数天缩短到几分钟——这就是 AI 的价值。
+</div>
+
+<hr class="divider">
+
+<h3>4.4 分子性质预测</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 4 分钟</div></div>
+<div class="meta-card"><div class="label">核心方法</div><div class="value">GNN + MolFormer</div></div>
+</div>
+
+<p>这是 AI 在化学中覆盖面最广的应用，也是和最多老师的工作直接相关的方向。核心任务很简单：<strong>给你一个分子的结构，预测它的某个性质——毒性、溶解度、催化活性、沸点、穿透性……不需要实际合成。</strong></p>
+
+<p>传统上，预测一个分子的性质需要两种方法之一：</p>
+<ul>
+  <li>量子化学计算（DFT、MP2、CCSD(T)……）：算得准，但慢。一个含 50 个原子的分子做一次高精度计算可能需要一天。</li>
+  <li>实验测量：最准，但慢 + 贵。合成 <i class="fa-solid fa-arrow-right"></i> 纯化 <i class="fa-solid fa-arrow-right"></i> 表征 <i class="fa-solid fa-arrow-right"></i> 测数据，一条流程下来几周到几个月。</li>
+</ul>
+
+<p>GNN 性质预测的特点是：<strong>训练完成后，预测一个新分子的性质只需要毫秒级别</strong>。虽然精度不如 DFT，但速度是 DFT 的数百万倍——这让你能在筛选阶段快速过几百万个候选分子，筛选出值得做 DFT 或实验验证的那 100 个。</p>
+
+<p><strong>代表性案例一：DeepMind GNoME（2023）</strong></p>
+
+<p>Google DeepMind 的 GNoME（Graph Networks for Materials Exploration）系统用 GNN 预测无机晶体的稳定性。在它的驱动下，发现了 <strong>38 万种新的稳定晶体材料</strong>——相当于人类 800 年的累计知识。</p>
+
+<p>38 万个新晶体是什么概念？其中数千个可能是下一代电池材料、超导材料、催化剂的候选者。GNoME 的发现已经全部公开，供全球科学家筛选和实验验证。</p>
+
+<p><strong>代表性案例二：华为盘古药物分子大模型</strong></p>
+
+<p>华为云开发的"盘古药物分子大模型"是一个专门面向药物分子设计的大型 AI 模型。它的训练数据包含了 17 亿个药物分子的结构，能同时预测分子的数十种药理学性质。</p>
+
+<p>在 2021 年的验证研究中，盘古大模型在<strong>一个月内</strong>完成了一款抗生素候选药物的分子优化——从 hit 到 lead 到候选化合物。同样流程在传统制药公司通常需要 3-5 年。</p>
+
+<div class="box box-warn">
+<strong>一个重要的性质预测迷思</strong><br><br>
+AI 预测的"准确率"取决于训练数据的质量和数量。如果某个性质（比如"对某个特定酶的抑制活性"）的训练数据只有几十个点，AI 的预测基本不可靠。如果训练数据有几万个点且覆盖了多种结构类型，预测可靠度会非常高。<br><br>
+更关键的是：<strong>AI 在当前训练数据分布之外的预测要小心</strong>。如果你的分子结构是前所未见的（和训练集所有分子都不像），AI 的预测可能是错的——它是在"外推"，不是"内插"。这一点在你做真正的创新研究时尤为重要。
+</div>
+
+<hr class="divider">
+
+<h3>4.5 流程优化与自主实验</h3>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 3 分钟</div></div>
+<div class="meta-card"><div class="label">核心方法</div><div class="value">强化学习 + 贝叶斯优化 + PINN</div></div>
+</div>
+
+<p>前面四个方向都偏向"研发阶段"——发现催化剂、预测反应、设计合成路线、预测性质。但化工不只有研发，还有<strong>生产</strong>：怎么让反应器更高效、怎么降低能耗、怎么减少副产物产率。</p>
+
+<p>这些流程优化问题非常复杂——涉及温度场、流场、浓度场、反应动力学的多物理场耦合。传统方法是用 CFD（计算流体力学）一点一点调参数，调整一次跑几个小时仿真。</p>
+
+<p>AI 的切入点有两个：</p>
+
+<ol>
+  <li><strong>强化学习（RL）</strong>：让 AI 像一个"永不疲倦的操作工"，在仿真环境里试几千几万次不同的操作参数（温度、流量、压力、搅拌速率），从中学习最优控制策略。</li>
+  <li><strong>PINN（物理信息神经网络）</strong>：把纳维-斯托克斯方程、传热方程、反应动力学方程直接"嵌入"到神经网络里——模型不只能拟合数据，还能"遵守"物理定律。用 PINN 做仿真，比传统 CFD 快几个数量级。</li>
+  <li><strong>贝叶斯优化</strong>：当真实实验很贵（比如每次实验消耗几千元的贵金属催化剂），AI 用"探索 vs 利用"的策略，用最少的实验次数找到最优条件。</li>
+</ol>
+
+<p><strong>真实案例：CATL（宁德时代）电池材料优化</strong></p>
+
+<p>CATL 将 AI 驱动的实验设计与高通量筛选相结合，应用于下一代电池材料的改进。据报道，这一方法帮助 CATL 将新电池材料的能量密度提升了约 15%，同时将研发周期从数月缩短到数周。</p>
+
+<p><strong>真实案例：CMU "AI Chemist" 自主实验机器人</strong></p>
+
+<p>卡内基梅隆大学（CMU）的研究团队创建了一个"AI 化学家"——将 AI 决策引擎与自动化液体处理和在线分析仪器连接。AI 模型查看前一次实验的结果，自主决定下一次实验的条件（什么催化剂、什么底物比例、什么温度），然后机械臂自动操作，在线分析仪器自动反馈结果。整个过程<strong>无需人类干预</strong>。</p>
+
+<p>在一次光催化产氢的优化任务中，AI 化学家自主运行了 688 次实验，找到了人类化学家初始设计条件的 6 倍产率的优化配方——而且只用了一周。</p>
+
+<div class="box box-key">
+<strong>对我们这些"非 CMU 级"实验室的意义</strong><br><br>
+你不一定买得起自动化实验平台。但 AI 决策的那部分——"基于少量实验数据，推荐下一个值得尝试的实验条件"——你完全可以用。贝叶斯优化库（如 BoTorch、Optuna）是开源的，WorkBuddy 课程里会教你怎么用这些工具帮你做实验设计。
+</div>
+
+<!-- ==================== 5. 核心信息 ==================== -->
+<h2 id="message">5. 核心信息：你可以现在就开始</h2>
+
+<div class="meta-grid">
+<div class="meta-card"><div class="label">时长</div><div class="value">约 3 分钟</div></div>
+<div class="meta-card"><div class="label">关键词</div><div class="value">不是科幻、现在就可用、WorkBuddy 课程</div></div>
+</div>
+
+<p>到这里，我们已经讲完了 AI 在化学领域五个核心方向的应用。让我做一个最重要的总结。</p>
+
+<div class="box box-summary">
+<strong>这五大方向不是科幻</strong>。<br><br>
+清华大学在做——王笑楠团队的多尺度催化 AI 框架。<br>
+宁德时代在做——AI 加速电池材料研发，能量密度提升 15%。<br>
+CMU 在做——自主实验机器人，一周跑 688 个实验。<br>
+华为在做——盘古药物分子大模型，一个月完成药物分子优化。<br>
+IBM 在做——RXN 平台，免费，你现在打开浏览器就能用。<br><br>
+<strong>这不是"未来"。这是"现在"。</strong>
+</div>
+
+<p>我知道你可能有一种感觉——"这些听起来很厉害，但跟我有什么关系？我又不训练模型，我也不是计算机系的。"</p>
+
+<p>但这恰恰是 2025-2026 年最大的变化：<strong>你不需要会训练模型，你只需要会用模型</strong>。就像你不需要会造汽车，只要会开车——而且现在的 AI 工具已经把门槛降到了"说人话就能用"的程度。</p>
+
+<p>你不需要：</p>
+<ul>
+  <li>学 Python 编程</li>
+  <li>配 GPU 环境</li>
+  <li>懂深度学习数学</li>
+  <li>准备大规模训练数据</li>
+</ul>
+
+<p>你只需要：</p>
+<ul>
+  <li>知道什么工具能做什么（这一讲已经讲了）</li>
+  <li>知道怎么跟 AI 说要什么（WorkBuddy 课程会教）</li>
+  <li>用你的化学专业判断力评估 AI 的输出（这是你本来就有的）</li>
+</ul>
+
+<div class="box box-key">
+<strong>接下来</strong><br><br>
+在 WorkBuddy 课程中，我们将一步步教你：<br>
+- 用文本 AI（ChatGPT、DeepSeek）辅助论文写作、翻译润色、基金申请<br>
+- 用 WorkBuddy 的数据分析能力处理光谱、色谱、热分析数据<br>
+- 封装你自己的"化学研究 Skill"，让 AI 用你的方式解决你的问题<br>
+- 将 AI 嵌入你的日常科研工作流——从"偶尔用一次"到"离不开"<br><br>
+<strong>AI 在化学中的革命不是让你变成程序员，而是让你变成一个效率更高的化学家。</strong>
+</div>
+
+<p>1969 年的 DENDRAL 等了 50 年。AlphaFold 等了 50 年。<strong>你不用等。</strong>你现在就能开始。</p>
+
+<!-- Page navigation -->
+<nav class="page-nav">
+  <a href="M2-LLM基础.html"><i class="fa-solid fa-arrow-left"></i> 上一模块：LLM 基础知识</a>
+  <a href="M4-科研加速.html">下一模块：AI 如何加速科研 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+
+<script src="../theme.js"></script>
+</body>
+</html>

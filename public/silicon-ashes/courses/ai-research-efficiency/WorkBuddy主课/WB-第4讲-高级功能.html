@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 4 讲 · 高级功能：Skills · MCP · Agent 协作</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="index.html">WorkBuddy 主课</a><span class="sep">›</span>
+  <span class="current">第 4 讲 · 高级功能</span>
+</nav>
+<h1>第 4 讲 · 高级功能：Skills · MCP · Agent 协作</h1>
+<p class="subtitle">从安装到创造 Skill · MCP 连接第三方工具 · 多 Agent 并行协作 · 远程遥控</p>
+
+<div class="meta-grid">
+  <div class="meta-card"><div class="label">时长</div><div class="value">120 分钟</div></div>
+  <div class="meta-card"><div class="label">形式</div><div class="value">讲授 + 实操 + 讨论</div></div>
+  <div class="meta-card"><div class="label">重点</div><div class="value">Skills 创造 + MCP 配置</div></div>
+</div>
+
+<div class="toc">
+<h3>本讲目录</h3>
+<ol>
+  <li><a href="#s1">Skills 深度剖析</a> — 来源·结构·创建（30 min）</li>
+  <li><a href="#s2">MCP 协议实战</a> — 万能转接头（35 min）</li>
+  <li><a href="#s3">多 Agent 协作</a> — 一个团队同时干活（25 min）</li>
+  <li><a href="#s4">远程遥控 + 自动化</a> — 手机操控 PC（20 min）</li>
+  <li><a href="#s5">讨论</a> — 最可自动化的科研任务（10 min）</li>
+</ol>
+</div>
+
+<!-- SECTION 1 -->
+<h2 id="s1">1. Skills 深度剖析</h2>
+
+<div class="metaphor">
+<div class="mt">"Skill = 手机 App"</div>
+<div class="mb">你手机上有各种 App——每个 App 专注于完成一类任务。WorkBuddy 的 Skill 就是"AI 版的 App"：<strong>每个 Skill 封装了一个完整的专业工作流，一个指令就能触发。</strong>你不会用"记事本"去修图，同样，你不会用一个通用 AI 去处理催化论文——你会用"催化论文润色 Skill"。</div>
+</div>
+
+<h3>Skills 的三个来源</h3>
+
+<div class="feat-grid">
+<div class="feat-card">
+<div class="icon">📦</div>
+<div class="name">内置 Skills（20+）</div>
+<div class="desc">WorkBuddy 自带的基础 Skills：代码审查、文件管理、文档处理等。无需安装，即开即用。</div>
+</div>
+<div class="feat-card">
+<div class="icon">🏪</div>
+<div class="name">SkillHub（70K+）</div>
+<div class="desc">社区共享的 Skills 市场。搜索并一键安装。覆盖科研、工程、金融、教育等各领域。</div>
+</div>
+<div class="feat-card">
+<div class="icon"><i class="fa-solid fa-wrench"></i></div>
+<div class="name">自定义 Skill</div>
+<div class="desc">根据你的专业需求自己创建的 Skill。完全掌握专业逻辑和输出规范——这是最核心的能力。</div>
+</div>
+</div>
+
+<h3>Skill 的文件结构</h3>
+
+<table>
+<tr><th>文件/目录</th><th>作用</th><th>示例（催化论文润色 Skill）</th></tr>
+<tr><td><code>SKILL.md</code></td><td>核心：Skill 的触发词、工作流、输出规范</td><td>触发词："润色/润色催化/polish catalytic" <i class="fa-solid fa-arrow-right"></i> 执行 ACS 风格润色流程</td></tr>
+<tr><td><code>scripts/</code></td><td>配套脚本（Python/Shell 等）</td><td>术语检查脚本：检测"catalyst activity"是否应改为"catalytic activity"</td></tr>
+<tr><td><code>references/</code></td><td>参考资料库</td><td>ACS 催化论文风格指南 PDF、常用术语对照表、期刊缩写列表</td></tr>
+<tr><td><code>assets/</code></td><td>模板/素材文件</td><td>Figure 标注模板、Scheme 标准格式</td></tr>
+</table>
+
+<h3>创建一个专业 Skill：四个要素</h3>
+
+<div class="box-exercise">
+<strong>演示：创建"催化论文润色 Skill"</strong><br><br>
+<strong>① 名称：</strong>"催化论文润色-ACS风格"<br>
+<strong>② 触发词：</strong>催化润色、polish catalysis、ACS润色<br>
+<strong>③ 工作流：</strong><br>
+&nbsp;&nbsp;步骤1：检查术语一致性（如"catalyst" vs "catalytic"、"conversion" vs "yield"）<br>
+&nbsp;&nbsp;步骤2：按 ACS Catalysis 风格指南润色每段<br>
+&nbsp;&nbsp;步骤3：检查图表标注格式（Figure 1. <i class="fa-solid fa-arrow-right"></i> 大写 F，Scheme 1. <i class="fa-solid fa-arrow-right"></i> 大写 S）<br>
+&nbsp;&nbsp;步骤4：输出修改对照表（修改前 vs 修改后 + 修改原因）<br>
+<strong>④ 输出规范：</strong>Markdown 格式，左侧原文，右侧修改版，底部列出术语替换表
+</div>
+
+<div class="box-key">
+<strong>创建 Skill 的核心原则：</strong><br>
+① 明确单一职责——一个 Skill 只解决一类问题<br>
+② 工作流可重复——每步逻辑清晰，不论输入如何都能按同样流程处理<br>
+③ 术语专业——引用你所在领域的标准术语和规范<br>
+④ 允许迭代——第一版不求完美，用起来再改进
+</div>
+
+<!-- SECTION 2 -->
+<h2 id="s2">2. MCP 协议实战</h2>
+
+<div class="metaphor">
+<div class="mt">"MCP = 万能转接头"</div>
+<div class="mb">你出国旅行时，各种插头规格不同（英标、欧标、美标、国标），一个万能转接头解决所有问题。<br><strong>MCP（Model Context Protocol）就是 AI 的万能转接头</strong>——它让 WorkBuddy 能连接任何遵循 MCP 标准的第三方工具和服务。</div>
+</div>
+
+<h3>MCP 的三个角色</h3>
+
+<div class="feat-grid">
+<div class="feat-card">
+<div class="icon">🖥️</div>
+<div class="name">MCP Server</div>
+<div class="desc">第三方工具对外暴露的接口服务。相当于"这个工具对外开放的 API 接入点"。</div>
+</div>
+<div class="feat-card">
+<div class="icon"><i class="fa-solid fa-robot"></i></div>
+<div class="name">MCP Client</div>
+<div class="desc">WorkBuddy 本身。它通过 MCP 协议发现和调用各种 MCP Server 的能力。</div>
+</div>
+<div class="feat-card">
+<div class="icon">👤</div>
+<div class="name">你</div>
+<div class="desc">你不需要理解 MCP 的技术细节。你只需要告诉 WorkBuddy"帮我连上 X 工具"，AI 自己配置。</div>
+</div>
+</div>
+
+<h3>核心 MCP 功能卡</h3>
+
+<div class="feat-grid">
+<div class="feat-card">
+<div class="icon"><i class="fa-solid fa-globe"></i></div>
+<div class="name">Playwright</div>
+<div class="desc"><strong>浏览器自动化。</strong>自动打开网页、截图、填写表单、抓取数据。用于：自动获取期刊最新目录、下载论文摘要、抓取化合物数据库。</div>
+</div>
+<div class="feat-card">
+<div class="icon">🗄️</div>
+<div class="name">Database</div>
+<div class="desc"><strong>数据库连接。</strong>直接查询 SQLite/MySQL/PostgreSQL。用于：查询实验数据库、关联多表数据、批量更新。</div>
+</div>
+<div class="feat-card">
+<div class="icon">🐙</div>
+<div class="name">GitHub</div>
+<div class="desc"><strong>代码协作。</strong>创建 Issue、提交 PR、查看 CI 状态。用于：管理课题组代码库、协作开发。</div>
+</div>
+<div class="feat-card">
+<div class="icon">📁</div>
+<div class="name">File System</div>
+<div class="desc"><strong>文件系统操作。</strong>读写、搜索、批量重命名。用于：数据文件管理、日志分析、批量转换格式。</div>
+</div>
+</div>
+
+<div class="box-key">
+<strong>优先级建议：</strong>File System + Playwright = 覆盖 80% 的科研需求。先掌握这两个，再逐步扩展到其他 MCP。
+</div>
+
+<h3>配置 MCP 的两种方式</h3>
+
+<table>
+<tr><th>方式</th><th>适合人群</th><th>操作</th></tr>
+<tr><td><strong>可视化界面</strong></td><td>初学者</td><td>WorkBuddy 设置 <i class="fa-solid fa-arrow-right"></i> MCP 管理 <i class="fa-solid fa-arrow-right"></i> 点击添加 <i class="fa-solid fa-arrow-right"></i> 从列表选择 <i class="fa-solid fa-arrow-right"></i> 一键配置</td></tr>
+<tr><td><strong>手动 JSON</strong></td><td>进阶用户</td><td>编辑 <code>mcp.json</code> 配置文件 <i class="fa-solid fa-arrow-right"></i> 填写 Server 地址、参数 <i class="fa-solid fa-arrow-right"></i> 重启 WorkBuddy</td></tr>
+</table>
+
+<div class="box-exercise">
+<strong>实操任务：配置浏览器 MCP + 抓取最新期刊目录</strong><br>
+① 在 WorkBuddy 中配置 Playwright MCP Server<br>
+② 输入指令："打开 ACS Catalysis 最新一期的目录页，抓取每篇文章的标题、作者、DOI，保存为 CSV"<br>
+③ 观察 AI 自动打开浏览器 <i class="fa-solid fa-arrow-right"></i> 导航 <i class="fa-solid fa-arrow-right"></i> 提取数据 <i class="fa-solid fa-arrow-right"></i> 保存文件的完整过程
+</div>
+
+<!-- SECTION 3 -->
+<h2 id="s3">3. 多 Agent 协作</h2>
+
+<div class="metaphor">
+<div class="mt">"一个团队同时干活"</div>
+<div class="mb">不是"一个 AI 帮你做一件事"，而是<strong>"同时启动 4 个 AI Agent，每个专注一个子任务，最后汇总结果"</strong>。<br>就像你让 4 个博士生同时查找 4 个不同方向的文献，你去开会回来他们就把整理好的材料放在你桌上了。</div>
+</div>
+
+<h3>真实案例：并行文献调研</h3>
+
+<div class="box-note">
+<strong>场景：</strong>你要写一篇关于"CO₂ 加氢制甲醇催化剂"的综述，需要覆盖 4 个维度。<br><br>
+<strong>Agent A（催化机理）：</strong>"搜索并总结近 5 年关于 Cu/ZnO 催化剂在 CO₂ 加氢中的活性位点和反应机理的研究，列出 5 篇关键论文"<br><br>
+<strong>Agent B（新型材料）：</strong>"搜索和总结近 5 年用于 CO₂ 加氢制甲醇的新型催化材料（In₂O₃、金属有机框架、单原子等），列出 5 篇关键论文"<br><br>
+<strong>Agent C（交叉学科）：</strong>"搜索将机器学习或 DFT 高通量筛选应用于 CO₂ 加氢催化剂设计的研究，列出 3 篇代表性论文"<br><br>
+<strong>Agent D（工业案例）：</strong>"搜索 CO₂ 加氢制甲醇的工业示范项目和技术经济分析，列出 3 个关键案例"<br><br>
+<strong>结果：</strong>15 分钟后，4 个 Agent 同时返回结果——一份覆盖机理、材料、计算、工业的完整文献调研。
+</div>
+
+<h3>什么时候用多 Agent？</h3>
+
+<div class="box-key">
+<strong>适用条件：</strong><br>
+① 任务可以自然地拆分为 <strong>2-4 个独立子任务</strong><br>
+② 每个子任务有 <strong>明确边界</strong>，不会互相依赖<br>
+③ 每个子任务 "<strong>单独也能完成</strong>"，不需要中途沟通<br><br>
+<strong>反例（不适合多 Agent）：</strong>"先清洗数据，然后根据清洗结果做统计，再根据统计结果画图"——这是一个依赖链条，不适合并行。
+</div>
+
+<h3>Agent 架构深度剖析</h3>
+
+<div class="metaphor">
+<div class="mt"><i class="fa-solid fa-building-columns"></i> Agent 之间怎么协作？—— 一张图讲清楚</div>
+<div class="mb">
+想象一个项目组开会：<br><br>
+<strong>你（Leader）</strong> <i class="fa-solid fa-arrow-right"></i> 分配任务 <i class="fa-solid fa-arrow-right"></i> <strong>Task List（共享任务看板）</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-arrow-down"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Agent A</strong>&nbsp;&nbsp;<strong>Agent B</strong>&nbsp;&nbsp;<strong>Agent C</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↕ 消息传递 ↕<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Message Bus（消息总线）</strong><br><br>
+<strong>三个关键机制：</strong><br>
+① <strong>Task List 共享</strong>——所有 Agent 看到同一张任务表。谁认领了哪个任务、谁做完了、谁被卡住了——一清二楚。<br>
+② <strong>Agent 间消息传递</strong>——Agent A 可以给 Agent B 发消息："你那个数据查完了吗？我这边等你结果。"——就像项目组里同事互相催进度。<br>
+③ <strong>Leader-Worker 模式</strong>——你永远是 Leader，Agent 是 Worker。它们可以互相通信和协调，但<strong>最终决策权在你手里</strong>。
+</div>
+</div>
+
+<div class="box box-key">
+<strong>串行 vs 并行：什么时候用多个 Agent</strong><br>
+• <strong>串行</strong>（一个Agent做完另一个才做）：A 的输出是 B 的输入——比如"A 先搜文献 <i class="fa-solid fa-arrow-right"></i> B 再基于结果写综述"<br>
+• <strong>并行</strong>（多个Agent同时做）：多个独立任务——比如"A 搜催化文献""B 搜材料文献""C 搜方法论文献"同时进行<br><br>
+<strong>判断法则：</strong>如果子任务之间没有依赖关系（互不等待），就并行。如果有依赖，就串行。不要为了"看起来酷"而强行并行——一个停摆的 Agent 会卡住整个流程。
+</div>
+
+<h3>Cron 定时任务：让你的 AI 在你不在的时候干活</h3>
+
+<div class="metaphor">
+<div class="mt">⏰ 什么是 Cron</div>
+<div class="mb">
+Cron 是 Unix/Linux 系统中的<strong>定时任务调度器</strong>。简单说：<strong>"设好闹钟，时间到了自动执行"。</strong><br><br>
+<strong>类比：实验室的自动采样器。</strong>你不需要通宵守在仪器旁边每 30 分钟手动采集一次数据——设好程序，仪器自动采样。Cron 就是 AI 世界的"自动采样器"。<br><br>
+<strong>WorkBuddy 中的 Cron：</strong>你可以设置"每周一早上 9:00 自动总结上周实验数据""每月 1 号生成上月文献阅读报告""每天晚上 6:00 检查是否有新发表的论文邮件"。设好一次，永远不用管。
+</div>
+</div>
+
+<h4>三大科研 Cron 场景</h4>
+<table>
+<tr><th>场景</th><th>Cron 规则</th><th>WorkBuddy 指令示例</th></tr>
+<tr><td>每周数据汇总</td><td>每周一 9:00 AM</td><td>"设置每周一早上 9 点自动读取上周的实验数据文件夹，生成一份统计报告（平均值/标准差/趋势图），发送到课程群"</td></tr>
+<tr><td>每月文献监控</td><td>每月 1 号</td><td>"每月 1 号搜索'photocatalysis CO2 reduction'的最新论文，筛选高被引的前 10 篇，生成摘要列表"</td></tr>
+<tr><td>每日备份提醒</td><td>每日 6:00 PM</td><td>"每天下午 6 点检查我的实验数据文件夹是否有更新，如果有就把新文件自动备份到指定位置"</td></tr>
+</table>
+
+<div class="box box-exercise">
+<strong><i class="fa-solid fa-pencil"></i> 随堂练习：设计一个你的 Cron 任务</strong><br>
+从你每天/每周重复做的科研事务中选一件，设计一个 Cron 定时任务方案：<br>
+① 这个任务是什么？<br>
+② 触发频率（每天/每周/每月）？<br>
+③ WorkBuddy 需要自动做什么？<br>
+④ 结果发送到哪里（文件/群消息/邮件）？
+</div>
+
+<!-- SECTION 4 -->
+<h2 id="s4">4. 远程遥控 + 自动化</h2>
+
+<h3>远程遥控</h3>
+
+<div class="box-note">
+<strong>场景：</strong>你正在外地开会，手机收到消息——课题组需要 XRD 数据分析。<br><br>
+<strong>操作：</strong><br>
+① 绑定企业微信/微信机器人到 WorkBuddy<br>
+② 从手机发送指令："分析昨天新测的 XRD 数据，识别物相，计算结晶度，画比对图"<br>
+③ 你的 PC 上的 WorkBuddy 接收指令 <i class="fa-solid fa-arrow-right"></i> 读取文件 <i class="fa-solid fa-arrow-right"></i> 分析 <i class="fa-solid fa-arrow-right"></i> 生成图表 <i class="fa-solid fa-arrow-right"></i> 把结果回传到你的手机<br><br>
+<strong>不需要远程桌面，不需要带电脑，一条消息搞定。</strong>
+</div>
+
+<h3>Channel 通道机制：你的手机怎么指挥电脑</h3>
+
+<div class="metaphor">
+<div class="mt">📡 什么是 Channel</div>
+<div class="mb">
+Channel（通道）是 WorkBuddy 接收远程指令的<strong>"通信管道"</strong>。<br><br>
+<strong>类比：快递公司。</strong>你不在乎快递是顺丰还是圆通——你在乎的是"东西能送到"。企业微信、QQ、飞书、钉钉——这些都是不同的 Channel（快递公司），WorkBuddy 后端统一接收（收件箱）。<br><br>
+<strong>四种 Channel 对比：</strong>
+</div>
+</div>
+
+<table>
+<tr><th>Channel</th><th>配置难度</th><th>延迟</th><th>推荐场景</th></tr>
+<tr><td><strong>企业微信</strong></td><td><i class="fa-solid fa-star"></i> 最快 1 分钟</td><td>最低</td><td><strong>首选</strong>——高校教师通常已有企业微信</td></tr>
+<tr><td><strong>QQ</strong></td><td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td><td>中等</td><td>个人用户、学生群体</td></tr>
+<tr><td><strong>飞书</strong></td><td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td><td>中等</td><td>使用飞书的企业/团队</td></tr>
+<tr><td><strong>钉钉</strong></td><td><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td><td>中等</td><td>使用钉钉的学校/团队</td></tr>
+</table>
+
+<div class="box box-key">
+<strong>Channel 的工作原理（一句话版）：</strong><br>
+你的手机 <i class="fa-solid fa-arrow-right"></i> 企业微信 App <i class="fa-solid fa-arrow-right"></i> 把消息发给 WorkBuddy 后端服务器 <i class="fa-solid fa-arrow-right"></i> 服务器验证你是谁 <i class="fa-solid fa-arrow-right"></i> 找到你登录的电脑 <i class="fa-solid fa-arrow-right"></i> 把指令发给电脑上的 WorkBuddy <i class="fa-solid fa-arrow-right"></i> WorkBuddy 执行 <i class="fa-solid fa-arrow-right"></i> 结果回传 <i class="fa-solid fa-arrow-right"></i> 你手机上收到回复。<br><br>
+<strong>前提条件：</strong>电脑必须开机 + WorkBuddy 保持运行 + 网络连接正常。电脑关机了，手机喊破嗓子也没用。
+</div>
+
+<h3>自动化</h3>
+
+<div class="box-note">
+<strong>定时任务示例：</strong><br>
+- "每周一上午 9 点：汇总上周实验数据，生成周报草稿"<br>
+- "每天下午 5 点：检查 ACS Catalysis 是否有新论文上线，有的话发摘要到微信群"<br>
+- "每月 1 号：整理上月实验室化学品库存，标记低于阈值的试剂"<br><br>
+<strong>设置方式：</strong>在 WorkBuddy 的自动化页面设置定时规则（类似手机闹钟），绑定执行的指令。
+</div>
+
+<!-- SECTION 5 -->
+<h2 id="s5">5. 讨论</h2>
+
+<div class="box-exercise">
+<strong>讨论主题：</strong>每个人列出"我的科研工作中最可以自动化的 3 个任务"。<br><br>
+<strong>思考框架：</strong><br>
+- 这个任务是否重复发生？（每周/每月都做 <i class="fa-solid fa-arrow-right"></i> 可自动化）<br>
+- 这个任务是否规则明确？（步骤固定，不需要每次重新判断 <i class="fa-solid fa-arrow-right"></i> 可自动化）<br>
+- 这个任务是否占用大量时间但价值不高？（超过 2 小时/周 <i class="fa-solid fa-arrow-right"></i> 值得自动化）<br><br>
+<strong>导师引导：</strong>把每个人的 3 个任务分类，形成"实验室自动化优先级清单"，作为结课作业的参考。
+</div>
+
+<div class="box-summary">
+<h3 style="font-size:1rem;color:var(--primary);margin:0 0 10px">本讲小结</h3>
+<ul>
+  <li>Skills 三层来源：内置（20+）<i class="fa-solid fa-arrow-right"></i> SkillHub（70K+）<i class="fa-solid fa-arrow-right"></i> 自定义。核心能力是创建自己的 Skill</li>
+  <li>Skill 文件结构：SKILL.md（核心流程）+ scripts/（脚本）+ references/（知识库）+ assets/（模板）</li>
+  <li>MCP = AI 的万能转接头：优先掌握 File System + Playwright，覆盖 80% 科研需求</li>
+  <li>多 Agent 协作：4 个 AI 同时处理 4 个独立子任务，适用于横向并行（非纵向依赖链）</li>
+  <li>远程遥控 + 自动化：手机发指令控制 PC，定时任务自动执行重复性工作</li>
+</ul>
+</div>
+
+<nav class="page-nav">
+  <a href="WB-第3讲-数据分析.html"><i class="fa-solid fa-arrow-left"></i> 上一讲</a>
+  <a href="WB-第5讲-全流程实战.html">下一讲 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+
+<script src="../theme.js"></script>
+</body>
+</html>

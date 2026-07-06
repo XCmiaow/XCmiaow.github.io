@@ -1,0 +1,169 @@
+---
+import common from '../data/common.json';
+
+export interface Props {
+  lang: 'zh' | 'en';
+}
+
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
+const email = common.person.email;
+const github = common.person.github;
+const githubUrl = `https://${github}`;
+
+const t = isZh
+  ? {
+      brand: '硅基余烬',
+      nav: [
+        ['主站', homeHref],
+        ['写作', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
+        ['课程', isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'],
+        ['资源', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
+      ],
+      eyebrow: '关于',
+      title: '方绪杰',
+      intro: '化工背景，关注 AI 如何重新安排人的工作、学习和科研方式。',
+      focusTitle: '现在在做什么',
+      focus: [
+        '构建“硅基余烬”个人品牌站点，连接写作、课程与资源',
+        '设计面向化工教师的 AI 科研效率课程体系',
+        '写作：AI 工作流、科研方法、化工专业表达',
+      ],
+      backgroundTitle: '过去做过什么',
+      background: [
+        '化学工程专业，有机化学与催化研究方向',
+        '数学建模竞赛、科研项目与论文写作',
+        'Astro 站点建设、AI 工具链实践',
+      ],
+      contactTitle: '联系',
+      resumeLabel: '查看完整简历',
+      resumeHref: isZh ? '/' : '/en/',
+    }
+  : {
+      brand: 'Silicon Ashes',
+      nav: [
+        ['Main', homeHref],
+        ['Writing', '/en/silicon-ashes/writing/'],
+        ['Courses', '/en/silicon-ashes/courses/'],
+        ['Resources', '/en/silicon-ashes/resources/'],
+      ],
+      eyebrow: 'About',
+      title: 'Xujie Fang',
+      intro: 'Chemical engineering background, focused on how AI rearranges work, learning, and research.',
+      focusTitle: 'What I am doing now',
+      focus: [
+        'Building the Silicon Ashes personal brand site',
+        'Designing an AI research efficiency course system for chemistry teachers',
+        'Writing about AI workflows, research methods, and chemistry expression',
+      ],
+      backgroundTitle: 'What I have done',
+      background: [
+        'Chemical engineering, organic chemistry and catalysis research',
+        'Mathematical modeling competitions, research projects, and thesis writing',
+        'Astro site building and AI toolchain practice',
+      ],
+      contactTitle: 'Contact',
+      resumeLabel: 'Full resume',
+      resumeHref: '/en/',
+    };
+---
+
+<div class="ap-shell">
+  <header class="ap-nav">
+    <a class="ap-brand" href={homeHref}>
+      <span class="brand-mark">SA</span>
+      <span class="brand-name">{t.brand}</span>
+    </a>
+    <nav>
+      {t.nav.map(([label, href]) => <a href={href}>{label}</a>)}
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1>{t.title}</h1>
+      <p class="lead">{t.intro}</p>
+    </section>
+
+    <section class="about-section">
+      <h2>{t.focusTitle}</h2>
+      <ul class="focus-list">
+        {t.focus.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>{t.backgroundTitle}</h2>
+      <ul class="focus-list">
+        {t.background.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <section class="about-section contact-section">
+      <h2>{t.contactTitle}</h2>
+      <div class="contact-links">
+        <a href={`mailto:${email}`}>Email</a>
+        <a href={githubUrl}>GitHub</a>
+        <a href={t.resumeHref}>{t.resumeLabel}</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ap-footer">
+    <p>{t.brand}</p>
+  </footer>
+</div>
+
+<style>
+  :global(html) { scroll-behavior: smooth; background: #080705; }
+  :global(body) { margin: 0; background: #080705; color: #e9e0d0; font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+  :global(*), :global(*::before), :global(*::after) { box-sizing: border-box; }
+  :global(a) { color: inherit; }
+
+  .ap-shell {
+    min-height: 100dvh;
+    background:
+      linear-gradient(90deg, rgba(226,187,116,0.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(226,187,116,0.028) 1px, transparent 1px),
+      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
+    background-size: 64px 64px, 64px 64px, auto, auto;
+  }
+
+  .ap-nav, main, .ap-footer { width: min(100% - 44px, 780px); margin: 0 auto; }
+  .ap-nav { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(218,166,86,0.2); background: rgba(8,7,5,0.86); backdrop-filter: blur(18px); position: sticky; top: 0; z-index: 12; }
+  .ap-brand { display: inline-flex; min-height: 40px; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(218,166,86,0.7); border-radius: 5px; background: linear-gradient(135deg, rgba(238,181,92,0.22), transparent 50%), #11100d; color: #ffe4aa; font-family: Consolas, monospace; font-size: 13px; font-weight: 900; }
+  .brand-name { color: #f3e3c5; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 20px; font-weight: 800; }
+  .ap-nav nav { display: flex; gap: 6px; }
+  .ap-nav nav a { display: inline-flex; min-height: 38px; align-items: center; border-radius: 4px; padding: 0 10px; color: rgba(233,224,208,0.72); font-size: 14px; font-weight: 700; text-decoration: none; }
+  .ap-nav nav a:hover { background: rgba(218,166,86,0.1); color: #ffe2aa; }
+
+  .hero { padding: 100px 0 48px; }
+  .eyebrow { margin: 0; color: #d8aa63; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; }
+  h1, h2, p { overflow-wrap: anywhere; }
+  h1 { margin: 22px 0 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1.06; }
+  .lead { max-width: 680px; margin: 22px 0 0; color: rgba(233,224,208,0.76); font-size: 19px; line-height: 1.88; }
+
+  .about-section { padding: 40px 0; border-top: 1px solid rgba(218,166,86,0.18); }
+  .about-section h2 { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 24px; font-weight: 800; margin: 0 0 20px; }
+
+  .focus-list { margin: 0; padding: 0 0 0 20px; list-style: none; }
+  .focus-list li { position: relative; padding: 8px 0 8px 16px; color: rgba(233,224,208,0.76); font-size: 17px; line-height: 1.7; }
+  .focus-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 6px; height: 6px; border-radius: 50%; background: #d8aa63; }
+
+  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .contact-links a { display: inline-flex; min-height: 42px; align-items: center; padding: 0 16px; border: 1px solid rgba(218,166,86,0.35); border-radius: 4px; color: #f1dfbd; font-size: 14px; font-weight: 800; text-decoration: none; transition: border-color 160ms ease, background 160ms ease; }
+  .contact-links a:hover { border-color: rgba(241,223,189,0.6); background: rgba(241,223,189,0.06); }
+
+  .ap-footer { padding: 28px 0 40px; border-top: 1px solid rgba(218,166,86,0.18); }
+  .ap-footer p { margin: 0; font-size: 14px; color: rgba(233,224,208,0.4); }
+
+  @media (max-width: 720px) {
+    .ap-nav, main, .ap-footer { width: min(100% - 28px, 780px); }
+    .ap-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
+    .hero { padding: 58px 0 36px; }
+    h1 { font-size: 2.4rem; }
+  }
+</style>

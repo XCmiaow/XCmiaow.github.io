@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="B1·开发工具链认知——VSCode、终端、Workspace，理解AI编程工具在哪里运行。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2744'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='%23fbfaf7'>AI</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 · 开发工具链认知</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.relation-diagram{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;padding:24px;background:var(--surface);border-radius:14px;border:1px solid var(--hairline);margin:16px 0}
+.rd-node{text-align:center;padding:16px 20px;border-radius:10px;min-width:140px;font-weight:600;font-size:.95rem}
+.rd-node.rd-vscode{background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:2px solid #0284c7;color:#0369a1}
+.rd-node.rd-terminal{background:linear-gradient(135deg,#f0fdf4,#bbf7d0);border:2px solid #16a34a;color:#15803d}
+.rd-node.rd-workspace{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #d97706;color:#b45309}
+.rd-arrow{font-size:1.5rem;color:var(--muted);font-weight:300}
+@media(max-width:700px){.relation-diagram{flex-direction:column}.rd-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+
+
+<!-- ===== Theme Toggle ===== -->
+<button class="theme-toggle" onclick="cycleTheme()" aria-label="切换深色/浅色模式">
+  <i class="fa-solid fa-moon"></i>
+  <i class="fa-solid fa-sun"></i>
+</button>
+<a href="#main-content" class="skip-link">跳转到内容</a>
+<main id="main-content">
+
+<nav class="global-nav">
+  <a href="../index.html">课程首页</a><span class="sep">›</span>
+  <a href="../index.html#bridge">过渡桥梁</a><span class="sep">›</span>
+  <span class="current">B1 · 开发工具链认知</span>
+</nav>
+
+<h1>B1 · 开发工具链认知</h1>
+<p class="subtitle">VSCode · 终端 · Workspace —— 理解 AI 编程工具在哪里运行</p>
+
+<div class="meta-grid">
+  <div class="meta-card"><div class="label">时长</div><div class="value">20 分钟</div></div>
+  <div class="meta-card"><div class="label">形式</div><div class="value">讲授 + 演示</div></div>
+  <div class="meta-card"><div class="label">定位</div><div class="value">过渡桥梁 · 工具认知</div></div>
+</div>
+
+<div class="toc">
+<h3>本模块目录</h3>
+<ol>
+  <li><a href="#why">为什么需要这一节</a> — 先理解"在哪运行"（2 min）</li>
+  <li><a href="#vscode">VSCode = "代码界的 Word"</a> — 编辑器是什么（6 min）</li>
+  <li><a href="#terminal">终端 = "和电脑直接对话的窗口"</a> — CLI 解谜（5 min）</li>
+  <li><a href="#workspace">Workspace = "授权的工作区域"</a> — 三种含义（5 min）</li>
+  <li><a href="#relation">三者关系图</a> — 界面·通道·边界（2 min）</li>
+</ol>
+</div>
+
+<!-- ===== 1. 为什么需要这一节 ===== -->
+<h2 id="why">1. 为什么需要这一节</h2>
+
+<p>各位老师，我先说一句掏心窝子的话：<strong>你们不需要写代码。但你需要知道 AI 编程工具在哪里运行、文件在哪、工作目录是什么——否则你会觉得 AI 在变魔术。</strong></p>
+
+<p>这是什么意思呢？我举一个很典型的场景。你第一次打开 WorkBuddy，跟它说"帮我写一篇论文摘要"。AI 哗啦啦打出一段文字。你问"这个文件在哪？它存在哪了？我的电脑上还是云上？我能给我的研究生看吗？"——如果你连这些问题都不知道怎么问，那你对 AI 的使用就始终隔着一层毛玻璃，看得见、摸不着。</p>
+
+<div class="metaphor">
+<div class="mt">核心类比：你不会开车，但你至少知道油门、刹车、方向盘在哪</div>
+<div class="mb">你要学的不是怎么写代码，而是理解 AI 编程工具的<strong>物理环境</strong>——它在哪、文件在哪、你授权了谁访问什么。这 20 分钟就是你的"驾驶座入门"。</div>
+</div>
+
+<p>B1 和 B2 是专门为你们设计的<strong>过渡桥梁</strong>——连接"我知道 AI 是什么"和"我能让 AI 干活"之间的那道坎。跨过这道坎，WorkBuddy 主课的 10 小时你才能跑起来。</p>
+
+<!-- ===== 2. VSCode = "代码界的 Word" ===== -->
+<h2 id="vscode">2. VSCode = "代码界的 Word"</h2>
+
+<p>我们从一个最简单的类比开始：<strong>VSCode 之于代码，就像 Word 之于文档。</strong></p>
+
+<h3>Word 和 VSCode 的共同点</h3>
+
+<p>你用 Word 打开一个 <code>.docx</code> 文件，然后打字、排版、插入图片。你用 VSCode 打开一个<strong>文件夹</strong>，然后查看里面的代码文件、编辑、搜索、替换。两者都是编辑器的本质——无非一个编辑的是文档，一个编辑的是代码。</p>
+
+<p>区别在于：Word 一次打开<strong>一个文件</strong>，VSCode 一次打开<strong>一个文件夹</strong>（以及下面的所有文件）。这是因为一个软件项目通常不是单个文件，而是几十几百个文件互相引用，你需要同时看到它们的结构和关系。</p>
+
+<h3>那 Cursor、CodeBuddy、WorkBuddy 又是什么？</h3>
+
+<p>这个问题是老师们最常问的，我来一次性说清楚：</p>
+
+<ul>
+  <li><strong>VSCode</strong> = 代码编辑器（就像空白的 Word）</li>
+  <li><strong>Cursor</strong> = VSCode + 内置 AI 助手（你可以选中代码，AI 帮你改）</li>
+  <li><strong>CodeBuddy / WorkBuddy </strong> = VSCode + AI Agent（你说话，AI 自己去规划、执行、检查）</li>
+</ul>
+
+<div class="metaphor">
+<div class="mt">从"工具"到"同事"的进化</div>
+<div class="mb">VSCode 是锤子，Cursor 是电动锤，WorkBuddy 是——你告诉它"我需要一间房子"，它自己选料、测量、施工、验收。你不需要知道锤子怎么用。</div>
+</div>
+
+<p><strong>关键认知：</strong>你以后不会在 VSCode 里写代码——你会在 WorkBuddy 里说话。但 WorkBuddy 的"身体"就是 VSCode 的架构。它的文件系统、终端、工作目录、插件体系，底层全都是 VSCode 那套东西。理解了 VSCode 的骨架，你就知道 WorkBuddy 为什么能读你的文件、跑你的命令、修改你的文档。</p>
+
+<div class="box box-concept">
+<strong>每个老师都能懂的类比：</strong>VSCode 是"实验室"——里面有通风橱（文件浏览器）、操作台（编辑器）、试剂柜（插件市场）。WorkBuddy 就是在这个"实验室"里干活的一个全能博后——他不需要你教他怎么用移液枪，但你得告诉他"试剂在哪个柜子"。
+</div>
+
+<h3>VSCode 界面长什么样（心里有数就行）</h3>
+
+<p>你不需要记住每个按钮的位置，但你心里应该有一个大概的画面：左边是文件列表（你打开的那个文件夹的所有文件），中间是大片编辑区（代码显示在这里），底部是终端面板（下一节的主角）。顶部有菜单栏和搜索框。整个界面就像一个高级版的文件夹浏览器——只不过它能编辑、搜索、运行代码，而不只是看看文件名。</p>
+
+<p>当你打开 WorkBuddy 时，它的界面就是这个结构的"AI 增强版"——左侧仍然是文件列表，但中间变成了一个对话窗口，你说话，AI 干活。那些代码的改动、文件的创建，都会实时反映在左侧的文件列表里。</p>
+
+<!-- ===== 3. 终端 = "和电脑直接对话的窗口" ===== -->
+<h2 id="terminal">3. 终端 = "和电脑直接对话的窗口"</h2>
+
+<p>在很多人眼里，"终端"或者"命令行"就是黑窗口上跑着绿色字——看起来像黑客电影里的画面，让人敬而远之。今天我把这个神秘感彻底打破。</p>
+
+<p><strong>终端是什么？就是你和电脑之间最简单的交流方式。</strong>你打字——电脑执行——返回结果。就这么简单。没有鼠标、没有图标、没有花里胡哨的界面——纯粹的"你问我答"。</p>
+
+<div class="metaphor">
+<div class="mt">GUI 是自动挡汽车，CLI 是手动挡</div>
+<div class="mb">自动挡（GUI）：你踩油门就走，不需要知道变速箱怎么工作。<br>
+手动挡（CLI）：你得自己换挡，但你可以精确控制转速和动力。<br>
+<strong>AI 时代的 CLI 不一样：你说话，AI 帮你换挡。</strong>你不需要自己敲命令——你对 WorkBuddy 说"帮我把这 50 个文件重命名"，AI 自己生成命令、执行、报告结果。</div>
+</div>
+
+<h3>为什么终端在 AI 编程里这么重要？</h3>
+
+<p>因为大多数 AI 编程工具——包括 Claude Code、包括 WorkBuddy——都是<strong>在终端里运行的</strong>。你把需求告诉 AI，AI 在终端里敲命令、看到结果、决定下一步。你不需要自己敲，但你需要知道：哦，终端就是 AI 和电脑之间的那扇门。</p>
+
+<p>我举个最简单的例子：你对 WorkBuddy 说"帮我安装一个数据处理工具"。WorkBuddy 不会凭空"想"出来，它会在终端里运行安装命令，看到成功或失败的结果，然后告诉你。如果你不知道终端是什么，你就不会理解 AI 为什么有时候说"安装失败"——不是 AI 不行，是它背后的终端执行遇到了环境问题（比如网络不通、权限不够），而这些问题你完全可以帮助排查。</p>
+
+<div class="box box-note">
+<strong>一句话解谜：</strong>"黑窗口"不是魔法，它只是把"鼠标点点点"变成了"打字说说说"。你打字比找图标快得多——这就是为什么程序员喜欢它。而对于你来说，你连打字都不需要——你直接说话。终端对你来说，只是一个"AI 帮你打字的窗口"。
+</div>
+
+<!-- ===== 4. Workspace = "授权的工作区域" ===== -->
+<h2 id="workspace">4. Workspace = "授权的工作区域"</h2>
+
+<p>Workspace 这个词在不同地方有不同的含义，但核心概念是一致的：<strong>当前正在操作的那一块"领地"</strong>。我们分三种语境来理解。</p>
+
+<h3>含义一：VSCode Workspace —— "你打开的那个文件夹"</h3>
+
+<p>当你在 VSCode 里点"打开文件夹"，那个文件夹就是你的 Workspace。VSCode 的所有功能——文件搜索、代码跳转、插件设置——都默认只在这个文件夹内生效。它不会跑到文件夹外面去乱翻你的文件。</p>
+
+<p>类比：你走进图书馆的"化学专区"，你的 Workspace 就是这整个专区——你可以随便拿专区里的任何一本书，但你默认不会去其他专区拿书。</p>
+
+<h3>含义二：终端 Working Directory —— "你当前站在哪个文件夹里"</h3>
+
+<p>在终端里，你始终"站在"某一个文件夹里。就像你在文件管理器里双击某个文件夹"进入"它一样——终端只是用文字表示你当前的位置。你运行的命令、操作的文件，如果不指定完整路径，默认都是<strong>相对你当前站的位置</strong>来执行的。</p>
+
+<p>这点非常重要：如果你站在 <code>C:\Users\张老师\桌面</code>，你对 AI 说"读一下 data.xlsx"，AI 就会在这个桌面文件夹里找 <code>data.xlsx</code>。如果文件在其他地方，要么你告诉 AI 完整路径，要么你先"走到"那个文件夹。</p>
+
+<h3>含义三：WorkBuddy Working Directory —— "你授权 AI 操作的那个文件夹"</h3>
+
+<p>这是本模块最核心的概念。你在 WorkBuddy 里设置一个"工作目录"——<strong>这就是 AI 的边界。</strong> AI 可以读这个文件夹里的文件、在这个文件夹里创建新文件、在这个文件夹里运行命令。但它不会（也不应该）跑到这个文件夹外面去碰你的其他文件。</p>
+
+<div class="metaphor">
+<div class="mt">实验室门禁卡</div>
+<div class="mb">你给博后一把门禁卡，只能开 A 实验室的门。博后在 A 实验室里什么都能干——翻试剂柜、开仪器、写报告。但他进不了 B 实验室，更进不了你的办公室。这把门禁卡就是 Workspace 权限。<br><br>
+<strong>WorkBuddy 的 Workspace = 你给 AI 的那把门禁卡。</strong></div>
+</div>
+
+<h3>为什么这关乎安全？</h3>
+
+<p>这不是技术上的讲究，这是<strong>真实的隐私边界</strong>。你的电脑上可能有：
+- 未发表论文的原始数据
+- 学生的个人信息
+- 基金申请书草稿
+- 私人照片和文档</p>
+
+<p><strong>一个好的工作习惯：</strong>为 AI 项目创建专门的文件夹（比如 <code>D:\AI工作区\</code>），把所有要让 AI 处理的东西放进去。这样你永远不用担心 AI 碰到了不该碰的文件。这就像你在实验室里分"清洁区"和"污染区"——习惯一旦养成，心安理得。</p>
+
+<div class="box box-warn">
+<strong>安全底线：</strong>虽然 WorkBuddy 默认只在你设定的 Workspace 内操作，但你仍然要注意——不要把包含敏感信息的文件放进 Workspace 文件夹。就像你不会把银行卡放在实验台上一样。
+</div>
+
+<!-- ===== 5. 三者关系图 ===== -->
+<h2 id="relation">5. 三者关系图</h2>
+
+<p>好了，我们把这三个概念串在一起。</p>
+
+<div class="relation-diagram">
+  <div class="rd-node rd-vscode">VSCode<br><small>界面（身体）</small></div>
+  <div class="rd-arrow"><i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-arrow-right"></i></div>
+  <div class="rd-node rd-terminal">终端<br><small>通道（手脚）</small></div>
+  <div class="rd-arrow"><i class="fa-solid fa-arrow-left"></i><i class="fa-solid fa-arrow-right"></i></div>
+  <div class="rd-node rd-workspace">Workspace<br><small>边界（领地）</small></div>
+</div>
+
+<p><strong>VSCode 是界面，终端是通道，Workspace 是边界。</strong></p>
+
+<p>你可以这样理解整个 AI 编程工具的运作方式：你把项目文件放在一个文件夹里（Workspace = 边界），WorkBuddy 在你授权后进入这个文件夹（VSCode = 界面），当需要执行实际操作时（安装工具、运行脚本、生成文件），它通过终端执行命令（终端 = 通道）。三个组件缺一不可。</p>
+
+<div class="box box-summary">
+<strong>B1 核心收获：</strong>你不需要写代码，但你知道了 AI 在哪干活、怎么干活、边界在哪。这三个认知是你和 AI 协作的"地基"。下一节 B2 我们会讲：你怎么跟 AI 说话，才能让它干活干得漂亮——这就是"AI 编程思维模式"。
+</div>
+
+<!-- ===== Page Navigation ===== -->
+<nav class="page-nav">
+  <a href="../前置课程/M6-Git部署.html"><i class="fa-solid fa-arrow-left"></i> 上一节：M6 · Git 极简 + Pages 部署</a>
+  <span>B1 · 开发工具链认知</span>
+  <a href="B2-AI编程思维.html">下一节：B2 · AI 编程思维模式 <i class="fa-solid fa-arrow-right"></i></a>
+</nav>
+
+</main>
+
+<script src="../theme.js"></script>
+</body>
+</html>
