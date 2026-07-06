@@ -27,53 +27,27 @@ const t = isZh
       eyebrow: '课程体系',
       title: '从一个课程到一套体系',
       lead: '面向化工教师与零基础用户，把 AI 方法和工具链整理成可进入的课程。',
-      seriesLabel: '课程系列',
-      series: [
-        {
-          index: '01',
-          title: 'AI 编程与科研效率基础课',
-          body: '8 小时标准课，可扩至 12 小时。交付一套个人 AI 工作流。',
-          audience: '化学、化工教师',
-          duration: '8–12 小时',
-          tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
-          status: 'active',
-          statusLabel: '已开课',
-          href: `${courseBase}index.html`,
-        },
-        {
-          index: '02',
-          title: 'AI 工作流设计进阶',
-          body: '从会用工具到会设计任务：Prompt、Context、Harness、Loop 的实战深化。',
-          audience: '已有 AI 基础的教师',
-          duration: '6 小时',
-          tools: ['Claude Code', 'Codex', 'DeepSeek'],
-          status: 'planned',
-          statusLabel: '筹备中',
-          href: null,
-        },
-        {
-          index: '03',
-          title: '化工建模与科研表达',
-          body: '连接化工专业、数据建模与论文写作，保留专业底色的同时提升表达力。',
-          audience: '化工、有机化学研究者',
-          duration: '规划中',
-          tools: ['Python', 'LaTeX', 'Origin'],
-          status: 'concept',
-          statusLabel: '规划中',
-          href: null,
-        },
-        {
-          index: '04',
-          title: '教师 AI 素养内训师',
-          body: '培训培训师：把上述课程体系转化为可复制的教学包。',
-          audience: '高校教师发展中心',
-          duration: '规划中',
-          tools: ['课程设计', '教学包'],
-          status: 'concept',
-          statusLabel: '规划中',
-          href: null,
-        },
-      ],
+      path: {
+        kicker: '学习路径',
+        title: '四步走完一套科研 AI 工作流',
+        body: '先建立概念地图，再完成工具实操，最后把真实科研任务沉淀成自己的流程包。',
+        cta: '进入课程首页 →',
+        steps: [
+          ['01', '基础概念', '听懂 LLM、API、Prompt、Context、CLI/GUI。', `${courseBase}foundations.html`],
+          ['02', '工具实操', '跑通 WorkBuddy、Claude Code、Codex 与 GitHub。', `${courseBase}toolchain.html`],
+          ['03', '工作流工坊', '把文献、写作、数据或课程任务拆成可检查流程。', `${courseBase}workflow-lab.html`],
+          ['04', '项目实战', '用一项真实任务完成个人科研 AI 工作流包。', `${courseBase}project-lab.html`],
+        ],
+      },
+      roadmap: {
+        kicker: '后续方向',
+        title: '后续路线',
+        items: [
+          ['02', '工作流进阶', '筹备'],
+          ['03', '科研表达', '概念'],
+          ['04', '内训师包', '概念'],
+        ],
+      },
       gateway: {
         kicker: '已开课课程包',
         title: 'AI 编程与科研效率基础课',
@@ -126,53 +100,27 @@ const t = isZh
       eyebrow: 'Course system',
       title: 'From one course to a full system',
       lead: 'Turning AI methods and toolchains into courses for chemistry teachers and zero-basis learners.',
-      seriesLabel: 'Course series',
-      series: [
-        {
-          index: '01',
-          title: 'AI Programming and Research Efficiency Basics',
-          body: '8 hours, expandable to 12. Output: a personal AI workflow kit.',
-          audience: 'Chemistry and chemical-engineering teachers',
-          duration: '8–12 hours',
-          tools: ['WorkBuddy', 'Claude Code', 'Codex', 'GitHub'],
-          status: 'active',
-          statusLabel: 'Active',
-          href: `${courseBase}index.html`,
-        },
-        {
-          index: '02',
-          title: 'Advanced AI Workflow Design',
-          body: 'From using tools to designing tasks: Prompt, Context, Harness, Loop in practice.',
-          audience: 'Teachers with AI basics',
-          duration: '6 hours',
-          tools: ['Claude Code', 'Codex', 'DeepSeek'],
-          status: 'planned',
-          statusLabel: 'Planned',
-          href: null,
-        },
-        {
-          index: '03',
-          title: 'Chemical Modeling and Research Expression',
-          body: 'Linking chemical engineering, data modeling, and thesis writing with professional depth.',
-          audience: 'Chemical engineering and organic chemistry researchers',
-          duration: 'TBD',
-          tools: ['Python', 'LaTeX', 'Origin'],
-          status: 'concept',
-          statusLabel: 'Concept',
-          href: null,
-        },
-        {
-          index: '04',
-          title: 'Teacher AI Literacy Trainer',
-          body: 'Train the trainer: converting the above course system into a replicable teaching kit.',
-          audience: 'University faculty development centers',
-          duration: 'TBD',
-          tools: ['Course design', 'Teaching kit'],
-          status: 'concept',
-          statusLabel: 'Concept',
-          href: null,
-        },
-      ],
+      path: {
+        kicker: 'Learning path',
+        title: 'Build one research AI workflow in four steps',
+        body: 'Map the concepts, run the tools, then turn a real research task into a reusable workflow pack.',
+        cta: 'Enter course home →',
+        steps: [
+          ['01', 'Foundations', 'Understand LLMs, APIs, prompts, context, CLI, and GUI.', `${courseBase}foundations.html`],
+          ['02', 'Toolchain', 'Run WorkBuddy, Claude Code, Codex, and GitHub.', `${courseBase}toolchain.html`],
+          ['03', 'Workflow lab', 'Turn reading, writing, data, or course tasks into checkable flows.', `${courseBase}workflow-lab.html`],
+          ['04', 'Project lab', 'Ship a personal research AI workflow pack from a real task.', `${courseBase}project-lab.html`],
+        ],
+      },
+      roadmap: {
+        kicker: 'Next directions',
+        title: 'Next course directions',
+        items: [
+          ['02', 'Workflow advanced', 'Planned'],
+          ['03', 'Research expression', 'Concept'],
+          ['04', 'Trainer kit', 'Concept'],
+        ],
+      },
       gateway: {
         kicker: 'Active course pack',
         title: 'AI Programming and Research Efficiency Basics',
@@ -266,44 +214,38 @@ const t = isZh
       </div>
     </section>
 
-    <section class="series" aria-labelledby="series-title">
-      <div class="series-head">
-        <p class="kicker">{t.seriesLabel}</p>
-        <h2 id="series-title">{isZh ? '四个系列，从基础到深化' : 'Four series, from basics to depth'}</h2>
+    <section class="learning-path" aria-labelledby="path-title">
+      <div class="path-head">
+        <div>
+          <p class="kicker">{t.path.kicker}</p>
+          <h2 id="path-title">{t.path.title}</h2>
+          <p>{t.path.body}</p>
+        </div>
+        <a class="primary-course-link" href={`${courseBase}index.html`}>{t.path.cta}</a>
       </div>
 
-      <div class="series-grid">
-        {t.series.map((s) => (
-          <article class={`series-card status-${s.status}`}>
-            <div class="card-head">
-              <span class="card-index">{s.index}</span>
-              <span class={`status-badge status-${s.status}`}>{s.statusLabel}</span>
-            </div>
-            <h3>{s.title}</h3>
-            <p class="card-body">{s.body}</p>
-            <dl class="card-meta">
-              <div>
-                <dt>{isZh ? '受众' : 'Audience'}</dt>
-                <dd>{s.audience}</dd>
-              </div>
-              <div>
-                <dt>{isZh ? '时长' : 'Duration'}</dt>
-                <dd>{s.duration}</dd>
-              </div>
-            </dl>
-            <ul class="card-tools">
-              {s.tools.map((tool) => <li>{tool}</li>)}
-            </ul>
-            {s.href && (
-              <a class="card-cta" href={s.href}>
-                {isZh ? '进入课程 →' : 'Enter course →'}
-              </a>
-            )}
-            {!s.href && (
-              <span class="card-cta disabled">
-                {isZh ? '敬请期待' : 'Coming soon'}
-              </span>
-            )}
+      <div class="path-grid">
+        {t.path.steps.map(([index, title, body, href]) => (
+          <a class="path-step" href={href}>
+            <span>{index}</span>
+            <strong>{title}</strong>
+            <em>{body}</em>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="roadmap" aria-labelledby="roadmap-title">
+      <div class="roadmap-head">
+        <p class="kicker">{t.roadmap.kicker}</p>
+        <h2 id="roadmap-title">{t.roadmap.title}</h2>
+      </div>
+      <div class="roadmap-rail">
+        {t.roadmap.items.map(([index, title, status]) => (
+          <article class="roadmap-item">
+            <span>{index}</span>
+            <strong>{title}</strong>
+            <em>{status}</em>
           </article>
         ))}
       </div>
@@ -610,91 +552,163 @@ const t = isZh
     outline: none;
   }
 
-  /* ── series section ── */
-  .series {
-    padding: 60px 0 120px;
+  /* ── learning path ── */
+  .learning-path {
+    border-bottom: 1px solid rgba(218, 166, 86, 0.16);
+    padding: clamp(54px, 7vw, 84px) 0;
   }
 
-  .series-head {
-    margin-bottom: 48px;
-  }
-
-  .series-head h2 {
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    margin-top: 14px;
-  }
-
-  .series-grid {
+  .path-head {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: end;
+    margin-bottom: 34px;
   }
 
-  .series-card {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(218, 166, 86, 0.18);
-    border-radius: 8px;
-    padding: 32px;
-    background: rgba(13, 12, 10, 0.6);
-    transition: border-color 200ms ease, box-shadow 200ms ease;
+  .path-head h2,
+  .roadmap-head h2 {
+    max-width: 760px;
+    margin-top: 14px;
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    line-height: 1;
   }
 
-  .series-card:hover {
-    border-color: rgba(218, 166, 86, 0.36);
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+  .path-head p:not(.kicker) {
+    max-width: 680px;
+    margin: 18px 0 0;
+    color: rgba(233, 224, 208, 0.66);
+    font-size: 17px;
+    line-height: 1.78;
   }
 
-  .series-card.status-active {
-    border-color: rgba(218, 166, 86, 0.32);
-    background:
-      linear-gradient(135deg, rgba(216, 170, 99, 0.08), transparent 40%),
-      rgba(13, 12, 10, 0.7);
-  }
-
-  .card-head {
-    display: flex;
+  .primary-course-link {
+    display: inline-flex;
+    min-height: 44px;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: center;
+    border: 1px solid rgba(218, 166, 86, 0.42);
+    border-radius: 3px;
+    padding: 0 18px;
+    background: #d8aa63;
+    color: #100d09;
+    font-size: 14px;
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
   }
 
-  .card-index {
-    color: #a8b1b0;
+  .primary-course-link:hover,
+  .primary-course-link:focus-visible {
+    transform: translateY(-1px);
+    border-color: #ffe4aa;
+    background: #f1c575;
+    outline: none;
+  }
+
+  .path-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    border: 1px solid rgba(218, 166, 86, 0.15);
+    background: rgba(218, 166, 86, 0.15);
+  }
+
+  .path-step {
+    display: grid;
+    min-height: 220px;
+    align-content: space-between;
+    padding: 22px;
+    background:
+      linear-gradient(160deg, rgba(216, 170, 99, 0.06), transparent 48%),
+      rgba(10, 9, 8, 0.94);
+    text-decoration: none;
+    transition: background 180ms ease, transform 180ms ease;
+  }
+
+  .path-step:hover,
+  .path-step:focus-visible {
+    transform: translateY(-2px);
+    background:
+      linear-gradient(160deg, rgba(216, 170, 99, 0.13), transparent 52%),
+      rgba(12, 11, 9, 0.98);
+    outline: none;
+  }
+
+  .path-step span,
+  .roadmap-item span {
+    color: rgba(168, 177, 176, 0.48);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 900;
     line-height: 1;
-    opacity: 0.35;
   }
 
-  .status-badge {
-    display: inline-flex;
+  .path-step strong,
+  .roadmap-item strong {
+    display: block;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 22px;
+    font-weight: 850;
+    line-height: 1.2;
+  }
+
+  .path-step em,
+  .roadmap-item em {
+    display: block;
+    margin-top: 12px;
+    color: rgba(233, 224, 208, 0.58);
+    font-size: 14px;
+    font-style: normal;
+    line-height: 1.62;
+  }
+
+  .roadmap {
+    padding: 50px 0 112px;
+  }
+
+  .roadmap-head {
+    margin-bottom: 24px;
+  }
+
+  .roadmap-head h2 {
+    color: rgba(242, 223, 189, 0.78);
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+  }
+
+  .roadmap-rail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border-top: 1px solid rgba(218, 166, 86, 0.12);
+    border-bottom: 1px solid rgba(218, 166, 86, 0.12);
+    background: rgba(218, 166, 86, 0.12);
+  }
+
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 14px;
     align-items: center;
-    height: 28px;
-    padding: 0 12px;
-    border-radius: 14px;
+    padding: 18px 16px;
+    background: rgba(8, 7, 5, 0.94);
+  }
+
+  .roadmap-item span {
+    font-size: 16px;
+  }
+
+  .roadmap-item strong {
+    font-size: 17px;
+  }
+
+  .roadmap-item em {
+    margin: 0;
+    color: rgba(216, 170, 99, 0.68);
+    font-family: Consolas, 'SFMono-Regular', monospace;
     font-size: 12px;
     font-weight: 800;
-    letter-spacing: 0.02em;
-  }
-
-  .status-badge.status-active {
-    background: rgba(108, 190, 120, 0.15);
-    color: #6cbe78;
-    border: 1px solid rgba(108, 190, 120, 0.3);
-  }
-
-  .status-badge.status-planned {
-    background: rgba(218, 166, 86, 0.12);
-    color: #d8aa63;
-    border: 1px solid rgba(218, 166, 86, 0.28);
-  }
-
-  .status-badge.status-concept {
-    background: rgba(168, 177, 176, 0.08);
-    color: rgba(168, 177, 176, 0.68);
-    border: 1px solid rgba(168, 177, 176, 0.18);
   }
 
   h3 {
@@ -704,88 +718,6 @@ const t = isZh
     font-size: 24px;
     font-weight: 800;
     line-height: 1.2;
-  }
-
-  .card-body {
-    margin: 14px 0 0;
-    color: rgba(233, 224, 208, 0.72);
-    font-size: 16px;
-    line-height: 1.78;
-  }
-
-  .card-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    margin: 24px 0 0;
-    border-top: 1px solid rgba(218, 166, 86, 0.12);
-  }
-
-  .card-meta div {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 12px;
-    align-items: baseline;
-    border-bottom: 1px solid rgba(218, 166, 86, 0.12);
-    padding: 14px 0;
-  }
-
-  .card-meta div:first-child {
-    padding-right: 16px;
-    border-right: 1px solid rgba(218, 166, 86, 0.12);
-  }
-
-  .card-meta dt {
-    color: #d8aa63;
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .card-meta dd {
-    margin: 0;
-    color: rgba(233, 224, 208, 0.72);
-    font-size: 14px;
-  }
-
-  .card-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 18px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .card-tools li {
-    border: 1px solid rgba(168, 177, 176, 0.2);
-    border-radius: 4px;
-    padding: 5px 9px;
-    color: rgba(220, 228, 224, 0.68);
-    font-size: 13px;
-  }
-
-  .card-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    margin-top: auto;
-    padding-top: 20px;
-    color: #f1dfbd;
-    font-size: 15px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: color 160ms ease;
-  }
-
-  .card-cta:hover {
-    color: #ffe4aa;
-  }
-
-  .card-cta.disabled {
-    color: rgba(168, 177, 176, 0.4);
-    cursor: default;
   }
 
   /* ── footer ── */
@@ -827,11 +759,17 @@ const t = isZh
 
   /* ── responsive ── */
   @media (max-width: 860px) {
-    .series-grid {
+    .course-gateway {
       grid-template-columns: 1fr;
     }
 
-    .course-gateway {
+    .path-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .path-grid,
+    .roadmap-rail {
       grid-template-columns: 1fr;
     }
   }
@@ -867,10 +805,6 @@ const t = isZh
       font-size: 2.8rem;
     }
 
-    .series {
-      padding: 48px 0 80px;
-    }
-
     .course-gateway {
       padding: 48px 0;
     }
@@ -880,21 +814,24 @@ const t = isZh
       grid-template-columns: 1fr;
     }
 
-    .series-card {
-      padding: 24px;
+    .learning-path {
+      padding: 48px 0;
     }
 
-    .card-index {
-      font-size: 28px;
+    .path-step {
+      min-height: 170px;
     }
 
-    .card-meta {
-      grid-template-columns: 1fr;
+    .roadmap {
+      padding: 42px 0 78px;
     }
 
-    .card-meta div:first-child {
-      padding-right: 0;
-      border-right: 0;
+    .roadmap-item {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .roadmap-item em {
+      grid-column: 2;
     }
 
     .ch-footer {

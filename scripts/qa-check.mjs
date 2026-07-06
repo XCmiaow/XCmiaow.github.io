@@ -632,18 +632,30 @@ async function runBrowserChecks() {
   }
 
   await page.goto(`${base}/silicon-ashes/courses`, { waitUntil: 'load' });
-  const courseCta = page.locator('.series-card.status-active .card-cta').first();
+  const courseCta = page.locator('.primary-course-link').first();
   const expectedCourseHref = activeCourseResources[0];
   const courseHref = await courseCta.getAttribute('href');
   if (courseHref !== expectedCourseHref) {
     failures.push(`Active course CTA points to ${courseHref}; expected ${expectedCourseHref}`);
   }
+  const pathLinkCount = await page.locator('.path-step').count();
+  if (pathLinkCount !== 4) {
+    failures.push(`Course learning path exposes ${pathLinkCount} steps; expected 4`);
+  }
   const gatewayHrefs = await page
     .locator('.course-gateway .gateway-link')
+    .evaluateAll((links) => links.map((link) => new URL(link.getAttribute('href'), window.location.href).pathname));
+  const pathHrefs = await page
+    .locator('.path-step')
     .evaluateAll((links) => links.map((link) => new URL(link.getAttribute('href'), window.location.href).pathname));
   const gatewayLinkCount = await page.locator('.course-gateway .gateway-link').count();
   if (gatewayLinkCount < activeCourseResources.length) {
     failures.push(`Course gateway exposes ${gatewayLinkCount} links; expected at least ${activeCourseResources.length}`);
+  }
+  for (const pathRoute of activeCourseResources.slice(2, 6)) {
+    if (!pathHrefs.includes(pathRoute)) {
+      failures.push(`Course learning path is missing resource link: ${pathRoute}`);
+    }
   }
   for (const resourceRoute of activeCourseResources) {
     if (!gatewayHrefs.includes(resourceRoute)) {
