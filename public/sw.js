@@ -1,4 +1,4 @@
-const CACHE = 'resume-v8';
+const CACHE = 'resume-v9';
 const APP_SHELL = [
   '/',
   '/en/',
@@ -26,10 +26,26 @@ const APP_SHELL = [
   '/en/silicon-ashes/',
   '/silicon-ashes/writing/',
   '/en/silicon-ashes/writing/',
+  '/silicon-ashes/writing/ai-research-efficiency-101/',
+  '/silicon-ashes/writing/chemistry-ai-toolbox/',
+  '/silicon-ashes/writing/lab-data-workflow/',
+  '/silicon-ashes/writing/prompt-engineering-for-research/',
+  '/silicon-ashes/writing/research-agent-checklist/',
+  '/en/silicon-ashes/writing/en-ai-research-workflow-101/',
+  '/en/silicon-ashes/writing/en-chemistry-ai-toolbox/',
+  '/en/silicon-ashes/writing/en-prompting-as-task-design/',
   '/silicon-ashes/courses/',
   '/en/silicon-ashes/courses/',
   '/silicon-ashes/resources/',
   '/en/silicon-ashes/resources/',
+  '/silicon-ashes/resources/task-brief/',
+  '/silicon-ashes/resources/prompt-template/',
+  '/silicon-ashes/resources/review-checklist/',
+  '/silicon-ashes/resources/course-retrospective/',
+  '/en/silicon-ashes/resources/task-brief/',
+  '/en/silicon-ashes/resources/prompt-template/',
+  '/en/silicon-ashes/resources/review-checklist/',
+  '/en/silicon-ashes/resources/course-retrospective/',
   '/silicon-ashes/about/',
   '/en/silicon-ashes/about/',
 ];

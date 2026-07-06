@@ -34,12 +34,43 @@ const routes = [
   '/en/silicon-ashes',
   '/silicon-ashes/writing',
   '/en/silicon-ashes/writing',
+  '/silicon-ashes/writing/ai-research-efficiency-101',
+  '/silicon-ashes/writing/chemistry-ai-toolbox',
+  '/silicon-ashes/writing/lab-data-workflow',
+  '/silicon-ashes/writing/prompt-engineering-for-research',
+  '/silicon-ashes/writing/research-agent-checklist',
+  '/en/silicon-ashes/writing/en-ai-research-workflow-101',
+  '/en/silicon-ashes/writing/en-chemistry-ai-toolbox',
+  '/en/silicon-ashes/writing/en-prompting-as-task-design',
   '/silicon-ashes/courses',
   '/en/silicon-ashes/courses',
   '/silicon-ashes/resources',
   '/en/silicon-ashes/resources',
+  '/silicon-ashes/resources/task-brief',
+  '/silicon-ashes/resources/prompt-template',
+  '/silicon-ashes/resources/review-checklist',
+  '/silicon-ashes/resources/course-retrospective',
+  '/en/silicon-ashes/resources/task-brief',
+  '/en/silicon-ashes/resources/prompt-template',
+  '/en/silicon-ashes/resources/review-checklist',
+  '/en/silicon-ashes/resources/course-retrospective',
   '/silicon-ashes/about',
   '/en/silicon-ashes/about',
+];
+
+const xmlRoutes = [
+  {
+    route: '/sitemap.xml',
+    snippets: ['<urlset', 'https://xcmiaow.github.io/silicon-ashes/', '/silicon-ashes/resources/task-brief/'],
+  },
+  {
+    route: '/silicon-ashes/rss.xml',
+    snippets: ['<rss', '硅基余烬写作', '为什么化工教师需要 AI 科研工作流'],
+  },
+  {
+    route: '/en/silicon-ashes/rss.xml',
+    snippets: ['<rss', 'Silicon Ashes Writing', 'Why Research Teachers Need AI Workflows'],
+  },
 ];
 
 const responsiveViewports = [
@@ -76,10 +107,26 @@ const expectedHeadings = {
   '/en/silicon-ashes': 'Keep human judgment after technology starts running.',
   '/silicon-ashes/writing': '\u5c11\u8c08\u672a\u6765\u611f\uff0c\u591a\u770b\u6280\u672f\u5982\u4f55\u91cd\u6392\u4eba',
   '/en/silicon-ashes/writing': 'Less futurism, more human consequence',
+  '/silicon-ashes/writing/ai-research-efficiency-101': '为什么化工教师需要 AI 科研工作流',
+  '/silicon-ashes/writing/chemistry-ai-toolbox': '化工人的 AI 工具箱：不是所有工具都值得学',
+  '/silicon-ashes/writing/lab-data-workflow': '实验数据不要先丢给 AI，先把文件夹整理好',
+  '/silicon-ashes/writing/prompt-engineering-for-research': 'Prompt 不是咒语，是任务设计',
+  '/silicon-ashes/writing/research-agent-checklist': '把 AI 当研究助理之前，先写一张验收清单',
+  '/en/silicon-ashes/writing/en-ai-research-workflow-101': 'Why Research Teachers Need AI Workflows',
+  '/en/silicon-ashes/writing/en-chemistry-ai-toolbox': 'A Chemistry Researcher’s AI Toolbox',
+  '/en/silicon-ashes/writing/en-prompting-as-task-design': 'Prompting Is Task Design, Not Spell Casting',
   '/silicon-ashes/courses': '\u4ece\u4e00\u4e2a\u8bfe\u7a0b\u5230\u4e00\u5957\u4f53\u7cfb',
   '/en/silicon-ashes/courses': 'From one course to a full system',
   '/silicon-ashes/resources': '\u8d44\u6e90\u4e0d\u662f\u4ed3\u5e93\uff0c\u662f\u5de5\u4f5c\u6d41\u7684\u5165\u53e3',
   '/en/silicon-ashes/resources': 'Resources are workflow entry points',
+  '/silicon-ashes/resources/task-brief': '任务说明模板',
+  '/silicon-ashes/resources/prompt-template': 'Prompt 设计模板',
+  '/silicon-ashes/resources/review-checklist': 'AI 结果验收清单',
+  '/silicon-ashes/resources/course-retrospective': '课程复盘表',
+  '/en/silicon-ashes/resources/task-brief': 'Task Brief Template',
+  '/en/silicon-ashes/resources/prompt-template': 'Prompt Design Template',
+  '/en/silicon-ashes/resources/review-checklist': 'AI Output Review Checklist',
+  '/en/silicon-ashes/resources/course-retrospective': 'Course Retrospective Template',
   '/silicon-ashes/about': '\u65b9\u7eea\u6770',
   '/en/silicon-ashes/about': 'Xujie Fang',
 };
@@ -570,6 +617,23 @@ async function runBrowserChecks() {
     }
   }
 
+  const xmlResults = [];
+  for (const xmlRoute of xmlRoutes) {
+    const response = await page.request.get(`${base}${xmlRoute.route}`, { failOnStatusCode: false, timeout: 8000 });
+    const text = await response.text();
+    const contentType = response.headers()['content-type'] || '';
+    xmlResults.push({ route: xmlRoute.route, status: response.status(), contentType, textLength: text.length });
+    if (response.status() >= 400) failures.push(`${xmlRoute.route} returned HTTP ${response.status()}`);
+    if (!contentType.includes('xml')) {
+      failures.push(`${xmlRoute.route} returned unexpected content-type: ${contentType}`);
+    }
+    xmlRoute.snippets.forEach((snippet) => {
+      if (!text.toLowerCase().includes(snippet.toLowerCase())) {
+        failures.push(`${xmlRoute.route} is missing XML snippet: ${snippet}`);
+      }
+    });
+  }
+
   await page.goto(`${base}/`, { waitUntil: 'load' });
   await page.locator('.lang-switch a[data-lang="en"]').click();
   await page.waitForURL(`${base}/en/`);
@@ -732,7 +796,7 @@ async function runBrowserChecks() {
   }
 
   await browser.close();
-  return { failures, routeResults, overflowChecks, tapTargetChecks, printResults };
+  return { failures, routeResults, xmlResults, overflowChecks, tapTargetChecks, printResults };
 }
 
 const { cmd, args } = previewCommand();

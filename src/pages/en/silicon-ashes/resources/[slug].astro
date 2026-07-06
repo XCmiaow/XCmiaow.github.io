@@ -11,6 +11,7 @@ export function getStaticPaths() {
 
 const { template } = Astro.props;
 const data = template.en;
+const canonical = `https://XCmiaow.github.io/en/silicon-ashes/resources/${template.slug}/`;
 ---
 
 <!doctype html>
@@ -22,9 +23,11 @@ const data = template.en;
     <meta name="description" content={data.summary} />
     <meta name="theme-color" content="#050504" />
     <link rel="stylesheet" href="/styles/site.css" />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={`${data.title} | Silicon Ashes Resources`} />
     <meta property="og:description" content={data.summary} />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonical} />
   </head>
   <body>
     <ResourceTemplatePage lang="en" template={template} />
