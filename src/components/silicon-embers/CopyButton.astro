@@ -1,0 +1,73 @@
+---
+type ButtonVariant = 'default' | 'primary' | 'text';
+
+interface Props {
+  value: string;
+  label: string;
+  copiedLabel: string;
+  variant?: ButtonVariant;
+  className?: string;
+  ariaLabel?: string;
+}
+
+const { value, label, copiedLabel, variant = 'default', className, ariaLabel } = Astro.props;
+const variantClass = variant === 'default' ? undefined : variant;
+---
+
+<button
+  class:list={['sa-control', variantClass, 'copy-control', className]}
+  type="button"
+  data-copy-control
+  data-copy-value={value}
+  data-copy-label={label}
+  data-copied-label={copiedLabel}
+  aria-label={ariaLabel}
+>
+  {label}
+</button>
+
+<script>
+  const copyText = async (value: string) => {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(value);
+        return;
+      } catch {
+        // Use the selection fallback in browser contexts without clipboard permission.
+      }
+    }
+
+    const field = document.createElement('textarea');
+    field.value = value;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.opacity = '0';
+    document.body.appendChild(field);
+    field.select();
+    const copied = document.execCommand('copy');
+    field.remove();
+    if (!copied) throw new Error('copy failed');
+  };
+
+  document.querySelectorAll('[data-copy-control]').forEach((control) => {
+    if (!(control instanceof HTMLButtonElement) || control.dataset.copyReady === 'true') return;
+    control.dataset.copyReady = 'true';
+
+    control.addEventListener('click', async () => {
+      const value = control.dataset.copyValue ?? '';
+      const label = control.dataset.copyLabel ?? control.textContent ?? '';
+      const copiedLabel = control.dataset.copiedLabel ?? label;
+
+      try {
+        await copyText(value);
+        control.textContent = copiedLabel;
+      } catch {
+        control.textContent = value;
+      }
+
+      window.setTimeout(() => {
+        control.textContent = label;
+      }, 1400);
+    });
+  });
+</script>

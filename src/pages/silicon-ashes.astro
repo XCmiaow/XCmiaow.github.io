@@ -1,3 +1,23 @@
 ---
-return Astro.redirect('/', 301);
+import CompatibilityEntry from '../components/silicon-embers/CompatibilityEntry.astro';
+import SiliconEmbersLayout from '../layouts/SiliconEmbersLayout.astro';
+import { alternatePath, routePath } from '../lib/siteRoutes';
+
+const lang = 'zh' as const;
+const canonicalPath = routePath('brand-home', lang);
 ---
+
+<SiliconEmbersLayout
+  lang={lang}
+  title="硅基余烬已迁移"
+  description="硅基余烬品牌首页的兼容入口。"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath('brand-home', lang)}
+>
+  <CompatibilityEntry
+    title="硅基余烬已迁移到首页"
+    message="这个地址保留用于兼容旧链接；品牌首页位于新的规范地址。"
+    href={canonicalPath}
+    action="进入硅基余烬"
+  />
+</SiliconEmbersLayout>

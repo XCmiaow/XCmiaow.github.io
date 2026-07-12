@@ -2,7 +2,7 @@
 import common from '../../data/common.json';
 import type { SiliconEmbersLang } from '../../data/siliconEmbersHome';
 import ActionButton from './ActionButton.astro';
-import SiliconEmbersSiteFrame from './SiliconEmbersSiteFrame.astro';
+import CopyButton from './CopyButton.astro';
 
 interface Props {
   lang: SiliconEmbersLang;
@@ -10,7 +10,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const alternateHref = isZh ? '/en/silicon-ashes/feed/' : '/silicon-ashes/feed/';
 const accountName = common.person.wechatPublicName;
 const qrSrc = common.person.wechatPublicQr;
 const mediaSrc = qrSrc || '/silicon-ashes/logo.jpg';
@@ -42,7 +41,7 @@ const copy = isZh
         '关注后可在微信内阅读最新更新；网站只做索引和资料沉淀。',
       ],
       noteTitle: '说明',
-      noteBody: '本页是公众号入口，不是邮件订阅或自动 RSS 订阅中心。网站博客可单独浏览；更新节奏以公众号为准。',
+      noteBody: '本页是公众号入口，不是邮件更新或自动 RSS 更新中心。网站博客可单独浏览；更新节奏以公众号为准。',
       indexTitle: '网站承接',
       indexLead: '公众号负责更新；网站负责把可复用内容收成入口。',
       lanes: [
@@ -125,134 +124,77 @@ const copy = isZh
     };
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <div class="feed-page">
-    <section class="feed-hero" aria-labelledby="feed-title">
-      <p class="kicker">{copy.eyebrow}</p>
-      <h1 id="feed-title">{copy.title}</h1>
-      <p class="lead">{copy.lead}</p>
-    </section>
+<div class="feed-page">
+  <section class="feed-hero" aria-labelledby="feed-title">
+    <p class="kicker">{copy.eyebrow}</p>
+    <h1 id="feed-title">{copy.title}</h1>
+    <p class="lead">{copy.lead}</p>
+  </section>
 
-    <section class="wechat-panel" aria-label={copy.accountLabel}>
-      <div class="wechat-copy">
-        <p class="kicker">{copy.accountLabel}</p>
-        <strong>{accountName}</strong>
-        <p>{qrSrc ? copy.qrHint : copy.searchHint}</p>
-        <div class="feed-actions">
-          <button
-            class="sa-control primary copy-control"
-            type="button"
-            data-copy-id="wechat-account"
-            data-copy-value={accountName}
-            data-copy-label={copy.copyAction}
-            data-copied-label={copy.copiedAction}
-          >
-            {copy.copyAction}
-          </button>
-          <ActionButton href={resourcesHref}>{isZh ? '资源中枢' : 'Resources'}</ActionButton>
-          <ActionButton href={writingHref} variant="text">{isZh ? '博客索引' : 'Blog index'}</ActionButton>
-        </div>
+  <section class="wechat-panel" aria-label={copy.accountLabel}>
+    <div class="wechat-copy">
+      <p class="kicker">{copy.accountLabel}</p>
+      <strong>{accountName}</strong>
+      <p>{qrSrc ? copy.qrHint : copy.searchHint}</p>
+      <div class="feed-actions">
+        <CopyButton value={accountName} label={copy.copyAction} copiedLabel={copy.copiedAction} variant="primary" />
+        <ActionButton href={resourcesHref}>{isZh ? '资源中枢' : 'Resources'}</ActionButton>
+        <ActionButton href={writingHref} variant="text">{isZh ? '博客索引' : 'Blog index'}</ActionButton>
       </div>
+    </div>
 
-      <figure class:list={['wechat-mark', qrSrc && 'has-qr']}>
-        <img src={mediaSrc} alt={qrSrc ? copy.qrAlt : copy.logoAlt} width="240" height="240" loading="eager" />
-        <figcaption>{qrSrc ? copy.qrLabel : copy.logoLabel}</figcaption>
-      </figure>
-    </section>
+    <figure class:list={['wechat-mark', qrSrc && 'has-qr']}>
+      <img src={mediaSrc} alt={qrSrc ? copy.qrAlt : copy.logoAlt} width="240" height="240" loading="eager" />
+      <figcaption>{qrSrc ? copy.qrLabel : copy.logoLabel}</figcaption>
+    </figure>
+  </section>
 
-    <section class="feed-how" aria-labelledby="feed-how-title">
-      <div class="section-copy">
-        <p class="kicker">guide</p>
-        <h2 id="feed-how-title">{copy.howTitle}</h2>
-      </div>
-      <ol>
-        {
-          copy.howSteps.map((step, index) => (
-            <li>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <p>{step}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
-
-    <section class="feed-note" aria-labelledby="feed-note-title">
-      <p class="kicker">scope</p>
-      <h2 id="feed-note-title">{copy.noteTitle}</h2>
-      <p>{copy.noteBody}</p>
-    </section>
-
-    <section class="feed-index" aria-labelledby="feed-index-title">
-      <div class="section-copy">
-        <p class="kicker">index</p>
-        <h2 id="feed-index-title">{copy.indexTitle}</h2>
-        <p>{copy.indexLead}</p>
-      </div>
-      <div class="lane-list">
-        {
-          copy.lanes.map((lane) => (
-            <article class="lane-card">
-              <div>
-                <h3>{lane.title}</h3>
-                <p>{lane.body}</p>
-              </div>
-              <ActionButton href={lane.href} size="compact">
-                {lane.cta}
-              </ActionButton>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-  </div>
-</SiliconEmbersSiteFrame>
-
-<script is:inline>
-  (() => {
-    const button = document.querySelector('[data-copy-id="wechat-account"]');
-    if (!(button instanceof HTMLButtonElement)) return;
-
-    const value = button.dataset.copyValue || '';
-    const label = button.dataset.copyLabel || button.textContent || '';
-    const copiedLabel = button.dataset.copiedLabel || label;
-
-    const copyText = async () => {
-      if (navigator.clipboard?.writeText) {
-        try {
-          await navigator.clipboard.writeText(value);
-          return;
-        } catch {
-          // Fall through to the textarea fallback for stricter browser contexts.
-        }
+  <section class="feed-how" aria-labelledby="feed-how-title">
+    <div class="section-copy">
+      <p class="kicker">guide</p>
+      <h2 id="feed-how-title">{copy.howTitle}</h2>
+    </div>
+    <ol>
+      {
+        copy.howSteps.map((step, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </li>
+        ))
       }
+    </ol>
+  </section>
 
-      const field = document.createElement('textarea');
-      field.value = value;
-      field.setAttribute('readonly', '');
-      field.style.position = 'fixed';
-      field.style.opacity = '0';
-      document.body.appendChild(field);
-      field.select();
-      const copied = document.execCommand('copy');
-      field.remove();
-      if (!copied) throw new Error('copy failed');
-    };
+  <section class="feed-note" aria-labelledby="feed-note-title">
+    <p class="kicker">scope</p>
+    <h2 id="feed-note-title">{copy.noteTitle}</h2>
+    <p>{copy.noteBody}</p>
+  </section>
 
-    button.addEventListener('click', async () => {
-      try {
-        await copyText();
-        button.textContent = copiedLabel;
-      } catch {
-        button.textContent = value;
+  <section class="feed-index" aria-labelledby="feed-index-title">
+    <div class="section-copy">
+      <p class="kicker">index</p>
+      <h2 id="feed-index-title">{copy.indexTitle}</h2>
+      <p>{copy.indexLead}</p>
+    </div>
+    <div class="lane-list">
+      {
+        copy.lanes.map((lane) => (
+          <article class="lane-card">
+            <div>
+              <h3>{lane.title}</h3>
+              <p>{lane.body}</p>
+            </div>
+            <ActionButton href={lane.href} size="compact">
+              {lane.cta}
+            </ActionButton>
+          </article>
+        ))
       }
-
-      window.setTimeout(() => {
-        button.textContent = label;
-      }, 1400);
-    });
-  })();
-</script>
+    </div>
+  </section>
+</div>
 
 <style>
   .feed-page {

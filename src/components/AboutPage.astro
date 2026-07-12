@@ -1,7 +1,6 @@
 ---
 import common from '../data/common.json';
 import ActionButton from './silicon-embers/ActionButton.astro';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
 
 export interface Props {
@@ -11,7 +10,6 @@ export interface Props {
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const githubUrl = `https://${common.person.github}`;
-const alternateHref = isZh ? '/en/silicon-ashes/about/' : '/silicon-ashes/about/';
 
 const t = isZh
   ? {
@@ -79,85 +77,75 @@ const t = isZh
       writingHref: '/en/silicon-ashes/writing/',
       resourcesHref: '/en/silicon-ashes/resources/',
     };
-
-const contactLinks = [
-  { label: t.emailLabel, href: `mailto:${common.person.email}`, icon: 'mail' as const },
-  { label: t.wecomLabel, href: '#wecom', icon: 'wecom' as const },
-  { label: t.githubLabel, href: githubUrl, external: true, icon: 'github' as const },
-  { label: t.resumeLabel, href: t.resumeHref, icon: 'resume' as const },
-  { label: t.wechatLabel, href: t.wechatHref, icon: 'wechat' as const },
-];
 ---
 
-<SiliconEmbersSiteFrame lang={lang} footerLinks={contactLinks} alternateHref={alternateHref}>
-  <div class="about-page">
-    <section class="about-hero" aria-labelledby="about-title">
-      <p class="kicker">{t.eyebrow}</p>
-      <h1 id="about-title">{t.title}</h1>
-      <p>{t.intro}</p>
-    </section>
+<div class="about-page">
+  <section class="about-hero" aria-labelledby="about-title">
+    <p class="kicker">{t.eyebrow}</p>
+    <h1 id="about-title">{t.title}</h1>
+    <p>{t.intro}</p>
+  </section>
 
-    <section class="about-ledger" aria-labelledby="focus-title">
-      <div class="section-copy">
-        <p class="kicker">current</p>
-        <h2 id="focus-title">{t.focusTitle}</h2>
-      </div>
-      <ol>
-        {
-          t.focus.map((item, index) => (
-            <li>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <p>{item}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
+  <section class="about-ledger" aria-labelledby="focus-title">
+    <div class="section-copy">
+      <p class="kicker">current</p>
+      <h2 id="focus-title">{t.focusTitle}</h2>
+    </div>
+    <ol>
+      {
+        t.focus.map((item, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p>{item}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
 
-    <section class="about-ledger compact" aria-labelledby="background-title">
-      <div class="section-copy">
-        <p class="kicker">background</p>
-        <h2 id="background-title">{t.backgroundTitle}</h2>
-      </div>
-      <ol>
-        {
-          t.background.map((item, index) => (
-            <li>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <p>{item}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
+  <section class="about-ledger compact" aria-labelledby="background-title">
+    <div class="section-copy">
+      <p class="kicker">background</p>
+      <h2 id="background-title">{t.backgroundTitle}</h2>
+    </div>
+    <ol>
+      {
+        t.background.map((item, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p>{item}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
 
-    <section class="contact-board" aria-labelledby="contact-title">
-      <div class="contact-copy">
-        <p class="kicker">route</p>
-        <h2 id="contact-title">{t.contactTitle}</h2>
-        <p>{t.contactLead}</p>
-      </div>
-      <div class="contact-actions">
-        <nav aria-label={t.contactTitle}>
-          <ActionButton href={t.writingHref} className="contact-link">{t.writingLabel}</ActionButton>
-          <ActionButton href={t.resourcesHref} className="contact-link">{t.resourcesLabel}</ActionButton>
-          <ActionButton href={t.wechatHref} className="contact-link">{t.wechatLabel}</ActionButton>
-          <ActionButton href={`mailto:${common.person.email}`} className="contact-link">{t.emailLabel}</ActionButton>
-          <ActionButton href={githubUrl} className="contact-link">{t.githubLabel}</ActionButton>
-          <ActionButton href={t.resumeHref} className="contact-link">{t.resumeLabel}</ActionButton>
-        </nav>
+  <section class="contact-board" aria-labelledby="contact-title">
+    <div class="contact-copy">
+      <p class="kicker">route</p>
+      <h2 id="contact-title">{t.contactTitle}</h2>
+      <p>{t.contactLead}</p>
+    </div>
+    <div class="contact-actions">
+      <nav aria-label={t.contactTitle}>
+        <ActionButton href={t.writingHref} className="contact-link">{t.writingLabel}</ActionButton>
+        <ActionButton href={t.resourcesHref} className="contact-link">{t.resourcesLabel}</ActionButton>
+        <ActionButton href={t.wechatHref} className="contact-link">{t.wechatLabel}</ActionButton>
+        <ActionButton href={`mailto:${common.person.email}`} className="contact-link">{t.emailLabel}</ActionButton>
+        <ActionButton href={githubUrl} className="contact-link">{t.githubLabel}</ActionButton>
+        <ActionButton href={t.resumeHref} className="contact-link">{t.resumeLabel}</ActionButton>
+      </nav>
 
-        <article id="wecom" class="wecom-card" aria-labelledby="wecom-title">
-          <div>
-            <h3 id="wecom-title">{t.wecomLabel}</h3>
-            <p>{t.wecomLead}</p>
-          </div>
-          <img src={common.person.wecomQr} alt={t.wecomAlt} width="144" height="144" loading="lazy" decoding="async" />
-        </article>
-      </div>
-    </section>
-  </div>
-</SiliconEmbersSiteFrame>
+      <article id="wecom" class="wecom-card" aria-labelledby="wecom-title">
+        <div>
+          <h3 id="wecom-title">{t.wecomLabel}</h3>
+          <p>{t.wecomLead}</p>
+        </div>
+        <img src={common.person.wecomQr} alt={t.wecomAlt} width="144" height="144" loading="lazy" decoding="async" />
+      </article>
+    </div>
+  </section>
+</div>
 
 <style>
   .about-page {

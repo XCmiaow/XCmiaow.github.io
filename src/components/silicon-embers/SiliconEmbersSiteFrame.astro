@@ -2,6 +2,7 @@
 import common from '../../data/common.json';
 import '../../styles/silicon-embers.css';
 import { siliconEmbersHomeCopy, type SiliconEmbersLang, type SiliconEmbersNavCopy } from '../../data/siliconEmbersHome';
+import { alternatePath, routePath } from '../../lib/siteRoutes';
 import BrandNav from './BrandNav.astro';
 import SiliconEmbersFooter from './SiliconEmbersFooter.astro';
 
@@ -22,15 +23,21 @@ const { lang, footerLinks, alternateHref } = Astro.props;
 const copy = siliconEmbersHomeCopy[lang];
 const navCopy: SiliconEmbersNavCopy = {
   ...copy,
-  switchHref: alternateHref ?? copy.switchHref,
+  homeHref: routePath('brand-home', lang),
+  nav: [
+    { ...copy.nav[0], href: routePath('writing', lang) },
+    { ...copy.nav[1], href: routePath('resources', lang) },
+    { ...copy.nav[2], href: routePath('about', lang) },
+  ],
+  switchHref: alternateHref ?? alternatePath('brand-home', lang),
 };
 const emailLabel = lang === 'zh' ? '邮箱' : 'Email';
 const wecomLabel = lang === 'zh' ? '企业微信' : 'WeCom';
 const resumeLabel = lang === 'zh' ? '个人信息' : 'Personal info';
 const feedLabel = lang === 'zh' ? '公众号' : 'WeChat';
-const resumeHref = lang === 'zh' ? '/profile/' : '/en/profile/';
-const feedHref = lang === 'zh' ? '/silicon-ashes/feed/' : '/en/silicon-ashes/feed/';
-const wecomHref = lang === 'zh' ? '/silicon-ashes/about/#wecom' : '/en/silicon-ashes/about/#wecom';
+const resumeHref = routePath('profile', lang);
+const feedHref = routePath('feed', lang);
+const wecomHref = `${routePath('about', lang)}#wecom`;
 const links = footerLinks ?? [
   { label: emailLabel, href: `mailto:${common.person.email}`, icon: 'mail' },
   { label: wecomLabel, href: wecomHref, icon: 'wecom' },

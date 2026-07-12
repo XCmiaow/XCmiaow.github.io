@@ -1,14 +1,20 @@
 ---
 import WritingHub from '../../components/WritingHub.astro';
 import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../lib/siteRoutes';
+
+const routeId: RouteId = 'writing';
+const lang = 'zh' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="zh"
+  lang={lang}
   title="博客 | 硅基余烬"
   description="关于 AI、教育、科研方法与化工专业的博客。"
-  canonicalPath="/silicon-ashes/writing/"
-  alternatePath="/en/silicon-ashes/writing/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <WritingHub lang="zh" />
+  <WritingHub lang={lang} />
 </SiliconEmbersLayout>

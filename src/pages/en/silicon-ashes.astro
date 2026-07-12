@@ -1,3 +1,23 @@
 ---
-return Astro.redirect('/en/', 301);
+import CompatibilityEntry from '../../components/silicon-embers/CompatibilityEntry.astro';
+import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath, routePath } from '../../lib/siteRoutes';
+
+const lang = 'en' as const;
+const canonicalPath = routePath('brand-home', lang);
 ---
+
+<SiliconEmbersLayout
+  lang={lang}
+  title="silicon-embers has moved"
+  description="Compatibility entry for the canonical silicon-embers home page."
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath('brand-home', lang)}
+>
+  <CompatibilityEntry
+    title="silicon-embers now lives at the home page"
+    message="This address remains for old links. Continue to the canonical brand home page."
+    href={canonicalPath}
+    action="Open silicon-embers"
+  />
+</SiliconEmbersLayout>

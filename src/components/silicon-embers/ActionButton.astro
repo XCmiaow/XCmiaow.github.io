@@ -1,5 +1,5 @@
 ---
-type ButtonVariant = 'default' | 'primary' | 'text' | 'secondary' | string;
+type ButtonVariant = 'default' | 'primary' | 'text';
 type ButtonSize = 'default' | 'compact';
 
 interface Props {
@@ -32,7 +32,7 @@ const {
 
 const targetValue = target ?? (external ? '_blank' : undefined);
 const relValue = rel ?? (external ? 'noopener noreferrer' : undefined);
-const variantClass = variant === 'default' || variant === 'secondary' ? undefined : variant;
+const variantClass = variant === 'default' ? undefined : variant;
 const currentValue = current === true ? 'page' : current || undefined;
 ---
 

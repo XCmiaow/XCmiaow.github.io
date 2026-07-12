@@ -1,14 +1,29 @@
 ---
 import AboutPage from '../../components/AboutPage.astro';
+import common from '../../data/common.json';
 import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../lib/siteRoutes';
+
+const routeId: RouteId = 'about';
+const lang = 'zh' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
+const footerLinks = [
+  { label: '邮箱', href: `mailto:${common.person.email}`, icon: 'mail' as const },
+  { label: '企业微信', href: `${canonicalPath}#wecom`, icon: 'wecom' as const },
+  { label: 'GitHub', href: `https://${common.person.github}`, external: true, icon: 'github' as const },
+  { label: '个人信息', href: routePath('profile', lang), icon: 'resume' as const },
+  { label: '公众号', href: routePath('feed', lang), icon: 'wechat' as const },
+];
 ---
 
 <SiliconEmbersLayout
-  lang="zh"
+  lang={lang}
   title="关于 | 硅基余烬"
   description="硅基余烬品牌主站的背景、入口与联系路径，关注 AI 如何重新安排人的工作、学习和科研方式。"
-  canonicalPath="/silicon-ashes/about/"
-  alternatePath="/en/silicon-ashes/about/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
+  footerLinks={footerLinks}
 >
-  <AboutPage lang="zh" />
+  <AboutPage lang={lang} />
 </SiliconEmbersLayout>

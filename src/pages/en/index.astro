@@ -1,14 +1,20 @@
 ---
 import SiliconAshesHome from '../../components/SiliconAshesHome.astro';
 import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../lib/siteRoutes';
+
+const routeId: RouteId = 'brand-home';
+const lang = 'en' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="en"
+  lang={lang}
   title="silicon-embers"
   description="silicon-embers: AI, research blog, courses, and resources."
-  canonicalPath="/en/"
-  alternatePath="/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <SiliconAshesHome lang="en" />
+  <SiliconAshesHome lang={lang} />
 </SiliconEmbersLayout>

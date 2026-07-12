@@ -4,7 +4,7 @@ import ActionButton from './ActionButton.astro';
 interface ActionLink {
   label: string;
   href: string;
-  variant?: string;
+  variant?: 'default' | 'primary' | 'text';
   external?: boolean;
   ariaLabel?: string;
 }

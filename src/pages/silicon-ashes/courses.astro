@@ -1,14 +1,20 @@
 ---
 import CoursesHub from '../../components/CoursesHub.astro';
 import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../lib/siteRoutes';
+
+const routeId: RouteId = 'course-home';
+const lang = 'zh' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="zh"
+  lang={lang}
   title="课程包 | 资源 | 硅基余烬"
   description="硅基余烬资源里的课程包：面向化工教师与零基础用户的 AI 方法和工具链材料。"
-  canonicalPath="/silicon-ashes/courses/"
-  alternatePath="/en/silicon-ashes/courses/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <CoursesHub lang="zh" />
+  <CoursesHub lang={lang} />
 </SiliconEmbersLayout>

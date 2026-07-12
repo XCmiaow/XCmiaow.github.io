@@ -1,14 +1,20 @@
 ---
 import SiliconAshesHome from '../components/SiliconAshesHome.astro';
 import SiliconEmbersLayout from '../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../lib/siteRoutes';
+
+const routeId: RouteId = 'brand-home';
+const lang = 'zh' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="zh"
+  lang={lang}
   title="硅基余烬 | silicon-embers"
   description="硅基余烬：AI、科研博客、课程与资源。"
-  canonicalPath="/"
-  alternatePath="/en/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <SiliconAshesHome lang="zh" />
+  <SiliconAshesHome lang={lang} />
 </SiliconEmbersLayout>

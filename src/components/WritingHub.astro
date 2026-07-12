@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -9,7 +8,6 @@ export interface Props {
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const alternateHref = isZh ? '/en/silicon-ashes/writing/' : '/silicon-ashes/writing/';
 type BlogPost = CollectionEntry<'blog'>;
 
 const allPosts = (
@@ -67,66 +65,64 @@ const copy = isZh
     };
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <div class="writing-hub">
-    <section class="writing-hero" aria-labelledby="writing-title">
+<div class="writing-hub">
+  <section class="writing-hero" aria-labelledby="writing-title">
+    <div>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1 id="writing-title">{copy.title}</h1>
+      <p class="lead">{copy.lead}</p>
+    </div>
+    <dl class="writing-stats" aria-label={isZh ? '博客统计' : 'Blog stats'}>
       <div>
-        <p class="eyebrow">{copy.eyebrow}</p>
-        <h1 id="writing-title">{copy.title}</h1>
-        <p class="lead">{copy.lead}</p>
+        <dt>{copy.articleCount}</dt>
+        <dd>{allPosts.length}</dd>
       </div>
-      <dl class="writing-stats" aria-label={isZh ? '博客统计' : 'Blog stats'}>
-        <div>
-          <dt>{copy.articleCount}</dt>
-          <dd>{allPosts.length}</dd>
-        </div>
-        <div>
-          <dt>{copy.seriesCount}</dt>
-          <dd>{seriesMap.size}</dd>
-        </div>
-      </dl>
-    </section>
+      <div>
+        <dt>{copy.seriesCount}</dt>
+        <dd>{seriesMap.size}</dd>
+      </div>
+    </dl>
+  </section>
 
-    <section class="series-section" aria-labelledby="series-title">
-      <h2 id="series-title" class="section-title">{copy.sectionTitle}</h2>
+  <section class="series-section" aria-labelledby="series-title">
+    <h2 id="series-title" class="section-title">{copy.sectionTitle}</h2>
 
-      {
-        Array.from(seriesMap.entries()).map(([seriesName, posts]) => (
-          <div class="series-group">
-            <h3 class="series-name">{seriesName}</h3>
-            <div class="article-list">
-              {posts.map((post) => (
-                <a
-                  class="article-card"
-                  href={isZh ? `/silicon-ashes/writing/${post.id}/` : `/en/silicon-ashes/writing/${post.id}/`}
-                >
-                  <div class="article-meta">
-                    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-                    {post.data.readingTime && <span class="reading-time">{post.data.readingTime} min</span>}
-                    <span class={`audience-badge ${audienceClass(post.data.audience)}`}>
-                      {audienceLabel(post.data.audience)}
-                    </span>
-                  </div>
-                  <h4 class="article-title">{post.data.title}</h4>
-                  {post.data.description && <p class="article-desc">{post.data.description}</p>}
-                  {post.data.tags && (
-                    <ul class="article-tags">
-                      {post.data.tags.map((tag) => (
-                        <li>{tag}</li>
-                      ))}
-                    </ul>
-                  )}
-                </a>
-              ))}
-            </div>
+    {
+      Array.from(seriesMap.entries()).map(([seriesName, posts]) => (
+        <div class="series-group">
+          <h3 class="series-name">{seriesName}</h3>
+          <div class="article-list">
+            {posts.map((post) => (
+              <a
+                class="article-card"
+                href={isZh ? `/silicon-ashes/writing/${post.id}/` : `/en/silicon-ashes/writing/${post.id}/`}
+              >
+                <div class="article-meta">
+                  <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                  {post.data.readingTime && <span class="reading-time">{post.data.readingTime} min</span>}
+                  <span class={`audience-badge ${audienceClass(post.data.audience)}`}>
+                    {audienceLabel(post.data.audience)}
+                  </span>
+                </div>
+                <h4 class="article-title">{post.data.title}</h4>
+                {post.data.description && <p class="article-desc">{post.data.description}</p>}
+                {post.data.tags && (
+                  <ul class="article-tags">
+                    {post.data.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                )}
+              </a>
+            ))}
           </div>
-        ))
-      }
+        </div>
+      ))
+    }
 
-      {allPosts.length === 0 && <p class="empty-state">{copy.empty}</p>}
-    </section>
-  </div>
-</SiliconEmbersSiteFrame>
+    {allPosts.length === 0 && <p class="empty-state">{copy.empty}</p>}
+  </section>
+</div>
 
 <style>
   .writing-hub {

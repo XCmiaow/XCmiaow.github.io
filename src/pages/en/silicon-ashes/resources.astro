@@ -1,14 +1,20 @@
 ---
 import ResourcesHub from '../../../components/ResourcesHub.astro';
 import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../../lib/siteRoutes';
+
+const routeId: RouteId = 'resources';
+const lang = 'en' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="en"
+  lang={lang}
   title="Resources | Silicon Ashes"
   description="Silicon Ashes resources: course materials, templates, and checklists."
-  canonicalPath="/en/silicon-ashes/resources/"
-  alternatePath="/silicon-ashes/resources/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <ResourcesHub lang="en" />
+  <ResourcesHub lang={lang} />
 </SiliconEmbersLayout>

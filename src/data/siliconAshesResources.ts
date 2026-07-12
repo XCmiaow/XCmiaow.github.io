@@ -9,8 +9,19 @@ export type ResourceTemplateLocale = {
   template: string;
 };
 
+export const resourceCategories = [
+  'course-materials',
+  'templates',
+  'checklists',
+  'workflow-tools',
+  'wechat-extensions',
+] as const;
+
+export type ResourceCategory = (typeof resourceCategories)[number];
+
 export type ResourceTemplate = {
   slug: string;
+  category: Extract<ResourceCategory, 'templates' | 'checklists'>;
   zh: ResourceTemplateLocale;
   en: ResourceTemplateLocale;
 };
@@ -18,6 +29,7 @@ export type ResourceTemplate = {
 export const resourceTemplates: ResourceTemplate[] = [
   {
     slug: 'task-brief',
+    category: 'templates',
     zh: {
       title: '任务说明模板',
       summary: '把一个模糊需求改写成 AI 可以执行、你可以验收的任务说明。',
@@ -112,6 +124,7 @@ I will judge the output by:
   },
   {
     slug: 'prompt-template',
+    category: 'templates',
     zh: {
       title: 'Prompt 设计模板',
       summary: '用“目标、材料、约束、格式、验收”五段式设计科研与教学 prompt。',
@@ -202,6 +215,7 @@ After the output, list:
   },
   {
     slug: 'review-checklist',
+    category: 'checklists',
     zh: {
       title: 'AI 结果验收清单',
       summary: '在采纳 AI 输出前，用一张短清单检查事实、边界、格式和风险。',
@@ -277,6 +291,7 @@ After the output, list:
   },
   {
     slug: 'course-retrospective',
+    category: 'templates',
     zh: {
       title: '课程复盘表',
       summary: '把一次课程从“讲完了”复盘成可迭代的产品：目标、卡点、证据和下一版改动。',
@@ -374,7 +389,7 @@ export type ResourceIndexItem = {
 };
 
 export type ResourceIndexGroup = {
-  id: 'course-materials' | 'templates' | 'checklists' | 'workflow-tools' | 'wechat-extensions';
+  id: ResourceCategory;
   title: string;
   summary: string;
   items: ResourceIndexItem[];
@@ -384,227 +399,232 @@ type ResourceIndexLang = 'zh' | 'en';
 
 const coursePackBase = '/silicon-ashes/courses/ai-research-efficiency/';
 
-const templateItem = (lang: ResourceIndexLang, slug: string, hrefBase: string): ResourceIndexItem | undefined => {
-  const template = resourceTemplates.find((item) => item.slug === slug);
-  if (!template) return undefined;
-  const copy = template[lang];
-  return {
-    title: copy.title,
-    summary: copy.summary,
-    href: `${hrefBase}${template.slug}/`,
-    meta: [...copy.meta],
-  };
+type ResourceRegistryEntry = {
+  id: string;
+  category: ResourceCategory;
+  zh: ResourceIndexItem;
+  en: ResourceIndexItem;
 };
 
-const compact = <T>(items: Array<T | undefined>) => items.filter((item): item is T => Boolean(item));
+const templateRegistryEntries: ResourceRegistryEntry[] = resourceTemplates.map((template) => ({
+  id: `template:${template.slug}`,
+  category: template.category,
+  zh: {
+    title: template.zh.title,
+    summary: template.zh.summary,
+    href: `/silicon-ashes/resources/${template.slug}/`,
+    meta: [...template.zh.meta],
+  },
+  en: {
+    title: template.en.title,
+    summary: template.en.summary,
+    href: `/en/silicon-ashes/resources/${template.slug}/`,
+    meta: [...template.en.meta],
+  },
+}));
 
-export const getResourceIndexGroups = (lang: ResourceIndexLang): ResourceIndexGroup[] => {
-  const isZh = lang === 'zh';
-  const routeBase = isZh ? '/silicon-ashes' : '/en/silicon-ashes';
-  const templateBase = `${routeBase}/resources/`;
-  const courseHub = `${routeBase}/courses/`;
-  const feedHref = `${routeBase}/feed/`;
-  const writingHref = `${routeBase}/writing/`;
-  const profileHref = isZh ? '/profile/' : '/en/profile/';
+export const resourceRegistry: readonly ResourceRegistryEntry[] = [
+  {
+    id: 'course-hub',
+    category: 'course-materials',
+    zh: {
+      title: 'AI 编程与科研效率基础课',
+      summary: '课程包总入口：总览、学习路径、讲义和后续方向。',
+      href: '/silicon-ashes/courses/',
+      meta: ['课程', '总览'],
+    },
+    en: {
+      title: 'AI Programming and Research Efficiency Basics',
+      summary: 'The course-package gateway: overview, path, handout, and next directions.',
+      href: '/en/silicon-ashes/courses/',
+      meta: ['Course', 'Overview'],
+    },
+  },
+  {
+    id: 'course-home',
+    category: 'course-materials',
+    zh: {
+      title: '课程首页',
+      summary: '进入静态课程包，查看完整模块。',
+      href: `${coursePackBase}index.html`,
+      meta: ['课程包', '入口'],
+    },
+    en: {
+      title: 'Course home',
+      summary: 'Open the static course package and all modules.',
+      href: `${coursePackBase}index.html`,
+      meta: ['Course pack', 'Entry'],
+    },
+  },
+  {
+    id: 'course-schedule',
+    category: 'course-materials',
+    zh: {
+      title: '课程安排',
+      summary: '课时结构、模块顺序和课堂节奏。',
+      href: `${coursePackBase}schedule.html`,
+      meta: ['日程', '教学'],
+    },
+    en: {
+      title: 'Schedule',
+      summary: 'Class structure, module order, and teaching rhythm.',
+      href: `${coursePackBase}schedule.html`,
+      meta: ['Schedule', 'Teaching'],
+    },
+  },
+  {
+    id: 'course-handout',
+    category: 'course-materials',
+    zh: {
+      title: '打印讲义',
+      summary: '适合课前发放或课后归档的讲义版本。',
+      href: `${coursePackBase}handout.html`,
+      meta: ['讲义', '打印'],
+    },
+    en: {
+      title: 'Printable handout',
+      summary: 'A version for class use and archive.',
+      href: `${coursePackBase}handout.html`,
+      meta: ['Handout', 'Print'],
+    },
+  },
+  {
+    id: 'toolchain',
+    category: 'workflow-tools',
+    zh: {
+      title: '工具链实操',
+      summary: 'WorkBuddy、Claude Code、Codex 与 GitHub 的基础使用路径。',
+      href: `${coursePackBase}toolchain.html`,
+      meta: ['工具', '实操'],
+    },
+    en: {
+      title: 'Toolchain practice',
+      summary: 'A starter path for WorkBuddy, Claude Code, Codex, and GitHub.',
+      href: `${coursePackBase}toolchain.html`,
+      meta: ['Tools', 'Practice'],
+    },
+  },
+  {
+    id: 'workflow-lab',
+    category: 'workflow-tools',
+    zh: {
+      title: '工作流工坊',
+      summary: '把文献、表达、数据或课程任务拆成可检查流程。',
+      href: `${coursePackBase}workflow-lab.html`,
+      meta: ['流程', '练习'],
+    },
+    en: {
+      title: 'Workflow lab',
+      summary: 'Turn reading, expression, data, or course tasks into checkable flows.',
+      href: `${coursePackBase}workflow-lab.html`,
+      meta: ['Workflow', 'Lab'],
+    },
+  },
+  {
+    id: 'code-review',
+    category: 'workflow-tools',
+    zh: {
+      title: '代码审查',
+      summary: '用于课堂或个人项目的代码检查入口。',
+      href: `${coursePackBase}code-review.html`,
+      meta: ['代码', '质量'],
+    },
+    en: {
+      title: 'Code review',
+      summary: 'A review entry for class exercises and personal projects.',
+      href: `${coursePackBase}code-review.html`,
+      meta: ['Code', 'Quality'],
+    },
+  },
+  {
+    id: 'feed',
+    category: 'wechat-extensions',
+    zh: {
+      title: '公众号入口',
+      summary: '关注「硅基余烬」，获取最新更新。',
+      href: '/silicon-ashes/feed/',
+      meta: ['公众号', '更新源'],
+    },
+    en: {
+      title: 'WeChat entry',
+      summary: 'Follow silicon-embers for new updates.',
+      href: '/en/silicon-ashes/feed/',
+      meta: ['WeChat', 'Updates'],
+    },
+  },
+  {
+    id: 'writing',
+    category: 'wechat-extensions',
+    zh: {
+      title: '博客索引',
+      summary: '网站内沉淀的文章索引。',
+      href: '/silicon-ashes/writing/',
+      meta: ['博客', '索引'],
+    },
+    en: {
+      title: 'Blog index',
+      summary: 'Essays preserved on the website.',
+      href: '/en/silicon-ashes/writing/',
+      meta: ['Blog', 'Index'],
+    },
+  },
+  {
+    id: 'profile',
+    category: 'wechat-extensions',
+    zh: {
+      title: '个人信息',
+      summary: '背景、项目和联系方式。',
+      href: '/profile/',
+      meta: ['背景', '联系'],
+    },
+    en: {
+      title: 'Personal info',
+      summary: 'Background, projects, and contact paths.',
+      href: '/en/profile/',
+      meta: ['Background', 'Contact'],
+    },
+  },
+  ...templateRegistryEntries,
+];
 
-  const templateItems = compact([
-    templateItem(lang, 'task-brief', templateBase),
-    templateItem(lang, 'prompt-template', templateBase),
-    templateItem(lang, 'course-retrospective', templateBase),
-  ]);
-  const checklistItems = compact([templateItem(lang, 'review-checklist', templateBase)]);
-
-  if (isZh) {
-    return [
-      {
-        id: 'course-materials',
-        title: '课程资料',
-        summary: '课程作为资源子模块保留，入口集中在这里。',
-        items: [
-          {
-            title: 'AI 编程与科研效率基础课',
-            summary: '课程包总入口：总览、学习路径、讲义和后续方向。',
-            href: courseHub,
-            meta: ['课程', '总览'],
-          },
-          {
-            title: '课程首页',
-            summary: '进入静态课程包，查看完整模块。',
-            href: `${coursePackBase}index.html`,
-            meta: ['课程包', '入口'],
-          },
-          {
-            title: '课程安排',
-            summary: '课时结构、模块顺序和课堂节奏。',
-            href: `${coursePackBase}schedule.html`,
-            meta: ['日程', '教学'],
-          },
-          {
-            title: '打印讲义',
-            summary: '适合课前发放或课后归档的讲义版本。',
-            href: `${coursePackBase}handout.html`,
-            meta: ['讲义', '打印'],
-          },
-        ],
-      },
-      {
-        id: 'templates',
-        title: '模板',
-        summary: '把模糊任务变成可执行、可复用的工作入口。',
-        items: templateItems,
-      },
-      {
-        id: 'checklists',
-        title: '清单',
-        summary: '用于采纳 AI 输出之前的人工验收。',
-        items: checklistItems,
-      },
-      {
-        id: 'workflow-tools',
-        title: '工具流',
-        summary: '课程和日常实践里会反复用到的工具页面。',
-        items: [
-          {
-            title: '工具链实操',
-            summary: 'WorkBuddy、Claude Code、Codex 与 GitHub 的基础使用路径。',
-            href: `${coursePackBase}toolchain.html`,
-            meta: ['工具', '实操'],
-          },
-          {
-            title: '工作流工坊',
-            summary: '把文献、表达、数据或课程任务拆成可检查流程。',
-            href: `${coursePackBase}workflow-lab.html`,
-            meta: ['流程', '练习'],
-          },
-          {
-            title: '代码审查',
-            summary: '用于课堂或个人项目的代码检查入口。',
-            href: `${coursePackBase}code-review.html`,
-            meta: ['代码', '质量'],
-          },
-        ],
-      },
-      {
-        id: 'wechat-extensions',
-        title: '公众号延伸',
-        summary: '最新更新在公众号，网站负责索引和资料沉淀。',
-        items: [
-          {
-            title: '公众号入口',
-            summary: '关注「硅基余烬」，获取最新更新。',
-            href: feedHref,
-            meta: ['公众号', '更新源'],
-          },
-          {
-            title: '博客索引',
-            summary: '网站内沉淀的文章索引。',
-            href: writingHref,
-            meta: ['博客', '索引'],
-          },
-          {
-            title: '个人信息',
-            summary: '背景、项目和联系方式。',
-            href: profileHref,
-            meta: ['背景', '联系'],
-          },
-        ],
-      },
-    ];
-  }
-
-  return [
-    {
-      id: 'course-materials',
+const groupCopy: Record<ResourceIndexLang, Record<ResourceCategory, { title: string; summary: string }>> = {
+  zh: {
+    'course-materials': { title: '课程资料', summary: '课程作为资源子模块保留，入口集中在这里。' },
+    templates: { title: '模板', summary: '把模糊任务变成可执行、可复用的工作入口。' },
+    checklists: { title: '清单', summary: '用于采纳 AI 输出之前的人工验收。' },
+    'workflow-tools': { title: '工具流', summary: '课程和日常实践里会反复用到的工具页面。' },
+    'wechat-extensions': { title: '公众号延伸', summary: '最新更新在公众号，网站负责索引和资料沉淀。' },
+  },
+  en: {
+    'course-materials': {
       title: 'Course materials',
       summary: 'Courses stay as a resource submodule, with all entry points collected here.',
-      items: [
-        {
-          title: 'AI Programming and Research Efficiency Basics',
-          summary: 'The course-package gateway: overview, path, handout, and next directions.',
-          href: courseHub,
-          meta: ['Course', 'Overview'],
-        },
-        {
-          title: 'Course home',
-          summary: 'Open the static course package and all modules.',
-          href: `${coursePackBase}index.html`,
-          meta: ['Course pack', 'Entry'],
-        },
-        {
-          title: 'Schedule',
-          summary: 'Class structure, module order, and teaching rhythm.',
-          href: `${coursePackBase}schedule.html`,
-          meta: ['Schedule', 'Teaching'],
-        },
-        {
-          title: 'Printable handout',
-          summary: 'A version for class use and archive.',
-          href: `${coursePackBase}handout.html`,
-          meta: ['Handout', 'Print'],
-        },
-      ],
     },
-    {
-      id: 'templates',
-      title: 'Templates',
-      summary: 'Turn vague work into executable, reusable task entries.',
-      items: templateItems,
-    },
-    {
-      id: 'checklists',
-      title: 'Checklists',
-      summary: 'Human review before accepting AI output.',
-      items: checklistItems,
-    },
-    {
-      id: 'workflow-tools',
-      title: 'Workflow tools',
-      summary: 'Tool pages reused across the course and daily practice.',
-      items: [
-        {
-          title: 'Toolchain practice',
-          summary: 'A starter path for WorkBuddy, Claude Code, Codex, and GitHub.',
-          href: `${coursePackBase}toolchain.html`,
-          meta: ['Tools', 'Practice'],
-        },
-        {
-          title: 'Workflow lab',
-          summary: 'Turn reading, expression, data, or course tasks into checkable flows.',
-          href: `${coursePackBase}workflow-lab.html`,
-          meta: ['Workflow', 'Lab'],
-        },
-        {
-          title: 'Code review',
-          summary: 'A review entry for class exercises and personal projects.',
-          href: `${coursePackBase}code-review.html`,
-          meta: ['Code', 'Quality'],
-        },
-      ],
-    },
-    {
-      id: 'wechat-extensions',
+    templates: { title: 'Templates', summary: 'Turn vague work into executable, reusable task entries.' },
+    checklists: { title: 'Checklists', summary: 'Human review before accepting AI output.' },
+    'workflow-tools': { title: 'Workflow tools', summary: 'Tool pages reused across the course and daily practice.' },
+    'wechat-extensions': {
       title: 'WeChat extensions',
       summary: 'Updates are published on WeChat; the site keeps indexes and materials.',
-      items: [
-        {
-          title: 'WeChat entry',
-          summary: 'Follow silicon-embers for new updates.',
-          href: feedHref,
-          meta: ['WeChat', 'Updates'],
-        },
-        {
-          title: 'Blog index',
-          summary: 'Essays preserved on the website.',
-          href: writingHref,
-          meta: ['Blog', 'Index'],
-        },
-        {
-          title: 'Personal info',
-          summary: 'Background, projects, and contact paths.',
-          href: profileHref,
-          meta: ['Background', 'Contact'],
-        },
-      ],
     },
-  ];
+  },
 };
+
+const templateEntryCounts = new Map<string, number>();
+for (const entry of resourceRegistry) {
+  if (!entry.id.startsWith('template:')) continue;
+  const slug = entry.id.slice('template:'.length);
+  templateEntryCounts.set(slug, (templateEntryCounts.get(slug) ?? 0) + 1);
+}
+for (const template of resourceTemplates) {
+  if (templateEntryCounts.get(template.slug) !== 1) {
+    throw new Error(`Resource template ${template.slug} must appear exactly once in resourceRegistry`);
+  }
+}
+
+export const getResourceIndexGroups = (lang: ResourceIndexLang): ResourceIndexGroup[] =>
+  resourceCategories.map((category) => ({
+    id: category,
+    ...groupCopy[lang][category],
+    items: resourceRegistry.filter((entry) => entry.category === category).map((entry) => ({ ...entry[lang] })),
+  }));

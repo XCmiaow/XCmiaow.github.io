@@ -1,5 +1,13 @@
 ---
 import DocumentLayout from './DocumentLayout.astro';
+import SiliconEmbersSiteFrame from '../components/silicon-embers/SiliconEmbersSiteFrame.astro';
+
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  icon?: 'mail' | 'github' | 'resume' | 'rss' | 'wecom' | 'wechat';
+}
 
 export interface Props {
   lang: 'zh' | 'en';
@@ -7,9 +15,10 @@ export interface Props {
   description: string;
   canonicalPath: string;
   alternatePath?: string;
+  footerLinks?: readonly FooterLink[];
 }
 
-const { lang, title, description, canonicalPath, alternatePath } = Astro.props;
+const { lang, title, description, canonicalPath, alternatePath, footerLinks } = Astro.props;
 ---
 
 <DocumentLayout
@@ -21,5 +30,7 @@ const { lang, title, description, canonicalPath, alternatePath } = Astro.props;
   themeColor="#050504"
   bodyClass="silicon-embers-document"
 >
-  <slot />
+  <SiliconEmbersSiteFrame lang={lang} alternateHref={alternatePath} footerLinks={footerLinks}>
+    <slot />
+  </SiliconEmbersSiteFrame>
 </DocumentLayout>

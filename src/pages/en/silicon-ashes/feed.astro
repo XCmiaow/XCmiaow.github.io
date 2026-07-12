@@ -1,14 +1,20 @@
 ---
 import SiliconEmbersFeedPage from '../../../components/silicon-embers/SiliconEmbersFeedPage.astro';
 import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../../lib/siteRoutes';
+
+const routeId: RouteId = 'feed';
+const lang = 'en' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="en"
+  lang={lang}
   title="WeChat | Silicon Ashes"
   description="WeChat official account for silicon-embers updates."
-  canonicalPath="/en/silicon-ashes/feed/"
-  alternatePath="/silicon-ashes/feed/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <SiliconEmbersFeedPage lang="en" />
+  <SiliconEmbersFeedPage lang={lang} />
 </SiliconEmbersLayout>

@@ -160,7 +160,7 @@ html[data-theme='dark'] body {
   line-height: 1.78;
 }
 
-.sa-shell a.sa-control {
+.sa-shell .sa-control {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -180,6 +180,8 @@ html[data-theme='dark'] body {
     inset 0 -1px 0 rgba(0, 0, 0, 0.5),
     0 14px 32px rgba(0, 0, 0, 0.24);
   color: rgba(246, 230, 199, 0.9);
+  cursor: pointer;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 850;
   letter-spacing: 0;
@@ -197,7 +199,7 @@ html[data-theme='dark'] body {
   will-change: transform, box-shadow;
 }
 
-:root:not([data-theme='dark']) .sa-shell a.sa-control {
+:root:not([data-theme='dark']) .sa-shell .sa-control {
   border-color: var(--line);
   background: rgba(255, 255, 255, 0.86);
   box-shadow: 0 10px 22px rgba(16, 42, 67, 0.08);
@@ -205,13 +207,13 @@ html[data-theme='dark'] body {
   text-shadow: none;
 }
 
-:root:not([data-theme='dark']) .sa-shell a.sa-control::before,
-:root:not([data-theme='dark']) .sa-shell a.sa-control::after {
+:root:not([data-theme='dark']) .sa-shell .sa-control::before,
+:root:not([data-theme='dark']) .sa-shell .sa-control::after {
   display: none;
 }
 
-:root:not([data-theme='dark']) .sa-shell a.sa-control.primary,
-:root:not([data-theme='dark']) .sa-shell .feed-actions a.sa-control.primary {
+:root:not([data-theme='dark']) .sa-shell .sa-control.primary,
+:root:not([data-theme='dark']) .sa-shell .feed-actions .sa-control.primary {
   border-color: transparent;
   background: var(--paper);
   box-shadow: 0 12px 24px rgba(16, 42, 67, 0.14);
@@ -219,21 +221,21 @@ html[data-theme='dark'] body {
   text-shadow: none;
 }
 
-:root:not([data-theme='dark']) .sa-shell a.sa-control.text {
+:root:not([data-theme='dark']) .sa-shell .sa-control.text {
   border-color: rgba(47, 111, 94, 0.2);
   background: rgba(47, 111, 94, 0.08);
   color: var(--paper);
 }
 
-:root:not([data-theme='dark']) .sa-shell a.sa-control:hover,
-:root:not([data-theme='dark']) .sa-shell a.sa-control:focus-visible {
+:root:not([data-theme='dark']) .sa-shell .sa-control:hover,
+:root:not([data-theme='dark']) .sa-shell .sa-control:focus-visible {
   border-color: rgba(184, 137, 0, 0.42);
   background: #ffffff;
   box-shadow: 0 14px 30px rgba(16, 42, 67, 0.12);
   color: var(--paper);
 }
 
-.sa-shell a.sa-control::before {
+.sa-shell .sa-control::before {
   content: '';
   position: absolute;
   inset: 1px;
@@ -248,7 +250,7 @@ html[data-theme='dark'] body {
     transform 190ms ease;
 }
 
-.sa-shell a.sa-control::after {
+.sa-shell .sa-control::after {
   content: '';
   position: absolute;
   inset: -1px;
@@ -263,8 +265,8 @@ html[data-theme='dark'] body {
     transform 260ms ease;
 }
 
-.sa-shell a.sa-control.primary,
-.sa-shell .feed-actions a.sa-control.primary {
+.sa-shell .sa-control.primary,
+.sa-shell .feed-actions .sa-control.primary {
   border-color: rgba(255, 207, 128, 0.82);
   background:
     linear-gradient(180deg, rgba(255, 246, 211, 0.42), transparent 28%),
@@ -279,7 +281,7 @@ html[data-theme='dark'] body {
   text-shadow: 0 1px 0 rgba(255, 238, 197, 0.18);
 }
 
-.sa-shell a.sa-control.text {
+.sa-shell .sa-control.text {
   border-color: rgba(120, 155, 145, 0.32);
   background: linear-gradient(180deg, rgba(120, 155, 145, 0.1), rgba(120, 155, 145, 0.035)), rgba(7, 6, 5, 0.56);
   box-shadow:
@@ -288,8 +290,8 @@ html[data-theme='dark'] body {
   color: rgba(218, 231, 224, 0.86);
 }
 
-.sa-shell a.sa-control:hover,
-.sa-shell a.sa-control:focus-visible {
+.sa-shell .sa-control:hover,
+.sa-shell .sa-control:focus-visible {
   transform: translateY(-2px) scale(1.012);
   border-color: rgba(120, 155, 145, 0.72);
   background:
@@ -305,21 +307,21 @@ html[data-theme='dark'] body {
   outline: none;
 }
 
-.sa-shell a.sa-control:hover::before,
-.sa-shell a.sa-control:focus-visible::before {
+.sa-shell .sa-control:hover::before,
+.sa-shell .sa-control:focus-visible::before {
   opacity: 0.92;
 }
 
-.sa-shell a.sa-control:hover::after,
-.sa-shell a.sa-control:focus-visible::after {
+.sa-shell .sa-control:hover::after,
+.sa-shell .sa-control:focus-visible::after {
   opacity: 1;
   transform: translateX(0) skewX(-7deg);
 }
 
-.sa-shell a.sa-control.primary:hover,
-.sa-shell a.sa-control.primary:focus-visible,
-.sa-shell .feed-actions a.sa-control.primary:hover,
-.sa-shell .feed-actions a.sa-control.primary:focus-visible {
+.sa-shell .sa-control.primary:hover,
+.sa-shell .sa-control.primary:focus-visible,
+.sa-shell .feed-actions .sa-control.primary:hover,
+.sa-shell .feed-actions .sa-control.primary:focus-visible {
   border-color: rgba(255, 232, 180, 0.96);
   background:
     linear-gradient(180deg, rgba(255, 250, 226, 0.5), transparent 28%),
@@ -333,12 +335,12 @@ html[data-theme='dark'] body {
   color: #120d08;
 }
 
-.sa-shell a.sa-control:focus-visible {
+.sa-shell .sa-control:focus-visible {
   outline: 2px solid rgba(120, 155, 145, 0.58);
   outline-offset: 3px;
 }
 
-.sa-shell a.sa-control:active {
+.sa-shell .sa-control:active {
   transform: translateY(1px) scale(0.982);
   filter: brightness(0.94) saturate(0.96);
   transition-duration: 70ms;
@@ -348,13 +350,13 @@ html[data-theme='dark'] body {
     0 8px 18px rgba(0, 0, 0, 0.24);
 }
 
-.sa-shell a.sa-control.size-compact {
+.sa-shell .sa-control.size-compact {
   min-height: 38px;
   padding: 0 13px;
   font-size: 13px;
 }
 
-.sa-shell a.sa-control.block {
+.sa-shell .sa-control.block {
   width: 100%;
 }
 
@@ -375,7 +377,7 @@ html[data-theme='dark'] body {
     line-height: 1.68;
   }
 
-  .sa-shell a.sa-control {
+  .sa-shell .sa-control {
     min-height: 44px;
     border-radius: 7px;
     padding: 0 13px;

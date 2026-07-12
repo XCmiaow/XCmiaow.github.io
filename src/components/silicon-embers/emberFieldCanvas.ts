@@ -59,6 +59,8 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   let frame = 0;
   let lastTime = performance.now();
   let emissionCarry = 0;
+  let isIntersecting = true;
+  let destroyed = false;
   const particles: EmberParticle[] = [];
 
   const gravityField = (): GravityField => {
@@ -446,6 +448,10 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   };
 
   const tick = (time: number) => {
+    if (destroyed || document.hidden || !isIntersecting || reducedMotion.matches) {
+      frame = 0;
+      return;
+    }
     const delta = Math.min(40, time - lastTime);
     lastTime = time;
     drawGravityLens(time);
@@ -457,20 +463,46 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
 
   const start = () => {
     window.cancelAnimationFrame(frame);
+    frame = 0;
     resize();
     particles.length = 0;
     emissionCarry = 0;
     if (reducedMotion.matches) {
       renderStatic();
-    } else {
+    } else if (!document.hidden && isIntersecting) {
       lastTime = performance.now();
       frame = window.requestAnimationFrame(tick);
     }
   };
 
+  const handleVisibilityChange = () => start();
+  const intersectionObserver =
+    'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+          isIntersecting = entries[0]?.isIntersecting ?? false;
+          start();
+        })
+      : undefined;
+
+  const cleanup = () => {
+    if (destroyed) return;
+    destroyed = true;
+    window.cancelAnimationFrame(frame);
+    frame = 0;
+    window.removeEventListener('resize', start);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    reducedMotion.removeEventListener('change', start);
+    intersectionObserver?.disconnect();
+    canvas.removeAttribute('data-ember-ready');
+  };
+
+  intersectionObserver?.observe(host);
   start();
   window.addEventListener('resize', start, { passive: true });
+  document.addEventListener('visibilitychange', handleVisibilityChange);
   reducedMotion.addEventListener('change', start);
+  window.addEventListener('pagehide', cleanup, { once: true });
+  document.addEventListener('astro:before-swap', cleanup, { once: true });
 };
 
 document.querySelectorAll('[data-ember-canvas]').forEach((canvas) => {

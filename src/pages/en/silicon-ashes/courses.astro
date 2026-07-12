@@ -1,14 +1,20 @@
 ---
 import CoursesHub from '../../../components/CoursesHub.astro';
 import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../../lib/siteRoutes';
+
+const routeId: RouteId = 'course-home';
+const lang = 'en' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="en"
+  lang={lang}
   title="Course pack | Resources | Silicon Ashes"
   description="The course pack inside Silicon Ashes resources: AI methods and toolchain materials for chemistry teachers and zero-basis learners."
-  canonicalPath="/en/silicon-ashes/courses/"
-  alternatePath="/silicon-ashes/courses/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <CoursesHub lang="en" />
+  <CoursesHub lang={lang} />
 </SiliconEmbersLayout>

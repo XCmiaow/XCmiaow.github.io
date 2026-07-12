@@ -2,7 +2,6 @@
 import type { CollectionEntry, RenderResult } from 'astro:content';
 import type { SiliconEmbersLang } from '../../data/siliconEmbersHome';
 import ActionButton from './ActionButton.astro';
-import SiliconEmbersSiteFrame from './SiliconEmbersSiteFrame.astro';
 
 type BlogPost = CollectionEntry<'blog'>;
 type ContentComponent = RenderResult['Content'];
@@ -12,10 +11,9 @@ interface Props {
   post: BlogPost;
   allPosts: BlogPost[];
   Content: ContentComponent;
-  alternateHref?: string;
 }
 
-const { lang, post, allPosts, Content, alternateHref } = Astro.props;
+const { lang, post, allPosts, Content } = Astro.props;
 const isZh = lang === 'zh';
 const articleBase = isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/';
 const writingHref = articleBase;
@@ -53,75 +51,73 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <article class="article-page">
-    <header class="article-header">
-      {post.data.series && <p class="series-label">{post.data.series}</p>}
-      <h1>{post.data.title}</h1>
-      <div class="article-meta">
-        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-        {
-          post.data.readingTime && (
-            <span>
-              {post.data.readingTime} {copy.readUnit}
-            </span>
-          )
-        }
-      </div>
+<article class="article-page">
+  <header class="article-header">
+    {post.data.series && <p class="series-label">{post.data.series}</p>}
+    <h1>{post.data.title}</h1>
+    <div class="article-meta">
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
       {
-        post.data.tags && (
-          <ul class="tag-list">
-            {post.data.tags.map((tag) => (
-              <li>{tag}</li>
-            ))}
-          </ul>
+        post.data.readingTime && (
+          <span>
+            {post.data.readingTime} {copy.readUnit}
+          </span>
         )
       }
-    </header>
-
-    <div class="prose">
-      <Content />
     </div>
-
     {
-      (newerPost || olderPost || relatedPosts.length > 0) && (
-        <nav class="article-nav" aria-label={copy.navLabel}>
-          <div class="next-prev">
-            {newerPost && (
-              <a href={articleHref(newerPost)}>
-                <span>{copy.previous}</span>
-                <strong>{newerPost.data.title}</strong>
-              </a>
-            )}
-            {olderPost && (
-              <a href={articleHref(olderPost)}>
-                <span>{copy.next}</span>
-                <strong>{olderPost.data.title}</strong>
-              </a>
-            )}
-          </div>
-          {relatedPosts.length > 0 && (
-            <section class="related" aria-labelledby="related-title">
-              <h2 id="related-title">{copy.related}</h2>
-              <div>
-                {relatedPosts.map((item) => (
-                  <a href={articleHref(item)}>
-                    <time datetime={item.data.date.toISOString()}>{formatDate(item.data.date)}</time>
-                    <span>{item.data.title}</span>
-                  </a>
-                ))}
-              </div>
-            </section>
-          )}
-        </nav>
+      post.data.tags && (
+        <ul class="tag-list">
+          {post.data.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
       )
     }
+  </header>
 
-    <footer class="article-return">
-      <ActionButton href={writingHref}>{copy.back}</ActionButton>
-    </footer>
-  </article>
-</SiliconEmbersSiteFrame>
+  <div class="prose">
+    <Content />
+  </div>
+
+  {
+    (newerPost || olderPost || relatedPosts.length > 0) && (
+      <nav class="article-nav" aria-label={copy.navLabel}>
+        <div class="next-prev">
+          {newerPost && (
+            <a href={articleHref(newerPost)}>
+              <span>{copy.previous}</span>
+              <strong>{newerPost.data.title}</strong>
+            </a>
+          )}
+          {olderPost && (
+            <a href={articleHref(olderPost)}>
+              <span>{copy.next}</span>
+              <strong>{olderPost.data.title}</strong>
+            </a>
+          )}
+        </div>
+        {relatedPosts.length > 0 && (
+          <section class="related" aria-labelledby="related-title">
+            <h2 id="related-title">{copy.related}</h2>
+            <div>
+              {relatedPosts.map((item) => (
+                <a href={articleHref(item)}>
+                  <time datetime={item.data.date.toISOString()}>{formatDate(item.data.date)}</time>
+                  <span>{item.data.title}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </nav>
+    )
+  }
+
+  <footer class="article-return">
+    <ActionButton href={writingHref}>{copy.back}</ActionButton>
+  </footer>
+</article>
 
 <style>
   .article-page {

@@ -2,7 +2,6 @@
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
 import ActionButton from './silicon-embers/ActionButton.astro';
 import EmberField from './silicon-embers/EmberField.astro';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -11,7 +10,6 @@ export interface Props {
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
-const alternateHref = isZh ? '/en/silicon-ashes/courses/' : '/silicon-ashes/courses/';
 
 const t = isZh
   ? {
@@ -159,97 +157,95 @@ const t = isZh
     };
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <div class="courses-hub">
-    <section class="course-hero" aria-labelledby="ch-title">
-      <EmberField />
-      <div class="hero-copy">
-        <p class="eyebrow">{t.eyebrow}</p>
-        <h1 id="ch-title">{t.title}</h1>
-        <p class="lead">{t.lead}</p>
-      </div>
-    </section>
+<div class="courses-hub">
+  <section class="course-hero" aria-labelledby="ch-title">
+    <EmberField />
+    <div class="hero-copy">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1 id="ch-title">{t.title}</h1>
+      <p class="lead">{t.lead}</p>
+    </div>
+  </section>
 
-    <section class="course-gateway" aria-labelledby="gateway-title">
-      <div class="gateway-copy">
-        <p class="kicker">{t.gateway.kicker}</p>
-        <h2 id="gateway-title">{t.gateway.title}</h2>
-        <p>{t.gateway.body}</p>
-        <dl class="gateway-stats">
-          {
-            t.gateway.stats.map(([label, value]) => (
-              <div>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
-      <div class="gateway-links">
+  <section class="course-gateway" aria-labelledby="gateway-title">
+    <div class="gateway-copy">
+      <p class="kicker">{t.gateway.kicker}</p>
+      <h2 id="gateway-title">{t.gateway.title}</h2>
+      <p>{t.gateway.body}</p>
+      <dl class="gateway-stats">
         {
-          t.gateway.groups.map((group) => (
-            <article>
-              <h3>{group.title}</h3>
-              <div>
-                {group.links.map(([label, href]) =>
-                  href ? (
-                    <ActionButton href={href} size="compact" className="gateway-link">
-                      {label}
-                    </ActionButton>
-                  ) : null,
-                )}
-              </div>
-            </article>
+          t.gateway.stats.map(([label, value]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
           ))
         }
-      </div>
-    </section>
+      </dl>
+    </div>
+    <div class="gateway-links">
+      {
+        t.gateway.groups.map((group) => (
+          <article>
+            <h3>{group.title}</h3>
+            <div>
+              {group.links.map(([label, href]) =>
+                href ? (
+                  <ActionButton href={href} size="compact" className="gateway-link">
+                    {label}
+                  </ActionButton>
+                ) : null,
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
 
-    <section class="learning-path" aria-labelledby="path-title">
-      <div class="path-head">
-        <div>
-          <p class="kicker">{t.path.kicker}</p>
-          <h2 id="path-title">{t.path.title}</h2>
-          <p>{t.path.body}</p>
-        </div>
-        <ActionButton href={`${courseBase}index.html`} variant="primary" className="primary-course-link"
-          >{t.path.cta}</ActionButton
-        >
+  <section class="learning-path" aria-labelledby="path-title">
+    <div class="path-head">
+      <div>
+        <p class="kicker">{t.path.kicker}</p>
+        <h2 id="path-title">{t.path.title}</h2>
+        <p>{t.path.body}</p>
       </div>
+      <ActionButton href={`${courseBase}index.html`} variant="primary" className="primary-course-link"
+        >{t.path.cta}</ActionButton
+      >
+    </div>
 
-      <div class="path-grid">
-        {
-          t.path.steps.map(([index, title, body, href]) => (
-            <a class="path-step" href={href}>
-              <span>{index}</span>
-              <strong>{title}</strong>
-              <em>{body}</em>
-            </a>
-          ))
-        }
-      </div>
-    </section>
+    <div class="path-grid">
+      {
+        t.path.steps.map(([index, title, body, href]) => (
+          <a class="path-step" href={href}>
+            <span>{index}</span>
+            <strong>{title}</strong>
+            <em>{body}</em>
+          </a>
+        ))
+      }
+    </div>
+  </section>
 
-    <section class="roadmap" aria-labelledby="roadmap-title">
-      <div class="roadmap-head">
-        <p class="kicker">{t.roadmap.kicker}</p>
-        <h2 id="roadmap-title">{t.roadmap.title}</h2>
-      </div>
-      <div class="roadmap-rail">
-        {
-          t.roadmap.items.map(([index, title, status]) => (
-            <article class="roadmap-item">
-              <span>{index}</span>
-              <strong>{title}</strong>
-              <em>{status}</em>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-  </div>
-</SiliconEmbersSiteFrame>
+  <section class="roadmap" aria-labelledby="roadmap-title">
+    <div class="roadmap-head">
+      <p class="kicker">{t.roadmap.kicker}</p>
+      <h2 id="roadmap-title">{t.roadmap.title}</h2>
+    </div>
+    <div class="roadmap-rail">
+      {
+        t.roadmap.items.map(([index, title, status]) => (
+          <article class="roadmap-item">
+            <span>{index}</span>
+            <strong>{title}</strong>
+            <em>{status}</em>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</div>
 
 <style>
   .courses-hub {

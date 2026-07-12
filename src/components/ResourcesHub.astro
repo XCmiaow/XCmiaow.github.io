@@ -1,7 +1,6 @@
 ---
 import { getResourceIndexGroups } from '../data/siliconAshesResources';
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -9,51 +8,48 @@ export interface Props {
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const alternateHref = isZh ? '/en/silicon-ashes/resources/' : '/silicon-ashes/resources/';
 const groups = getResourceIndexGroups(lang);
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <div class="resources-index">
-    <header class="resources-head">
-      <h1>{isZh ? '资源' : 'Resources'}</h1>
-    </header>
+<div class="resources-index">
+  <header class="resources-head">
+    <h1>{isZh ? '资源' : 'Resources'}</h1>
+  </header>
 
-    <div class="resource-groups">
-      {
-        groups.map((group, index) => (
-          <section id={group.id} class="resource-group" aria-labelledby={`resource-group-${index + 1}`}>
-            <div class="group-copy">
-              <h2 id={`resource-group-${index + 1}`}>{group.title}</h2>
-              <p>{group.summary}</p>
-            </div>
+  <div class="resource-groups">
+    {
+      groups.map((group, index) => (
+        <section id={group.id} class="resource-group" aria-labelledby={`resource-group-${index + 1}`}>
+          <div class="group-copy">
+            <h2 id={`resource-group-${index + 1}`}>{group.title}</h2>
+            <p>{group.summary}</p>
+          </div>
 
-            <div class="resource-list">
-              {group.items.map((item) => (
-                <a
-                  class="resource-row"
-                  href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
-                >
-                  <span class="resource-copy">
-                    <strong>{item.title}</strong>
-                    <small>{item.summary}</small>
-                  </span>
-                  <span class="resource-meta">
-                    {item.meta.map((meta) => (
-                      <em>{meta}</em>
-                    ))}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
-        ))
-      }
-    </div>
+          <div class="resource-list">
+            {group.items.map((item) => (
+              <a
+                class="resource-row"
+                href={item.href}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+              >
+                <span class="resource-copy">
+                  <strong>{item.title}</strong>
+                  <small>{item.summary}</small>
+                </span>
+                <span class="resource-meta">
+                  {item.meta.map((meta) => (
+                    <em>{meta}</em>
+                  ))}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    }
   </div>
-</SiliconEmbersSiteFrame>
+</div>
 
 <style>
   .resources-index {

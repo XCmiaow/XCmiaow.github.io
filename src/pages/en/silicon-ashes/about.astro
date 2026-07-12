@@ -1,14 +1,29 @@
 ---
 import AboutPage from '../../../components/AboutPage.astro';
+import common from '../../../data/common.json';
 import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../../lib/siteRoutes';
+
+const routeId: RouteId = 'about';
+const lang = 'en' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
+const footerLinks = [
+  { label: 'Email', href: `mailto:${common.person.email}`, icon: 'mail' as const },
+  { label: 'WeCom', href: `${canonicalPath}#wecom`, icon: 'wecom' as const },
+  { label: 'GitHub', href: `https://${common.person.github}`, external: true, icon: 'github' as const },
+  { label: 'Personal info', href: routePath('profile', lang), icon: 'resume' as const },
+  { label: 'WeChat', href: routePath('feed', lang), icon: 'wechat' as const },
+];
 ---
 
 <SiliconEmbersLayout
-  lang="en"
+  lang={lang}
   title="About | Silicon Ashes"
   description="Background, entry points, and contact paths for silicon-embers, focused on how AI rearranges work, learning, and research."
-  canonicalPath="/en/silicon-ashes/about/"
-  alternatePath="/silicon-ashes/about/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
+  footerLinks={footerLinks}
 >
-  <AboutPage lang="en" />
+  <AboutPage lang={lang} />
 </SiliconEmbersLayout>

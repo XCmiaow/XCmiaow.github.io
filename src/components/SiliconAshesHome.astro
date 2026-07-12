@@ -5,7 +5,6 @@ import EmberHero from './silicon-embers/EmberHero.astro';
 import SiteCompass from './silicon-embers/SiteCompass.astro';
 import WritingPreview from './silicon-embers/WritingPreview.astro';
 import SignalLinksSection from './silicon-embers/SignalLinksSection.astro';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -20,11 +19,9 @@ const posts = (await getCollection('blog', ({ data }) => data.lang === lang && !
 const latestPosts = posts.slice(0, 3);
 ---
 
-<SiliconEmbersSiteFrame lang={lang}>
-  <div class="home-content">
-    <EmberHero copy={copy.hero} wordmark={copy.wordmark} />
-    <SiteCompass label={copy.compassLabel} items={copy.compass} />
-    <WritingPreview copy={copy.writing} lang={lang} posts={latestPosts} />
-    <SignalLinksSection id="resources" titleId="resources-title" variant="resource-band" copy={copy.resources} />
-  </div>
-</SiliconEmbersSiteFrame>
+<div class="home-content">
+  <EmberHero copy={copy.hero} wordmark={copy.wordmark} />
+  <SiteCompass label={copy.compassLabel} items={copy.compass} />
+  <WritingPreview copy={copy.writing} lang={lang} posts={latestPosts} />
+  <SignalLinksSection id="resources" titleId="resources-title" variant="resource-band" copy={copy.resources} />
+</div>

@@ -1,14 +1,20 @@
 ---
 import ResourcesHub from '../../components/ResourcesHub.astro';
 import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
+import { alternatePath as routeAlternatePath, routePath, type RouteId } from '../../lib/siteRoutes';
+
+const routeId: RouteId = 'resources';
+const lang = 'zh' as const;
+const canonicalPath = routePath(routeId, lang);
+const alternatePath = routeAlternatePath(routeId, lang);
 ---
 
 <SiliconEmbersLayout
-  lang="zh"
+  lang={lang}
   title="资源与工具 | 硅基余烬"
   description="硅基余烬资源页：课程资料、模板与清单。"
-  canonicalPath="/silicon-ashes/resources/"
-  alternatePath="/en/silicon-ashes/resources/"
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
 >
-  <ResourcesHub lang="zh" />
+  <ResourcesHub lang={lang} />
 </SiliconEmbersLayout>

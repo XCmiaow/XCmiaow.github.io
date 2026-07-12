@@ -1,0 +1,53 @@
+---
+import ActionButton from './ActionButton.astro';
+
+interface Props {
+  title: string;
+  message: string;
+  href: string;
+  action: string;
+}
+
+const { title, message, href, action } = Astro.props;
+---
+
+<section class="compat-entry" aria-labelledby="compat-title">
+  <p class="kicker">canonical</p>
+  <h1 id="compat-title">{title}</h1>
+  <p>{message}</p>
+  <ActionButton href={href} variant="primary">{action}</ActionButton>
+</section>
+
+<style>
+  .compat-entry {
+    display: grid;
+    width: min(100%, 760px);
+    min-height: 58vh;
+    align-content: center;
+    gap: 20px;
+    padding: clamp(64px, 10vw, 120px) 0;
+  }
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+    font-size: clamp(2.3rem, 6vw, 5rem);
+    line-height: 1.04;
+  }
+
+  p:not(.kicker) {
+    max-width: 42rem;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  :global(.compat-entry .sa-control) {
+    justify-self: start;
+  }
+</style>

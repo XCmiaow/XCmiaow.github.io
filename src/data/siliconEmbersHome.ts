@@ -25,7 +25,7 @@ export const siliconEmbersHomeCopy = {
       actionsLabel: '主要入口',
       actions: [
         { label: '读博客', href: '/silicon-ashes/writing/', variant: 'primary' },
-        { label: '看资源', href: '/silicon-ashes/resources/', variant: 'quiet' },
+        { label: '看资源', href: '/silicon-ashes/resources/', variant: 'default' },
         { label: '课程资料', href: '/silicon-ashes/resources/#course-materials', variant: 'text' },
       ],
     },
@@ -169,7 +169,7 @@ export const siliconEmbersHomeCopy = {
       actionsLabel: 'Primary links',
       actions: [
         { label: 'Read blog', href: '/en/silicon-ashes/writing/', variant: 'primary' },
-        { label: 'Resources', href: '/en/silicon-ashes/resources/', variant: 'quiet' },
+        { label: 'Resources', href: '/en/silicon-ashes/resources/', variant: 'default' },
         { label: 'Course materials', href: '/en/silicon-ashes/resources/#course-materials', variant: 'text' },
       ],
     },
@@ -294,6 +294,15 @@ export const siliconEmbersHomeCopy = {
 } as const;
 
 export type SiliconEmbersHomeCopy = (typeof siliconEmbersHomeCopy)[SiliconEmbersLang];
+export interface SiliconEmbersNavCopy {
+  htmlLabel: string;
+  brand: string;
+  homeHref: string;
+  navLabel: string;
+  switchHref: string;
+  switchLabel: string;
+  nav: readonly { label: string; href: string }[];
+}
 export type SiliconEmbersHeroCopy = SiliconEmbersHomeCopy['hero'];
 export type SiliconEmbersCompassItem = SiliconEmbersHomeCopy['compass'][number];
 export type SiliconEmbersThesisCopy = SiliconEmbersHomeCopy['thesis'];

@@ -2,7 +2,6 @@
 import type { ResourceTemplate } from '../data/siliconAshesResources';
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
 import ActionButton from './silicon-embers/ActionButton.astro';
-import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -13,9 +12,6 @@ const { lang, template } = Astro.props;
 const isZh = lang === 'zh';
 const data = template[lang];
 const resourcesHref = isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/';
-const alternateHref = isZh
-  ? `/en/silicon-ashes/resources/${template.slug}/`
-  : `/silicon-ashes/resources/${template.slug}/`;
 
 const copy = isZh
   ? {
@@ -34,53 +30,51 @@ const copy = isZh
     };
 ---
 
-<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
-  <article class="resource-template">
-    <header class="template-hero">
-      <p class="eyebrow">{data.eyebrow}</p>
-      <h1>{data.title}</h1>
-      <p class="lead">{data.summary}</p>
-      <ul class="meta-list">
-        {data.meta.map((item) => <li>{item}</li>)}
+<article class="resource-template">
+  <header class="template-hero">
+    <p class="eyebrow">{data.eyebrow}</p>
+    <h1>{data.title}</h1>
+    <p class="lead">{data.summary}</p>
+    <ul class="meta-list">
+      {data.meta.map((item) => <li>{item}</li>)}
+    </ul>
+  </header>
+
+  <section class="purpose" aria-labelledby="purpose-title">
+    <div class="section-head">
+      <p class="kicker">why</p>
+      <h2 id="purpose-title">{copy.purpose}</h2>
+    </div>
+    <p>{data.purpose}</p>
+  </section>
+
+  <section class="layout-grid" aria-label={isZh ? '模板结构' : 'Template structure'}>
+    <article>
+      <h2>{copy.sections}</h2>
+      <ul>
+        {data.sections.map((item) => <li>{item}</li>)}
       </ul>
-    </header>
+    </article>
+    <article>
+      <h2>{copy.checklist}</h2>
+      <ul>
+        {data.checklist.map((item) => <li>{item}</li>)}
+      </ul>
+    </article>
+  </section>
 
-    <section class="purpose" aria-labelledby="purpose-title">
-      <div class="section-head">
-        <p class="kicker">why</p>
-        <h2 id="purpose-title">{copy.purpose}</h2>
-      </div>
-      <p>{data.purpose}</p>
-    </section>
+  <section class="template-block" aria-labelledby="template-title">
+    <div class="section-head wide">
+      <p class="kicker">copy</p>
+      <h2 id="template-title">{copy.copy}</h2>
+    </div>
+    <pre><code>{data.template}</code></pre>
+  </section>
 
-    <section class="layout-grid" aria-label={isZh ? '模板结构' : 'Template structure'}>
-      <article>
-        <h2>{copy.sections}</h2>
-        <ul>
-          {data.sections.map((item) => <li>{item}</li>)}
-        </ul>
-      </article>
-      <article>
-        <h2>{copy.checklist}</h2>
-        <ul>
-          {data.checklist.map((item) => <li>{item}</li>)}
-        </ul>
-      </article>
-    </section>
-
-    <section class="template-block" aria-labelledby="template-title">
-      <div class="section-head wide">
-        <p class="kicker">copy</p>
-        <h2 id="template-title">{copy.copy}</h2>
-      </div>
-      <pre><code>{data.template}</code></pre>
-    </section>
-
-    <footer class="template-return">
-      <ActionButton href={resourcesHref}>{copy.back}</ActionButton>
-    </footer>
-  </article>
-</SiliconEmbersSiteFrame>
+  <footer class="template-return">
+    <ActionButton href={resourcesHref}>{copy.back}</ActionButton>
+  </footer>
+</article>
 
 <style>
   .resource-template {
