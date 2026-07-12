@@ -1,0 +1,208 @@
+[
+  {
+    "id": "brand-home",
+    "domain": "brand",
+    "kind": "static",
+    "zh": { "path": "/", "h1": "硅基余烬" },
+    "en": { "path": "/en/", "h1": "silicon-embers" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "profile",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/profile", "h1": "方绪杰" },
+    "en": { "path": "/en/profile", "h1": "Xujie Fang" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "materials",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/materials", "h1": "材料下载中心" },
+    "en": { "path": "/en/materials", "h1": "Materials Hub" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "evidence",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/evidence", "h1": "证明材料墙" },
+    "en": { "path": "/en/evidence", "h1": "Certificate Gallery" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "modeling",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/modeling", "h1": "数学建模竞赛实践" },
+    "en": { "path": "/en/modeling", "h1": "Mathematical Modeling in Practice" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "ai-km",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/ai-km", "h1": "AI 辅助科研学习与知识管理" },
+    "en": { "path": "/en/ai-km", "h1": "AI-Assisted Learning & Knowledge Management" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "chem-ai-lab",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/chem-ai-lab", "h1": "ChemAI Lab" },
+    "en": { "path": "/en/chem-ai-lab", "h1": "ChemAI Lab" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "resume-onepage",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/resume-onepage", "h1": "方绪杰" },
+    "en": { "path": "/en/resume-onepage", "h1": "Xujie Fang" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "resume-academic",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/resume-academic", "h1": "方绪杰" },
+    "en": { "path": "/en/resume-academic", "h1": "Xujie Fang" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "resume-career",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/resume-career", "h1": "方绪杰" },
+    "en": { "path": "/en/resume-career", "h1": "Xujie Fang" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "writing",
+    "domain": "brand",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/writing/", "h1": "少谈未来感，多看技术如何重排人" },
+    "en": { "path": "/en/silicon-ashes/writing/", "h1": "Less futurism, more human consequence" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "course-home",
+    "domain": "course",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/courses/", "h1": "AI 科研效率课程包" },
+    "en": { "path": "/en/silicon-ashes/courses/", "h1": "AI research efficiency course pack" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "resources",
+    "domain": "brand",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/resources/", "h1": "资源" },
+    "en": { "path": "/en/silicon-ashes/resources/", "h1": "Resources" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "feed",
+    "domain": "brand",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/feed/", "h1": "硅基余烬" },
+    "en": { "path": "/en/silicon-ashes/feed/", "h1": "silicon-embers" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "about",
+    "domain": "brand",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/about/", "h1": "把技术经验翻译成人能继续使用的语言" },
+    "en": {
+      "path": "/en/silicon-ashes/about/",
+      "h1": "Translating technical experience into language people can keep using"
+    },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
+    "id": "writing-entry",
+    "domain": "brand",
+    "kind": "pattern",
+    "source": "blog",
+    "zh": { "path": "/silicon-ashes/writing/:slug/", "h1": "文章标题" },
+    "en": { "path": "/en/silicon-ashes/writing/:slug/", "h1": "Article title" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": false
+  },
+  {
+    "id": "resource-entry",
+    "domain": "brand",
+    "kind": "pattern",
+    "source": "resources",
+    "zh": { "path": "/silicon-ashes/resources/:slug/", "h1": "资源标题" },
+    "en": { "path": "/en/silicon-ashes/resources/:slug/", "h1": "Resource title" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": false
+  },
+  {
+    "id": "compat-brand-home",
+    "domain": "compatibility",
+    "kind": "static",
+    "zh": { "path": "/silicon-ashes/", "h1": "硅基余烬" },
+    "en": { "path": "/en/silicon-ashes/", "h1": "silicon-embers" },
+    "canonical": false,
+    "sitemap": false,
+    "pwa": false
+  },
+  {
+    "id": "compat-blog",
+    "domain": "compatibility",
+    "kind": "static",
+    "zh": { "path": "/blog/", "h1": "博客" },
+    "en": { "path": "/en/blog/", "h1": "Blog" },
+    "canonical": false,
+    "sitemap": false,
+    "pwa": false
+  },
+  {
+    "id": "compat-blog-entry",
+    "domain": "compatibility",
+    "kind": "pattern",
+    "source": "blog",
+    "zh": { "path": "/blog/:slug/", "h1": "文章标题" },
+    "en": { "path": "/en/blog/:slug/", "h1": "Article title" },
+    "canonical": false,
+    "sitemap": false,
+    "pwa": false
+  }
+]
