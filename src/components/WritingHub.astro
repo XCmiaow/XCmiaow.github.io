@@ -1,18 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import common from '../data/common.json';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
+import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
-  lang: 'zh' | 'en';
+  lang: SiliconEmbersLang;
 }
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
+const alternateHref = isZh ? '/en/silicon-ashes/writing/' : '/silicon-ashes/writing/';
+type BlogPost = CollectionEntry<'blog'>;
 
-const allPosts = (await getCollection('blog', ({ data }) => {
-  return data.lang === lang && !data.draft;
-})).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allPosts = (
+  await getCollection('blog', ({ data }) => {
+    return data.lang === lang && !data.draft;
+  })
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const formatDate = (date: Date) => {
   const y = date.getFullYear();
@@ -34,154 +38,351 @@ const audienceClass = (a?: string) => {
 };
 
 // Group by series
-const seriesMap = new Map();
+const seriesMap = new Map<string, BlogPost[]>();
 for (const post of allPosts) {
   const key = post.data.series || (isZh ? '独立篇' : 'Standalone');
-  if (!seriesMap.has(key)) seriesMap.set(key, []);
-  seriesMap.get(key).push(post);
+  const seriesPosts = seriesMap.get(key);
+  if (seriesPosts) seriesPosts.push(post);
+  else seriesMap.set(key, [post]);
 }
+
+const copy = isZh
+  ? {
+      eyebrow: 'blog / field notes',
+      title: '少谈未来感，多看技术如何重排人',
+      lead: '关于 AI、教育、科研方法与化工专业的博客。先把问题写清楚，再让工具进入现场。',
+      articleCount: '文章',
+      seriesCount: '系列',
+      sectionTitle: '系列与文章',
+      empty: '暂无文章，敬请期待。',
+    }
+  : {
+      eyebrow: 'blog / field notes',
+      title: 'Less futurism, more human consequence',
+      lead: 'Blog essays about AI, education, research methods, and chemistry. Start with the problem, then let the tools enter the field.',
+      articleCount: 'articles',
+      seriesCount: 'series',
+      sectionTitle: 'Series and articles',
+      empty: 'No articles yet. Stay tuned.',
+    };
 ---
 
-<div class="wh-shell">
-  <a class="skip-link" href="#main">{isZh ? '跳到正文' : 'Skip to content'}</a>
-
-  <header class="wh-nav" aria-label={isZh ? '写作中心导航' : 'Writing navigation'}>
-    <a class="wh-brand" href={homeHref}>
-      <span class="brand-mark">SA</span>
-      <span class="brand-name">{isZh ? '硅基余烬' : 'Silicon Ashes'}</span>
-    </a>
-    <nav>
-      <a href={homeHref}>{isZh ? '主站' : 'Main'}</a>
-      <a href={isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'}>{isZh ? '课程' : 'Courses'}</a>
-      <a href={isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'}>{isZh ? '资源' : 'Resources'}</a>
-      <a href={isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/'}>{isZh ? '关于' : 'About'}</a>
-    </nav>
-  </header>
-
-  <main id="main">
-    <section class="hero">
-      <p class="eyebrow">{isZh ? '写作中心' : 'Writing'}</p>
-      <h1>{isZh ? '少谈未来感，多看技术如何重排人' : 'Less futurism, more human consequence'}</h1>
-      <p class="lead">{isZh ? '关于 AI、教育、科研方法与化工专业的写作。' : 'Writing about AI, education, research methods, and chemistry.'}</p>
+<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
+  <div class="writing-hub">
+    <section class="writing-hero" aria-labelledby="writing-title">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1 id="writing-title">{copy.title}</h1>
+        <p class="lead">{copy.lead}</p>
+      </div>
+      <dl class="writing-stats" aria-label={isZh ? '博客统计' : 'Blog stats'}>
+        <div>
+          <dt>{copy.articleCount}</dt>
+          <dd>{allPosts.length}</dd>
+        </div>
+        <div>
+          <dt>{copy.seriesCount}</dt>
+          <dd>{seriesMap.size}</dd>
+        </div>
+      </dl>
     </section>
 
     <section class="series-section" aria-labelledby="series-title">
-      <h2 id="series-title" class="section-title">{isZh ? '系列与文章' : 'Series and articles'}</h2>
+      <h2 id="series-title" class="section-title">{copy.sectionTitle}</h2>
 
-      {Array.from(seriesMap.entries()).map(([seriesName, posts]) => (
-        <div class="series-group">
-          <h3 class="series-name">{seriesName}</h3>
-          <div class="article-list">
-            {posts.map((post) => (
-              <a class="article-card" href={isZh ? `/silicon-ashes/writing/${post.id}/` : `/en/silicon-ashes/writing/${post.id}/`}>
-                <div class="article-meta">
-                  <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-                  {post.data.readingTime && <span class="reading-time">{post.data.readingTime} min</span>}
-                  <span class={`audience-badge ${audienceClass(post.data.audience)}`}>{audienceLabel(post.data.audience)}</span>
-                </div>
-                <h4 class="article-title">{post.data.title}</h4>
-                {post.data.description && <p class="article-desc">{post.data.description}</p>}
-                {post.data.tags && (
-                  <ul class="article-tags">
-                    {post.data.tags.map((tag) => <li>{tag}</li>)}
-                  </ul>
-                )}
-              </a>
-            ))}
+      {
+        Array.from(seriesMap.entries()).map(([seriesName, posts]) => (
+          <div class="series-group">
+            <h3 class="series-name">{seriesName}</h3>
+            <div class="article-list">
+              {posts.map((post) => (
+                <a
+                  class="article-card"
+                  href={isZh ? `/silicon-ashes/writing/${post.id}/` : `/en/silicon-ashes/writing/${post.id}/`}
+                >
+                  <div class="article-meta">
+                    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                    {post.data.readingTime && <span class="reading-time">{post.data.readingTime} min</span>}
+                    <span class={`audience-badge ${audienceClass(post.data.audience)}`}>
+                      {audienceLabel(post.data.audience)}
+                    </span>
+                  </div>
+                  <h4 class="article-title">{post.data.title}</h4>
+                  {post.data.description && <p class="article-desc">{post.data.description}</p>}
+                  {post.data.tags && (
+                    <ul class="article-tags">
+                      {post.data.tags.map((tag) => (
+                        <li>{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
 
-      {allPosts.length === 0 && (
-        <p class="empty-state">{isZh ? '暂无文章，敬请期待。' : 'No articles yet. Stay tuned.'}</p>
-      )}
+      {allPosts.length === 0 && <p class="empty-state">{copy.empty}</p>}
     </section>
-  </main>
-
-  <footer class="wh-footer">
-    <p>{isZh ? '硅基余烬 · 写作中心' : 'Silicon Ashes · Writing'}</p>
-    <div>
-      <a href={isZh ? '/silicon-ashes/' : '/en/silicon-ashes/'}>{isZh ? '主站' : 'Main site'}</a>
-      <a href={`mailto:${common.person.email}`}>Email</a>
-    </div>
-  </footer>
-</div>
+  </div>
+</SiliconEmbersSiteFrame>
 
 <style>
-  :global(html) { scroll-behavior: smooth; background: #080705; }
-  :global(body) { margin: 0; background: #080705; color: #e9e0d0; font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-  :global(*), :global(*::before), :global(*::after) { box-sizing: border-box; }
-  :global(a) { color: inherit; }
-
-  .wh-shell {
-    min-height: 100dvh;
-    overflow-x: hidden;
-    background:
-      linear-gradient(90deg, rgba(226,187,116,0.035) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(226,187,116,0.028) 1px, transparent 1px),
-      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
-    background-size: 64px 64px, 64px 64px, auto, auto;
+  .writing-hub {
+    padding-bottom: clamp(86px, 10vw, 132px);
   }
 
-  .skip-link { position: fixed; top: 12px; left: 12px; z-index: 20; transform: translateY(-160%); border: 1px solid #d6a04f; border-radius: 4px; padding: 10px 12px; background: #e3b66c; color: #100d09; font-weight: 800; text-decoration: none; transition: transform 180ms ease; }
-  .skip-link:focus { transform: translateY(0); }
+  .writing-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 0.26fr);
+    gap: clamp(34px, 7vw, 92px);
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    padding: clamp(86px, 12vw, 142px) 0 clamp(58px, 8vw, 92px);
+  }
 
-  .wh-nav, main, .wh-footer { width: min(100% - 44px, 1240px); margin: 0 auto; }
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    overflow-wrap: anywhere;
+  }
 
-  .wh-nav { position: sticky; top: 0; z-index: 12; display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(218,166,86,0.2); background: rgba(8,7,5,0.86); backdrop-filter: blur(18px); }
-  .wh-brand { display: inline-flex; min-height: 40px; align-items: center; gap: 12px; text-decoration: none; }
-  .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(218,166,86,0.7); border-radius: 5px; background: linear-gradient(135deg, rgba(238,181,92,0.22), transparent 50%), #11100d; color: #ffe4aa; font-family: Consolas, 'SFMo-Regular', monospace; font-size: 13px; font-weight: 900; }
-  .brand-name { color: #f3e3c5; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 20px; font-weight: 800; }
-  .wh-nav nav { display: flex; align-items: center; gap: 6px; }
-  .wh-nav nav a { display: inline-flex; min-height: 38px; align-items: center; border-radius: 4px; padding: 0 10px; color: rgba(233,224,208,0.72); font-size: 14px; font-weight: 700; text-decoration: none; transition: background 160ms ease, color 160ms ease; }
-  .wh-nav nav a:hover { background: rgba(218,166,86,0.1); color: #ffe2aa; }
+  h1 {
+    max-width: 960px;
+    margin: 22px 0 0;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(3rem, 6.2vw, 6.4rem);
+    font-weight: 850;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
 
-  .hero { padding: 100px 0 48px; max-width: 880px; }
-  .eyebrow { margin: 0; color: #d8aa63; font-family: Consolas, 'SFMo-Regular', monospace; font-size: 13px; font-weight: 800; }
-  h1, h2, h3, h4, p { overflow-wrap: anywhere; }
-  h1 { margin: 22px 0 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1.06; text-wrap: balance; }
-  .lead { max-width: 680px; margin: 22px 0 0; color: rgba(233,224,208,0.76); font-size: 19px; line-height: 1.88; }
+  .lead {
+    max-width: 720px;
+    margin: 26px 0 0;
+    color: var(--muted);
+    font-size: clamp(1.06rem, 1.65vw, 1.32rem);
+    line-height: 1.86;
+    text-wrap: pretty;
+  }
 
-  .series-section { padding: 48px 0 120px; border-top: 1px solid rgba(218,166,86,0.18); }
-  .section-title { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 28px; font-weight: 800; margin: 0 0 40px; }
+  .writing-stats {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    border: 1px solid rgba(232, 174, 98, 0.18);
+    background: rgba(232, 174, 98, 0.16);
+  }
 
-  .series-group { margin-bottom: 48px; }
-  .series-name { color: #d8aa63; font-family: Consolas, 'SFMo-Regular', monospace; font-size: 15px; font-weight: 800; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(218,166,86,0.18); }
+  .writing-stats div {
+    padding: 18px;
+    background: rgba(7, 6, 5, 0.88);
+  }
 
-  .article-list { display: grid; gap: 0; }
-  .article-card { display: block; padding: 24px 0; border-bottom: 1px solid rgba(218,166,86,0.1); text-decoration: none; transition: background 160ms ease; }
-  .article-card:hover { background: rgba(218,166,86,0.04); }
-  .article-card:first-child { padding-top: 0; }
+  .writing-stats dt {
+    color: rgba(239, 227, 205, 0.54);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 12px;
+    font-weight: 900;
+  }
 
-  .article-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .article-meta time { color: rgba(168,177,176,0.68); font-family: Consolas, 'SFMo-Regular', monospace; font-size: 13px; }
-  .reading-time { color: rgba(168,177,176,0.5); font-family: Consolas, 'SFMo-Regular', monospace; font-size: 13px; }
-  .audience-badge { display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 3px; font-size: 11px; font-weight: 800; }
-  .audience-teacher { background: rgba(108,190,120,0.12); color: #6cbe78; }
-  .audience-researcher { background: rgba(100,160,220,0.12); color: #6aa0dc; }
-  .audience-general { background: rgba(168,177,176,0.08); color: rgba(168,177,176,0.6); }
+  .writing-stats dd {
+    margin: 8px 0 0;
+    color: var(--paper);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1;
+  }
 
-  .article-title { margin: 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 22px; font-weight: 800; line-height: 1.3; }
-  .article-desc { margin: 8px 0 0; color: rgba(233,224,208,0.6); font-size: 15px; line-height: 1.6; }
+  .series-section {
+    padding: 48px 0 120px;
+    border-top: 1px solid rgba(218, 166, 86, 0.18);
+  }
+  .section-title {
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 40px;
+  }
 
-  .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
-  .article-tags li { border: 1px solid rgba(168,177,176,0.18); border-radius: 3px; padding: 3px 8px; color: rgba(220,228,224,0.55); font-size: 12px; }
+  .series-group {
+    margin-bottom: 48px;
+  }
+  .series-name {
+    color: #d8aa63;
+    font-family: Consolas, 'SFMo-Regular', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.18);
+  }
 
-  .empty-state { color: rgba(233,224,208,0.4); font-size: 16px; }
+  .article-list {
+    display: grid;
+    gap: 0;
+  }
+  .article-card {
+    display: block;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(218, 166, 86, 0.1);
+    text-decoration: none;
+    transition: background 160ms ease;
+  }
+  .article-card:hover {
+    background: rgba(218, 166, 86, 0.04);
+  }
+  .article-card:first-child {
+    padding-top: 0;
+  }
 
-  .wh-footer { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 28px; align-items: start; border-top: 1px solid rgba(218,166,86,0.18); padding: 28px 0 40px; }
-  .wh-footer p { margin: 0; font-size: 14px; color: rgba(233,224,208,0.5); }
-  .wh-footer div { display: flex; gap: 14px; }
-  .wh-footer a { display: inline-flex; min-height: 36px; min-width: 36px; align-items: center; color: rgba(233,224,208,0.72); font-size: 14px; text-decoration: none; }
-  .wh-footer a:hover { color: #f2dfbd; }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .article-meta time {
+    color: rgba(168, 177, 176, 0.68);
+    font-family: Consolas, 'SFMo-Regular', monospace;
+    font-size: 13px;
+  }
+  .reading-time {
+    color: rgba(168, 177, 176, 0.5);
+    font-family: Consolas, 'SFMo-Regular', monospace;
+    font-size: 13px;
+  }
+  .audience-badge {
+    display: inline-flex;
+    height: 22px;
+    align-items: center;
+    padding: 0 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .audience-teacher {
+    background: rgba(108, 190, 120, 0.12);
+    color: #6cbe78;
+  }
+  .audience-researcher {
+    background: rgba(100, 160, 220, 0.12);
+    color: #6aa0dc;
+  }
+  .audience-general {
+    background: rgba(168, 177, 176, 0.08);
+    color: rgba(168, 177, 176, 0.6);
+  }
+
+  .article-title {
+    margin: 0;
+    color: #f2dfbd;
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .article-desc {
+    margin: 8px 0 0;
+    color: rgba(233, 224, 208, 0.6);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .article-tags li {
+    border: 1px solid rgba(168, 177, 176, 0.18);
+    border-radius: 3px;
+    padding: 3px 8px;
+    color: rgba(220, 228, 224, 0.55);
+    font-size: 12px;
+  }
+
+  .empty-state {
+    color: rgba(233, 224, 208, 0.4);
+    font-size: 16px;
+  }
 
   @media (max-width: 720px) {
-    .wh-nav, main, .wh-footer { width: min(100% - 28px, 1240px); }
-    .wh-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
-    .wh-nav nav { width: 100%; flex-wrap: wrap; }
-    .hero { padding: 58px 0 36px; }
-    h1 { font-size: 2.4rem; }
-    .article-meta { flex-wrap: wrap; gap: 8px; }
-    .wh-footer { grid-template-columns: 1fr; }
+    .writing-hero {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 34px 0 30px;
+    }
+
+    h1 {
+      margin-top: 12px;
+      font-size: clamp(1.45rem, 6.4vw, 1.95rem);
+      line-height: 1.16;
+    }
+
+    .lead {
+      margin-top: 14px;
+      font-size: 14.5px;
+      line-height: 1.68;
+    }
+
+    .writing-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .series-section {
+      padding: 34px 0 64px;
+    }
+
+    .section-title {
+      margin-bottom: 24px;
+      font-size: 18px;
+    }
+
+    .article-card {
+      padding: 18px 0;
+    }
+
+    .article-title {
+      font-size: 16px;
+      line-height: 1.34;
+    }
+
+    .article-desc {
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .writing-stats div {
+      padding: 14px;
+    }
+
+    .writing-stats dd {
+      font-size: 1.55rem;
+    }
+
+    .article-meta {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    h1 {
+      font-size: clamp(1.38rem, 6.2vw, 1.72rem);
+    }
+
+    .writing-stats div {
+      padding: 12px;
+    }
   }
 </style>

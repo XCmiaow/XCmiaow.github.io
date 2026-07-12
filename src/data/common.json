@@ -4,7 +4,10 @@
     "github": "github.com/XCmiaow",
     "githubUser": "XCmiaow",
     "pronouns": "he/him",
-    "avatar": "/assets/avatar.jpg"
+    "avatar": "/assets/avatar.jpg",
+    "wecomQr": "/silicon-ashes/wecom-qr.jpg",
+    "wechatPublicName": "硅基余烬",
+    "wechatPublicQr": ""
   },
   "education": {
     "gpa": 3.6,

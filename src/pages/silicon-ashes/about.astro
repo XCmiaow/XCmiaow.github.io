@@ -1,17 +1,14 @@
 ---
 import AboutPage from '../../components/AboutPage.astro';
+import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
 ---
-<!doctype html>
-<html lang="zh">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>关于 | 硅基余烬</title>
-    <meta name="description" content="方绪杰：化工背景，关注 AI 如何重新安排人的工作、学习和科研方式。" />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-  </head>
-  <body>
-    <AboutPage lang="zh" />
-  </body>
-</html>
+
+<SiliconEmbersLayout
+  lang="zh"
+  title="关于 | 硅基余烬"
+  description="硅基余烬品牌主站的背景、入口与联系路径，关注 AI 如何重新安排人的工作、学习和科研方式。"
+  canonicalPath="/silicon-ashes/about/"
+  alternatePath="/en/silicon-ashes/about/"
+>
+  <AboutPage lang="zh" />
+</SiliconEmbersLayout>

@@ -1,0 +1,197 @@
+---
+import type { SiliconEmbersHomeCopy } from '../../data/siliconEmbersHome';
+
+interface Props {
+  copy: SiliconEmbersHomeCopy;
+}
+
+const { copy } = Astro.props;
+
+const normalizePath = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+const currentPath = normalizePath(Astro.url.pathname);
+const homePath = normalizePath(copy.homeHref);
+const isHome = currentPath === homePath;
+const themeLabel = copy.switchLabel === 'EN' ? '切换明暗模式' : 'Toggle color mode';
+const isActive = (href: string) => {
+  const targetPath = normalizePath(href);
+  return targetPath !== homePath && currentPath.startsWith(targetPath);
+};
+---
+
+<header class="sa-nav" aria-label={copy.htmlLabel}>
+  <a class="sa-brand" href={copy.homeHref} aria-label={copy.brand} aria-current={isHome ? 'page' : undefined}>
+    <span class="brand-mark">
+      <img src="/silicon-ashes/logo.jpg" alt="" width="40" height="40" decoding="async" />
+    </span>
+    <span class="brand-name">{copy.brand}</span>
+  </a>
+  <nav aria-label={copy.navLabel}>
+    {
+      copy.nav.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+    <a href={copy.switchHref}>{copy.switchLabel}</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label={themeLabel}>
+      <span aria-hidden="true">◐</span>
+    </button>
+  </nav>
+</header>
+
+<style>
+  .sa-nav {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: min(100% - 56px, 1320px);
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(7, 6, 5, 0.82), rgba(7, 6, 5, 0.42));
+    backdrop-filter: blur(18px);
+  }
+
+  .sa-brand {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      color 180ms ease;
+  }
+
+  .sa-brand:hover,
+  .sa-brand:focus-visible {
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgba(232, 174, 98, 0.56);
+    border-radius: 7px;
+    background: linear-gradient(180deg, rgba(255, 225, 162, 0.12), rgba(232, 174, 98, 0.035)), rgba(9, 8, 7, 0.72);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 238, 197, 0.18),
+      0 10px 24px rgba(0, 0, 0, 0.26);
+    color: #f4d49b;
+    overflow: hidden;
+  }
+
+  .brand-mark img {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+    opacity: 0.94;
+  }
+
+  .brand-name {
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 19px;
+    font-weight: 850;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  nav a,
+  .theme-toggle {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0 10px;
+    background: transparent;
+    color: rgba(239, 227, 205, 0.68);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 760;
+    text-decoration: none;
+    transition:
+      background 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  nav a:hover,
+  nav a:focus-visible,
+  nav a[aria-current='page'],
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible,
+  .theme-toggle[aria-pressed='true'] {
+    transform: translateY(-1px);
+    border-color: rgba(232, 174, 98, 0.36);
+    background: linear-gradient(180deg, rgba(232, 174, 98, 0.13), rgba(232, 174, 98, 0.035)), rgba(7, 6, 5, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 238, 197, 0.12),
+      0 10px 24px rgba(0, 0, 0, 0.18);
+    color: #f4d49b;
+    outline: none;
+  }
+
+  nav a:active,
+  .theme-toggle:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.32);
+  }
+
+  @media (max-width: 720px) {
+    .sa-nav {
+      width: min(100% - 28px, 1320px);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0 16px;
+    }
+
+    nav {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 4px;
+    }
+
+    nav a,
+    .theme-toggle {
+      padding: 0 6px;
+      font-size: 12.5px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .sa-nav {
+      width: min(100% - 24px, 1320px);
+    }
+
+    .brand-name {
+      font-size: 18px;
+    }
+
+    nav a,
+    .theme-toggle {
+      padding: 0 8px;
+    }
+  }
+</style>

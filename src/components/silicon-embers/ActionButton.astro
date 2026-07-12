@@ -1,0 +1,49 @@
+---
+type ButtonVariant = 'default' | 'primary' | 'text' | 'secondary' | string;
+type ButtonSize = 'default' | 'compact';
+
+interface Props {
+  href: string;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+  external?: boolean;
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  current?: boolean | 'page';
+  block?: boolean;
+  download?: boolean | string;
+}
+
+const {
+  href,
+  variant = 'default',
+  size = 'default',
+  className,
+  external = /^https?:\/\//.test(href),
+  target,
+  rel,
+  ariaLabel,
+  current,
+  block = false,
+  download,
+} = Astro.props;
+
+const targetValue = target ?? (external ? '_blank' : undefined);
+const relValue = rel ?? (external ? 'noopener noreferrer' : undefined);
+const variantClass = variant === 'default' || variant === 'secondary' ? undefined : variant;
+const currentValue = current === true ? 'page' : current || undefined;
+---
+
+<a
+  class:list={['sa-control', variantClass, size !== 'default' && `size-${size}`, block && 'block', className]}
+  href={href}
+  target={targetValue}
+  rel={relValue}
+  aria-label={ariaLabel}
+  aria-current={currentValue}
+  download={download}
+>
+  <slot />
+</a>

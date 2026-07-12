@@ -1,0 +1,36 @@
+---
+import ActionButton from './ActionButton.astro';
+
+interface ActionLink {
+  label: string;
+  href: string;
+  variant?: string;
+  external?: boolean;
+  ariaLabel?: string;
+}
+
+interface Props {
+  links: readonly ActionLink[];
+  label?: string;
+  className: string;
+  linkClass?: string;
+}
+
+const { links, label, className, linkClass } = Astro.props;
+---
+
+<div class={className} aria-label={label}>
+  {
+    links.map((link) => (
+      <ActionButton
+        href={link.href}
+        variant={link.variant}
+        className={linkClass}
+        external={link.external}
+        ariaLabel={link.ariaLabel}
+      >
+        {link.label}
+      </ActionButton>
+    ))
+  }
+</div>

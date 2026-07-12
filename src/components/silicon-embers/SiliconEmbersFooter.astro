@@ -1,0 +1,169 @@
+---
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  icon?: 'mail' | 'github' | 'resume' | 'rss' | 'wecom' | 'wechat';
+}
+
+interface Props {
+  note: string;
+  links: readonly FooterLink[];
+}
+
+const { note, links } = Astro.props;
+---
+
+<footer class="sa-footer">
+  <p>{note}</p>
+  <nav aria-label="Contact links">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >
+          {link.icon && (
+            <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true">
+              {link.icon === 'mail' && (
+                <>
+                  <path d="M4 6.5h16v11H4z" />
+                  <path d="m4.5 7 7.5 6 7.5-6" />
+                </>
+              )}
+              {link.icon === 'github' && (
+                <path d="M9 19.5c-4.5 1.4-4.5-2.2-6.3-2.7m12.6 5.2v-3.5c0-1 .1-1.4-.5-2 2-.2 4.2-1 4.2-4.6a3.6 3.6 0 0 0-1-2.5 3.4 3.4 0 0 0-.1-2.5s-.8-.2-2.6 1a9 9 0 0 0-4.8 0c-1.8-1.2-2.6-1-2.6-1a3.4 3.4 0 0 0-.1 2.5 3.6 3.6 0 0 0-1 2.5c0 3.6 2.2 4.4 4.2 4.6-.3.3-.5.8-.5 1.5V22" />
+              )}
+              {link.icon === 'resume' && (
+                <>
+                  <path d="M7 3.5h7l3 3v14H7z" />
+                  <path d="M14 3.5v3h3" />
+                  <path d="M9.5 11h5" />
+                  <path d="M9.5 14h5" />
+                  <path d="M9.5 17h3" />
+                </>
+              )}
+              {link.icon === 'rss' && (
+                <>
+                  <path d="M6 17.5h.01" />
+                  <path d="M5.5 11.5a7 7 0 0 1 7 7" />
+                  <path d="M5.5 6a12.5 12.5 0 0 1 12.5 12.5" />
+                </>
+              )}
+              {link.icon === 'wecom' && (
+                <>
+                  <path d="M7.6 16.2c-2.5-.7-4.1-2.5-4.1-4.7 0-3 3.2-5.5 7.1-5.5s7.1 2.5 7.1 5.5-3.2 5.5-7.1 5.5c-.7 0-1.4-.1-2-.2L5.5 18z" />
+                  <path d="M14.4 17.3c.5.1 1 .2 1.6.2.6 0 1.1-.1 1.7-.2l2.8 1.1-1-2.2c1.5-.9 2.5-2.2 2.5-3.8 0-2.2-2-4.1-4.7-4.7" />
+                  <path d="M8.2 10.8h.01" />
+                  <path d="M12.6 10.8h.01" />
+                </>
+              )}
+              {link.icon === 'wechat' && (
+                <>
+                  <path d="M4 10.5c0-3 3-5.4 6.8-5.4s6.8 2.4 6.8 5.4-3 5.4-6.8 5.4c-.6 0-1.2-.1-1.8-.2L6 17.2l.8-2.3C5.1 13.9 4 12.3 4 10.5z" />
+                  <path d="M15.4 13.8c.6.2 1.2.3 1.9.3.5 0 1-.1 1.5-.2l2.2 1.1-.6-1.7c1-.7 1.6-1.8 1.6-3 0-1.8-1.4-3.4-3.5-4.1" />
+                  <path d="M8.4 9.8h.01" />
+                  <path d="M12.6 9.8h.01" />
+                </>
+              )}
+            </svg>
+          )}
+          <span>{link.label}</span>
+        </a>
+      ))
+    }
+  </nav>
+</footer>
+
+<style>
+  .sa-footer {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: min(100% - 56px, 1320px);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: start;
+    margin: 0 auto;
+    padding: 30px 0 42px;
+    color: rgba(239, 227, 205, 0.54);
+  }
+
+  p {
+    margin: 0;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px 14px;
+  }
+
+  a {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 38px;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(242, 223, 189, 0.14);
+    border-radius: 7px;
+    padding: 0 12px;
+    background: rgba(242, 223, 189, 0.03);
+    color: inherit;
+    font-size: 14px;
+    font-weight: 750;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .footer-icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  a:hover,
+  a:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(232, 174, 98, 0.42);
+    background: rgba(232, 174, 98, 0.07);
+    color: #f4d49b;
+    outline: none;
+  }
+
+  @media (max-width: 960px) {
+    .sa-footer {
+      grid-template-columns: 1fr;
+    }
+
+    nav {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .sa-footer {
+      width: min(100% - 24px, 1320px);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .sa-footer {
+      width: min(100% - 20px, 1320px);
+    }
+  }
+</style>

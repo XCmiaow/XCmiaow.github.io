@@ -135,9 +135,9 @@
     "kind": "static",
     "zh": { "path": "/silicon-ashes/feed/", "h1": "硅基余烬" },
     "en": { "path": "/en/silicon-ashes/feed/", "h1": "silicon-embers" },
-    "canonical": false,
-    "sitemap": false,
-    "pwa": false
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
   },
   {
     "id": "about",

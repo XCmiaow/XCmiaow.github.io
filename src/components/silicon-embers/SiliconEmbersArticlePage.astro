@@ -1,0 +1,433 @@
+---
+import type { CollectionEntry, RenderResult } from 'astro:content';
+import type { SiliconEmbersLang } from '../../data/siliconEmbersHome';
+import ActionButton from './ActionButton.astro';
+import SiliconEmbersSiteFrame from './SiliconEmbersSiteFrame.astro';
+
+type BlogPost = CollectionEntry<'blog'>;
+type ContentComponent = RenderResult['Content'];
+
+interface Props {
+  lang: SiliconEmbersLang;
+  post: BlogPost;
+  allPosts: BlogPost[];
+  Content: ContentComponent;
+  alternateHref?: string;
+}
+
+const { lang, post, allPosts, Content, alternateHref } = Astro.props;
+const isZh = lang === 'zh';
+const articleBase = isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/';
+const writingHref = articleBase;
+const currentIndex = allPosts.findIndex((item) => item.id === post.id);
+const newerPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+const olderPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+const relatedPosts = post.data.series
+  ? allPosts.filter((item) => item.id !== post.id && item.data.series === post.data.series).slice(0, 3)
+  : [];
+const articleHref = (item: BlogPost) => `${articleBase}${item.id}/`;
+
+const copy = isZh
+  ? {
+      back: '返回博客',
+      navLabel: '文章导航',
+      previous: '上一篇',
+      next: '下一篇',
+      related: '同系列继续读',
+      readUnit: '分钟阅读',
+    }
+  : {
+      back: 'Back to blog',
+      navLabel: 'Article navigation',
+      previous: 'Previous',
+      next: 'Next',
+      related: 'More in this series',
+      readUnit: 'min read',
+    };
+
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+---
+
+<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
+  <article class="article-page">
+    <header class="article-header">
+      {post.data.series && <p class="series-label">{post.data.series}</p>}
+      <h1>{post.data.title}</h1>
+      <div class="article-meta">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        {
+          post.data.readingTime && (
+            <span>
+              {post.data.readingTime} {copy.readUnit}
+            </span>
+          )
+        }
+      </div>
+      {
+        post.data.tags && (
+          <ul class="tag-list">
+            {post.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      (newerPost || olderPost || relatedPosts.length > 0) && (
+        <nav class="article-nav" aria-label={copy.navLabel}>
+          <div class="next-prev">
+            {newerPost && (
+              <a href={articleHref(newerPost)}>
+                <span>{copy.previous}</span>
+                <strong>{newerPost.data.title}</strong>
+              </a>
+            )}
+            {olderPost && (
+              <a href={articleHref(olderPost)}>
+                <span>{copy.next}</span>
+                <strong>{olderPost.data.title}</strong>
+              </a>
+            )}
+          </div>
+          {relatedPosts.length > 0 && (
+            <section class="related" aria-labelledby="related-title">
+              <h2 id="related-title">{copy.related}</h2>
+              <div>
+                {relatedPosts.map((item) => (
+                  <a href={articleHref(item)}>
+                    <time datetime={item.data.date.toISOString()}>{formatDate(item.data.date)}</time>
+                    <span>{item.data.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+        </nav>
+      )
+    }
+
+    <footer class="article-return">
+      <ActionButton href={writingHref}>{copy.back}</ActionButton>
+    </footer>
+  </article>
+</SiliconEmbersSiteFrame>
+
+<style>
+  .article-page {
+    width: min(100%, 820px);
+    margin: 0 auto;
+    padding: clamp(70px, 9vw, 112px) 0 clamp(86px, 10vw, 132px);
+  }
+
+  .article-header {
+    margin-bottom: 52px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 34px;
+  }
+
+  .series-label {
+    margin: 0 0 14px;
+    color: var(--moss);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(2.45rem, 5.4vw, 5.2rem);
+    font-weight: 850;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .article-meta time,
+  .article-meta span {
+    color: rgba(168, 177, 176, 0.7);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tag-list li {
+    border: 1px solid rgba(168, 177, 176, 0.2);
+    padding: 4px 8px;
+    color: rgba(220, 228, 224, 0.6);
+    font-size: 12px;
+  }
+
+  .prose {
+    color: rgba(239, 227, 205, 0.84);
+    font-size: 17px;
+    line-height: 1.92;
+  }
+
+  .prose :global(h2) {
+    margin: 52px 0 18px;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    font-weight: 850;
+    line-height: 1.18;
+  }
+
+  .prose :global(h3) {
+    margin: 38px 0 14px;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 1.35rem;
+    font-weight: 850;
+    line-height: 1.25;
+  }
+
+  .prose :global(p) {
+    margin: 0 0 18px;
+  }
+
+  .prose :global(a) {
+    color: var(--ember-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(a:hover) {
+    color: #ffe4aa;
+  }
+
+  .prose :global(blockquote) {
+    margin: 26px 0;
+    border-left: 3px solid var(--ember-strong);
+    padding: 16px 24px;
+    background: rgba(232, 174, 98, 0.06);
+  }
+
+  .prose :global(blockquote p) {
+    margin: 0;
+  }
+
+  .prose :global(code) {
+    background: rgba(232, 174, 98, 0.1);
+    padding: 2px 6px;
+    font-size: 0.9em;
+  }
+
+  .prose :global(pre) {
+    overflow-x: auto;
+    margin: 26px 0;
+    border: 1px solid rgba(232, 174, 98, 0.16);
+    padding: 22px;
+    background: rgba(0, 0, 0, 0.42);
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    margin: 26px 0;
+    border-collapse: collapse;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    border-bottom: 1px solid rgba(232, 174, 98, 0.15);
+    padding: 10px 14px;
+    text-align: left;
+  }
+
+  .prose :global(th) {
+    color: var(--ember-strong);
+    font-size: 14px;
+    font-weight: 850;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 20px;
+    padding-left: 24px;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 7px;
+  }
+
+  .prose :global(strong) {
+    color: var(--paper);
+  }
+
+  .prose :global(hr) {
+    margin: 42px 0;
+    border: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .article-nav {
+    margin-top: 76px;
+    border-top: 1px solid var(--line);
+    padding-top: 30px;
+  }
+
+  .next-prev {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .next-prev a,
+  .related a {
+    border: 1px solid rgba(232, 174, 98, 0.18);
+    background: rgba(13, 12, 10, 0.78);
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      background 160ms ease,
+      transform 160ms ease;
+  }
+
+  .next-prev a {
+    display: grid;
+    min-height: 112px;
+    align-content: start;
+    gap: 8px;
+    padding: 18px;
+  }
+
+  .next-prev a:hover,
+  .related a:hover,
+  .next-prev a:focus-visible,
+  .related a:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(242, 223, 189, 0.36);
+    background: rgba(18, 16, 12, 0.96);
+    outline: none;
+  }
+
+  .next-prev span,
+  .related time {
+    color: rgba(168, 177, 176, 0.68);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .next-prev strong,
+  .related span {
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 17px;
+    line-height: 1.36;
+  }
+
+  .related {
+    margin-top: 30px;
+  }
+
+  .related h2 {
+    margin: 0 0 14px;
+    color: var(--moss);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .related div {
+    display: grid;
+    gap: 10px;
+  }
+
+  .related a {
+    display: grid;
+    min-height: 66px;
+    align-content: center;
+    gap: 4px;
+    padding: 14px 16px;
+  }
+
+  .article-return {
+    margin-top: 46px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .article-page {
+      width: min(100%, 720px);
+      padding: 34px 0 62px;
+    }
+
+    .article-header {
+      margin-bottom: 30px;
+      padding-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(1.42rem, 6.3vw, 1.92rem);
+      line-height: 1.18;
+    }
+
+    .prose {
+      font-size: 15px;
+      line-height: 1.76;
+    }
+
+    .prose :global(blockquote) {
+      padding: 14px 18px;
+    }
+
+    .prose :global(pre) {
+      padding: 18px;
+    }
+
+    .prose :global(table) {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .next-prev {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 360px) {
+    h1 {
+      font-size: clamp(1.35rem, 6vw, 1.68rem);
+    }
+
+    .prose :global(ul),
+    .prose :global(ol) {
+      padding-left: 20px;
+    }
+  }
+</style>

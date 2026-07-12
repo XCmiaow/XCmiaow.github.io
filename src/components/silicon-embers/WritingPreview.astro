@@ -1,0 +1,122 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SiliconEmbersLang, SiliconEmbersWritingCopy } from '../../data/siliconEmbersHome';
+import ActionButton from './ActionButton.astro';
+
+interface Props {
+  copy: SiliconEmbersWritingCopy;
+  lang: SiliconEmbersLang;
+  posts: readonly CollectionEntry<'blog'>[];
+}
+
+const { copy, lang, posts } = Astro.props;
+
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+const postHref = (id: string) => (lang === 'zh' ? `/silicon-ashes/writing/${id}/` : `/en/silicon-ashes/writing/${id}/`);
+---
+
+<section class="writing-preview" aria-labelledby="writing-title">
+  <div class="section-copy">
+    <p class="kicker">{copy.kicker}</p>
+    <h2 id="writing-title">{copy.title}</h2>
+  </div>
+  {
+    posts.length > 0 ? (
+      <div class="writing-list">
+        {posts.map((post) => (
+          <a class="writing-card" href={postHref(post.id)}>
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            <span>{post.data.readingTime ? `${post.data.readingTime} min` : copy.fallbackReadingTime}</span>
+            <strong>{post.data.title}</strong>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-note">{copy.empty}</p>
+    )
+  }
+  <ActionButton href={copy.href} className="section-link">{copy.more}</ActionButton>
+</section>
+
+<style>
+  .writing-preview {
+    border-bottom: 1px solid var(--line);
+    padding: clamp(72px, 10vw, 118px) 0;
+  }
+
+  .writing-list {
+    display: grid;
+    margin-top: 38px;
+  }
+
+  .writing-card {
+    display: grid;
+    grid-template-columns: 120px 72px minmax(0, 1fr);
+    gap: 22px;
+    align-items: baseline;
+    border-top: 1px solid rgba(242, 223, 189, 0.11);
+    padding: 24px 0;
+    text-decoration: none;
+    transition:
+      background 160ms ease,
+      padding 160ms ease;
+  }
+
+  .writing-card:hover,
+  .writing-card:focus-visible {
+    padding-left: 14px;
+    background: linear-gradient(90deg, rgba(120, 155, 145, 0.055), transparent);
+    outline: none;
+  }
+
+  .writing-card:active {
+    padding-left: 8px;
+  }
+
+  .writing-card time,
+  .writing-card span {
+    color: rgba(146, 156, 149, 0.72);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .writing-card strong {
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+    font-weight: 850;
+    line-height: 1.24;
+  }
+
+  :global(.writing-preview .section-link) {
+    margin-top: 28px;
+  }
+
+  .empty-note {
+    margin: 28px 0 0;
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .writing-preview {
+      padding: 42px 0;
+    }
+
+    .writing-card {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 18px 0;
+    }
+
+    :global(.writing-preview .section-link) {
+      width: 100%;
+    }
+  }
+</style>

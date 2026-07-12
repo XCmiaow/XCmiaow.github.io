@@ -1,20 +1,14 @@
-﻿---
+---
 import CoursesHub from '../../../components/CoursesHub.astro';
+import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course system | Silicon Ashes</title>
-    <meta name="description" content="Silicon Ashes course system: AI methods and toolchain courses for chemistry teachers and zero-basis learners." />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-    <meta property="og:title" content="Course system | Silicon Ashes" />
-    <meta property="og:description" content="From one course to a full system." />
-  </head>
-  <body>
-    <CoursesHub lang="en" />
-  </body>
-</html>
+<SiliconEmbersLayout
+  lang="en"
+  title="Course pack | Resources | Silicon Ashes"
+  description="The course pack inside Silicon Ashes resources: AI methods and toolchain materials for chemistry teachers and zero-basis learners."
+  canonicalPath="/en/silicon-ashes/courses/"
+  alternatePath="/silicon-ashes/courses/"
+>
+  <CoursesHub lang="en" />
+</SiliconEmbersLayout>

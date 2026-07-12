@@ -1,6 +1,7 @@
 ---
 import ResourceTemplatePage from '../../../components/ResourceTemplatePage.astro';
 import { resourceTemplates } from '../../../data/siliconAshesResources';
+import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
 
 export function getStaticPaths() {
   return resourceTemplates.map((template) => ({
@@ -11,25 +12,16 @@ export function getStaticPaths() {
 
 const { template } = Astro.props;
 const data = template.zh;
-const canonical = `https://XCmiaow.github.io/silicon-ashes/resources/${template.slug}/`;
+const canonicalPath = `/silicon-ashes/resources/${template.slug}/`;
+const alternatePath = `/en/silicon-ashes/resources/${template.slug}/`;
 ---
 
-<!doctype html>
-<html lang="zh">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{data.title} | 硅基余烬资源</title>
-    <meta name="description" content={data.summary} />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:title" content={`${data.title} | 硅基余烬资源`} />
-    <meta property="og:description" content={data.summary} />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body>
-    <ResourceTemplatePage lang="zh" template={template} />
-  </body>
-</html>
+<SiliconEmbersLayout
+  lang="zh"
+  title={`${data.title} | 硅基余烬资源`}
+  description={data.summary}
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
+>
+  <ResourceTemplatePage lang="zh" template={template} />
+</SiliconEmbersLayout>

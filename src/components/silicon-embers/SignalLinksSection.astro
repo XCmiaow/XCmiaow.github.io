@@ -1,0 +1,67 @@
+---
+import ActionLinks from './ActionLinks.astro';
+import type { SiliconEmbersLinkSectionCopy } from '../../data/siliconEmbersHome';
+
+type SectionVariant = 'course-signal' | 'resource-band';
+
+interface Props {
+  id: string;
+  titleId: string;
+  variant: SectionVariant;
+  copy: SiliconEmbersLinkSectionCopy;
+}
+
+const { id, titleId, variant, copy } = Astro.props;
+---
+
+<section id={id} class={variant} aria-labelledby={titleId}>
+  <div class="section-copy">
+    <p class="kicker">{copy.kicker}</p>
+    <h2 id={titleId}>{copy.title}</h2>
+    <p>{copy.body}</p>
+  </div>
+  <ActionLinks links={copy.links} className={variant === 'course-signal' ? 'signal-links' : 'resource-links'} />
+</section>
+
+<style>
+  .course-signal,
+  .resource-band {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(260px, 0.52fr);
+    gap: clamp(34px, 7vw, 96px);
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    padding: clamp(72px, 10vw, 118px) 0;
+  }
+
+  .resource-band {
+    align-items: start;
+  }
+
+  .signal-links,
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 960px) {
+    .course-signal,
+    .resource-band {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .course-signal,
+    .resource-band {
+      padding: 42px 0;
+    }
+
+    .signal-links,
+    .resource-links {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,25 +1,14 @@
 ---
 import WritingHub from '../../components/WritingHub.astro';
-
-const canonical = 'https://XCmiaow.github.io/silicon-ashes/writing/';
+import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
 ---
-<!doctype html>
-<html lang="zh">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>写作中心 | 硅基余烬</title>
-    <meta name="description" content="关于 AI、教育、科研方法与化工专业的写作。" />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="硅基余烬写作" href="/silicon-ashes/rss.xml" />
-    <meta property="og:title" content="写作中心 | 硅基余烬" />
-    <meta property="og:description" content="关于 AI、教育、科研方法与化工专业的写作。" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body>
-    <WritingHub lang="zh" />
-  </body>
-</html>
+
+<SiliconEmbersLayout
+  lang="zh"
+  title="博客 | 硅基余烬"
+  description="关于 AI、教育、科研方法与化工专业的博客。"
+  canonicalPath="/silicon-ashes/writing/"
+  alternatePath="/en/silicon-ashes/writing/"
+>
+  <WritingHub lang="zh" />
+</SiliconEmbersLayout>

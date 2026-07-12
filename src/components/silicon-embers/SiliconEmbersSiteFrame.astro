@@ -1,0 +1,50 @@
+---
+import common from '../../data/common.json';
+import '../../styles/silicon-embers.css';
+import { siliconEmbersHomeCopy, type SiliconEmbersLang, type SiliconEmbersNavCopy } from '../../data/siliconEmbersHome';
+import BrandNav from './BrandNav.astro';
+import SiliconEmbersFooter from './SiliconEmbersFooter.astro';
+
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  icon?: 'mail' | 'github' | 'resume' | 'rss' | 'wecom' | 'wechat';
+}
+
+interface Props {
+  lang: SiliconEmbersLang;
+  footerLinks?: readonly FooterLink[];
+  alternateHref?: string;
+}
+
+const { lang, footerLinks, alternateHref } = Astro.props;
+const copy = siliconEmbersHomeCopy[lang];
+const navCopy: SiliconEmbersNavCopy = {
+  ...copy,
+  switchHref: alternateHref ?? copy.switchHref,
+};
+const emailLabel = lang === 'zh' ? '邮箱' : 'Email';
+const wecomLabel = lang === 'zh' ? '企业微信' : 'WeCom';
+const resumeLabel = lang === 'zh' ? '个人信息' : 'Personal info';
+const feedLabel = lang === 'zh' ? '公众号' : 'WeChat';
+const resumeHref = lang === 'zh' ? '/profile/' : '/en/profile/';
+const feedHref = lang === 'zh' ? '/silicon-ashes/feed/' : '/en/silicon-ashes/feed/';
+const wecomHref = lang === 'zh' ? '/silicon-ashes/about/#wecom' : '/en/silicon-ashes/about/#wecom';
+const links = footerLinks ?? [
+  { label: emailLabel, href: `mailto:${common.person.email}`, icon: 'mail' },
+  { label: wecomLabel, href: wecomHref, icon: 'wecom' },
+  { label: 'GitHub', href: `https://${common.person.github}`, external: true, icon: 'github' },
+  { label: resumeLabel, href: resumeHref, icon: 'resume' },
+  { label: feedLabel, href: feedHref, icon: 'wechat' },
+];
+---
+
+<div class="sa-shell" data-lang={lang}>
+  <a class="skip-link" href="#main">{copy.skipLabel}</a>
+  <BrandNav copy={navCopy} />
+  <main id="main" class="sa-frame-main">
+    <slot />
+  </main>
+  <SiliconEmbersFooter note={copy.footer.note} links={links} />
+</div>

@@ -1,0 +1,25 @@
+---
+import DocumentLayout from './DocumentLayout.astro';
+
+export interface Props {
+  lang: 'zh' | 'en';
+  title: string;
+  description: string;
+  canonicalPath: string;
+  alternatePath?: string;
+}
+
+const { lang, title, description, canonicalPath, alternatePath } = Astro.props;
+---
+
+<DocumentLayout
+  lang={lang}
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
+  themeColor="#050504"
+  bodyClass="silicon-embers-document"
+>
+  <slot />
+</DocumentLayout>

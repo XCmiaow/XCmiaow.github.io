@@ -1,17 +1,14 @@
 ---
 import AboutPage from '../../../components/AboutPage.astro';
+import SiliconEmbersLayout from '../../../layouts/SiliconEmbersLayout.astro';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About | Silicon Ashes</title>
-    <meta name="description" content="Xujie Fang: chemical engineering background, focused on how AI rearranges work, learning, and research." />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-  </head>
-  <body>
-    <AboutPage lang="en" />
-  </body>
-</html>
+
+<SiliconEmbersLayout
+  lang="en"
+  title="About | Silicon Ashes"
+  description="Background, entry points, and contact paths for silicon-embers, focused on how AI rearranges work, learning, and research."
+  canonicalPath="/en/silicon-ashes/about/"
+  alternatePath="/silicon-ashes/about/"
+>
+  <AboutPage lang="en" />
+</SiliconEmbersLayout>

@@ -1,25 +1,14 @@
 ---
 import ResourcesHub from '../../components/ResourcesHub.astro';
-
-const canonical = 'https://XCmiaow.github.io/silicon-ashes/resources/';
+import SiliconEmbersLayout from '../../layouts/SiliconEmbersLayout.astro';
 ---
 
-<!doctype html>
-<html lang="zh">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>资源与工具 | 硅基余烬</title>
-    <meta name="description" content="硅基余烬资源页：课程讲义、工具链实操、模板清单与学习路线。" />
-    <meta name="theme-color" content="#050504" />
-    <link rel="stylesheet" href="/styles/site.css" />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:title" content="资源与工具 | 硅基余烬" />
-    <meta property="og:description" content="资源不是仓库，是工作流的入口。" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body>
-    <ResourcesHub lang="zh" />
-  </body>
-</html>
+<SiliconEmbersLayout
+  lang="zh"
+  title="资源与工具 | 硅基余烬"
+  description="硅基余烬资源页：课程资料、模板与清单。"
+  canonicalPath="/silicon-ashes/resources/"
+  alternatePath="/en/silicon-ashes/resources/"
+>
+  <ResourcesHub lang="zh" />
+</SiliconEmbersLayout>

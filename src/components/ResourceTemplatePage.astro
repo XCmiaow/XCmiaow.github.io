@@ -1,66 +1,67 @@
 ---
-import common from '../data/common.json';
 import type { ResourceTemplate } from '../data/siliconAshesResources';
+import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
+import ActionButton from './silicon-embers/ActionButton.astro';
+import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
 
 export interface Props {
-  lang: 'zh' | 'en';
+  lang: SiliconEmbersLang;
   template: ResourceTemplate;
 }
 
 const { lang, template } = Astro.props;
 const isZh = lang === 'zh';
 const data = template[lang];
-const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
 const resourcesHref = isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/';
-const writingHref = isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/';
-const coursesHref = isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/';
-const aboutHref = isZh ? '/silicon-ashes/about/' : '/en/silicon-ashes/about/';
-const email = common.person.email;
+const alternateHref = isZh
+  ? `/en/silicon-ashes/resources/${template.slug}/`
+  : `/silicon-ashes/resources/${template.slug}/`;
+
+const copy = isZh
+  ? {
+      purpose: '用途',
+      sections: '包含模块',
+      checklist: '使用前检查',
+      copy: '可复制模板',
+      back: '返回资源中心',
+    }
+  : {
+      purpose: 'Purpose',
+      sections: 'Sections',
+      checklist: 'Before use',
+      copy: 'Copyable template',
+      back: 'Back to resources',
+    };
 ---
 
-<div class="rt-shell">
-  <a class="skip-link" href="#main">{isZh ? '跳到正文' : 'Skip to content'}</a>
-
-  <header class="rt-nav" aria-label={isZh ? '资源模板导航' : 'Resource template navigation'}>
-    <a class="rt-brand" href={homeHref} aria-label={isZh ? '硅基余烬' : 'Silicon Ashes'}>
-      <span class="brand-mark">SA</span>
-      <span class="brand-name">{isZh ? '硅基余烬' : 'Silicon Ashes'}</span>
-    </a>
-    <nav>
-      <a href={resourcesHref}>{isZh ? '资源' : 'Resources'}</a>
-      <a href={writingHref}>{isZh ? '写作' : 'Writing'}</a>
-      <a href={coursesHref}>{isZh ? '课程' : 'Courses'}</a>
-      <a href={aboutHref}>{isZh ? '关于' : 'About'}</a>
-    </nav>
-  </header>
-
-  <main id="main">
-    <section class="hero">
+<SiliconEmbersSiteFrame lang={lang} alternateHref={alternateHref}>
+  <article class="resource-template">
+    <header class="template-hero">
       <p class="eyebrow">{data.eyebrow}</p>
       <h1>{data.title}</h1>
       <p class="lead">{data.summary}</p>
       <ul class="meta-list">
         {data.meta.map((item) => <li>{item}</li>)}
       </ul>
-    </section>
+    </header>
 
     <section class="purpose" aria-labelledby="purpose-title">
       <div class="section-head">
-        <p class="kicker">{isZh ? 'why' : 'why'}</p>
-        <h2 id="purpose-title">{isZh ? '用途' : 'Purpose'}</h2>
+        <p class="kicker">why</p>
+        <h2 id="purpose-title">{copy.purpose}</h2>
       </div>
       <p>{data.purpose}</p>
     </section>
 
     <section class="layout-grid" aria-label={isZh ? '模板结构' : 'Template structure'}>
       <article>
-        <h2>{isZh ? '包含模块' : 'Sections'}</h2>
+        <h2>{copy.sections}</h2>
         <ul>
           {data.sections.map((item) => <li>{item}</li>)}
         </ul>
       </article>
       <article>
-        <h2>{isZh ? '使用前检查' : 'Before use'}</h2>
+        <h2>{copy.checklist}</h2>
         <ul>
           {data.checklist.map((item) => <li>{item}</li>)}
         </ul>
@@ -70,85 +71,220 @@ const email = common.person.email;
     <section class="template-block" aria-labelledby="template-title">
       <div class="section-head wide">
         <p class="kicker">copy</p>
-        <h2 id="template-title">{isZh ? '可复制模板' : 'Copyable Template'}</h2>
+        <h2 id="template-title">{copy.copy}</h2>
       </div>
       <pre><code>{data.template}</code></pre>
     </section>
-  </main>
 
-  <footer class="rt-footer">
-    <a href={resourcesHref}>{isZh ? '← 返回资源中心' : '← Back to resources'}</a>
-    <div>
-      <a href={`mailto:${email}`}>Email</a>
-      <a href={homeHref}>{isZh ? '主站' : 'Main'}</a>
-    </div>
-  </footer>
-</div>
+    <footer class="template-return">
+      <ActionButton href={resourcesHref}>{copy.back}</ActionButton>
+    </footer>
+  </article>
+</SiliconEmbersSiteFrame>
 
 <style>
-  :global(html) { scroll-behavior: smooth; background: #080705; }
-  :global(body) { margin: 0; background: #080705; color: #e9e0d0; font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-  :global(*), :global(*::before), :global(*::after) { box-sizing: border-box; }
-  :global(a) { color: inherit; }
-
-  .rt-shell {
-    min-height: 100dvh;
-    overflow-x: hidden;
-    background:
-      linear-gradient(90deg, rgba(226,187,116,0.035) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(226,187,116,0.028) 1px, transparent 1px),
-      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
-    background-size: 64px 64px, 64px 64px, auto, auto;
+  .resource-template {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding-bottom: clamp(82px, 10vw, 128px);
   }
 
-  .skip-link { position: fixed; top: 12px; left: 12px; z-index: 20; transform: translateY(-160%); border: 1px solid #d6a04f; border-radius: 4px; padding: 10px 12px; background: #e3b66c; color: #100d09; font-weight: 800; text-decoration: none; transition: transform 180ms ease; }
-  .skip-link:focus { transform: translateY(0); }
+  .template-hero {
+    max-width: 900px;
+    padding: clamp(78px, 10vw, 118px) 0 clamp(54px, 7vw, 82px);
+  }
 
-  .rt-nav, main, .rt-footer { width: min(100% - 44px, 1120px); margin: 0 auto; }
-  .rt-nav { position: sticky; top: 0; z-index: 12; display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(218,166,86,0.2); background: rgba(8,7,5,0.86); backdrop-filter: blur(18px); }
-  .rt-brand { display: inline-flex; min-height: 40px; align-items: center; gap: 12px; text-decoration: none; }
-  .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(218,166,86,0.7); border-radius: 5px; background: linear-gradient(135deg, rgba(238,181,92,0.22), transparent 50%), #11100d; color: #ffe4aa; font-family: Consolas, 'SFMono-Regular', monospace; font-size: 13px; font-weight: 900; }
-  .brand-name { color: #f3e3c5; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 20px; font-weight: 800; }
-  .rt-nav nav { display: flex; align-items: center; gap: 6px; }
-  .rt-nav nav a { display: inline-flex; min-height: 38px; align-items: center; border-radius: 4px; padding: 0 10px; color: rgba(233,224,208,0.72); font-size: 14px; font-weight: 700; text-decoration: none; }
-  .rt-nav nav a:hover, .rt-nav nav a:focus-visible { background: rgba(218,166,86,0.1); color: #ffe2aa; outline: none; }
+  h1,
+  h2,
+  p {
+    overflow-wrap: anywhere;
+  }
 
-  .hero { max-width: 860px; padding: 92px 0 54px; }
-  .eyebrow, .kicker { margin: 0; color: #d8aa63; font-family: Consolas, 'SFMono-Regular', monospace; font-size: 13px; font-weight: 900; }
-  h1, h2, p { overflow-wrap: anywhere; }
-  h1, h2 { margin: 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-weight: 800; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }
-  h1 { margin-top: 20px; font-size: clamp(2.9rem, 5vw, 4.7rem); }
-  .lead { max-width: 720px; margin: 24px 0 0; color: rgba(233,224,208,0.76); font-size: 20px; line-height: 1.82; }
-  .meta-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
-  .meta-list li { border: 1px solid rgba(168,177,176,0.2); border-radius: 4px; padding: 6px 10px; color: rgba(220,228,224,0.68); font-size: 13px; }
+  h1,
+  h2 {
+    margin: 0;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+    font-weight: 850;
+    letter-spacing: 0;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
 
-  .purpose, .layout-grid, .template-block { border-top: 1px solid rgba(218,166,86,0.18); padding: 56px 0; }
-  .section-head h2 { margin-top: 12px; font-size: clamp(1.8rem, 3vw, 2.6rem); }
-  .purpose p { max-width: 760px; margin: 22px 0 0; color: rgba(233,224,208,0.76); font-size: 17px; line-height: 1.84; }
+  h1 {
+    margin-top: 20px;
+    font-size: clamp(3rem, 6.3vw, 6.1rem);
+  }
 
-  .layout-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .layout-grid article { border: 1px solid rgba(218,166,86,0.22); border-radius: 8px; background: rgba(13,12,10,0.78); padding: 26px; }
-  .layout-grid h2 { font-size: 24px; }
-  .layout-grid ul { display: grid; gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
-  .layout-grid li { position: relative; padding-left: 18px; color: rgba(233,224,208,0.76); line-height: 1.62; }
-  .layout-grid li::before { content: ''; position: absolute; top: 0.72em; left: 0; width: 6px; height: 6px; background: #d8aa63; border-radius: 50%; }
+  .lead {
+    max-width: 760px;
+    margin: 26px 0 0;
+    color: var(--muted);
+    font-size: clamp(1.08rem, 1.65vw, 1.35rem);
+    line-height: 1.84;
+  }
 
-  .template-block pre { margin: 28px 0 0; border: 1px solid rgba(218,166,86,0.22); border-radius: 8px; background: rgba(0,0,0,0.42); padding: 24px; overflow-x: auto; white-space: pre-wrap; }
-  .template-block code { color: rgba(246,236,214,0.9); font-family: Consolas, 'SFMono-Regular', monospace; font-size: 14px; line-height: 1.74; }
+  .meta-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 26px 0 0;
+    padding: 0;
+    list-style: none;
+  }
 
-  .rt-footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; border-top: 1px solid rgba(218,166,86,0.18); padding: 28px 0 40px; }
-  .rt-footer a { display: inline-flex; min-height: 36px; min-width: 36px; align-items: center; color: rgba(233,224,208,0.72); font-size: 14px; text-decoration: none; }
-  .rt-footer a:hover { color: #f2dfbd; }
-  .rt-footer div { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; }
+  .meta-list li {
+    border: 1px solid rgba(168, 177, 176, 0.22);
+    padding: 6px 10px;
+    color: rgba(220, 228, 224, 0.68);
+    font-size: 13px;
+  }
+
+  .purpose,
+  .layout-grid,
+  .template-block {
+    border-top: 1px solid var(--line);
+    padding: clamp(56px, 7vw, 84px) 0;
+  }
+
+  .section-head h2 {
+    margin-top: 12px;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+  }
+
+  .section-head.wide {
+    max-width: 840px;
+  }
+
+  .purpose > p {
+    max-width: 790px;
+    margin: 22px 0 0;
+    color: rgba(239, 227, 205, 0.76);
+    font-size: 17px;
+    line-height: 1.84;
+  }
+
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .layout-grid article {
+    border: 1px solid rgba(232, 174, 98, 0.2);
+    padding: 28px;
+    background: rgba(13, 12, 10, 0.78);
+  }
+
+  .layout-grid h2 {
+    font-size: 26px;
+  }
+
+  .layout-grid ul {
+    display: grid;
+    gap: 11px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .layout-grid li {
+    position: relative;
+    padding-left: 18px;
+    color: rgba(239, 227, 205, 0.76);
+    line-height: 1.64;
+  }
+
+  .layout-grid li::before {
+    content: '';
+    position: absolute;
+    top: 0.72em;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background: var(--ember-strong);
+  }
+
+  .template-block pre {
+    overflow-x: auto;
+    margin: 30px 0 0;
+    border: 1px solid rgba(232, 174, 98, 0.2);
+    padding: 26px;
+    background: rgba(0, 0, 0, 0.42);
+    white-space: pre-wrap;
+  }
+
+  .template-block code {
+    color: rgba(246, 236, 214, 0.92);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 14px;
+    line-height: 1.76;
+  }
+
+  .template-return {
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
 
   @media (max-width: 760px) {
-    .rt-nav, main, .rt-footer { width: min(100% - 28px, 1120px); }
-    .rt-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
-    .rt-nav nav { width: 100%; flex-wrap: wrap; }
-    .hero { padding: 58px 0 40px; }
-    h1 { font-size: 2.55rem; }
-    .layout-grid { grid-template-columns: 1fr; }
-    .rt-footer { grid-template-columns: 1fr; align-items: start; }
-    .rt-footer div { justify-content: flex-start; }
+    .template-hero {
+      padding: 34px 0 28px;
+    }
+
+    h1 {
+      margin-top: 12px;
+      font-size: clamp(1.45rem, 6.4vw, 1.95rem);
+      line-height: 1.16;
+    }
+
+    .lead {
+      margin-top: 14px;
+      font-size: 14.5px;
+      line-height: 1.68;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.28rem, 6vw, 1.72rem);
+    }
+
+    .purpose,
+    .layout-grid,
+    .template-block {
+      padding: 38px 0;
+    }
+
+    .purpose > p,
+    .layout-grid li {
+      font-size: 14.5px;
+      line-height: 1.66;
+    }
+
+    .layout-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .layout-grid article,
+    .template-block pre {
+      padding: 20px;
+    }
+
+    .layout-grid h2 {
+      font-size: 18px;
+    }
+
+    .template-block code {
+      font-size: 12.5px;
+      line-height: 1.64;
+    }
+  }
+
+  @media (max-width: 360px) {
+    h1 {
+      font-size: clamp(1.38rem, 6.2vw, 1.72rem);
+    }
+
+    .meta-list li {
+      font-size: 12px;
+    }
   }
 </style>

@@ -1,169 +1,381 @@
 ---
 import common from '../data/common.json';
+import ActionButton from './silicon-embers/ActionButton.astro';
+import SiliconEmbersSiteFrame from './silicon-embers/SiliconEmbersSiteFrame.astro';
+import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
 
 export interface Props {
-  lang: 'zh' | 'en';
+  lang: SiliconEmbersLang;
 }
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const homeHref = isZh ? '/silicon-ashes/' : '/en/silicon-ashes/';
-const email = common.person.email;
-const github = common.person.github;
-const githubUrl = `https://${github}`;
+const githubUrl = `https://${common.person.github}`;
+const alternateHref = isZh ? '/en/silicon-ashes/about/' : '/silicon-ashes/about/';
 
 const t = isZh
   ? {
-      brand: '硅基余烬',
-      nav: [
-        ['主站', homeHref],
-        ['写作', isZh ? '/silicon-ashes/writing/' : '/en/silicon-ashes/writing/'],
-        ['课程', isZh ? '/silicon-ashes/courses/' : '/en/silicon-ashes/courses/'],
-        ['资源', isZh ? '/silicon-ashes/resources/' : '/en/silicon-ashes/resources/'],
-      ],
-      eyebrow: '关于',
-      title: '方绪杰',
-      intro: '化工背景，关注 AI 如何重新安排人的工作、学习和科研方式。',
-      focusTitle: '现在在做什么',
+      eyebrow: 'about / silicon-embers',
+      title: '把技术经验翻译成人能继续使用的语言',
+      intro: '硅基余烬从化工、科研、教育与 AI 工作流的交叉处出发，关注技术如何重新安排人的工作、学习、科研和表达。',
+      focusTitle: '现在正在做',
       focus: [
-        '构建“硅基余烬”个人品牌站点，连接写作、课程与资源',
-        '设计面向化工教师的 AI 科研效率课程体系',
-        '写作：AI 工作流、科研方法、化工专业表达',
+        '继续建设硅基余烬品牌主站，让博客和资源形成同一套系统。',
+        '设计面向非计算机背景教师的 AI 科研效率课程，把工具链整理成资源包。',
+        '记录 AI 工作流、科研方法、化工表达和技术批判之间的真实摩擦。',
       ],
-      backgroundTitle: '过去做过什么',
+      backgroundTitle: '背景与经验',
       background: [
-        '化学工程专业，有机化学与催化研究方向',
-        '数学建模竞赛、科研项目与论文写作',
-        'Astro 站点建设、AI 工具链实践',
+        '化学工程专业背景，接触有机化学、催化研究、论文表达和科研训练。',
+        '做过数学建模、课程项目、知识库整理、Astro 站点建设和 AI 工具链实践。',
+        '偏好把复杂问题拆成可复盘流程：先看现场，再写清楚，最后做成可复用模板。',
       ],
-      contactTitle: '联系',
-      resumeLabel: '查看完整简历',
-      resumeHref: isZh ? '/' : '/en/',
+      contactTitle: '联系与入口',
+      contactLead: '如果你想从文章或资源开始，直接进入对应页面；课程资料也收在资源里。',
+      resumeLabel: '个人信息',
+      writingLabel: '博客',
+      resourcesLabel: '资源',
+      emailLabel: '邮箱',
+      wecomLabel: '企业微信',
+      wecomLead: '扫码添加企业微信。',
+      wecomAlt: '企业微信二维码',
+      githubLabel: 'GitHub',
+      wechatLabel: '公众号',
+      wechatHref: '/silicon-ashes/feed/',
+      resumeHref: '/profile/',
+      writingHref: '/silicon-ashes/writing/',
+      resourcesHref: '/silicon-ashes/resources/',
     }
   : {
-      brand: 'Silicon Ashes',
-      nav: [
-        ['Main', homeHref],
-        ['Writing', '/en/silicon-ashes/writing/'],
-        ['Courses', '/en/silicon-ashes/courses/'],
-        ['Resources', '/en/silicon-ashes/resources/'],
-      ],
-      eyebrow: 'About',
-      title: 'Xujie Fang',
-      intro: 'Chemical engineering background, focused on how AI rearranges work, learning, and research.',
-      focusTitle: 'What I am doing now',
+      eyebrow: 'about / silicon-embers',
+      title: 'Translating technical experience into language people can keep using',
+      intro:
+        'silicon-embers works from the intersection of chemical engineering, research, education, and AI workflows, focusing on how technology rearranges work, learning, research, and expression.',
+      focusTitle: 'Current work',
       focus: [
-        'Building the Silicon Ashes personal brand site',
-        'Designing an AI research efficiency course system for chemistry teachers',
-        'Writing about AI workflows, research methods, and chemistry expression',
+        'Continuing to build silicon-embers as a brand site where blog and resources form one system.',
+        'Designing AI research efficiency courses for non-CS teachers and packaging toolchains as resources.',
+        'Documenting AI workflows, research methods, chemistry expression, and the real friction behind technical change.',
       ],
-      backgroundTitle: 'What I have done',
+      backgroundTitle: 'Background',
       background: [
-        'Chemical engineering, organic chemistry and catalysis research',
-        'Mathematical modeling competitions, research projects, and thesis writing',
-        'Astro site building and AI toolchain practice',
+        'Chemical engineering background with exposure to organic chemistry, catalysis research, thesis work, and research training.',
+        'Experience in mathematical modeling, course projects, knowledge-base work, Astro site building, and AI toolchain practice.',
+        'I prefer turning complex problems into repeatable flows: observe the field, write it clearly, then make it reusable.',
       ],
-      contactTitle: 'Contact',
-      resumeLabel: 'Full resume',
-      resumeHref: '/en/',
+      contactTitle: 'Contact and entry points',
+      contactLead: 'Start from blog or resources. Course materials live inside resources.',
+      resumeLabel: 'Personal info',
+      writingLabel: 'Blog',
+      resourcesLabel: 'Resources',
+      emailLabel: 'Email',
+      wecomLabel: 'WeCom',
+      wecomLead: 'Scan to add my WeCom contact.',
+      wecomAlt: 'WeCom QR code',
+      githubLabel: 'GitHub',
+      wechatLabel: 'WeChat',
+      wechatHref: '/en/silicon-ashes/feed/',
+      resumeHref: '/en/profile/',
+      writingHref: '/en/silicon-ashes/writing/',
+      resourcesHref: '/en/silicon-ashes/resources/',
     };
+
+const contactLinks = [
+  { label: t.emailLabel, href: `mailto:${common.person.email}`, icon: 'mail' as const },
+  { label: t.wecomLabel, href: '#wecom', icon: 'wecom' as const },
+  { label: t.githubLabel, href: githubUrl, external: true, icon: 'github' as const },
+  { label: t.resumeLabel, href: t.resumeHref, icon: 'resume' as const },
+  { label: t.wechatLabel, href: t.wechatHref, icon: 'wechat' as const },
+];
 ---
 
-<div class="ap-shell">
-  <header class="ap-nav">
-    <a class="ap-brand" href={homeHref}>
-      <span class="brand-mark">SA</span>
-      <span class="brand-name">{t.brand}</span>
-    </a>
-    <nav>
-      {t.nav.map(([label, href]) => <a href={href}>{label}</a>)}
-    </nav>
-  </header>
-
-  <main id="main">
-    <section class="hero">
-      <p class="eyebrow">{t.eyebrow}</p>
-      <h1>{t.title}</h1>
-      <p class="lead">{t.intro}</p>
+<SiliconEmbersSiteFrame lang={lang} footerLinks={contactLinks} alternateHref={alternateHref}>
+  <div class="about-page">
+    <section class="about-hero" aria-labelledby="about-title">
+      <p class="kicker">{t.eyebrow}</p>
+      <h1 id="about-title">{t.title}</h1>
+      <p>{t.intro}</p>
     </section>
 
-    <section class="about-section">
-      <h2>{t.focusTitle}</h2>
-      <ul class="focus-list">
-        {t.focus.map((item) => <li>{item}</li>)}
-      </ul>
+    <section class="about-ledger" aria-labelledby="focus-title">
+      <div class="section-copy">
+        <p class="kicker">current</p>
+        <h2 id="focus-title">{t.focusTitle}</h2>
+      </div>
+      <ol>
+        {
+          t.focus.map((item, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <p>{item}</p>
+            </li>
+          ))
+        }
+      </ol>
     </section>
 
-    <section class="about-section">
-      <h2>{t.backgroundTitle}</h2>
-      <ul class="focus-list">
-        {t.background.map((item) => <li>{item}</li>)}
-      </ul>
+    <section class="about-ledger compact" aria-labelledby="background-title">
+      <div class="section-copy">
+        <p class="kicker">background</p>
+        <h2 id="background-title">{t.backgroundTitle}</h2>
+      </div>
+      <ol>
+        {
+          t.background.map((item, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <p>{item}</p>
+            </li>
+          ))
+        }
+      </ol>
     </section>
 
-    <section class="about-section contact-section">
-      <h2>{t.contactTitle}</h2>
-      <div class="contact-links">
-        <a href={`mailto:${email}`}>Email</a>
-        <a href={githubUrl}>GitHub</a>
-        <a href={t.resumeHref}>{t.resumeLabel}</a>
+    <section class="contact-board" aria-labelledby="contact-title">
+      <div class="contact-copy">
+        <p class="kicker">route</p>
+        <h2 id="contact-title">{t.contactTitle}</h2>
+        <p>{t.contactLead}</p>
+      </div>
+      <div class="contact-actions">
+        <nav aria-label={t.contactTitle}>
+          <ActionButton href={t.writingHref} className="contact-link">{t.writingLabel}</ActionButton>
+          <ActionButton href={t.resourcesHref} className="contact-link">{t.resourcesLabel}</ActionButton>
+          <ActionButton href={t.wechatHref} className="contact-link">{t.wechatLabel}</ActionButton>
+          <ActionButton href={`mailto:${common.person.email}`} className="contact-link">{t.emailLabel}</ActionButton>
+          <ActionButton href={githubUrl} className="contact-link">{t.githubLabel}</ActionButton>
+          <ActionButton href={t.resumeHref} className="contact-link">{t.resumeLabel}</ActionButton>
+        </nav>
+
+        <article id="wecom" class="wecom-card" aria-labelledby="wecom-title">
+          <div>
+            <h3 id="wecom-title">{t.wecomLabel}</h3>
+            <p>{t.wecomLead}</p>
+          </div>
+          <img src={common.person.wecomQr} alt={t.wecomAlt} width="144" height="144" loading="lazy" decoding="async" />
+        </article>
       </div>
     </section>
-  </main>
-
-  <footer class="ap-footer">
-    <p>{t.brand}</p>
-  </footer>
-</div>
+  </div>
+</SiliconEmbersSiteFrame>
 
 <style>
-  :global(html) { scroll-behavior: smooth; background: #080705; }
-  :global(body) { margin: 0; background: #080705; color: #e9e0d0; font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-  :global(*), :global(*::before), :global(*::after) { box-sizing: border-box; }
-  :global(a) { color: inherit; }
-
-  .ap-shell {
-    min-height: 100dvh;
-    background:
-      linear-gradient(90deg, rgba(226,187,116,0.035) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(226,187,116,0.028) 1px, transparent 1px),
-      linear-gradient(180deg, #080705 0%, #0e0d0b 42%, #070706 100%);
-    background-size: 64px 64px, 64px 64px, auto, auto;
+  .about-page {
+    position: relative;
   }
 
-  .ap-nav, main, .ap-footer { width: min(100% - 44px, 780px); margin: 0 auto; }
-  .ap-nav { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(218,166,86,0.2); background: rgba(8,7,5,0.86); backdrop-filter: blur(18px); position: sticky; top: 0; z-index: 12; }
-  .ap-brand { display: inline-flex; min-height: 40px; align-items: center; gap: 12px; text-decoration: none; }
-  .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(218,166,86,0.7); border-radius: 5px; background: linear-gradient(135deg, rgba(238,181,92,0.22), transparent 50%), #11100d; color: #ffe4aa; font-family: Consolas, monospace; font-size: 13px; font-weight: 900; }
-  .brand-name { color: #f3e3c5; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 20px; font-weight: 800; }
-  .ap-nav nav { display: flex; gap: 6px; }
-  .ap-nav nav a { display: inline-flex; min-height: 38px; align-items: center; border-radius: 4px; padding: 0 10px; color: rgba(233,224,208,0.72); font-size: 14px; font-weight: 700; text-decoration: none; }
-  .ap-nav nav a:hover { background: rgba(218,166,86,0.1); color: #ffe2aa; }
+  .about-hero {
+    display: grid;
+    min-height: min(620px, calc(100dvh - 82px));
+    align-content: center;
+    border-bottom: 1px solid var(--line);
+    padding: clamp(78px, 11vw, 132px) 0;
+  }
 
-  .hero { padding: 100px 0 48px; }
-  .eyebrow { margin: 0; color: #d8aa63; font-family: Consolas, monospace; font-size: 13px; font-weight: 800; }
-  h1, h2, p { overflow-wrap: anywhere; }
-  h1 { margin: 22px 0 0; color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 800; line-height: 1.06; }
-  .lead { max-width: 680px; margin: 22px 0 0; color: rgba(233,224,208,0.76); font-size: 19px; line-height: 1.88; }
+  .about-hero h1 {
+    max-width: 1050px;
+    margin-top: 16px;
+    font-size: clamp(3.2rem, 7.2vw, 7.4rem);
+    line-height: 0.96;
+    overflow-wrap: normal;
+    text-wrap: balance;
+    word-break: normal;
+  }
 
-  .about-section { padding: 40px 0; border-top: 1px solid rgba(218,166,86,0.18); }
-  .about-section h2 { color: #f2dfbd; font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif; font-size: 24px; font-weight: 800; margin: 0 0 20px; }
+  .about-hero > p:not(.kicker) {
+    max-width: 760px;
+    margin: 30px 0 0;
+    color: rgba(247, 230, 196, 0.76);
+    font-size: clamp(1.08rem, 1.7vw, 1.38rem);
+    line-height: 1.86;
+  }
 
-  .focus-list { margin: 0; padding: 0 0 0 20px; list-style: none; }
-  .focus-list li { position: relative; padding: 8px 0 8px 16px; color: rgba(233,224,208,0.76); font-size: 17px; line-height: 1.7; }
-  .focus-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 6px; height: 6px; border-radius: 50%; background: #d8aa63; }
+  .about-ledger {
+    display: grid;
+    grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.72fr);
+    gap: clamp(34px, 7vw, 96px);
+    border-bottom: 1px solid var(--line);
+    padding: clamp(72px, 10vw, 112px) 0;
+  }
 
-  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; }
-  .contact-links a { display: inline-flex; min-height: 42px; align-items: center; padding: 0 16px; border: 1px solid rgba(218,166,86,0.35); border-radius: 4px; color: #f1dfbd; font-size: 14px; font-weight: 800; text-decoration: none; transition: border-color 160ms ease, background 160ms ease; }
-  .contact-links a:hover { border-color: rgba(241,223,189,0.6); background: rgba(241,223,189,0.06); }
+  .about-ledger.compact {
+    padding-top: clamp(56px, 8vw, 92px);
+  }
 
-  .ap-footer { padding: 28px 0 40px; border-top: 1px solid rgba(218,166,86,0.18); }
-  .ap-footer p { margin: 0; font-size: 14px; color: rgba(233,224,208,0.4); }
+  .about-ledger ol {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(120, 155, 145, 0.34);
+    list-style: none;
+  }
+
+  .about-ledger li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 18px;
+    border-bottom: 1px solid rgba(120, 155, 145, 0.2);
+    padding: 22px 0;
+  }
+
+  .about-ledger li span {
+    color: rgba(232, 174, 98, 0.72);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .about-ledger li p {
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    line-height: 1.78;
+  }
+
+  .contact-board {
+    display: grid;
+    grid-template-columns: minmax(0, 0.58fr) minmax(280px, 0.42fr);
+    gap: clamp(34px, 7vw, 92px);
+    align-items: end;
+    padding: clamp(72px, 10vw, 112px) 0;
+  }
+
+  .contact-board h2 {
+    margin-top: 14px;
+    font-size: clamp(2.5rem, 5.6vw, 5.8rem);
+    line-height: 0.98;
+  }
+
+  .contact-copy > p:not(.kicker) {
+    max-width: 650px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.78;
+  }
+
+  .contact-board nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .contact-actions {
+    display: grid;
+    gap: 18px;
+  }
+
+  .wecom-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    scroll-margin-top: 96px;
+    border: 1px solid rgba(242, 223, 189, 0.14);
+    border-radius: 7px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(232, 174, 98, 0.07), transparent 52%), rgba(242, 223, 189, 0.03);
+  }
+
+  .wecom-card h3 {
+    margin: 0;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 20px;
+    font-weight: 850;
+    line-height: 1.2;
+  }
+
+  .wecom-card p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .wecom-card img {
+    width: 144px;
+    height: 144px;
+    border: 1px solid rgba(242, 223, 189, 0.16);
+    border-radius: 6px;
+    background: #fff;
+    object-fit: cover;
+  }
+
+  @media (max-width: 960px) {
+    .about-ledger,
+    .contact-board {
+      grid-template-columns: 1fr;
+    }
+  }
 
   @media (max-width: 720px) {
-    .ap-nav, main, .ap-footer { width: min(100% - 28px, 780px); }
-    .ap-nav { position: static; flex-direction: column; align-items: flex-start; padding: 14px 0; }
-    .hero { padding: 58px 0 36px; }
-    h1 { font-size: 2.4rem; }
+    .about-hero {
+      min-height: auto;
+      padding: 34px 0 32px;
+    }
+
+    .about-hero h1 {
+      margin-top: 12px;
+      font-size: clamp(1.45rem, 6.4vw, 1.95rem);
+      line-height: 1.16;
+    }
+
+    .about-hero > p:not(.kicker) {
+      margin-top: 14px;
+      font-size: 14.5px;
+      line-height: 1.68;
+    }
+
+    .about-ledger,
+    .contact-board {
+      padding: 40px 0;
+    }
+
+    .contact-board h2 {
+      font-size: clamp(1.32rem, 6.2vw, 1.78rem);
+      line-height: 1.16;
+    }
+
+    .contact-copy > p:not(.kicker) {
+      font-size: 14.5px;
+      line-height: 1.68;
+    }
+
+    .about-ledger li {
+      padding: 18px 0;
+    }
+
+    .about-ledger li p {
+      font-size: 14.5px;
+      line-height: 1.68;
+    }
+
+    .contact-board :global(.contact-link) {
+      flex: 1 1 calc(50% - 8px);
+      min-width: 132px;
+    }
+
+    .wecom-card {
+      grid-template-columns: 1fr;
+      justify-items: start;
+      padding: 14px;
+    }
+
+    .wecom-card img {
+      width: 132px;
+      height: 132px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .about-hero h1 {
+      font-size: clamp(1.38rem, 6.2vw, 1.72rem);
+    }
+
+    .about-ledger li {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
   }
 </style>

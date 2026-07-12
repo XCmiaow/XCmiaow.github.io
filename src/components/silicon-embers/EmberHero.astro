@@ -1,0 +1,173 @@
+---
+import EmberField from './EmberField.astro';
+import ActionLinks from './ActionLinks.astro';
+import type { SiliconEmbersHeroCopy } from '../../data/siliconEmbersHome';
+
+interface Props {
+  copy: SiliconEmbersHeroCopy;
+  wordmark: string;
+}
+
+const { copy, wordmark } = Astro.props;
+---
+
+<section class="ember-hero" aria-labelledby="sa-title">
+  <EmberField />
+
+  <div class="hero-copy">
+    {copy.eyebrow && <p class="eyebrow">{copy.eyebrow}</p>}
+    <p class="wordmark">{wordmark}</p>
+    <h1 id="sa-title">{copy.title}</h1>
+    <p class="lead">{copy.lead}</p>
+    <p class="sublead">{copy.sublead}</p>
+    <ActionLinks links={copy.actions} label={copy.actionsLabel} className="actions" linkClass="sa-button" />
+  </div>
+</section>
+
+<style>
+  .ember-hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    min-height: min(820px, calc(100dvh - 82px));
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    padding: clamp(64px, 10vh, 104px) 0 clamp(74px, 12vh, 128px);
+    background:
+      linear-gradient(90deg, rgba(7, 6, 5, 0.98) 0%, rgba(7, 6, 5, 0.9) 46%, rgba(7, 6, 5, 0.36) 100%),
+      radial-gradient(circle at 84% 76%, rgba(217, 121, 63, 0.2), transparent 30rem);
+  }
+
+  .ember-hero::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232, 174, 98, 0.68), transparent);
+    opacity: 0.52;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    max-width: 980px;
+  }
+
+  .wordmark {
+    margin: 20px 0 0;
+    color: rgba(232, 174, 98, 0.56);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: clamp(1.32rem, 2.3vw, 2.15rem);
+    font-weight: 900;
+  }
+
+  h1 {
+    margin-top: 8px;
+    font-size: clamp(5.6rem, 12vw, 12.4rem);
+    line-height: 0.88;
+    white-space: nowrap;
+  }
+
+  .lead {
+    max-width: 780px;
+    margin: 30px 0 0;
+    color: rgba(247, 230, 196, 0.9);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.52rem, 3vw, 3rem);
+    line-height: 1.32;
+  }
+
+  .sublead {
+    max-width: 660px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.4vw, 1.22rem);
+    line-height: 1.82;
+  }
+
+  :global(.ember-hero .actions) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  :global(.ember-hero .actions .sa-button),
+  :global(.ember-hero .actions .sa-button.primary),
+  :global(.ember-hero .actions .sa-button.text) {
+    min-width: 116px;
+    min-height: 42px;
+    padding: 0 15px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 720px) {
+    .ember-hero {
+      min-height: auto;
+      padding: 34px 0 40px;
+    }
+
+    .hero-copy {
+      max-width: 32rem;
+    }
+
+    h1 {
+      margin-top: 6px;
+      font-size: clamp(1.75rem, 8vw, 2.45rem);
+      line-height: 1.02;
+      white-space: normal;
+    }
+
+    .lead {
+      max-width: 27rem;
+      margin-top: 16px;
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    .sublead {
+      max-width: 27rem;
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.62;
+    }
+
+    .wordmark {
+      margin-top: 10px;
+      font-size: clamp(1rem, 4.2vw, 1.32rem);
+    }
+
+    :global(.ember-hero .actions) {
+      display: flex;
+      max-width: min(100%, 360px);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    :global(.ember-hero .actions .sa-button),
+    :global(.ember-hero .actions .sa-button.primary),
+    :global(.ember-hero .actions .sa-button.text) {
+      width: auto;
+      min-width: 92px;
+      min-height: 38px;
+      padding: 0 12px;
+      font-size: 12.5px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .ember-hero {
+      padding: 30px 0 36px;
+    }
+
+    h1 {
+      font-size: clamp(1.65rem, 7.8vw, 2rem);
+    }
+
+    .lead {
+      font-size: 14.5px;
+    }
+  }
+</style>
