@@ -18,4 +18,29 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const course = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/course' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    module: z.enum(['foundations-1', 'foundations-2', 'task-design', 'tool-systems', 'agents', 'workflow-lab']),
+    order: z.number().int().positive(),
+    durationMinutes: z.number().int().positive(),
+    kind: z.enum(['lesson', 'lab']),
+    objectives: z.array(z.string()).min(2),
+    prerequisites: z.array(z.string()),
+    deliverables: z.array(z.string()).min(1),
+    sources: z.array(
+      z.object({
+        title: z.string(),
+        url: z.url(),
+        reviewedAt: z.coerce.date(),
+      }),
+    ),
+    productMinutes: z.number().int().nonnegative(),
+    workBuddyMinutes: z.number().int().nonnegative().default(0),
+    draftBody: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, course };
