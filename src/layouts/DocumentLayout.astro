@@ -1,0 +1,94 @@
+---
+import PwaRuntime from '../components/PwaRuntime.astro';
+import SecurityMeta from '../components/SecurityMeta.astro';
+import ThemeRuntime from '../components/ThemeRuntime.astro';
+import { absoluteUrl } from '../data/siteConfig';
+
+export interface Props {
+  lang: string;
+  title: string;
+  description?: string;
+  canonicalPath?: string;
+  alternatePath?: string;
+  themeColor?: string;
+  bodyClass?: string;
+  ogImagePath?: string;
+}
+
+const {
+  lang,
+  title,
+  description = '',
+  canonicalPath = Astro.url.pathname,
+  alternatePath,
+  themeColor = '#102a43',
+  bodyClass,
+  ogImagePath,
+} = Astro.props;
+const canonicalUrl = absoluteUrl(canonicalPath);
+const alternateUrl = alternatePath ? absoluteUrl(alternatePath) : undefined;
+const alternateLang = lang === 'zh' ? 'en' : 'zh';
+const ogImageUrl = ogImagePath ? absoluteUrl(ogImagePath) : undefined;
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline data-theme-init>
+      (function () {
+        var root = document.documentElement;
+        try {
+          if (localStorage.getItem('resume-theme') === 'light') root.removeAttribute('data-theme');
+          else root.setAttribute('data-theme', 'dark');
+        } catch {
+          root.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+    <SecurityMeta />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={themeColor} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={lang} href={canonicalUrl} />
+    {alternateUrl && <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    <script>
+      (() => {
+        if (['localhost', '127.0.0.1'].includes(window.location.hostname)) return;
+        const loadAnalytics = () => {
+          const analytics = document.createElement('script');
+          analytics.defer = true;
+          analytics.src = 'https://cloud.umami.is/script.js';
+          analytics.dataset.websiteId = 'a4ca01a5-020c-41c7-946c-7bd2a29fa5b3';
+          document.head.appendChild(analytics);
+        };
+        const schedule = () => {
+          if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+          } else {
+            window.setTimeout(loadAnalytics, 1400);
+          }
+        };
+        if (document.readyState === 'complete') schedule();
+        else window.addEventListener('load', schedule, { once: true });
+      })();
+    </script>
+    <link rel="stylesheet" href="/styles/site.css" />
+    <PwaRuntime />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+    <ThemeRuntime />
+  </body>
+</html>

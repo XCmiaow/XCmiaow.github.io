@@ -2,6 +2,7 @@
 import ClientBehaviors from '../components/ClientBehaviors.astro';
 import Molecule3D from '../components/Molecule3D.astro';
 import CardFloat3D from '../components/CardFloat3D.astro';
+import DocumentLayout from './DocumentLayout.astro';
 import i18n from '../data/i18n.json';
 
 export interface Props {
@@ -15,6 +16,7 @@ export interface Props {
 const { title, description = '', lang, alternateZhUrl, alternateEnUrl } = Astro.props;
 const isZh = lang === 'zh';
 const basePath = isZh ? '' : '/en';
+const profileHomePath = isZh ? '/profile' : '/en/profile';
 const labels = i18n.nav[lang];
 const buildDate = new Date().toLocaleDateString(isZh ? 'zh-CN' : 'en-US', {
   year: 'numeric',
@@ -29,151 +31,135 @@ const zhUrl = alternateZhUrl ?? (pageKey ? `/${pageKey}` : '/');
 const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
 ---
 
-<!doctype html>
-<html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#102a43" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://XCmiaow.github.io/assets/avatar.jpg" />
-    <meta property="og:url" content={`https://XCmiaow.github.io${Astro.url.pathname}`} />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="a4ca01a5-020c-41c7-946c-7bd2a29fa5b3"
-    ></script>
-    <link rel="stylesheet" href="/styles/site.css" />
-    <link rel="manifest" href="/manifest.json" />
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
-      }
-    </script>
-  </head>
-  <body>
-    <div class="skeleton-screen" id="skeleton">
-      <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>
-      <div class="sk-hero">
-        <div class="sk-circle"></div><div class="sk-block">
-          <div class="sk-line w-60"></div><div class="sk-line w-80"></div><div class="sk-line w-40"></div>
-        </div>
+<DocumentLayout
+  lang={lang}
+  title={title}
+  description={description}
+  canonicalPath={Astro.url.pathname}
+  alternatePath={isZh ? enUrl : zhUrl}
+  ogImagePath="/assets/avatar.jpg"
+>
+  <div class="skeleton-screen" id="skeleton">
+    <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>
+    <div class="sk-hero">
+      <div class="sk-circle"></div><div class="sk-block">
+        <div class="sk-line w-60"></div><div class="sk-line w-80"></div><div class="sk-line w-40"></div>
       </div>
     </div>
-    <script>
-      !(function () {
-        var s = document.getElementById('skeleton');
-        function hide() {
-          if (!s) return;
-          s.style.opacity = '0';
-          setTimeout(function () {
-            s && s.remove();
-          }, 300);
-        }
-        if (document.readyState === 'complete') {
-          hide();
-        } else {
-          window.addEventListener('load', hide, { once: true });
-        }
-        setTimeout(hide, 900);
-      })();
-    </script>
+  </div>
+  <script>
+    (function () {
+      var s = document.getElementById('skeleton');
+      function hide() {
+        if (!s) return;
+        s.style.opacity = '0';
+        setTimeout(function () {
+          s && s.remove();
+        }, 300);
+      }
+      if (document.readyState === 'complete') {
+        hide();
+      } else {
+        window.addEventListener('load', hide, { once: true });
+      }
+      setTimeout(hide, 900);
+    })();
+  </script>
 
-    <a href="#main" class="skip-link">{isZh ? '跳到主要内容' : 'Skip to content'}</a>
-    <header class="site-header">
-      <div class="container nav">
-        <a class="brand" href={`${basePath}/`} aria-label={isZh ? '回到首页' : 'Home'}>
-          <span class="brand-mark">{isZh ? 'FX' : 'XF'}</span>
-          <span>{isZh ? '方绪杰' : 'Xujie Fang'}</span>
-        </a>
-        <nav class="nav-links" id="navLinks">
-          <a href={`${basePath}/#about`}>{labels.about}</a>
-          <a href={`${basePath}/#education`}>{labels.education}</a>
-          <a href={`${basePath}/#honors`}>{labels.honors}</a>
-          <a href={`${basePath}/#skills`}>{labels.skills}</a>
-          <a href={`${basePath}/#projects`}>{labels.projects}</a>
-          <a
-            href={`${basePath}/modeling`}
-            class:list={[{ active: isPage('modeling') }]}
-            aria-current={isPage('modeling') ? 'page' : undefined}>{labels.modeling}</a
-          >
-          <a
-            href={`${basePath}/chem-ai-lab`}
-            class:list={[{ active: isPage('chem-ai-lab') }]}
-            aria-current={isPage('chem-ai-lab') ? 'page' : undefined}>{labels.chem_ai_lab}</a
-          >
-          <a
-            href={`${basePath}/evidence`}
-            class:list={[{ active: isPage('evidence') }]}
-            aria-current={isPage('evidence') ? 'page' : undefined}>{labels.evidence}</a
-          >
-          <a
-            href={`${basePath}/materials`}
-            class:list={[{ active: isPage('materials') }]}
-            aria-current={isPage('materials') ? 'page' : undefined}>{labels.materials}</a
-          >
-          <a
-            href={`${basePath}/resume-onepage`}
-            class:list={[{ active: isPage('resume-onepage') }]}
-            aria-current={isPage('resume-onepage') ? 'page' : undefined}>{labels.onepage}</a
-          >
-          <a
-            href={`${basePath}/blog`}
-            class:list={[{ active: pageKey.startsWith('blog') }]}
-            aria-current={pageKey.startsWith('blog') ? 'page' : undefined}>{labels.blog}</a
-          >
-        </nav>
-        <div class="nav-actions">
-          <div class="lang-switch">
-            <a href={zhUrl} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
-            <span class="sep">|</span>
-            <a href={enUrl} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
-          </div>
-          <button
-            class="icon-btn"
-            id="layoutToggle"
-            type="button"
-            aria-label={isZh ? '切换极简模式' : 'Toggle minimal mode'}
-            title={isZh ? '极简模式' : 'Minimal'}>⬜</button
-          >
-          <button
-            class="icon-btn"
-            id="themeToggle"
-            type="button"
-            aria-label={isZh ? '切换暗色模式' : 'Toggle dark mode'}>🌓</button
-          >
-          <button
-            class="icon-btn menu-btn"
-            id="menuToggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="navLinks"
-            aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}>☰</button
-          >
-          <a class:list={['btn', { active: isPage('resume-onepage') }]} href={`${basePath}/resume-onepage`}
-            >{labels.onepage}</a
-          >
-          <a class:list={['btn', { active: isPage('materials') }]} href={`${basePath}/materials`}>{labels.materials}</a>
-          <a class="btn primary" href={`${basePath}/#contact`}>{labels.contact}</a>
+  <a href="#main" class="skip-link">{isZh ? '跳到主要内容' : 'Skip to content'}</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href={`${profileHomePath}/`} aria-label={isZh ? '回到首页' : 'Home'}>
+        <span class="brand-mark">{isZh ? 'FX' : 'XF'}</span>
+        <span>{isZh ? '方绪杰' : 'Xujie Fang'}</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href={`${profileHomePath}/#about`}>{labels.about}</a>
+        <a href={`${profileHomePath}/#education`}>{labels.education}</a>
+        <a href={`${profileHomePath}/#honors`}>{labels.honors}</a>
+        <a href={`${profileHomePath}/#skills`}>{labels.skills}</a>
+        <a href={`${profileHomePath}/#projects`}>{labels.projects}</a>
+        <a
+          href={`${basePath}/modeling`}
+          class:list={[{ active: isPage('modeling') }]}
+          aria-current={isPage('modeling') ? 'page' : undefined}>{labels.modeling}</a
+        >
+        <a
+          href={`${basePath}/chem-ai-lab`}
+          class:list={[{ active: isPage('chem-ai-lab') }]}
+          aria-current={isPage('chem-ai-lab') ? 'page' : undefined}>{labels.chem_ai_lab}</a
+        >
+        <a
+          href={`${basePath}/evidence`}
+          class:list={[{ active: isPage('evidence') }]}
+          aria-current={isPage('evidence') ? 'page' : undefined}>{labels.evidence}</a
+        >
+        <a
+          href={`${basePath}/materials`}
+          class:list={[{ active: isPage('materials') }]}
+          aria-current={isPage('materials') ? 'page' : undefined}>{labels.materials}</a
+        >
+        <a
+          href={`${basePath}/resume-onepage`}
+          class:list={[{ active: isPage('resume-onepage') }]}
+          aria-current={isPage('resume-onepage') ? 'page' : undefined}>{labels.onepage}</a
+        >
+        <a
+          href={`${basePath}/blog`}
+          class:list={[{ active: pageKey.startsWith('blog') }]}
+          aria-current={pageKey.startsWith('blog') ? 'page' : undefined}>{labels.blog}</a
+        >
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-switch">
+          <a href={zhUrl} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
+          <span class="sep">|</span>
+          <a href={enUrl} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
         </div>
+        <button
+          class="icon-btn"
+          id="layoutToggle"
+          type="button"
+          aria-label={isZh ? '切换极简模式' : 'Toggle minimal mode'}
+          title={isZh ? '极简模式' : 'Minimal'}>⬜</button
+        >
+        <button
+          class="icon-btn"
+          id="themeToggle"
+          data-theme-toggle
+          type="button"
+          aria-pressed="false"
+          aria-label={isZh ? '切换暗色模式' : 'Toggle dark mode'}>🌓</button
+        >
+        <button
+          class="icon-btn menu-btn"
+          id="menuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="navLinks"
+          aria-label={isZh ? '打开导航菜单' : 'Open navigation menu'}>☰</button
+        >
+        <a class:list={['btn', { active: isPage('resume-onepage') }]} href={`${basePath}/resume-onepage`}
+          >{labels.onepage}</a
+        >
+        <a class:list={['btn', { active: isPage('materials') }]} href={`${basePath}/materials`}>{labels.materials}</a>
+        <a class="btn primary" href={`${profileHomePath}/#contact`}>{labels.contact}</a>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main id="main" tabindex="-1"><slot /></main>
+  <main id="main" tabindex="-1"><slot /></main>
 
-    <CardFloat3D />
-    <Molecule3D />
-    <ClientBehaviors />
-    <footer role="contentinfo">
-      <div class="container">
-        &copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'}
-        {buildDate}
-      </div>
-    </footer>
-  </body>
-</html>
+  <CardFloat3D />
+  <Molecule3D />
+  <ClientBehaviors />
+  <footer role="contentinfo">
+    <div class="container">
+      &copy; 2026 {isZh ? '方绪杰' : 'Xujie Fang'} · {i18n.footer[lang]} · {isZh ? '更新于' : 'Updated'}
+      {buildDate}
+    </div>
+  </footer>
+</DocumentLayout>
 
 <style>
   .site-header {
@@ -186,8 +172,8 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     -webkit-backdrop-filter: blur(18px);
   }
   [data-theme='dark'] .site-header {
-    background: rgba(15, 23, 32, 0.84);
-    border-bottom-color: rgba(42, 58, 75, 0.9);
+    background: rgba(7, 6, 5, 0.82);
+    border-bottom-color: rgba(242, 223, 189, 0.14);
   }
   .nav {
     display: flex;
@@ -214,6 +200,14 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     background: linear-gradient(145deg, var(--primary), var(--secondary));
     color: #fff;
     font-size: 15px;
+  }
+  [data-theme='dark'] .brand-mark {
+    border-color: rgba(232, 174, 98, 0.56);
+    background: linear-gradient(180deg, rgba(255, 225, 162, 0.12), rgba(232, 174, 98, 0.035)), rgba(9, 8, 7, 0.72);
+    color: #f4d49b;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 238, 197, 0.18),
+      0 10px 24px rgba(0, 0, 0, 0.26);
   }
   .nav-links {
     display: flex;
@@ -252,6 +246,10 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     background: var(--paper);
     color: var(--primary);
     cursor: pointer;
+  }
+  [data-theme='dark'] .icon-btn {
+    background: linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(232, 174, 98, 0.03)), rgba(9, 8, 7, 0.78);
+    color: var(--primary);
   }
   .menu-btn {
     display: none;

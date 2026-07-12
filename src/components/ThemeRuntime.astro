@@ -1,0 +1,53 @@
+<script is:inline data-theme-runtime>
+  (function () {
+    var storageKey = 'resume-theme';
+    var root = document.documentElement;
+    var toggles = Array.prototype.slice.call(document.querySelectorAll('[data-theme-toggle], #themeToggle'));
+
+    function currentTheme() {
+      return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function resolveTheme(value) {
+      return value === 'light' ? 'light' : 'dark';
+    }
+
+    function syncButtons(theme) {
+      toggles.forEach(function (button) {
+        if (!(button instanceof HTMLButtonElement)) return;
+        button.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        button.setAttribute('data-theme-state', theme);
+      });
+    }
+
+    function applyTheme(theme, persist) {
+      if (theme === 'dark') root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+
+      if (persist) {
+        try {
+          localStorage.setItem(storageKey, theme);
+        } catch {}
+      }
+
+      syncButtons(theme);
+    }
+
+    try {
+      var saved = localStorage.getItem(storageKey);
+      applyTheme(resolveTheme(saved), false);
+    } catch {
+      syncButtons(currentTheme());
+    }
+
+    toggles.forEach(function (button) {
+      button.addEventListener('click', function () {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark', true);
+      });
+    });
+
+    window.addEventListener('storage', function (event) {
+      if (event.key === storageKey) applyTheme(resolveTheme(event.newValue), false);
+    });
+  })();
+</script>

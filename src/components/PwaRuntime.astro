@@ -1,0 +1,17 @@
+<link rel="manifest" href="/manifest.json" />
+<script is:inline data-pwa-runtime>
+  if ('serviceWorker' in navigator) {
+    const registerServiceWorker = () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    };
+    const scheduleServiceWorker = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(registerServiceWorker, { timeout: 2500 });
+      } else {
+        window.setTimeout(registerServiceWorker, 1200);
+      }
+    };
+    if (document.readyState === 'complete') scheduleServiceWorker();
+    else window.addEventListener('load', scheduleServiceWorker, { once: true });
+  }
+</script>
