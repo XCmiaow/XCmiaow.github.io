@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "qa": "node scripts/qa-check.mjs",
+    "qa": "npm run build && node scripts/qa-check.mjs",
+    "qa:routes": "node scripts/qa-check.mjs",
     "qa:style": "node scripts/style-source-audit.mjs",
     "qa:content": "node scripts/content-qa.mjs",
     "qa:writer": "node scripts/writer-qa.mjs",
@@ -17,7 +18,9 @@
     "blog:new": "node scripts/write-blog-post.mjs",
     "write:enable": "node scripts/write-route.mjs enable",
     "write:disable": "node scripts/write-route.mjs disable",
-    "check": "npm run build && npm run qa:style && npm run qa:content && npm run qa:writer && npm run qa:pwa && npm run qa && npm run qa:visual",
+    "check": "npm run build && npm run qa:style && npm run qa:content && npm run qa:writer && npm run qa:pwa && npm run qa:routes && npm run qa:visual",
+    "typecheck": "astro check",
+    "check:fast": "npm run format:check && npm run lint && npm run typecheck && npm run build",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write 'src/**/*.{astro,ts,js,css,json}' README.md package.json",
@@ -28,6 +31,8 @@
     "astro": "^6.0.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/mdx": "^6.0.3",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.0.0",
     "eslint-plugin-astro": "^1.0.0",
@@ -35,7 +40,8 @@
     "lint-staged": "^15.0.0",
     "playwright": "^1.60.0",
     "prettier": "^3.5.0",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3"
   },
   "lint-staged": {
     "src/**/*.astro": [
