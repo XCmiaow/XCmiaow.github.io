@@ -10,39 +10,20 @@ const port = Number(process.env.PWA_QA_PORT || 4340);
 const base = `http://${host}:${port}`;
 const failures = [];
 const checks = [];
-
-const requiredShellRoutes = [
-  '/',
-  '/en/',
-  '/resume-onepage',
-  '/en/resume-onepage',
-  '/resume-academic',
-  '/en/resume-academic',
-  '/resume-career',
-  '/en/resume-career',
-  '/modeling',
-  '/en/modeling',
-  '/ai-km',
-  '/en/ai-km',
-  '/evidence',
-  '/en/evidence',
-  '/materials',
-  '/en/materials',
-  '/chem-ai-lab',
-  '/en/chem-ai-lab',
+const routes = readJson('src/data/routes.json');
+const expectedAppShell = [
+  ...routes
+    .filter((route) => route.kind === 'static' && route.pwa === true)
+    .flatMap((route) => [route.zh.path, route.en.path]),
   '/styles/site.css',
   '/manifest.json',
-  '/blog/',
-  '/en/blog/',
-];
+  '/route-contract.json',
+]
+  .filter((route, index, all) => all.indexOf(route) === index)
+  .sort();
 
 function fail(message) {
   failures.push(message);
-}
-
-function normalizeShellRoute(route) {
-  if (route !== '/' && route.endsWith('/') && !route.endsWith('/blog/')) return route.slice(0, -1);
-  return route;
 }
 
 function readJson(file) {
@@ -82,16 +63,18 @@ function runStaticChecks() {
   if (!/self\.addEventListener\(['"]install['"]/.test(sw)) fail('service worker must handle install');
   if (!/self\.addEventListener\(['"]activate['"]/.test(sw)) fail('service worker must handle activate');
   if (!/self\.addEventListener\(['"]fetch['"]/.test(sw)) fail('service worker must handle fetch');
+  if (/const\s+APP_SHELL\s*=\s*\[/.test(sw)) fail('service worker must not hard-code an APP_SHELL route array');
 
-  const shellMatch = sw.match(/const\s+APP_SHELL\s*=\s*\[([\s\S]*?)\];/);
-  if (!shellMatch) {
-    fail('service worker must define APP_SHELL');
+  const builtContractPath = path.join(root, 'dist', 'route-contract.json');
+  if (!fs.existsSync(builtContractPath)) {
+    fail('build output is missing /route-contract.json');
   } else {
-    const shellRoutes = new Set(
-      [...shellMatch[1].matchAll(/['"]([^'"]+)['"]/g)].map((match) => normalizeShellRoute(match[1])),
-    );
-    for (const route of requiredShellRoutes.map(normalizeShellRoute)) {
-      if (!shellRoutes.has(route)) fail(`APP_SHELL is missing ${route}`);
+    const contract = JSON.parse(fs.readFileSync(builtContractPath, 'utf8'));
+    if (contract.version !== 1) fail(`route contract version must be 1: ${contract.version}`);
+    if (!Array.isArray(contract.appShell)) {
+      fail('route contract appShell must be an array');
+    } else if (JSON.stringify(contract.appShell) !== JSON.stringify(expectedAppShell)) {
+      fail(`route contract appShell does not match routes.json: ${JSON.stringify(contract.appShell)}`);
     }
   }
 
@@ -139,9 +122,12 @@ async function runBrowserChecks() {
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({ baseURL: base, serviceWorkers: 'allow' });
     const page = await context.newPage();
+    let offlineProbe = false;
     page.setDefaultTimeout(10000);
     page.on('console', (msg) => {
-      if (msg.type() === 'error') fail(`console error: ${msg.text()}`);
+      const text = msg.text();
+      if (offlineProbe && /net::ERR_(INTERNET_DISCONNECTED|CONNECTION_CLOSED)/.test(text)) return;
+      if (msg.type() === 'error') fail(`console error: ${text}`);
     });
     page.on('pageerror', (error) => fail(`page error: ${error.message}`));
 
@@ -150,42 +136,69 @@ async function runBrowserChecks() {
     if (!manifestResponse.ok()) fail(`manifest request failed with ${manifestResponse.status()}`);
     const swResponse = await page.request.get(`${base}/sw.js`);
     if (!swResponse.ok()) fail(`service worker request failed with ${swResponse.status()}`);
+    const contractResponse = await page.request.get(`${base}/route-contract.json`);
+    if (!contractResponse.ok()) fail(`route contract request failed with ${contractResponse.status()}`);
+    const onlineContract = contractResponse.ok() ? await contractResponse.json() : null;
+    if (JSON.stringify(onlineContract?.appShell) !== JSON.stringify(expectedAppShell)) {
+      fail(`online route contract appShell does not match routes.json: ${JSON.stringify(onlineContract?.appShell)}`);
+    }
 
     const registration = await page.evaluate(async () => {
       if (!('serviceWorker' in navigator)) return { supported: false };
-      const reg = await navigator.serviceWorker.ready;
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      return {
-        supported: true,
-        scope: reg.scope,
-        scriptURL: reg.active?.scriptURL || reg.waiting?.scriptURL || reg.installing?.scriptURL || '',
-        controller: !!navigator.serviceWorker.controller,
-      };
+      let readyTimeout = 0;
+      try {
+        const reg = await Promise.race([
+          navigator.serviceWorker.ready,
+          new Promise((_, reject) => {
+            readyTimeout = window.setTimeout(
+              () => reject(new Error('service worker did not become ready within 10000ms')),
+              10000,
+            );
+          }),
+        ]);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        return {
+          supported: true,
+          scope: reg.scope,
+          scriptURL: reg.active?.scriptURL || reg.waiting?.scriptURL || reg.installing?.scriptURL || '',
+          controller: !!navigator.serviceWorker.controller,
+        };
+      } finally {
+        window.clearTimeout(readyTimeout);
+      }
     });
     if (!registration.supported) fail('service worker is not supported in browser context');
     if (!registration.scope?.endsWith('/')) fail(`service worker scope is unexpected: ${registration.scope}`);
-    if (!registration.scriptURL?.endsWith('/sw.js')) fail(`service worker script URL is unexpected: ${registration.scriptURL}`);
+    if (!registration.scriptURL?.endsWith('/sw.js'))
+      fail(`service worker script URL is unexpected: ${registration.scriptURL}`);
 
     await page.waitForFunction(async () => (await caches.keys()).some((key) => /^resume-v\d+$/.test(key)));
-    const cacheState = await page.evaluate(async () => {
+    const cacheState = await page.evaluate(async (shellRoutes) => {
       const cacheNames = await caches.keys();
       const routeState = {};
-      for (const route of ['/', '/en/', '/styles/site.css', '/manifest.json']) {
+      for (const route of shellRoutes) {
         routeState[route] = !!(await caches.match(route));
       }
       return { cacheNames, routeState };
-    });
+    }, expectedAppShell);
     for (const [route, cached] of Object.entries(cacheState.routeState)) {
       if (!cached) fail(`service worker cache is missing ${route}`);
     }
 
+    offlineProbe = true;
     await context.setOffline(true);
-    await page.goto('/materials', { waitUntil: 'domcontentloaded' });
-    const offlineH1 = await page.locator('h1').first().textContent().catch(() => '');
-    if (offlineH1?.trim() !== '材料下载中心') fail(`offline /materials rendered unexpected h1: ${offlineH1}`);
+    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    const offlineH1 = await page
+      .locator('h1')
+      .first()
+      .textContent()
+      .catch(() => '');
+    if (offlineH1?.trim() !== '方绪杰') fail(`offline /profile rendered unexpected h1: ${offlineH1}`);
     await context.setOffline(false);
+    await wait(100);
+    offlineProbe = false;
 
-    checks.push({ registration, cacheState, offlineRoute: '/materials', offlineH1: offlineH1?.trim() });
+    checks.push({ registration, cacheState, offlineRoute: '/profile', offlineH1: offlineH1?.trim() });
     await browser.close();
   } finally {
     stopPreview(child);

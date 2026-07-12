@@ -1,57 +1,54 @@
-const CACHE = 'resume-v9';
-const APP_SHELL = [
-  '/',
-  '/en/',
-  '/resume-onepage',
-  '/en/resume-onepage',
-  '/resume-academic',
-  '/en/resume-academic',
-  '/resume-career',
-  '/en/resume-career',
-  '/modeling',
-  '/en/modeling',
-  '/ai-km',
-  '/en/ai-km',
-  '/evidence',
-  '/en/evidence',
-  '/materials',
-  '/en/materials',
-  '/chem-ai-lab',
-  '/en/chem-ai-lab',
-  '/styles/site.css',
-  '/manifest.json',
-  '/blog/',
-  '/en/blog/',
-  '/silicon-ashes/',
-  '/en/silicon-ashes/',
-  '/silicon-ashes/writing/',
-  '/en/silicon-ashes/writing/',
-  '/silicon-ashes/writing/ai-research-efficiency-101/',
-  '/silicon-ashes/writing/chemistry-ai-toolbox/',
-  '/silicon-ashes/writing/lab-data-workflow/',
-  '/silicon-ashes/writing/prompt-engineering-for-research/',
-  '/silicon-ashes/writing/research-agent-checklist/',
-  '/en/silicon-ashes/writing/en-ai-research-workflow-101/',
-  '/en/silicon-ashes/writing/en-chemistry-ai-toolbox/',
-  '/en/silicon-ashes/writing/en-prompting-as-task-design/',
-  '/silicon-ashes/courses/',
-  '/en/silicon-ashes/courses/',
-  '/silicon-ashes/resources/',
-  '/en/silicon-ashes/resources/',
-  '/silicon-ashes/resources/task-brief/',
-  '/silicon-ashes/resources/prompt-template/',
-  '/silicon-ashes/resources/review-checklist/',
-  '/silicon-ashes/resources/course-retrospective/',
-  '/en/silicon-ashes/resources/task-brief/',
-  '/en/silicon-ashes/resources/prompt-template/',
-  '/en/silicon-ashes/resources/review-checklist/',
-  '/en/silicon-ashes/resources/course-retrospective/',
-  '/silicon-ashes/about/',
-  '/en/silicon-ashes/about/',
-];
+const CACHE = 'resume-v12';
+const ROUTE_CONTRACT = '/route-contract.json';
+const CACHEABLE_PREFIXES = ['/assets/', '/styles/', '/silicon-ashes/courses/ai-research-efficiency/'];
+const BYPASS_PREFIXES = ['/admin/', '/write/'];
+let appShellPromise;
+
+async function parseRouteContract(response) {
+  if (!response.ok) throw new Error(`Route contract request failed: ${response.status}`);
+  const payload = await response.json();
+  if (
+    payload?.version !== 1 ||
+    !Array.isArray(payload.appShell) ||
+    payload.appShell.some((route) => typeof route !== 'string' || !route.startsWith('/'))
+  ) {
+    throw new Error('Route contract payload is invalid');
+  }
+  return payload.appShell;
+}
+
+function getAppShell() {
+  if (!appShellPromise) {
+    appShellPromise = caches
+      .match(ROUTE_CONTRACT)
+      .then((cached) => cached || fetch(ROUTE_CONTRACT, { cache: 'no-store' }))
+      .then(parseRouteContract);
+  }
+  return appShellPromise;
+}
+
+function isBypassed(url) {
+  return BYPASS_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+}
+
+async function isCacheable(request, url) {
+  if (request.method !== 'GET') return false;
+  if (url.origin !== location.origin) return false;
+  if (url.search) return false;
+  if (isBypassed(url)) return false;
+  if ((await getAppShell()).includes(url.pathname)) return true;
+  return CACHEABLE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+}
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
+  e.waitUntil(
+    fetch(ROUTE_CONTRACT, { cache: 'no-store' })
+      .then(parseRouteContract)
+      .then((appShell) => {
+        appShellPromise = Promise.resolve(appShell);
+        return caches.open(CACHE).then((cache) => cache.addAll(appShell));
+      }),
+  );
   self.skipWaiting();
 });
 
@@ -64,34 +61,38 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
+  e.respondWith(handleFetch(e.request, url));
+});
 
-  if (e.request.mode === 'navigate' || e.request.headers.get('accept')?.includes('text/html')) {
-    e.respondWith(
-      fetch(e.request)
-        .then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(e.request, clone));
-          }
-          return res;
-        })
-        .catch(() => caches.match(e.request).then((cached) => cached || caches.match('/'))),
-    );
-    return;
+async function handleFetch(request, url) {
+  const cacheable = await isCacheable(request, url);
+
+  if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
+    return fetch(request)
+      .then((res) => {
+        if (cacheable && res.ok) {
+          const clone = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(request, clone));
+        }
+        return res;
+      })
+      .catch(() => caches.match(request).then((cached) => cached || caches.match('/')));
   }
 
-  e.respondWith(
-    caches.match(e.request).then((cached) => {
-      const fetched = fetch(e.request)
-        .then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(e.request, clone));
-          }
-          return res;
-        })
-        .catch(() => cached);
-      return cached || fetched;
-    }),
-  );
-});
+  if (!cacheable) {
+    return fetch(request);
+  }
+
+  return caches.match(request).then((cached) => {
+    const fetched = fetch(request)
+      .then((res) => {
+        if (res.ok) {
+          const clone = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(request, clone));
+        }
+        return res;
+      })
+      .catch(() => cached);
+    return cached || fetched;
+  });
+}
