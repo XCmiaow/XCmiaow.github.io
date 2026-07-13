@@ -212,6 +212,19 @@ if (!/\.sa-shell \.sa-control\s*\{/.test(sharedControlCss) || !/\.sa-control:foc
 }
 
 const emberCanvasSource = read('src/components/silicon-embers/emberFieldCanvas.ts');
+const emberFieldSource = read('src/components/silicon-embers/EmberField.astro');
+for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon', 'lensing-arc']) {
+  if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing ${className}`);
+}
+if ((emberFieldSource.match(/data-ember-canvas/g) ?? []).length !== 1) {
+  failures.push('EmberField must render exactly one particle canvas');
+}
+if (/drawGravityLens|drawEventHorizon/.test(emberCanvasSource)) {
+  failures.push('Ember canvas must draw particles only; CSS owns the gravity lens and event horizon');
+}
+if (!/const PARTICLE_LIMIT = 64;/.test(emberCanvasSource)) {
+  failures.push('Ember canvas particle budget must remain at 64');
+}
 if (
   !/visibilitychange/.test(emberCanvasSource) ||
   !/IntersectionObserver/.test(emberCanvasSource) ||
