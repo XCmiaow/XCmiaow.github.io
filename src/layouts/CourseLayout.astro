@@ -9,6 +9,7 @@ interface Props {
   title: string;
   summary: string;
   canonicalPath: string;
+  alternatePath?: string;
   entries: CourseEntry[];
   currentId?: string;
   durationMinutes?: number;
@@ -22,6 +23,7 @@ const {
   title,
   summary,
   canonicalPath,
+  alternatePath,
   entries,
   currentId,
   durationMinutes = 120,
@@ -41,7 +43,7 @@ const next = currentIndex >= 0 && currentIndex < sorted.length - 1 ? sorted[curr
   title={`${title}｜硅基余烬`}
   description={summary}
   canonicalPath={canonicalPath}
-  alternatePath={coursePaths.en}
+  alternatePath={alternatePath}
 >
   <div class="course-program">
     <header class="course-hero">

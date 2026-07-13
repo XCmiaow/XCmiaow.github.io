@@ -35,6 +35,10 @@ for (const route of routes) {
 }
 
 const home = readFileSync(resolve('dist', base.replace(/^\//, ''), 'index.html'), 'utf8');
+assert(
+  home.includes(`hreflang="en" href="https://xcmiaow.github.io/en${base}/"`),
+  'course home must link to the reciprocal English overview',
+);
 for (const slug of [
   '01-ai-history',
   '02-llm-mental-model',
@@ -45,5 +49,8 @@ for (const slug of [
 ]) {
   assert(home.includes(`${base}/${slug}/`), `course home does not link to ${slug}`);
 }
+
+const firstUnit = readFileSync(resolve('dist', base.replace(/^\//, ''), '01-ai-history/index.html'), 'utf8');
+assert(!firstUnit.includes('hreflang="en"'), 'Chinese-only units must not claim a non-equivalent English alternate');
 
 console.log(JSON.stringify({ courseRoutes: 'ok', routes: routes.length }));
