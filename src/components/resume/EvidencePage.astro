@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../Lightbox.astro';
+import { getEvidence } from '../../lib/resumeData';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const items = getEvidence(lang);
+const isZh = lang === 'zh';
+const base = isZh ? '' : '/en';
+const groups = [...new Set(items.map((item) => item.category))].map((category) => ({
+  category,
+  label: items.find((item) => item.category === category)?.categoryLabel ?? category,
+  items: items.filter((item) => item.category === category),
+}));
+const copy = isZh
+  ? {
+      title: '方绪杰 | 证明材料墙',
+      h1: '证明材料墙',
+      lead: '以稳定编号组织公开脱敏证据，并明确每份材料支撑的简历叙事。',
+      profile: '回到简历荣誉区',
+      materials: '查看材料中心',
+      count: '份公开证据',
+      proof: '证明类型',
+      issuer: '颁发方',
+      claim: '支撑叙事',
+      lightbox: '证书大图',
+      close: '关闭大图',
+      previous: '上一张证书',
+      next: '下一张证书',
+    }
+  : {
+      title: 'Xujie Fang | Evidence Gallery',
+      h1: 'Evidence Gallery',
+      lead: 'Public, sanitized evidence organized by stable IDs and linked to the resume claims it supports.',
+      profile: 'Back to profile honors',
+      materials: 'View materials hub',
+      count: 'public evidence items',
+      proof: 'Proof type',
+      issuer: 'Issuer',
+      claim: 'Supported claim',
+      lightbox: 'Certificate preview',
+      close: 'Close preview',
+      previous: 'Previous certificate',
+      next: 'Next certificate',
+    };
+---
+
+<BaseLayout title={copy.title} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">{items.length} {copy.count}</p><h1>{copy.h1}</h1><p class="lead">{copy.lead}</p><div
+        class="hero-actions"
+      >
+        <a class="btn primary" href={`${base}/profile/#honors`}>{copy.profile}</a><a
+          class="btn"
+          href={`${base}/materials`}>{copy.materials}</a
+        >
+      </div>
+    </div>
+  </section>
+  <div class="container evidence-groups">
+    {
+      groups.map((group) => (
+        <section aria-labelledby={`evidence-${group.category}`}>
+          <>
+            <h2 id={`evidence-${group.category}`}>{group.label}</h2>
+            <div class="evidence-grid">
+              {group.items.map((item) => (
+                <a class="cert-card" href={item.image}>
+                  <img
+                    src={`/assets/evidence/thumbs/${item.file.replace(/\.[^.]+$/, '.webp')}`}
+                    alt={item.title}
+                    loading="lazy"
+                  />
+                  <div>
+                    <p class="eyebrow">
+                      {item.year} · {item.level}
+                    </p>
+                    <h3>{item.title}</h3>
+                    <dl>
+                      <dt>{copy.proof}</dt>
+                      <dd>{item.proofType}</dd>
+                      <dt>{copy.issuer}</dt>
+                      <dd>{item.issuer}</dd>
+                      <dt>{copy.claim}</dt>
+                      <dd>{item.claim}</dd>
+                    </dl>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </>
+        </section>
+      ))
+    }
+  </div>
+  <Lightbox
+    items={items.map((item) => ({ src: item.image, alt: item.title }))}
+    label={copy.lightbox}
+    closeLabel={copy.close}
+    previousLabel={copy.previous}
+    nextLabel={copy.next}
+  />
+</BaseLayout>
+
+<style>
+  .evidence-groups {
+    display: grid;
+    gap: 3rem;
+    padding-block: 2.5rem 5rem;
+  }
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    color: inherit;
+    text-decoration: none;
+  }
+  .cert-card img {
+    width: 110px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .cert-card h3 {
+    font-size: 1rem;
+  }
+  .cert-card dl {
+    font-size: 0.85rem;
+  }
+  .cert-card dt {
+    font-weight: 700;
+  }
+  .cert-card dd {
+    margin: 0 0 0.5rem;
+  }
+  .eyebrow {
+    color: var(--secondary);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 540px) {
+    .cert-card {
+      grid-template-columns: 1fr;
+    }
+    .cert-card img {
+      width: 100%;
+      height: 180px;
+    }
+  }
+</style>

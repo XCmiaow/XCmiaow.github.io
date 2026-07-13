@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getMaterials } from '../../lib/resumeData';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const materials = getMaterials(lang);
+const isZh = lang === 'zh';
+const base = isZh ? '' : '/en';
+const audienceOrder = ['review', 'academic', 'career', 'portfolio', 'local'] as const;
+const copy = isZh
+  ? {
+      title: '材料中心 | 方绪杰',
+      h1: '材料中心',
+      lead: '公开脱敏材料、需复核证据与本地正式投递包分层管理。正式申请材料不进入公开站点。',
+      profile: '返回个人简历',
+      evidence: '证明材料墙',
+      reviewed: '复核日期',
+      references: '关联证据',
+      unavailable: '仅本地使用',
+      access: { public: '公开', restricted: '审阅后公开', local: '仅本地' },
+      audiences: {
+        review: '快速审核',
+        academic: '保研评优',
+        career: '求职实习',
+        portfolio: '项目展示',
+        local: '本地投递',
+      },
+    }
+  : {
+      title: 'Materials Hub | Xujie Fang',
+      h1: 'Materials Hub',
+      lead: 'Public sanitized materials, review-first evidence, and local application packages are managed as separate access levels. Formal private packages never enter the public site.',
+      profile: 'Back to profile',
+      evidence: 'Evidence gallery',
+      reviewed: 'Reviewed',
+      references: 'Evidence links',
+      unavailable: 'Local use only',
+      access: { public: 'Public', restricted: 'Review first', local: 'Local only' },
+      audiences: {
+        review: 'Quick review',
+        academic: 'Academic review',
+        career: 'Career',
+        portfolio: 'Portfolio',
+        local: 'Local delivery',
+      },
+    };
+const groups = audienceOrder
+  .map((audience) => ({ audience, items: materials.filter((item) => item.audience === audience) }))
+  .filter((group) => group.items.length);
+---
+
+<BaseLayout title={copy.title} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Resume · Evidence · Cases</p><h1>{copy.h1}</h1><p class="lead">{copy.lead}</p><div
+        class="hero-actions"
+      >
+        <a class="btn primary" href={`${base}/profile`}>{copy.profile}</a><a class="btn" href={`${base}/evidence`}
+          >{copy.evidence}</a
+        >
+      </div>
+    </div>
+  </section>
+  <div class="container material-groups">
+    {
+      groups.map((group) => (
+        <section aria-labelledby={`materials-${group.audience}`}>
+          <>
+            <h2 id={`materials-${group.audience}`}>{copy.audiences[group.audience]}</h2>
+            <div class="material-grid">
+              {group.items.map((item) => (
+                <article class="material-card">
+                  <div class="meta">
+                    <span>{item.statusLabel}</span>
+                    <span>{copy.access[item.access]}</span>
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.summary}</p>
+                  <p>
+                    <strong>{isZh ? '用途：' : 'Use: '}</strong>
+                    {item.usage}
+                  </p>
+                  <p class="review">
+                    <span>
+                      {copy.reviewed}: {item.lastReviewed}
+                    </span>
+                    <span>
+                      {copy.references}: {item.evidenceIds.length}
+                    </span>
+                  </p>
+                  {item.href ? (
+                    <a class="btn" href={item.href}>
+                      {item.action}
+                    </a>
+                  ) : (
+                    <span class="btn disabled" aria-disabled="true">
+                      {copy.unavailable}
+                    </span>
+                  )}
+                </article>
+              ))}
+            </div>
+          </>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .material-groups {
+    display: grid;
+    gap: 3rem;
+    padding-block: 2.5rem 5rem;
+  }
+  .material-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .material-card {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    padding: 1.25rem;
+  }
+  .meta,
+  .review {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--secondary);
+    font-size: 0.8rem;
+  }
+  .disabled {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+</style>

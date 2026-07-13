@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { chemAiModuleCount, chemAiModuleIds, type SiteLang } from '../../data/resumeCatalog';
+import { getClaims, getProfile } from '../../lib/resumeData';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const base = isZh ? '' : '/en';
+const project = getProfile(lang).projects.find((item) => item.id === 'chem-ai-lab');
+const claim = getClaims(lang).find((item) => item.id === 'chemistry-foundation');
+const labels: Record<(typeof chemAiModuleIds)[number], [string, string]> = {
+  data: ['分子数据', 'Molecular data'],
+  features: ['特征工程', 'Feature engineering'],
+  models: ['模型注册', 'Model registry'],
+  nn: ['神经网络', 'Neural networks'],
+  pipeline: ['工作流编排', 'Pipelines'],
+  qm: ['量子化学接口', 'Quantum chemistry'],
+  automl: ['自动调参', 'AutoML'],
+  evaluation: ['模型评估', 'Evaluation'],
+  xai: ['可解释性', 'Explainability'],
+  viz: ['可视化', 'Visualization'],
+  hub: ['模型仓库', 'Model hub'],
+  pretrained: ['预训练权重', 'Pretrained weights'],
+  cli: ['命令行', 'CLI'],
+  config: ['配置管理', 'Configuration'],
+  utils: ['通用工具', 'Utilities'],
+};
+const copy = isZh
+  ? {
+      title: 'ChemAI Lab | 方绪杰',
+      lead: '面向化学研究训练的机器学习与量子化学学习型平台。当前页面描述架构方向，不把路线图写成已完成成果。',
+      architecture: '模块架构',
+      count: '个稳定模块标识',
+      boundary: '可信度边界',
+      roadmap: '学习路线',
+      profile: '回到项目区',
+    }
+  : {
+      title: 'ChemAI Lab | Xujie Fang',
+      lead: 'A learning-oriented platform for machine learning and quantum-chemistry practice. Architecture direction is separated from completed evidence.',
+      architecture: 'Module Architecture',
+      count: 'stable module IDs',
+      boundary: 'Credibility Boundary',
+      roadmap: 'Learning Roadmap',
+      profile: 'Back to projects',
+    };
+const roadmap = isZh
+  ? [
+      ['数据与化学表示', '先建立可靠的数据结构、描述符与反应条件表示。'],
+      ['模型与评估', '再训练基线模型，比较指标并记录失败条件。'],
+      ['机理与解释', '最后连接量化特征、可解释分析与实验问题。'],
+    ]
+  : [
+      [
+        'Data and chemical representation',
+        'Start with reliable data structures, descriptors, and reaction-condition encoding.',
+      ],
+      ['Models and evaluation', 'Train baselines, compare metrics, and record failure conditions.'],
+      ['Mechanism and interpretation', 'Then connect quantum features and explainability to research questions.'],
+    ];
+---
+
+<BaseLayout title={copy.title} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Python · PyTorch · RDKit</p><h1>ChemAI Lab</h1><p class="lead">{copy.lead}</p><div
+        class="hero-actions"
+      >
+        <a class="btn primary" href="https://github.com/XCmiaow/chem-ai-lab" target="_blank" rel="noopener noreferrer"
+          >GitHub</a
+        ><a class="btn" href={`${base}/profile/#projects`}>{copy.profile}</a>
+      </div>
+    </div>
+  </section>
+  <div class="container case-sections">
+    <section id="architecture">
+      <div class="section-line"><h2>{copy.architecture}</h2><span>{chemAiModuleCount} {copy.count}</span></div><div
+        class="module-grid"
+      >
+        {
+          chemAiModuleIds.map((id) => (
+            <article>
+              <>
+                <code>{id}</code>
+                <strong>{labels[id][isZh ? 0 : 1]}</strong>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="roadmap">
+      <h2>{copy.roadmap}</h2><div class="case-grid">
+        {
+          roadmap.map(([title, summary], index) => (
+            <article>
+              <>
+                <span>0{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{summary}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="credibility">
+      <h2>{copy.boundary}</h2>{project && <p>{project.summary}</p>}{
+        claim && (
+          <div class="claim">
+            <>
+              <h3>{claim.title}</h3>
+              <p>{claim.claim}</p>
+              <p>{claim.boundary}</p>
+            </>
+          </div>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .case-sections {
+    display: grid;
+    gap: 3rem;
+    padding-block: 2.5rem 5rem;
+  }
+  .section-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .module-grid,
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1rem;
+  }
+  .module-grid article,
+  .case-grid article,
+  .claim {
+    display: grid;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    padding: 1rem;
+  }
+  .module-grid code,
+  .case-grid span,
+  .eyebrow {
+    color: var(--secondary);
+  }
+</style>

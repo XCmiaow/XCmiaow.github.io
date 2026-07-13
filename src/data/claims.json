@@ -89,7 +89,7 @@
       "risk": "low",
       "evidenceIds": [],
       "materialIds": ["general-resume", "evidence-gallery", "modeling-case", "chem-ai-lab", "ai-km-case"],
-      "routes": ["/", "/en/", "/materials", "/en/materials"],
+      "routes": ["/profile", "/en/profile", "/materials", "/en/materials"],
       "zh": {
         "title": "公开作品集系统",
         "claim": "能把简历、证据、项目说明、材料入口和自动化 QA 组织成可维护的双语静态站点。",

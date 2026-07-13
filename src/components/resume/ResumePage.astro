@@ -1,0 +1,172 @@
+---
+import PrintLayout from '../../layouts/PrintLayout.astro';
+import { getResume, type ResumeVariant } from '../../lib/resumeData';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+  variant: ResumeVariant;
+}
+const { lang, variant } = Astro.props;
+const data = getResume(lang, variant);
+const isZh = lang === 'zh';
+const labels = isZh
+  ? {
+      general: '一页简历',
+      academic: '保研评优版简历',
+      career: '求职实习版简历',
+      education: '教育背景',
+      honors: '获奖与荣誉',
+      projects: '项目与实践',
+      skills: '技能专长',
+      experience: '学生工作与服务',
+      research: '研究兴趣',
+      evidence: '项公开证据',
+      provincial: '项省级以上成果',
+      abilities: '能力',
+    }
+  : {
+      general: 'One-Page Resume',
+      academic: 'Academic Resume',
+      career: 'Internship Resume',
+      education: 'Education',
+      honors: 'Awards & Honors',
+      projects: 'Projects',
+      skills: 'Skills',
+      experience: 'Leadership & Service',
+      research: 'Research Interests',
+      evidence: 'public evidence items',
+      provincial: 'provincial-or-higher achievements',
+      abilities: 'Capabilities',
+    };
+const title = `${data.person.name} · ${labels[variant]}`;
+const summary = isZh
+  ? `${data.education.major}本科生，GPA ${data.education.gpa}，班级第 ${data.education.rankClass}、专业第 ${data.education.rankMajor}。以化学与工程基础为根，持续训练数学建模、科研表达和 AI 辅助工作流。`
+  : `${data.education.major} undergraduate with GPA ${data.education.gpa}, ranked ${data.education.rankClass}st in class and ${data.education.rankMajor}nd in major. Training across chemistry, mathematical modeling, research communication, and AI-assisted workflows.`;
+const projectIds =
+  variant === 'career'
+    ? ['resume-site', 'modeling', 'chem-ai-lab']
+    : variant === 'academic'
+      ? ['modeling', 'ai-km']
+      : ['modeling', 'chem-ai-lab', 'resume-site'];
+const selectedProjects = projectIds.map((id) => data.projects.find((item) => item.id === id)).filter(Boolean);
+const levelLabel = (level: string) =>
+  isZh
+    ? ({ international: '国际', national: '国家', provincial: '省级', university: '校级', college: '院级' }[level] ??
+      level)
+    : ({ international: 'Intl.', national: 'Natl.', provincial: 'Prov.', university: 'Univ.', college: 'Coll.' }[
+        level
+      ] ?? level);
+---
+
+<PrintLayout title={title} lang={lang} variant={variant}>
+  <header class="top">
+    <div class="top-main">
+      <h1>{data.person.name}</h1><p class="sub">
+        {data.education.school} · {data.education.college} · {data.education.major}
+      </p><p class="tagline">{data.person.tagline}</p>
+    </div>
+    <div class="top-contact">
+      <span>{data.person.email}</span><span>{data.person.github}</span><span>{data.person.location}</span>
+    </div>
+  </header>
+
+  <div class="metric-strip" aria-label={labels[variant]}>
+    <div class="metric"><strong>{data.education.gpa.toFixed(2)}</strong><span>GPA</span></div>
+    <div class="metric"><strong>{data.education.rankClass}</strong><span>{isZh ? '班级排名' : 'Class rank'}</span></div>
+    <div class="metric"><strong>{data.provincialOrHigherCount}</strong><span>{labels.provincial}</span></div>
+    <div class="metric"><strong>{data.evidenceCount}</strong><span>{labels.evidence}</span></div>
+  </div>
+
+  <p class="summary">{summary}</p>
+
+  <div class="row-2">
+    <section id="education">
+      <h2>{labels.education}</h2><div class="item">
+        <div class="item-head">
+          <strong>{data.education.school} · {data.education.college}</strong><span>{data.education.period}</span>
+        </div><p>{data.education.major} · {data.education.degree} · {data.education.year}</p><p>
+          GPA {data.education.gpa.toFixed(2)} · {isZh ? '班级第' : 'Class rank'}
+          {data.education.rankClass} · {isZh ? '专业第' : 'Major rank'}
+          {data.education.rankMajor}
+        </p>
+      </div>
+    </section>
+    <section id="research"><h2>{labels.research}</h2><p class="small">{data.research.summary}</p></section>
+  </div>
+
+  <section id="honors">
+    <h2>{labels.honors}</h2><table class="honors-table">
+      <tbody
+        >{
+          data.achievements.map((item) => (
+            <tr>
+              <>
+                <td class="yr">{item.period}</td>
+                <td class="lvl">{levelLabel(item.level)}</td>
+                <td>{item.title}</td>
+              </>
+            </tr>
+          ))
+        }</tbody
+      >
+    </table>
+  </section>
+
+  <section id="projects">
+    <h2>{labels.projects}</h2>{
+      selectedProjects.map(
+        (item) =>
+          item && (
+            <div class="item">
+              <>
+                <div class="item-head">
+                  <>
+                    <strong>{item.title}</strong>
+                    <span>{item.tags.join(' · ')}</span>
+                  </>
+                </div>
+                <p class="small">{item.summary}</p>
+                <p class="small">
+                  <strong>
+                    {labels.abilities}
+                    {isZh ? '：' : ': '}
+                  </strong>
+                  {item.abilities}
+                </p>
+              </>
+            </div>
+          ),
+      )
+    }
+  </section>
+
+  <div class="row-2">
+    <section id="skills">
+      <h2>{labels.skills}</h2>{
+        data.skills.map((item) => (
+          <p class="small">
+            <strong>
+              {item.title}
+              {isZh ? '：' : ': '}
+            </strong>
+            {item.items.join(isZh ? '、' : ', ')}
+          </p>
+        ))
+      }
+    </section>
+    <section id="experience">
+      <h2>{labels.experience}</h2><ul class="tiny">
+        {
+          data.experience.map((item) => (
+            <li>
+              <b>{item.title}</b>
+              {isZh ? `（${item.period}）` : ` (${item.period}) `}
+              {item.summary}
+            </li>
+          ))
+        }{data.service.map((item) => <li>{item.summary}</li>)}
+      </ul>
+    </section>
+  </div>
+</PrintLayout>

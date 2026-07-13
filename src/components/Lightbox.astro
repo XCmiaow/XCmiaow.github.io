@@ -1,171 +1,201 @@
 ---
-const imgs: string[] = Astro.props.images;
+interface LightboxItem {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  items: LightboxItem[];
+  label: string;
+  closeLabel: string;
+  previousLabel: string;
+  nextLabel: string;
+}
+
+const { items, label, closeLabel, previousLabel, nextLabel } = Astro.props;
 const fallbackSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
 ---
 
-<div class="lightbox-overlay" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lb-close" aria-label="Close">✕</button>
-  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous">‹</button>
-  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next">›</button>
+<dialog class="lightbox" id="lightbox" aria-label={label}>
+  <button class="lightbox-close" id="lb-close" type="button" aria-label={closeLabel}>✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" type="button" aria-label={previousLabel}>‹</button>
+  <button class="lightbox-nav lightbox-next" id="lb-next" type="button" aria-label={nextLabel}>›</button>
   <div class="lightbox-image-wrap">
     <img id="lb-img" src={fallbackSrc} alt="" />
   </div>
-  <div class="lightbox-counter" id="lb-counter"></div>
-</div>
+  <div class="lightbox-counter" id="lb-counter" role="status" aria-live="polite"></div>
+</dialog>
 
-<script define:vars={{ imgs }}>
+<div id="lightbox-items" data-items={serializedItems} hidden></div>
+
+<script>
   (function () {
-    var overlay = document.getElementById('lightbox');
-    var img = document.getElementById('lb-img');
-    var close = document.getElementById('lb-close');
-    var prevBtn = document.getElementById('lb-prev');
-    var nextBtn = document.getElementById('lb-next');
-    var counter = document.getElementById('lb-counter');
-    if (!overlay || !img || !close || !prevBtn || !nextBtn || !counter) return;
+    const config = document.getElementById('lightbox-items');
+    const dialog = document.getElementById('lightbox');
+    const img = document.getElementById('lb-img');
+    const closeButton = document.getElementById('lb-close');
+    const previousButton = document.getElementById('lb-prev');
+    const nextButton = document.getElementById('lb-next');
+    const counter = document.getElementById('lb-counter');
+    if (
+      !config ||
+      !(dialog instanceof HTMLDialogElement) ||
+      !(img instanceof HTMLImageElement) ||
+      !(closeButton instanceof HTMLButtonElement) ||
+      !(previousButton instanceof HTMLButtonElement) ||
+      !(nextButton instanceof HTMLButtonElement) ||
+      !(counter instanceof HTMLElement)
+    )
+      return;
 
-    var currentIdx = 0;
+    const items: Array<{ src: string; alt: string }> = JSON.parse(config.getAttribute('data-items') ?? '[]');
+    if (items.length === 0) return;
+    const lightbox = dialog;
+    const lightboxImage = img;
+    const lightboxClose = closeButton;
+    const lightboxPrevious = previousButton;
+    const lightboxNext = nextButton;
+    const lightboxCounter = counter;
 
-    function open(idx) {
-      currentIdx = idx;
-      img.src = imgs[currentIdx];
-      overlay.setAttribute('aria-hidden', 'false');
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      updateCounter();
+    let currentIndex = 0;
+    let opener: HTMLAnchorElement | null = null;
+
+    function renderCurrent() {
+      const item = items[currentIndex] ?? items[0]!;
+      lightboxImage.classList.remove('lb-fade');
+      lightboxImage.src = item.src;
+      lightboxImage.alt = item.alt;
+      lightboxCounter.textContent = `${currentIndex + 1} / ${items.length}`;
+      void lightboxImage.offsetWidth;
+      lightboxImage.classList.add('lb-fade');
     }
 
-    function closeLB() {
-      overlay.classList.remove('active');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+    function openLightbox(index: number, anchor: HTMLAnchorElement) {
+      currentIndex = index;
+      opener = anchor;
+      renderCurrent();
+      lightbox.showModal();
+      lightboxClose.focus();
     }
 
-    function go(step) {
-      currentIdx = (currentIdx + step + imgs.length) % imgs.length;
-      img.classList.remove('lb-fade');
-      img.src = imgs[currentIdx];
-      updateCounter();
-      void img.offsetWidth;
-      img.classList.add('lb-fade');
+    function closeLightbox() {
+      if (lightbox.open) lightbox.close();
     }
 
-    function updateCounter() {
-      counter.textContent = currentIdx + 1 + ' / ' + imgs.length;
+    function go(step: number) {
+      currentIndex = (currentIndex + step + items.length) % items.length;
+      renderCurrent();
     }
 
-    document.querySelectorAll('a.cert-card').forEach(function (anchor, i) {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        open(i);
+    document.querySelectorAll<HTMLAnchorElement>('a.cert-card').forEach(function (anchor, index) {
+      anchor.addEventListener('click', function (event) {
+        event.preventDefault();
+        openLightbox(index, anchor);
       });
     });
 
-    // Touch swipe support
-    var touchX = 0;
-    overlay.addEventListener('touchstart', function (e) {
-      touchX = e.touches[0].clientX;
+    let touchX = 0;
+    lightbox.addEventListener('touchstart', function (event) {
+      touchX = event.touches[0]?.clientX ?? 0;
     });
-    overlay.addEventListener('touchend', function (e) {
-      var diff = touchX - e.changedTouches[0].clientX;
+    lightbox.addEventListener('touchend', function (event) {
+      const diff = touchX - (event.changedTouches[0]?.clientX ?? touchX);
       if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1);
     });
 
-    close.addEventListener('click', closeLB);
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeLB();
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrevious.addEventListener('click', () => go(-1));
+    lightboxNext.addEventListener('click', () => go(1));
+    lightbox.addEventListener('click', function (event) {
+      if (event.target === lightbox) closeLightbox();
     });
-    prevBtn.addEventListener('click', function () {
-      go(-1);
+    lightbox.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') go(-1);
+      if (event.key === 'ArrowRight') go(1);
     });
-    nextBtn.addEventListener('click', function () {
-      go(1);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (!overlay.classList.contains('active')) return;
-      if (e.key === 'Escape') closeLB();
-      if (e.key === 'ArrowLeft') go(-1);
-      if (e.key === 'ArrowRight') go(1);
+    lightbox.addEventListener('close', function () {
+      opener?.focus();
+      opener = null;
     });
   })();
 </script>
 
 <style>
-  .lightbox-overlay {
+  .lightbox {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(0, 0, 0, 0.85);
+    width: 100vw;
+    max-width: none;
+    height: 100vh;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.88);
+    color: #fff;
+  }
+  .lightbox[open] {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
   }
-  .lightbox-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
+  .lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.88);
   }
   .lightbox-image-wrap {
+    display: flex;
     max-width: 90vw;
     max-height: 90vh;
-    display: flex;
     align-items: center;
     justify-content: center;
   }
   .lightbox-image-wrap img {
     max-width: 100%;
     max-height: 90vh;
-    object-fit: contain;
     border-radius: 4px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
     opacity: 0;
     transition: opacity 0.2s ease;
   }
   .lightbox-image-wrap img.lb-fade {
     opacity: 1;
   }
-  .lightbox-overlay.active .lightbox-image-wrap img {
-    opacity: 1;
-  }
-  .lightbox-close {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 28px;
-    cursor: pointer;
-    width: 44px;
-    height: 44px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    z-index: 1;
-  }
-  .lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
+  .lightbox-close,
   .lightbox-nav {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
+    z-index: 1;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
     color: #fff;
-    font-size: 42px;
     cursor: pointer;
+  }
+  .lightbox-close:hover,
+  .lightbox-nav:hover,
+  .lightbox-close:focus-visible,
+  .lightbox-nav:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  .lightbox-close {
+    top: 16px;
+    right: 20px;
+    font-size: 28px;
+  }
+  .lightbox-nav {
+    top: 50%;
     width: 56px;
     height: 56px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    transition: background 0.2s;
-    z-index: 1;
-  }
-  .lightbox-nav:hover {
-    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-50%);
+    font-size: 42px;
   }
   .lightbox-prev {
     left: 16px;
@@ -178,15 +208,14 @@ const fallbackSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABA
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.78);
     font-size: 14px;
-    font-family: 'Inter', sans-serif;
   }
   @media (max-width: 640px) {
     .lightbox-nav {
-      font-size: 28px;
       width: 44px;
       height: 44px;
+      font-size: 28px;
     }
     .lightbox-prev {
       left: 4px;
@@ -197,6 +226,11 @@ const fallbackSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABA
     .lightbox-close {
       top: 8px;
       right: 10px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox-image-wrap img {
+      transition: none;
     }
   }
 </style>

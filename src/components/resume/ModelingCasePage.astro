@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getClaims, getEvidence, getProfile } from '../../lib/resumeData';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const base = isZh ? '' : '/en';
+const profile = getProfile(lang);
+const claim = getClaims(lang).find((item) => item.id === 'modeling-practice');
+const evidence = getEvidence(lang).filter((item) => claim?.evidenceIds.includes(item.id));
+const steps = isZh
+  ? [
+      ['定义问题', '把现实描述转成目标、变量、约束与可验证标准。'],
+      ['建立模型', '明确假设，选择能解释问题且复杂度合适的模型。'],
+      ['验证表达', '检查敏感性和边界，把过程写成可审核的论证。'],
+    ]
+  : [
+      [
+        'Frame the problem',
+        'Turn a real-world prompt into objectives, variables, constraints, and acceptance criteria.',
+      ],
+      ['Build the model', 'State assumptions and choose a model whose complexity matches the question.'],
+      ['Validate and communicate', 'Check sensitivity and boundaries, then present an auditable argument.'],
+    ];
+const copy = isZh
+  ? {
+      title: '数学建模实践 | 方绪杰',
+      h1: '数学建模实践',
+      lead: '奖项是可核验结果；真正可迁移的是问题定义、假设、分析和表达的方法。',
+      method: '工作方法',
+      evidence: '证据链',
+      boundary: '公开边界',
+      profile: '回到项目区',
+    }
+  : {
+      title: 'Mathematical Modeling Practice | Xujie Fang',
+      h1: 'Mathematical Modeling Practice',
+      lead: 'Awards are verifiable outcomes; the transferable value is a method for framing, modeling, validating, and communicating.',
+      method: 'Working Method',
+      evidence: 'Evidence Chain',
+      boundary: 'Public Boundary',
+      profile: 'Back to projects',
+    };
+---
+
+<BaseLayout title={copy.title} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">CUMCM · MCM/ICM · MathorCup</p><h1>{copy.h1}</h1><p class="lead">{copy.lead}</p><a
+        class="btn"
+        href={`${base}/profile/#projects`}>{copy.profile}</a
+      >
+    </div>
+  </section>
+  <div class="container case-sections">
+    <section id="method">
+      <h2>{copy.method}</h2><div class="case-grid">
+        {
+          steps.map(([title, summary], index) => (
+            <article>
+              <>
+                <span>0{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{summary}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="evidence">
+      <h2>{copy.evidence}</h2>{
+        claim && (
+          <div class="claim">
+            <>
+              <h3>{claim.title}</h3>
+              <p>{claim.claim}</p>
+              <p>
+                <strong>{copy.boundary}：</strong>
+                {claim.boundary}
+              </p>
+            </>
+          </div>
+        )
+      }<div class="case-grid">
+        {
+          evidence.map((item) => (
+            <article>
+              <>
+                <p class="eyebrow">
+                  {item.year} · {item.level}
+                </p>
+                <h3>{item.title}</h3>
+                <p>{item.claim}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="related">
+      <h2>{isZh ? '相关项目' : 'Related Projects'}</h2><div class="case-grid">
+        {
+          profile.projects
+            .filter((item) => ['ai-km', 'chem-ai-lab'].includes(item.id))
+            .map((item) => (
+              <article>
+                <>
+                  <h3>
+                    <a href={item.href}>{item.title}</a>
+                  </h3>
+                  <p>{item.summary}</p>
+                </>
+              </article>
+            ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .case-sections {
+    display: grid;
+    gap: 3rem;
+    padding-block: 2.5rem 5rem;
+  }
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+  }
+  .case-grid article,
+  .claim {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    padding: 1.25rem;
+  }
+  .case-grid span,
+  .eyebrow {
+    color: var(--secondary);
+    font-size: 0.85rem;
+  }
+</style>

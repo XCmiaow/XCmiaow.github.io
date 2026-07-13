@@ -37,67 +37,84 @@
   ],
   "competitions": [
     {
+      "id": "mcm-2026-honorable-mention",
       "year": "2026",
       "level": "international",
       "title": "MCM/ICM Honorable Mention (H Award)",
       "note": "International math modeling competition"
     },
     {
+      "id": "mcm-2025-honorable-mention",
       "year": "2025",
       "level": "international",
       "title": "MCM/ICM Honorable Mention (H Award)",
       "note": "International math modeling competition"
     },
     {
+      "id": "national-inspirational-scholarship-2025",
       "year": "2024-2025",
       "level": "national",
       "title": "National Inspirational Scholarship",
       "note": "National-level scholarship"
     },
     {
+      "id": "cumcm-2024-jiangsu-first",
       "year": "2024",
       "level": "provincial",
       "title": "CUMCM Jiangsu Provincial First Prize",
       "note": "Core math modeling achievement"
     },
     {
+      "id": "math-competition-2025-third",
       "year": "2025",
       "level": "provincial",
       "title": "Jiangsu Advanced Mathematics Competition, 3rd Prize (A-level)",
       "note": "Mathematics proficiency"
     },
     {
+      "id": "mathorcup-2025-second",
       "year": "2025",
       "level": "provincial",
       "title": "MathorCup Math Modeling Challenge, Regional 2nd Prize",
       "note": "Math modeling event"
     },
     {
+      "id": "chemistry-olympiad-2023",
       "year": "2023",
       "level": "provincial",
       "title": "37th China Chemistry Olympiad (Preliminary), 2nd Prize",
       "note": "Chemistry foundation"
     },
     {
+      "id": "chemistry-olympiad-2022",
       "year": "2022",
       "level": "provincial",
       "title": "36th China Chemistry Olympiad (Jiangsu), 2nd Prize",
       "note": "Chemistry foundation"
     },
-    { "year": "2024-2025", "level": "school", "title": "University Merit Student", "note": "Comprehensive honor" },
     {
+      "id": "three-good-student-2025",
+      "year": "2024-2025",
+      "level": "school",
+      "title": "University Merit Student",
+      "note": "Comprehensive honor"
+    },
+    {
+      "id": "academic-competition-individual-2025",
       "year": "2024-2025",
       "level": "school",
       "title": "Academic Competition Outstanding Individual",
       "note": "Competition recognition"
     },
     {
+      "id": "volleyball-freshman-2024-second",
       "year": "2024",
       "level": "school",
       "title": "Baima Campus Freshman Volleyball Cup, Runner-up",
       "note": "Campus sports"
     },
     {
+      "id": "debate-second-2024",
       "year": "2024",
       "level": "college",
       "title": "College Freshman Debate, Runner-up",
@@ -106,21 +123,25 @@
   ],
   "skills": [
     {
+      "id": "discipline",
       "category": "Core Discipline",
       "desc": "Organic chemistry mechanisms and chemical engineering fundamentals.",
       "items": ["Organic Chemistry", "Clayden", "March", "Disconnection Approach"]
     },
     {
+      "id": "modeling-research",
       "category": "Modeling & Research",
       "desc": "Mathematical modeling, scientific writing, and data visualization.",
       "items": ["Math Modeling", "Python", "Markdown", "LaTeX", "Origin"]
     },
     {
+      "id": "development-productivity",
       "category": "Dev & Productivity",
       "desc": "Frontend fundamentals and AI-assisted development workflows.",
       "items": ["HTML", "CSS", "JavaScript", "React", "VS Code", "Codex"]
     },
     {
+      "id": "engineering-knowledge",
       "category": "Engineering & KM",
       "desc": "Office, drawing, simulation, and reference management tools.",
       "items": ["Office/WPS", "Axglyph", "AutoCAD", "Aspen Plus", "Zotero", "Obsidian"]
@@ -149,44 +170,56 @@
     {
       "id": "chem-ai-lab",
       "title": "ChemAI Lab",
-      "desc": "A machine learning & quantum chemistry driven chemical research platform. Integrates RDKit, PyTorch, Lightning across 16 subpackages for data, features, modeling, XAI, and QM interfaces.",
+      "desc": "A machine learning & quantum chemistry driven chemical research platform. Integrates RDKit, PyTorch, Lightning across 15 subpackages for data, features, modeling, XAI, and QM interfaces.",
       "abilities": "Python, PyTorch, RDKit, ML Engineering, Project Architecture"
     }
   ],
   "experience": [
     {
+      "id": "class-academic-representative",
       "period": "2024.09 - 2025.06",
       "title": "Class Academic Representative",
       "desc": "Responsible for assignment collection and distribution, academic affairs coordination, and supporting course instructors."
     },
     {
+      "id": "teaching-information-liaison",
       "period": "2024.09 - 2025.06",
       "title": "Teaching Information Liaison",
       "desc": "Responsible for communicating teaching information, collecting course feedback, and facilitating student-teacher communication."
     }
   ],
   "volunteer": [
-    "2024: Primary organizer of the 1st Baima Campus Freshman Volleyball Cup",
-    "2025: Participated in the 'Card House' volunteer service activity",
-    "2025: Participated in the Red Cross voluntary blood donation activity"
+    {
+      "id": "volleyball-organizer-2024",
+      "summary": "2024: Primary organizer of the 1st Baima Campus Freshman Volleyball Cup"
+    },
+    {
+      "id": "card-house-volunteer-2024",
+      "summary": "2024: Participated in the 'Card House' volunteer service activity"
+    },
+    { "id": "blood-donation-2025", "summary": "2025: Participated in the Red Cross voluntary blood donation activity" }
   ],
   "researchInterests": {
     "tagline": "Organic chemistry as the foundation, computational tools as the extension",
     "summary": "My current academic interest starts from organic reaction mechanisms and synthetic strategy, then extends toward computational chemistry and AI-assisted research workflows. I am still at an early undergraduate stage, so I treat this direction as a long-term training path: build a solid chemistry foundation first, then learn modeling, programming, and literature workflows that can support future research.",
     "areas": [
       {
+        "id": "organic-synthesis",
         "name": "Organic Synthesis Methodology",
         "note": "Ongoing study of Clayden, March, and related texts, with focus on synthetic strategy and reaction mechanisms"
       },
       {
+        "id": "computational-chemistry",
         "name": "Computational Chemistry / AI-Assisted Synthesis",
         "note": "Long-term interest in reaction prediction, retrosynthetic planning, and molecular property prediction"
       },
       {
+        "id": "agent-workflows",
         "name": "LLMs + Agent Workflows",
         "note": "Exploring how LLMs can support literature retrieval, reading notes, and research knowledge management"
       },
       {
+        "id": "deep-learning",
         "name": "Deep Learning Fundamentals",
         "note": "Studying neural network basics, with interest in graph neural networks for molecular representation learning"
       }

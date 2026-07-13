@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getClaims, getMaterials, getProfile } from '../../lib/resumeData';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const base = isZh ? '' : '/en';
+const project = getProfile(lang).projects.find((item) => item.id === 'ai-km');
+const claim = getClaims(lang).find((item) => item.id === 'research-workflow');
+const material = getMaterials(lang).find((item) => item.id === 'ai-km-case');
+const steps = isZh
+  ? [
+      ['收集', '保存来源、元数据和阅读目的，不把原始文件直接丢进无结构目录。'],
+      ['理解', '先形成自己的问题清单，再用 AI 辅助解释、对比与反例检查。'],
+      ['连接', '把稳定概念写成可链接笔记，记录证据与不确定性。'],
+      ['输出', '围绕课程、建模或研究任务生成可追溯的提纲、图表与复盘。'],
+    ]
+  : [
+      ['Capture', 'Keep sources, metadata, and reading intent instead of dropping files into an unstructured folder.'],
+      ['Understand', 'Form questions first, then use AI for explanation, comparison, and counterexample checks.'],
+      ['Connect', 'Write stable linked notes with evidence and uncertainty.'],
+      ['Deliver', 'Produce traceable outlines, figures, and reviews for coursework, modeling, or research tasks.'],
+    ];
+const copy = isZh
+  ? {
+      title: 'AI-KM 科研学习工作流 | 方绪杰',
+      h1: 'AI-KM 科研学习工作流',
+      lead: 'AI 不是替代判断的答案机，而是文献管理、知识连接和科研表达中的受控助手。',
+      workflow: '工作流',
+      matrix: '声明与边界',
+      material: '材料状态',
+      profile: '回到项目区',
+      boundary: '公开边界',
+    }
+  : {
+      title: 'AI-KM Research Workflow | Xujie Fang',
+      h1: 'AI-KM Research Workflow',
+      lead: 'AI is treated as a controlled assistant for literature management, knowledge connections, and research communication—not a substitute for judgment.',
+      workflow: 'Workflow',
+      matrix: 'Claims and Boundaries',
+      material: 'Material Status',
+      profile: 'Back to projects',
+      boundary: 'Public boundary',
+    };
+---
+
+<BaseLayout title={copy.title} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">AI · Zotero · Obsidian · Markdown · LaTeX</p><h1>{copy.h1}</h1><p class="lead">
+        {copy.lead}
+      </p><a class="btn" href={`${base}/profile/#projects`}>{copy.profile}</a>
+    </div>
+  </section>
+  <div class="container workflow-sections">
+    <section id="workflow">
+      <h2>{copy.workflow}</h2><div class="step-grid">
+        {
+          steps.map(([title, summary], index) => (
+            <article>
+              <>
+                <span>0{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{summary}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="claim-matrix">
+      <h2>{copy.matrix}</h2>{
+        claim && (
+          <article class="claim">
+            <>
+              <h3>{claim.title}</h3>
+              <p>{claim.claim}</p>
+              <p>
+                <strong>{copy.boundary}：</strong>
+                {claim.boundary}
+              </p>
+            </>
+          </article>
+        )
+      }
+    </section>
+    <section id="material">
+      <h2>{copy.material}</h2>{project && <p>{project.summary}</p>}{
+        material && (
+          <article class="claim">
+            <>
+              <h3>{material.title}</h3>
+              <p>{material.summary}</p>
+              <p>
+                {material.statusLabel} · {material.lastReviewed}
+              </p>
+            </>
+          </article>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .workflow-sections {
+    display: grid;
+    gap: 3rem;
+    padding-block: 2.5rem 5rem;
+  }
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .step-grid article,
+  .claim {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    padding: 1.25rem;
+  }
+  .step-grid span,
+  .eyebrow {
+    color: var(--secondary);
+  }
+</style>

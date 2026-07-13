@@ -21,70 +21,111 @@
   ],
   "competitions": [
     {
+      "id": "mcm-2026-honorable-mention",
       "year": "2026",
       "level": "international",
       "title": "美国大学生数学建模竞赛 MCM/ICM H 奖",
       "note": "国际级数学建模竞赛"
     },
     {
+      "id": "mcm-2025-honorable-mention",
       "year": "2025",
       "level": "international",
       "title": "美国大学生数学建模竞赛 MCM/ICM H 奖",
       "note": "国际级数学建模竞赛"
     },
-    { "year": "2024-2025", "level": "national", "title": "国家励志奖学金", "note": "国家级奖学金" },
     {
+      "id": "national-inspirational-scholarship-2025",
+      "year": "2024-2025",
+      "level": "national",
+      "title": "国家励志奖学金",
+      "note": "国家级奖学金"
+    },
+    {
+      "id": "cumcm-2024-jiangsu-first",
       "year": "2024",
       "level": "provincial",
       "title": "全国大学生数学建模竞赛 江苏省一等奖",
       "note": "数学建模核心奖项"
     },
     {
+      "id": "math-competition-2025-third",
       "year": "2025",
       "level": "provincial",
       "title": "第二十二届江苏省高等数学竞赛 本科一级 A 类三等奖",
       "note": "数学基础能力证明"
     },
     {
+      "id": "mathorcup-2025-second",
       "year": "2025",
       "level": "provincial",
       "title": "MathorCup 高校数学建模挑战赛 区域赛二等奖",
       "note": "数学建模赛事"
     },
     {
+      "id": "chemistry-olympiad-2023",
       "year": "2023",
       "level": "provincial",
       "title": "第 37 届中国化学奥林匹克（初赛）二等奖",
       "note": "化学学科基础证明"
     },
     {
+      "id": "chemistry-olympiad-2022",
       "year": "2022",
       "level": "provincial",
       "title": "第 36 届中国化学奥林匹克竞赛（江苏赛区）二等奖",
       "note": "化学学科基础证明"
     },
-    { "year": "2024-2025", "level": "school", "title": "校三好学生", "note": "综合素质荣誉" },
-    { "year": "2024-2025", "level": "school", "title": "大学生学科竞赛先进个人", "note": "学科竞赛荣誉" },
-    { "year": "2024", "level": "school", "title": "白马校区第一届排球新生杯 亚军", "note": "校园文体活动" },
-    { "year": "2024", "level": "college", "title": "材料院辩论赛新生杯 亚军", "note": "表达与团队协作" }
+    {
+      "id": "three-good-student-2025",
+      "year": "2024-2025",
+      "level": "school",
+      "title": "校三好学生",
+      "note": "综合素质荣誉"
+    },
+    {
+      "id": "academic-competition-individual-2025",
+      "year": "2024-2025",
+      "level": "school",
+      "title": "大学生学科竞赛先进个人",
+      "note": "学科竞赛荣誉"
+    },
+    {
+      "id": "volleyball-freshman-2024-second",
+      "year": "2024",
+      "level": "school",
+      "title": "白马校区第一届排球新生杯 亚军",
+      "note": "校园文体活动"
+    },
+    {
+      "id": "debate-second-2024",
+      "year": "2024",
+      "level": "college",
+      "title": "材料院辩论赛新生杯 亚军",
+      "note": "表达与团队协作"
+    }
   ],
   "skills": [
     {
+      "id": "discipline",
       "category": "专业基础",
       "desc": "熟悉有机化学机理与林产化工基础。",
       "items": ["有机化学机理", "Clayden", "March", "有机合成切断法"]
     },
     {
+      "id": "modeling-research",
       "category": "建模与科研表达",
       "desc": "熟悉数学建模、文档写作与结果可视化。",
       "items": ["数学建模", "Python", "Markdown", "LaTeX", "Origin"]
     },
     {
+      "id": "development-productivity",
       "category": "开发与效率工具",
       "desc": "掌握前端基础，持续学习 AI 辅助开发流程。",
       "items": ["HTML", "CSS", "JavaScript", "React", "VS Code", "Codex"]
     },
     {
+      "id": "engineering-knowledge",
       "category": "工程与知识管理",
       "desc": "熟悉常用办公、绘图、仿真与文献管理工具。",
       "items": ["Office/WPS", "Axglyph", "AutoCAD", "Aspen Plus", "Zotero", "Obsidian"]
@@ -113,31 +154,53 @@
     {
       "id": "chem-ai-lab",
       "title": "ChemAI Lab",
-      "desc": "机器学习与量子化学驱动的化学研究平台。整合 RDKit、PyTorch、Lightning，16 个子模块覆盖数据、特征工程、模型训练、可解释性分析与量子化学接口。",
+      "desc": "机器学习与量子化学驱动的化学研究平台。整合 RDKit、PyTorch、Lightning，15 个子模块覆盖数据、特征工程、模型训练、可解释性分析与量子化学接口。",
       "abilities": "Python、PyTorch、RDKit、ML 工程化、项目架构"
     }
   ],
   "experience": [
     {
+      "id": "class-academic-representative",
       "period": "2024.09 - 2025.06",
       "title": "班级学习委员",
       "desc": "负责课程作业收发、学习事务协调，并配合任课教师开展教学相关工作。"
     },
-    { "period": "2024.09 - 2025.06", "title": "教学信息员", "desc": "负责教学信息传达、课程反馈收集与师生沟通。" }
+    {
+      "id": "teaching-information-liaison",
+      "period": "2024.09 - 2025.06",
+      "title": "教学信息员",
+      "desc": "负责教学信息传达、课程反馈收集与师生沟通。"
+    }
   ],
   "volunteer": [
-    "2024 年 白马校区第一届排球新生杯第一组织责任人",
-    "2025 年 参与材料院'纸牌搭屋'志愿服务活动",
-    "2025 年 参与红十字会无偿献血活动"
+    { "id": "volleyball-organizer-2024", "summary": "2024 年 白马校区第一届排球新生杯第一组织责任人" },
+    { "id": "card-house-volunteer-2024", "summary": "2024 年 参与材料院'纸牌搭屋'志愿服务活动" },
+    { "id": "blood-donation-2025", "summary": "2025 年 参与红十字会无偿献血活动" }
   ],
   "researchInterests": {
     "tagline": "有机化学为根基、计算工具为延伸、AI 为杠杆",
     "summary": "我对有机合成方法学有持续的学术兴趣，同时关注 LLM、Agent 工作流和深度学习在化学中的应用。长期目标是将化工专业基础与计算/AI 能力结合，探索计算化学和 AI 辅助有机合成这一交叉方向。",
     "areas": [
-      { "name": "有机合成方法学", "note": "本科阶段持续阅读 Clayden、March 等经典教材，关注合成策略与反应机理" },
-      { "name": "计算化学 / AI 辅助有机合成", "note": "核心兴趣方向，关注反应预测、路线规划、分子性质预测等交叉课题" },
-      { "name": "LLM + Agent Workflow", "note": "探索大语言模型在文献检索、实验方案生成、科研知识管理中的落地可能" },
-      { "name": "深度学习基础", "note": "学习神经网络基础，关注图神经网络在分子表示学习中的应用" }
+      {
+        "id": "organic-synthesis",
+        "name": "有机合成方法学",
+        "note": "本科阶段持续阅读 Clayden、March 等经典教材，关注合成策略与反应机理"
+      },
+      {
+        "id": "computational-chemistry",
+        "name": "计算化学 / AI 辅助有机合成",
+        "note": "核心兴趣方向，关注反应预测、路线规划、分子性质预测等交叉课题"
+      },
+      {
+        "id": "agent-workflows",
+        "name": "LLM + Agent Workflow",
+        "note": "探索大语言模型在文献检索、实验方案生成、科研知识管理中的落地可能"
+      },
+      {
+        "id": "deep-learning",
+        "name": "深度学习基础",
+        "note": "学习神经网络基础，关注图神经网络在分子表示学习中的应用"
+      }
     ]
   }
 }

@@ -1,4 +1,6 @@
 ---
+import DocumentLayout from './DocumentLayout.astro';
+
 export interface Props {
   title: string;
   lang: 'zh' | 'en';
@@ -22,513 +24,524 @@ const publicVariantLabels = {
   career: variantLabels.career,
 };
 const variantItems = Object.entries(publicVariantLabels) as Array<[keyof typeof publicVariantLabels, string]>;
+const canonicalPath = variantRoutes[variant][lang];
+const alternatePath = variantRoutes[variant][isZh ? 'en' : 'zh'];
 ---
 
-<!doctype html>
-<html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <link rel="stylesheet" href="/styles/site.css" />
-  </head>
-  <body class="a4-page">
-    <div class="toolbar no-print">
-      <div class="ls">
-        <a href={variantRoutes[variant].zh} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
-        <span class="ls-sep">|</span>
-        <a href={variantRoutes[variant].en} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
-      </div>
-      <div class="variant-switch" aria-label={isZh ? '简历版本' : 'Resume versions'}>
-        {
-          variantItems.map(([key, label]) => (
-            <a href={variantRoutes[key][lang]} class:list={[{ active: key === variant }]}>
-              {label}
-            </a>
-          ))
-        }
-      </div>
-      <a href={isZh ? '/' : '/en/'} class="btn">← {isZh ? '返回主页' : 'Back home'}</a>
-      <button class="btn primary" onclick="window.print()">{isZh ? '打印 / 保存 PDF' : 'Print / Save PDF'}</button>
+<DocumentLayout
+  {lang}
+  {title}
+  description={isZh
+    ? '方绪杰公开脱敏简历，可打印或保存为 PDF。'
+    : 'Public sanitized resume for printing or PDF export.'}
+  {canonicalPath}
+  {alternatePath}
+  bodyClass="a4-page"
+>
+  <div class="toolbar no-print">
+    <div class="ls">
+      <a href={variantRoutes[variant].zh} data-lang="zh" class:list={[{ active: isZh }]}>中文</a>
+      <span class="ls-sep">|</span>
+      <a href={variantRoutes[variant].en} data-lang="en" class:list={[{ active: !isZh }]}>EN</a>
     </div>
+    <div class="variant-switch" aria-label={isZh ? '简历版本' : 'Resume versions'}>
+      {
+        variantItems.map(([key, label]) => (
+          <a href={variantRoutes[key][lang]} class:list={[{ active: key === variant }]}>
+            {label}
+          </a>
+        ))
+      }
+    </div>
+    <a href={isZh ? '/profile/' : '/en/profile/'} class="btn">← {isZh ? '返回主页' : 'Back home'}</a>
+    <button class="btn primary" type="button" data-print-resume>{isZh ? '打印 / 保存 PDF' : 'Print / Save PDF'}</button>
+  </div>
 
-    <article class:list={['sheet', `sheet-${variant}`]}>
-      <slot />
-    </article>
+  <main class:list={['sheet', `sheet-${variant}`]}>
+    <slot />
+  </main>
 
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+  <script>
+    document.querySelector('[data-print-resume]')?.addEventListener('click', () => window.print());
+  </script>
+
+  <style is:global>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body.a4-page {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #e8e8e8;
+      color: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    .btn {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(47, 81, 104, 0.18);
+      border-radius: 8px;
+      background: #fff;
+      color: #2f5168;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0 12px;
+      transition:
+        transform 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
+    }
+    .btn:hover {
+      background: #f7f3e6;
+      border-color: rgba(201, 162, 39, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    .btn:focus-visible,
+    .ls a:focus-visible {
+      outline: 2px solid #c9a227;
+      outline-offset: 2px;
+    }
+    .btn.primary {
+      background: #2f5168;
+      border-color: #2f5168;
+      color: #fff;
+    }
+    .ls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+    }
+    .variant-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 12px;
+      border-left: 1px solid #e2dcc9;
+      font-size: 13px;
+    }
+    .ls a {
+      display: inline-flex;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      text-decoration: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .variant-switch a {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: #566;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .ls a.active {
+      color: #1a1a1a;
+      background: #e8e4d4;
+    }
+    .variant-switch a.active {
+      background: #102a43;
+      color: #fff;
+    }
+    .ls-sep {
+      color: #ddd;
+      margin: 0 2px;
+    }
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      padding: 17mm 18mm 16mm;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    }
+    .sheet section {
+      padding: 0;
+    }
+    .sheet h1 {
+      font-size: 24pt;
+      font-weight: 800;
+    }
+    .sheet h2 {
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #2f5168;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1.5pt solid #c9a227;
+      padding-bottom: 2pt;
+      margin: 9pt 0 4pt 0;
+    }
+    .sheet p,
+    .sheet li {
+      font-size: 9pt;
+      line-height: 1.32;
+      color: #333;
+    }
+    .sheet .small {
+      font-size: 8.5pt;
+    }
+    .sheet .tiny {
+      font-size: 8pt;
+      padding-left: 14px;
+    }
+    .sheet .tiny li {
+      margin-bottom: 1.5pt;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 7pt;
+    }
+    .top-main h1 {
+      margin-bottom: 1.5pt;
+    }
+    .top-main .sub {
+      font-size: 9pt;
+      color: #555;
+    }
+    .top-contact {
+      display: grid;
+      gap: 0.5pt;
+      font-size: 8.5pt;
+      color: #555;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6pt;
+      margin: 6pt 0 8pt;
+    }
+    .metric {
+      border-left: 2pt solid #c9a227;
+      background: #f7f5ef;
+      padding: 5pt 6pt;
+    }
+    .metric strong {
+      display: block;
+      color: #102a43;
+      font-size: 12pt;
+      line-height: 1;
+    }
+    .metric span {
+      color: #555;
+      font-size: 7.4pt;
+      font-weight: 700;
+    }
+    .summary {
+      font-size: 9pt;
+      line-height: 1.35;
+      margin-bottom: 8pt;
+    }
+    .tagline {
+      color: #2f5168;
+      font-size: 8.5pt;
+      font-weight: 750;
+      margin: 1pt 0 0;
+    }
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .row-2.tight {
+      gap: 6px;
+    }
+    .row-2 ul {
+      padding-left: 14px;
+    }
+    .row-2 li {
+      font-size: 8.5pt;
+      margin-bottom: 1.5pt;
+    }
+    .item {
+      margin-bottom: 5pt;
+    }
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1pt;
+    }
+    .item-head strong {
+      font-size: 9pt;
+    }
+    .item-head span {
+      font-size: 8pt;
+      color: #888;
+    }
+    .keyword-line {
+      color: #555;
+      font-size: 8.2pt;
+      margin-top: 2pt;
+    }
+    .compact-list {
+      padding-left: 14px;
+    }
+    .compact-list li {
+      margin-bottom: 1.5pt;
+    }
+    @media screen and (max-width: 840px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
       }
       body.a4-page {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        background: #e8e8e8;
-        color: #1a1a1a;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 24px;
+        display: block;
+        align-items: stretch;
+        padding: 12px;
+        background: #f2f2f2;
       }
       .toolbar {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 20px;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 10px 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-      }
-      .btn {
-        display: inline-flex;
-        min-height: 36px;
-        align-items: center;
+        position: static;
+        flex-wrap: wrap;
         justify-content: center;
-        border: 1px solid rgba(47, 81, 104, 0.18);
-        border-radius: 8px;
-        background: #fff;
-        color: #2f5168;
-        font: inherit;
-        font-size: 13px;
-        font-weight: 750;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 0 12px;
-        transition:
-          transform 180ms ease,
-          background 180ms ease,
-          border-color 180ms ease;
-      }
-      .btn:hover {
-        background: #f7f3e6;
-        border-color: rgba(201, 162, 39, 0.35);
-        transform: translateY(-1px);
-      }
-      .btn:active {
-        transform: translateY(0);
-      }
-      .btn:focus-visible,
-      .ls a:focus-visible {
-        outline: 2px solid #c9a227;
-        outline-offset: 2px;
-      }
-      .btn.primary {
-        background: #2f5168;
-        border-color: #2f5168;
-        color: #fff;
-      }
-      .ls {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 13px;
+        width: 100%;
+        padding: 10px 12px;
       }
       .variant-switch {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding-left: 12px;
-        border-left: 1px solid #e2dcc9;
-        font-size: 13px;
-      }
-      .ls a {
-        color: #888;
-        text-decoration: none;
-        padding: 2px 6px;
-        border-radius: 4px;
-      }
-      .variant-switch a {
-        display: inline-flex;
-        min-height: 36px;
-        align-items: center;
+        order: 3;
+        width: 100%;
         justify-content: center;
-        padding: 0 10px;
-        border-radius: 999px;
-        color: #566;
-        font-weight: 750;
-        text-decoration: none;
+        padding-left: 0;
+        border-left: 0;
       }
-      .ls a.active {
-        color: #1a1a1a;
-        background: #e8e4d4;
+      .sheet {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        min-height: auto;
+        padding: 18px;
+        box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
       }
-      .variant-switch a.active {
-        background: #102a43;
-        color: #fff;
+      .sheet * {
+        max-width: 100%;
+        min-width: 0;
       }
-      .ls-sep {
-        color: #ddd;
-        margin: 0 2px;
+      .sheet h1 {
+        font-size: clamp(28px, 10vw, 42px);
+        line-height: 1.12;
+        overflow-wrap: anywhere;
+      }
+      .top {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .top-contact {
+        text-align: left;
+        white-space: normal;
+      }
+      .row-2,
+      .row-2.tight {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .metric-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .item-head {
+        display: grid;
+        gap: 3px;
+      }
+      .sheet p,
+      .sheet li {
+        overflow-wrap: anywhere;
+      }
+    }
+    /* ── Honors table ── */
+    .honors-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6pt 0;
+      font-size: 8.5pt;
+    }
+    .honors-table td {
+      padding: 2.5pt 6pt 2.5pt 0;
+      vertical-align: top;
+    }
+    .honors-table .yr {
+      width: 48pt;
+      font-weight: 700;
+      color: #c9a227;
+      white-space: nowrap;
+    }
+    .honors-table .lvl {
+      width: 36pt;
+      font-weight: 600;
+      color: #2f5168;
+      white-space: nowrap;
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      body.a4-page {
+        background: #fff;
+        padding: 0;
+      }
+      .toolbar {
+        display: none !important;
       }
       .sheet {
         width: 210mm;
         min-height: 297mm;
-        background: #fff;
-        padding: 17mm 18mm 16mm;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+        padding: 14mm 15mm 12mm 15mm;
+        box-shadow: none;
+        border: none;
+        overflow: hidden;
       }
-      .sheet section {
-        padding: 0;
+      .sheet-sioc {
+        height: 297mm;
+        min-height: 297mm;
+        padding: 8mm 10.5mm 7mm;
       }
       .sheet h1 {
-        font-size: 24pt;
-        font-weight: 800;
+        font-size: 20pt;
       }
       .sheet h2 {
-        font-size: 10.5pt;
-        font-weight: 800;
-        color: #2f5168;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        border-bottom: 1.5pt solid #c9a227;
-        padding-bottom: 2pt;
-        margin: 9pt 0 4pt 0;
+        font-size: 9pt;
+        margin: 6pt 0 3pt 0;
+        padding-bottom: 1.5pt;
       }
       .sheet p,
       .sheet li {
-        font-size: 9pt;
-        line-height: 1.32;
-        color: #333;
+        font-size: 8pt;
+        line-height: 1.25;
       }
       .sheet .small {
-        font-size: 8.5pt;
+        font-size: 7.7pt;
       }
       .sheet .tiny {
-        font-size: 8pt;
-        padding-left: 14px;
+        font-size: 7.3pt;
+        padding-left: 11px;
       }
       .sheet .tiny li {
-        margin-bottom: 1.5pt;
+        margin-bottom: 1pt;
       }
       .top {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 7pt;
+        margin-bottom: 4pt;
       }
       .top-main h1 {
-        margin-bottom: 1.5pt;
+        font-size: 20pt;
+        margin-bottom: 0.5pt;
       }
       .top-main .sub {
-        font-size: 9pt;
-        color: #555;
+        font-size: 8pt;
       }
       .top-contact {
-        display: grid;
-        gap: 0.5pt;
-        font-size: 8.5pt;
-        color: #555;
         text-align: right;
         white-space: nowrap;
-      }
-      .metric-strip {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6pt;
-        margin: 6pt 0 8pt;
-      }
-      .metric {
-        border-left: 2pt solid #c9a227;
-        background: #f7f5ef;
-        padding: 5pt 6pt;
-      }
-      .metric strong {
-        display: block;
-        color: #102a43;
-        font-size: 12pt;
-        line-height: 1;
-      }
-      .metric span {
-        color: #555;
-        font-size: 7.4pt;
-        font-weight: 700;
+        font-size: 7.2pt;
+        gap: 0;
       }
       .summary {
-        font-size: 9pt;
-        line-height: 1.35;
-        margin-bottom: 8pt;
+        font-size: 8pt;
+        line-height: 1.26;
+        margin-bottom: 6pt;
       }
       .tagline {
-        color: #2f5168;
-        font-size: 8.5pt;
-        font-weight: 750;
-        margin: 1pt 0 0;
+        font-size: 8pt;
+      }
+      .metric-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .metric-strip {
+        gap: 4pt;
+        margin: 4pt 0 5pt;
+      }
+      .metric {
+        padding: 3.5pt 4pt;
+      }
+      .metric strong {
+        font-size: 10pt;
+      }
+      .metric span {
+        font-size: 6.6pt;
       }
       .row-2 {
-        display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 8px;
       }
       .row-2.tight {
-        gap: 6px;
-      }
-      .row-2 ul {
-        padding-left: 14px;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
       }
       .row-2 li {
-        font-size: 8.5pt;
-        margin-bottom: 1.5pt;
+        font-size: 7.6pt;
+        margin-bottom: 1pt;
       }
       .item {
-        margin-bottom: 5pt;
+        margin-bottom: 4pt;
       }
       .item-head {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        margin-bottom: 1pt;
+        gap: 6pt;
       }
       .item-head strong {
-        font-size: 9pt;
+        font-size: 8pt;
       }
       .item-head span {
-        font-size: 8pt;
-        color: #888;
+        font-size: 7pt;
+        white-space: nowrap;
       }
       .keyword-line {
-        color: #555;
-        font-size: 8.2pt;
-        margin-top: 2pt;
+        font-size: 7.4pt;
       }
-      .compact-list {
-        padding-left: 14px;
+      section,
+      .item,
+      .top,
+      .metric {
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
-      .compact-list li {
-        margin-bottom: 1.5pt;
-      }
-      @media screen and (max-width: 840px) {
-        html,
-        body {
-          width: 100%;
-          max-width: 100%;
-          overflow-x: hidden;
-        }
-        body.a4-page {
-          display: block;
-          align-items: stretch;
-          padding: 12px;
-          background: #f2f2f2;
-        }
-        .toolbar {
-          position: static;
-          flex-wrap: wrap;
-          justify-content: center;
-          width: 100%;
-          padding: 10px 12px;
-        }
-        .variant-switch {
-          order: 3;
-          width: 100%;
-          justify-content: center;
-          padding-left: 0;
-          border-left: 0;
-        }
-        .sheet {
-          display: block;
-          width: 100%;
-          max-width: 100%;
-          min-width: 0;
-          min-height: auto;
-          padding: 18px;
-          box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
-          overflow: hidden;
-        }
-        .sheet * {
-          max-width: 100%;
-          min-width: 0;
-        }
-        .sheet h1 {
-          font-size: clamp(28px, 10vw, 42px);
-          line-height: 1.12;
-          overflow-wrap: anywhere;
-        }
-        .top {
-          flex-direction: column;
-          gap: 8px;
-        }
-        .top-contact {
-          text-align: left;
-          white-space: normal;
-        }
-        .row-2,
-        .row-2.tight {
-          grid-template-columns: 1fr;
-          gap: 8px;
-        }
-        .metric-strip {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .item-head {
-          display: grid;
-          gap: 3px;
-        }
-        .sheet p,
-        .sheet li {
-          overflow-wrap: anywhere;
-        }
-      }
-      /* ── Honors table ── */
-      .honors-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 6pt 0;
-        font-size: 8.5pt;
-      }
-      .honors-table td {
-        padding: 2.5pt 6pt 2.5pt 0;
-        vertical-align: top;
-      }
-      .honors-table .yr {
-        width: 48pt;
-        font-weight: 700;
-        color: #c9a227;
-        white-space: nowrap;
-      }
-      .honors-table .lvl {
-        width: 36pt;
-        font-weight: 600;
-        color: #2f5168;
-        white-space: nowrap;
-      }
-
-      @media print {
-        @page {
-          size: A4;
-          margin: 0;
-        }
-        body.a4-page {
-          background: #fff;
-          padding: 0;
-        }
-        .toolbar {
-          display: none !important;
-        }
-        .sheet {
-          width: 210mm;
-          min-height: 297mm;
-          padding: 14mm 15mm 12mm 15mm;
-          box-shadow: none;
-          border: none;
-          overflow: hidden;
-        }
-        .sheet-sioc {
-          height: 297mm;
-          min-height: 297mm;
-          padding: 8mm 10.5mm 7mm;
-        }
-        .sheet h1 {
-          font-size: 20pt;
-        }
-        .sheet h2 {
-          font-size: 9pt;
-          margin: 6pt 0 3pt 0;
-          padding-bottom: 1.5pt;
-        }
-        .sheet p,
-        .sheet li {
-          font-size: 8pt;
-          line-height: 1.25;
-        }
-        .sheet .small {
-          font-size: 7.7pt;
-        }
-        .sheet .tiny {
-          font-size: 7.3pt;
-          padding-left: 11px;
-        }
-        .sheet .tiny li {
-          margin-bottom: 1pt;
-        }
-        .top {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 4pt;
-        }
-        .top-main h1 {
-          font-size: 20pt;
-          margin-bottom: 0.5pt;
-        }
-        .top-main .sub {
-          font-size: 8pt;
-        }
-        .top-contact {
-          text-align: right;
-          white-space: nowrap;
-          font-size: 7.2pt;
-          gap: 0;
-        }
-        .summary {
-          font-size: 8pt;
-          line-height: 1.26;
-          margin-bottom: 6pt;
-        }
-        .tagline {
-          font-size: 8pt;
-        }
-        .metric-strip {
-          grid-template-columns: repeat(4, 1fr);
-        }
-        .metric-strip {
-          gap: 4pt;
-          margin: 4pt 0 5pt;
-        }
-        .metric {
-          padding: 3.5pt 4pt;
-        }
-        .metric strong {
-          font-size: 10pt;
-        }
-        .metric span {
-          font-size: 6.6pt;
-        }
-        .row-2 {
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-        }
-        .row-2.tight {
-          grid-template-columns: 1fr 1fr;
-          gap: 5px;
-        }
-        .row-2 li {
-          font-size: 7.6pt;
-          margin-bottom: 1pt;
-        }
-        .item {
-          margin-bottom: 4pt;
-        }
-        .item-head {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          gap: 6pt;
-        }
-        .item-head strong {
-          font-size: 8pt;
-        }
-        .item-head span {
-          font-size: 7pt;
-          white-space: nowrap;
-        }
-        .keyword-line {
-          font-size: 7.4pt;
-        }
-        section,
-        .item,
-        .top,
-        .metric {
-          break-inside: avoid;
-          page-break-inside: avoid;
-        }
-      }
-    </style>
-  </body>
-</html>
+    }
+  </style>
+</DocumentLayout>
