@@ -20,6 +20,7 @@ const { note, links } = Astro.props;
     {
       links.map((link) => (
         <a
+          class="footer-link"
           href={link.href}
           target={link.external ? '_blank' : undefined}
           rel={link.external ? 'noopener noreferrer' : undefined}
@@ -86,8 +87,8 @@ const { note, links } = Astro.props;
     gap: 28px;
     align-items: start;
     margin: 0 auto;
-    padding: 30px 0 42px;
-    color: rgba(239, 227, 205, 0.54);
+    padding: 2rem 0 3.25rem;
+    color: var(--muted);
   }
 
   p {
@@ -101,28 +102,37 @@ const { note, links } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 10px 14px;
+    gap: 0.35rem 1.1rem;
   }
 
-  a {
+  .footer-link {
+    position: relative;
     display: inline-flex;
     min-width: 44px;
-    min-height: 38px;
+    min-height: 44px;
     align-items: center;
     gap: 8px;
-    border: 1px solid rgba(242, 223, 189, 0.14);
-    border-radius: 7px;
-    padding: 0 12px;
-    background: rgba(242, 223, 189, 0.03);
+    padding: 0 0.15rem;
     color: inherit;
-    font-size: 14px;
-    font-weight: 750;
+    font-size: 0.82rem;
+    font-weight: 650;
     text-decoration: none;
     transition:
-      border-color 180ms ease,
-      background 180ms ease,
       color 180ms ease,
       transform 180ms ease;
+  }
+
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0.3rem;
+    left: 0;
+    height: 1px;
+    background: var(--ember-strong);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 180ms ease;
   }
 
   .footer-icon {
@@ -136,13 +146,20 @@ const { note, links } = Astro.props;
     stroke-width: 1.8;
   }
 
-  a:hover,
-  a:focus-visible {
-    transform: translateY(-1px);
-    border-color: rgba(232, 174, 98, 0.42);
-    background: rgba(232, 174, 98, 0.07);
-    color: #f4d49b;
+  .footer-link:hover,
+  .footer-link:focus-visible {
+    color: var(--paper);
     outline: none;
+  }
+
+  .footer-link:hover::after,
+  .footer-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .footer-link:focus-visible {
+    outline: 2px solid var(--ember-strong);
+    outline-offset: 2px;
   }
 
   @media (max-width: 960px) {

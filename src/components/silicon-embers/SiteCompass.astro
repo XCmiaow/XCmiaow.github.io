@@ -9,162 +9,151 @@ interface Props {
 const { label, items } = Astro.props;
 ---
 
-<section class="compass" aria-label={label}>
-  {
-    items.map((item, index) => (
-      <a class="compass-link" href={item.href}>
-        <span class="compass-index">{String(index + 1).padStart(2, '0')}</span>
-        <strong>{item.title}</strong>
-        <em>{item.body}</em>
-      </a>
-    ))
-  }
+<section class="compass" aria-labelledby="compass-label">
+  <p id="compass-label" class="compass-label">{label}</p>
+  <div class="compass-grid">
+    {
+      items.map((item, index) => (
+        <a class="compass-link" href={item.href}>
+          <span class="compass-index">{String(index + 1).padStart(2, '0')}</span>
+          <strong>{item.title}</strong>
+          <em>{item.body}</em>
+          <span class="compass-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      ))
+    }
+  </div>
 </section>
 
 <style>
   .compass {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0;
-    border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 0;
-    background: transparent;
+    padding: 1rem 0 0;
   }
 
-  .compass::before {
-    content: attr(aria-label);
-    display: block;
-    grid-column: 1 / -1;
-    padding: 14px 0 8px;
-    color: rgba(120, 155, 145, 0.72);
+  .compass-label {
+    margin: 0 0 0.7rem;
+    color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .compass-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.15fr 0.95fr;
+    border-top: 1px solid var(--line);
   }
 
   .compass-link {
     position: relative;
-    isolation: isolate;
-    overflow: hidden;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 3px 12px;
-    min-height: 86px;
-    align-content: center;
-    border-right: 1px solid rgba(242, 223, 189, 0.1);
-    padding: 16px;
-    background: transparent;
+    min-height: 13rem;
+    grid-template-columns: 2.8rem minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    gap: 1rem 1.25rem;
+    border-right: 1px solid var(--line);
+    padding: 1.25rem 1.5rem 1.5rem 0;
     text-decoration: none;
-    transition:
-      background 180ms ease,
-      border-color 180ms ease,
-      box-shadow 180ms ease,
-      transform 180ms ease;
   }
 
-  .compass-link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      linear-gradient(125deg, rgba(232, 174, 98, 0.13), transparent 42%),
-      radial-gradient(circle at 18% 0%, rgba(120, 155, 145, 0.18), transparent 34%);
-    opacity: 0;
-    transform: translateX(-14%);
-    transition:
-      opacity 180ms ease,
-      transform 220ms ease;
+  .compass-link + .compass-link {
+    padding-left: 1.5rem;
   }
 
   .compass-link:last-child {
     border-right: 0;
   }
 
-  .compass-link:hover,
-  .compass-link:focus-visible {
-    transform: translateY(-2px);
-    border-color: rgba(120, 155, 145, 0.36);
-    background: linear-gradient(150deg, rgba(232, 174, 98, 0.08), transparent 54%), rgba(242, 223, 189, 0.025);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 238, 197, 0.08),
-      0 18px 40px rgba(0, 0, 0, 0.24);
-    outline: none;
-  }
-
-  .compass-link:hover::after,
-  .compass-link:focus-visible::after {
-    opacity: 1;
-    transform: translateX(0);
+  .compass-link::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: var(--ember-strong);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .compass-index {
-    grid-row: span 2;
-    align-self: start;
-    color: rgba(232, 174, 98, 0.7);
+    grid-row: 1 / span 2;
+    color: var(--muted);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 12px;
-    font-weight: 900;
-    line-height: 1.35;
-  }
-
-  .compass-link:active {
-    transform: translateY(1px) scale(0.99);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
   }
 
   .compass-link strong {
+    align-self: start;
     color: var(--paper);
     font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: 18px;
-    font-weight: 850;
-    line-height: 1.22;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    line-height: 1;
   }
 
   .compass-link em {
-    max-width: 24ch;
-    color: rgba(239, 227, 205, 0.58);
-    font-size: 13px;
+    grid-column: 2;
+    align-self: end;
+    max-width: 23ch;
+    color: var(--muted);
+    font-size: 0.86rem;
     font-style: normal;
-    line-height: 1.45;
+    line-height: 1.55;
+  }
+
+  .compass-arrow {
+    grid-column: 3;
+    grid-row: 1;
+    color: var(--ember-strong);
+    font-size: 1.15rem;
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .compass-link:hover::before,
+  .compass-link:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .compass-link:hover .compass-arrow,
+  .compass-link:focus-visible .compass-arrow {
+    transform: translate(0.25rem, -0.25rem);
+  }
+
+  .compass-link:focus-visible {
+    outline: 2px solid var(--ember-strong);
+    outline-offset: -2px;
+  }
+
+  .compass-link:active .compass-arrow {
+    transform: translate(0.1rem, -0.1rem);
   }
 
   @media (max-width: 720px) {
-    .compass {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .compass-grid {
+      grid-template-columns: 1fr;
     }
 
-    .compass-link:nth-child(2n) {
+    .compass-link,
+    .compass-link + .compass-link {
+      min-height: 9rem;
       border-right: 0;
-    }
-  }
-
-  @media (max-width: 720px) {
-    .compass {
-      background: transparent;
-      gap: 0;
-    }
-
-    .compass::before {
-      grid-column: 1 / -1;
-      padding: 10px 0 6px;
-    }
-
-    .compass-link {
-      min-height: 72px;
       border-bottom: 1px solid var(--line);
-      padding: 12px 14px;
-      background: transparent;
+      padding: 1.15rem 0 1.4rem;
+    }
+
+    .compass-link:last-child {
+      border-bottom: 0;
     }
 
     .compass-link strong {
-      font-size: 17px;
-    }
-
-    .compass-link em {
-      font-size: 13px;
+      font-size: 2rem;
     }
   }
 </style>

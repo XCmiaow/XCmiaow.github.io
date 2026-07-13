@@ -131,6 +131,17 @@ for (const className of ['brand-manifesto', 'principle-list', 'method-rail']) {
   if (!manifestoSource.includes(className)) failures.push(`BrandManifesto is missing ${className}`);
 }
 
+const editorialComponents = [
+  ['src/components/silicon-embers/EmberHero.astro', 'observation-label'],
+  ['src/components/silicon-embers/SiteCompass.astro', 'compass-arrow'],
+  ['src/components/silicon-embers/WritingPreview.astro', 'writing-arrow'],
+  ['src/components/silicon-embers/BrandNav.astro', 'aperture'],
+  ['src/components/silicon-embers/SiliconEmbersFooter.astro', 'footer-link'],
+];
+for (const [relative, className] of editorialComponents) {
+  if (!read(relative).includes(className)) failures.push(`${relative}: missing editorial marker ${className}`);
+}
+
 const navBlocks = [...homeCopySource.matchAll(/nav:\s*\[([\s\S]*?)\],/g)].map((match) => match[1]);
 const expectedNavLabels = [
   ['博客', '资源', '关于'],
@@ -209,6 +220,12 @@ for (const route of routes.filter((entry) => entry.domain === 'compatibility')) 
 const sharedControlCss = read('src/styles/silicon-embers.css');
 if (!/\.sa-shell \.sa-control\s*\{/.test(sharedControlCss) || !/\.sa-control:focus-visible/.test(sharedControlCss)) {
   failures.push('ActionButton and CopyButton must share themed control and visible focus styles');
+}
+for (const token of ['--paper: #241c14', '--coal: #f4efe5', '--paper: #f0dfbf', '--coal: #080705']) {
+  if (!sharedControlCss.includes(token)) failures.push(`Brand palette is missing ${token}`);
+}
+if (sharedControlCss.includes('visibility: hidden !important')) {
+  failures.push('Light mode must translate the gravity field instead of hiding it');
 }
 
 const emberCanvasSource = read('src/components/silicon-embers/emberFieldCanvas.ts');

@@ -15,13 +15,21 @@ const { copy, wordmark } = Astro.props;
   <EmberField />
 
   <div class="hero-copy">
+    <p class="observation-label" aria-hidden="true">
+      <span>OBSERVATION</span>
+      <span>01 / SILICON—CARBON</span>
+    </p>
     {copy.eyebrow && <p class="eyebrow">{copy.eyebrow}</p>}
     <p class="wordmark">{wordmark}</p>
     <h1 id="sa-title">{copy.title}</h1>
-    <p class="lead">{copy.lead}</p>
-    <p class="sublead">{copy.sublead}</p>
+    <div class="hero-statement">
+      <p class="lead">{copy.lead}</p>
+      <p class="sublead">{copy.sublead}</p>
+    </div>
     <ActionLinks links={copy.actions} label={copy.actionsLabel} className="actions" linkClass="sa-button" />
   </div>
+
+  <p class="scroll-cue" aria-hidden="true"><span></span>INDEX / 01—03</p>
 </section>
 
 <style>
@@ -29,145 +37,201 @@ const { copy, wordmark } = Astro.props;
     position: relative;
     isolation: isolate;
     display: grid;
-    min-height: min(820px, calc(100dvh - 82px));
+    min-height: min(52rem, calc(100dvh - 4.5rem));
     align-items: center;
     border-bottom: 1px solid var(--line);
-    padding: clamp(64px, 10vh, 104px) 0 clamp(74px, 12vh, 128px);
-    background:
-      linear-gradient(90deg, rgba(7, 6, 5, 0.98) 0%, rgba(7, 6, 5, 0.9) 46%, rgba(7, 6, 5, 0.36) 100%),
-      radial-gradient(circle at 84% 76%, rgba(217, 121, 63, 0.2), transparent 30rem);
+    padding: clamp(5rem, 10vh, 7.5rem) 0 clamp(6rem, 12vh, 9rem);
   }
 
-  .ember-hero::after {
+  .ember-hero::before {
     content: '';
     position: absolute;
-    right: 0;
+    top: 0;
     bottom: 0;
-    left: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(232, 174, 98, 0.68), transparent);
-    opacity: 0.52;
+    left: clamp(12rem, 38vw, 31rem);
+    z-index: 1;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--line) 18% 82%, transparent);
+    opacity: 0.48;
   }
 
   .hero-copy {
     position: relative;
     z-index: 2;
-    max-width: 980px;
+    max-width: 62rem;
+  }
+
+  .observation-label {
+    display: flex;
+    max-width: 31rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 clamp(2.5rem, 5.5vh, 4.6rem);
+    color: var(--muted);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+  }
+
+  .observation-label span:first-child {
+    color: var(--ember-strong);
   }
 
   .wordmark {
-    margin: 20px 0 0;
-    color: rgba(232, 174, 98, 0.56);
+    margin: 0 0 0.8rem;
+    color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: clamp(1.32rem, 2.3vw, 2.15rem);
-    font-weight: 900;
+    font-size: clamp(0.8rem, 1.1vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
   }
 
   h1 {
-    margin-top: 8px;
-    font-size: clamp(5.6rem, 12vw, 12.4rem);
-    line-height: 0.88;
-    white-space: nowrap;
+    max-width: 7ch;
+    font-size: clamp(4.8rem, 10.5vw, 10.8rem);
+    line-height: 0.84;
+    letter-spacing: -0.055em;
+  }
+
+  .hero-statement {
+    display: grid;
+    max-width: 47rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.65fr);
+    gap: 1.4rem clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+  }
+
+  .lead,
+  .sublead {
+    margin: 0;
   }
 
   .lead {
-    max-width: 780px;
-    margin: 30px 0 0;
-    color: rgba(247, 230, 196, 0.9);
+    color: var(--paper);
     font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: clamp(1.52rem, 3vw, 3rem);
-    line-height: 1.32;
+    font-size: clamp(1.25rem, 2.3vw, 2rem);
+    line-height: 1.42;
   }
 
   .sublead {
-    max-width: 660px;
-    margin: 22px 0 0;
+    max-width: 30ch;
+    padding-top: 0.25rem;
     color: var(--muted);
-    font-size: clamp(1rem, 1.4vw, 1.22rem);
-    line-height: 1.82;
+    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+    line-height: 1.72;
   }
 
   :global(.ember-hero .actions) {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 30px;
+    gap: 0.65rem;
+    margin-top: 2rem;
   }
 
-  :global(.ember-hero .actions .sa-button),
-  :global(.ember-hero .actions .sa-button.primary),
-  :global(.ember-hero .actions .sa-button.text) {
-    min-width: 116px;
-    min-height: 42px;
-    padding: 0 15px;
-    font-size: 13px;
+  :global(.ember-hero .actions .sa-button) {
+    min-width: 7rem;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    right: 0;
+    bottom: 1.1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    color: var(--muted);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+
+  .scroll-cue span {
+    width: 2.6rem;
+    height: 1px;
+    background: var(--ember-strong);
+  }
+
+  @media (max-width: 960px) {
+    .ember-hero::before {
+      left: 48%;
+    }
+
+    .hero-copy {
+      max-width: 49rem;
+    }
+
+    h1 {
+      font-size: clamp(4.4rem, 13vw, 8rem);
+    }
   }
 
   @media (max-width: 720px) {
     .ember-hero {
-      min-height: auto;
-      padding: 34px 0 40px;
+      min-height: 42rem;
+      align-items: end;
+      padding: 4rem 0 5rem;
+    }
+
+    .ember-hero::before {
+      display: none;
     }
 
     .hero-copy {
-      max-width: 32rem;
+      width: 100%;
+      max-width: 34rem;
+    }
+
+    .observation-label {
+      max-width: 21rem;
+      margin-bottom: 10.5rem;
+      font-size: 0.58rem;
     }
 
     h1 {
-      margin-top: 6px;
-      font-size: clamp(1.75rem, 8vw, 2.45rem);
-      line-height: 1.02;
-      white-space: normal;
+      max-width: 5.5ch;
+      font-size: clamp(3.5rem, 19vw, 6rem);
+      line-height: 0.9;
+    }
+
+    .hero-statement {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+      margin-top: 1.6rem;
     }
 
     .lead {
-      max-width: 27rem;
-      margin-top: 16px;
-      font-size: 15px;
-      line-height: 1.62;
+      max-width: 23rem;
+      font-size: clamp(1.1rem, 5.5vw, 1.45rem);
     }
 
     .sublead {
-      max-width: 27rem;
-      margin-top: 10px;
-      font-size: 14px;
-      line-height: 1.62;
-    }
-
-    .wordmark {
-      margin-top: 10px;
-      font-size: clamp(1rem, 4.2vw, 1.32rem);
+      max-width: 26rem;
+      padding-top: 0;
+      font-size: 0.88rem;
     }
 
     :global(.ember-hero .actions) {
-      display: flex;
-      max-width: min(100%, 360px);
-      gap: 10px;
-      margin-top: 18px;
+      margin-top: 1.4rem;
     }
 
-    :global(.ember-hero .actions .sa-button),
-    :global(.ember-hero .actions .sa-button.primary),
-    :global(.ember-hero .actions .sa-button.text) {
-      width: auto;
-      min-width: 92px;
-      min-height: 38px;
-      padding: 0 12px;
-      font-size: 12.5px;
+    .scroll-cue {
+      display: none;
     }
   }
 
   @media (max-width: 360px) {
-    .ember-hero {
-      padding: 30px 0 36px;
+    .observation-label {
+      margin-bottom: 9.5rem;
     }
 
-    h1 {
-      font-size: clamp(1.65rem, 7.8vw, 2rem);
-    }
-
-    .lead {
-      font-size: 14.5px;
+    :global(.ember-hero .actions .sa-button) {
+      min-width: 0;
     }
   }
 </style>

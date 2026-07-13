@@ -21,7 +21,7 @@ const isActive = (href: string) => {
 <header class="sa-nav" aria-label={copy.htmlLabel}>
   <a class="sa-brand" href={copy.homeHref} aria-label={copy.brand} aria-current={isHome ? 'page' : undefined}>
     <span class="brand-mark">
-      <img src="/silicon-ashes/logo.jpg" alt="" width="40" height="40" decoding="async" />
+      <img src="/silicon-ashes/logo.jpg" alt="" width="38" height="38" decoding="async" />
     </span>
     <span class="brand-name">{copy.brand}</span>
   </a>
@@ -33,9 +33,9 @@ const isActive = (href: string) => {
         </a>
       ))
     }
-    <a href={copy.switchHref}>{copy.switchLabel}</a>
+    <a class="language-link" href={copy.switchHref}>{copy.switchLabel}</a>
     <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label={themeLabel}>
-      <span aria-hidden="true">◐</span>
+      <span class="aperture" aria-hidden="true"><span></span></span>
     </button>
   </nav>
 </header>
@@ -43,65 +43,62 @@ const isActive = (href: string) => {
 <style>
   .sa-nav {
     position: relative;
-    z-index: 2;
+    z-index: 20;
     display: flex;
     width: min(100% - 56px, 1320px);
-    min-height: 82px;
+    min-height: 72px;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    gap: 2rem;
     margin: 0 auto;
     border-bottom: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(7, 6, 5, 0.82), rgba(7, 6, 5, 0.42));
-    backdrop-filter: blur(18px);
+  }
+
+  .sa-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 3.25rem;
+    height: 1px;
+    background: var(--ember-strong);
   }
 
   .sa-brand {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
-    gap: 12px;
-    border-radius: 8px;
+    gap: 0.75rem;
     text-decoration: none;
-    transition:
-      transform 180ms ease,
-      color 180ms ease;
-  }
-
-  .sa-brand:hover,
-  .sa-brand:focus-visible {
-    transform: translateY(-1px);
-    outline: none;
   }
 
   .brand-mark {
     display: grid;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     place-items: center;
-    border: 1px solid rgba(232, 174, 98, 0.56);
-    border-radius: 7px;
-    background: linear-gradient(180deg, rgba(255, 225, 162, 0.12), rgba(232, 174, 98, 0.035)), rgba(9, 8, 7, 0.72);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 238, 197, 0.18),
-      0 10px 24px rgba(0, 0, 0, 0.26);
-    color: #f4d49b;
     overflow: hidden;
+    border: 1px solid rgba(230, 173, 101, 0.38);
+    border-radius: 50%;
+    background: #090806;
   }
 
   .brand-mark img {
     width: 100%;
     height: 100%;
-    border-radius: 6px;
+    border-radius: 50%;
     object-fit: cover;
-    opacity: 0.94;
+    opacity: 0.9;
+    filter: saturate(0.78) contrast(1.06);
+    transform: scale(1.08);
   }
 
   .brand-name {
     color: var(--paper);
     font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: 19px;
-    font-weight: 850;
+    font-size: 1.05rem;
+    font-weight: 760;
+    letter-spacing: 0.02em;
   }
 
   nav {
@@ -109,31 +106,39 @@ const isActive = (href: string) => {
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: 6px;
+    gap: 0.15rem;
   }
 
   nav a,
   .theme-toggle {
+    position: relative;
     display: inline-flex;
     min-width: 44px;
     min-height: 44px;
     align-items: center;
     justify-content: center;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    padding: 0 10px;
+    border: 0;
+    padding: 0 0.7rem;
     background: transparent;
-    color: rgba(239, 227, 205, 0.68);
+    color: var(--muted);
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 760;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
     text-decoration: none;
-    transition:
-      background 180ms ease,
-      border-color 180ms ease,
-      color 180ms ease,
-      transform 180ms ease,
-      box-shadow 180ms ease;
+  }
+
+  nav a::after {
+    content: '';
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.45rem;
+    left: 0.7rem;
+    height: 1px;
+    background: var(--ember-strong);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 190ms ease;
   }
 
   nav a:hover,
@@ -142,56 +147,92 @@ const isActive = (href: string) => {
   .theme-toggle:hover,
   .theme-toggle:focus-visible,
   .theme-toggle[aria-pressed='true'] {
-    transform: translateY(-1px);
-    border-color: rgba(232, 174, 98, 0.36);
-    background: linear-gradient(180deg, rgba(232, 174, 98, 0.13), rgba(232, 174, 98, 0.035)), rgba(7, 6, 5, 0.42);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 238, 197, 0.12),
-      0 10px 24px rgba(0, 0, 0, 0.18);
-    color: #f4d49b;
+    color: var(--paper);
     outline: none;
   }
 
-  nav a:active,
-  .theme-toggle:active {
-    transform: translateY(1px) scale(0.98);
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.32);
+  nav a:hover::after,
+  nav a:focus-visible::after,
+  nav a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  nav a:focus-visible,
+  .theme-toggle:focus-visible,
+  .sa-brand:focus-visible {
+    outline: 2px solid var(--ember-strong);
+    outline-offset: 2px;
+  }
+
+  .language-link {
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
+
+  .theme-toggle {
+    padding: 0;
+  }
+
+  .aperture {
+    position: relative;
+    display: grid;
+    width: 1.05rem;
+    height: 1.05rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    transition: transform 260ms ease;
+  }
+
+  .aperture span {
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 50%;
+    background: linear-gradient(90deg, currentColor 0 50%, transparent 50%);
+  }
+
+  .theme-toggle:hover .aperture,
+  .theme-toggle:focus-visible .aperture,
+  .theme-toggle[aria-pressed='true'] .aperture {
+    transform: rotate(180deg);
   }
 
   @media (max-width: 720px) {
     .sa-nav {
-      width: min(100% - 28px, 1320px);
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 0 16px;
+      width: min(100% - 24px, 1320px);
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      padding: 0.7rem 0 0.55rem;
     }
 
     nav {
       width: 100%;
       justify-content: flex-start;
-      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
     }
 
     nav a,
     .theme-toggle {
-      padding: 0 6px;
-      font-size: 12.5px;
+      flex: 0 0 auto;
+      padding-inline: 0.55rem;
+      font-size: 0.76rem;
+    }
+
+    nav a::after {
+      right: 0.55rem;
+      left: 0.55rem;
     }
   }
 
   @media (max-width: 360px) {
-    .sa-nav {
-      width: min(100% - 24px, 1320px);
-    }
-
     .brand-name {
-      font-size: 18px;
-    }
-
-    nav a,
-    .theme-toggle {
-      padding: 0 8px;
+      font-size: 1rem;
     }
   }
 </style>
