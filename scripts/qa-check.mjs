@@ -229,6 +229,9 @@ async function checkInteractions(page) {
   if ((await page.locator('.ember-hero .black-hole-scene').count()) !== 1)
     fail('Brand home lost its black-hole visual');
   if ((await page.locator('canvas[data-ember-canvas]').count()) !== 1) fail('Brand home lost its ember canvas');
+  if ((await page.locator('.brand-manifesto').count()) !== 1) {
+    fail('Brand home lost its thesis and method section');
+  }
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 

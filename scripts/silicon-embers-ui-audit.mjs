@@ -118,6 +118,19 @@ if (!/routePath\('writing', lang\)/.test(siteFrameSource) || !/routePath\('resou
 }
 
 const homeCopySource = read('src/data/siliconEmbersHome.ts');
+const homeSource = read('src/components/SiliconAshesHome.astro');
+const manifestoSource = read('src/components/silicon-embers/BrandManifesto.astro');
+
+if ((homeSource.match(/<BrandManifesto\b/g) ?? []).length !== 1) {
+  failures.push('Brand home must render exactly one BrandManifesto');
+}
+if (!/copy=\{copy\.thesis\}/.test(homeSource) || !/method=\{copy\.operatingSystem\}/.test(homeSource)) {
+  failures.push('BrandManifesto must receive localized thesis and operating-system copy');
+}
+for (const className of ['brand-manifesto', 'principle-list', 'method-rail']) {
+  if (!manifestoSource.includes(className)) failures.push(`BrandManifesto is missing ${className}`);
+}
+
 const navBlocks = [...homeCopySource.matchAll(/nav:\s*\[([\s\S]*?)\],/g)].map((match) => match[1]);
 const expectedNavLabels = [
   ['博客', '资源', '关于'],

@@ -1,0 +1,263 @@
+---
+import type { SiliconEmbersOperatingSystemCopy, SiliconEmbersThesisCopy } from '../../data/siliconEmbersHome';
+
+interface Props {
+  copy: SiliconEmbersThesisCopy;
+  method: SiliconEmbersOperatingSystemCopy;
+}
+
+const { copy, method } = Astro.props;
+---
+
+<section class="brand-manifesto" aria-labelledby="manifesto-title">
+  <div class="manifesto-copy">
+    <p class="kicker">{copy.kicker}</p>
+    <h2 id="manifesto-title">{copy.title}</h2>
+    <p>{copy.body}</p>
+  </div>
+
+  <ol class="principle-list">
+    {
+      copy.principles.map((principle, index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{principle.title}</strong>
+          <p>{principle.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <section class="method-section" aria-labelledby="method-title">
+    <div class="method-head">
+      <p class="kicker">{method.kicker}</p>
+      <h2 id="method-title">{method.title}</h2>
+      <p>{method.body}</p>
+    </div>
+
+    <ol class="method-rail" aria-label={method.railLabel}>
+      {
+        method.phases.map((phase, index) => (
+          <li>
+            <span class="phase-index">{String(index + 1).padStart(2, '0')}</span>
+            <span class="phase-code">{phase.code}</span>
+            <strong>{phase.title}</strong>
+            <p>{phase.body}</p>
+            <em>{phase.output}</em>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</section>
+
+<style>
+  .brand-manifesto {
+    border-bottom: 1px solid var(--line);
+    padding: clamp(88px, 11vw, 148px) 0;
+  }
+
+  .manifesto-copy {
+    display: grid;
+    max-width: 72rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.55fr);
+    gap: 2rem 6vw;
+  }
+
+  .manifesto-copy .kicker,
+  .manifesto-copy h2 {
+    grid-column: 1;
+  }
+
+  .manifesto-copy h2 {
+    max-width: 11ch;
+    margin-top: 1rem;
+    font-size: clamp(3rem, 7vw, 7.4rem);
+    line-height: 0.94;
+  }
+
+  .manifesto-copy > p:last-child {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 34ch;
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    line-height: 1.75;
+  }
+
+  .principle-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: clamp(3.5rem, 8vw, 7rem) 0 0;
+    border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+  }
+
+  .principle-list li {
+    display: grid;
+    min-height: 12rem;
+    align-content: start;
+    border-right: 1px solid var(--line);
+    padding: 1.4rem 1.6rem 1.8rem 0;
+  }
+
+  .principle-list li + li {
+    padding-left: 1.6rem;
+  }
+
+  .principle-list li:last-child {
+    border-right: 0;
+  }
+
+  .principle-list span,
+  .phase-index,
+  .phase-code {
+    color: var(--ember-strong);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
+
+  .principle-list strong {
+    margin-top: 2.6rem;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: 1.7rem;
+  }
+
+  .principle-list p {
+    max-width: 24ch;
+    margin: 0.8rem 0 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .method-section {
+    margin-top: clamp(6rem, 11vw, 10rem);
+  }
+
+  .method-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(18rem, 0.45fr);
+    gap: 1rem 6vw;
+  }
+
+  .method-head .kicker,
+  .method-head h2 {
+    grid-column: 1;
+  }
+
+  .method-head h2 {
+    margin-top: 0.9rem;
+    font-size: clamp(2.4rem, 5vw, 5.2rem);
+    line-height: 0.98;
+  }
+
+  .method-head > p:last-child {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 34ch;
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  .method-rail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 3.5rem 0 0;
+    border-block: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+  }
+
+  .method-rail li {
+    position: relative;
+    display: grid;
+    min-height: 18rem;
+    align-content: start;
+    border-right: 1px solid var(--line);
+    padding: 1.3rem 1.4rem 1.6rem;
+  }
+
+  .method-rail li:last-child {
+    border-right: 0;
+  }
+
+  .phase-code {
+    justify-self: end;
+    margin-top: -1rem;
+    color: var(--muted);
+  }
+
+  .method-rail strong {
+    margin-top: 4rem;
+    color: var(--paper);
+    font-size: 1.25rem;
+  }
+
+  .method-rail p {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .method-rail em {
+    align-self: end;
+    margin-top: 2rem;
+    color: var(--ember-strong);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.75rem;
+    font-style: normal;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 720px) {
+    .brand-manifesto {
+      padding: 4rem 0;
+    }
+
+    .manifesto-copy,
+    .method-head {
+      grid-template-columns: 1fr;
+    }
+
+    .manifesto-copy > p:last-child,
+    .method-head > p:last-child {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .principle-list,
+    .method-rail {
+      grid-template-columns: 1fr;
+    }
+
+    .principle-list li,
+    .principle-list li + li,
+    .method-rail li {
+      min-height: auto;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 1.3rem 0 1.5rem;
+    }
+
+    .principle-list li:last-child,
+    .method-rail li:last-child {
+      border-bottom: 0;
+    }
+
+    .principle-list strong,
+    .method-rail strong {
+      margin-top: 1.5rem;
+    }
+
+    .phase-code {
+      margin-top: -0.9rem;
+    }
+  }
+</style>
