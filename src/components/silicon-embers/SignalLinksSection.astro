@@ -1,5 +1,5 @@
 ---
-import ActionLinks from './ActionLinks.astro';
+import ActionButton from './ActionButton.astro';
 import type { SiliconEmbersLinkSectionCopy } from '../../data/siliconEmbersHome';
 
 type SectionVariant = 'course-signal' | 'resource-band';
@@ -20,7 +20,21 @@ const { id, titleId, variant, copy } = Astro.props;
     <h2 id={titleId}>{copy.title}</h2>
     <p>{copy.body}</p>
   </div>
-  <ActionLinks links={copy.links} className={variant === 'course-signal' ? 'signal-links' : 'resource-links'} />
+
+  <ol class="signal-links">
+    {
+      copy.links.map((link, index) => (
+        <li class="resource-record">
+          <span class="resource-index" aria-hidden="true">
+            R.{String(index + 1).padStart(2, '0')}
+          </span>
+          <ActionButton href={link.href} variant="text" className="resource-link">
+            {link.label}
+          </ActionButton>
+        </li>
+      ))
+    }
+  </ol>
 </section>
 
 <style>
@@ -30,37 +44,62 @@ const { id, titleId, variant, copy } = Astro.props;
     isolation: isolate;
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(17rem, 0.55fr);
-    gap: clamp(3rem, 9vw, 9rem);
+    grid-template-columns: minmax(0, 0.88fr) minmax(18rem, 0.62fr);
+    gap: clamp(3rem, 8vw, 8rem);
     align-items: end;
     border-block: 1px solid var(--line);
-    padding: clamp(88px, 11vw, 148px) 0;
+    padding: clamp(5.5rem, 8vw, 8.5rem) 0;
   }
 
   .course-signal::before,
   .resource-band::before {
     content: '';
     position: absolute;
-    inset: -35% -8% -45% 42%;
+    inset: -24% -6% -30% 55%;
     z-index: -1;
-    background: radial-gradient(circle, rgba(190, 108, 48, 0.12), transparent 64%);
-    filter: blur(34px);
+    background: radial-gradient(circle, rgba(190, 108, 48, 0.075), transparent 62%);
+    filter: blur(32px);
   }
 
   .section-copy h2 {
     max-width: 11ch;
   }
 
-  :global(.signal-links),
-  :global(.resource-links) {
+  .signal-links {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
   }
 
-  :global(.resource-links .sa-control),
-  :global(.signal-links .sa-control) {
-    justify-content: flex-start;
+  .resource-record {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .resource-index {
+    color: var(--muted);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+  }
+
+  :global(.resource-record .resource-link) {
+    min-height: 3.35rem;
+    justify-content: space-between;
+    border: 0;
+    padding-inline: 0;
+    background: transparent;
+    color: var(--paper);
+  }
+
+  :global(.resource-record .resource-link:hover),
+  :global(.resource-record .resource-link:focus-visible) {
+    background: transparent;
   }
 
   @media (max-width: 960px) {
@@ -74,12 +113,7 @@ const { id, titleId, variant, copy } = Astro.props;
   @media (max-width: 720px) {
     .course-signal,
     .resource-band {
-      padding: 4rem 0;
-    }
-
-    :global(.signal-links),
-    :global(.resource-links) {
-      grid-template-columns: 1fr;
+      padding: 5rem 0;
     }
   }
 </style>

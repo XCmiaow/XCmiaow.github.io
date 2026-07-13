@@ -19,8 +19,9 @@ const { copy, method } = Astro.props;
   <ol class="principle-list">
     {
       copy.principles.map((principle, index) => (
-        <li>
-          <span>{String(index + 1).padStart(2, '0')}</span>
+        <li class="principle-trace">
+          <span class="principle-index">{String(index + 1).padStart(2, '0')}</span>
+          <span class="principle-rule" aria-hidden="true" />
           <strong>{principle.title}</strong>
           <p>{principle.body}</p>
         </li>
@@ -35,7 +36,7 @@ const { copy, method } = Astro.props;
       <p>{method.body}</p>
     </div>
 
-    <ol class="method-rail" aria-label={method.railLabel}>
+    <ol class="method-rail method-track" aria-label={method.railLabel}>
       {
         method.phases.map((phase, index) => (
           <li>
@@ -54,14 +55,15 @@ const { copy, method } = Astro.props;
 <style>
   .brand-manifesto {
     border-bottom: 1px solid var(--line);
-    padding: clamp(88px, 11vw, 148px) 0;
+    padding: clamp(5.5rem, 8vw, 8.5rem) 0;
   }
 
   .manifesto-copy {
     display: grid;
-    max-width: 72rem;
-    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.55fr);
-    gap: 2rem 6vw;
+    width: min(100%, 68rem);
+    grid-template-columns: minmax(0, 0.95fr) minmax(15rem, 0.52fr);
+    gap: 1.4rem 6vw;
+    align-items: end;
   }
 
   .manifesto-copy .kicker,
@@ -71,78 +73,91 @@ const { copy, method } = Astro.props;
 
   .manifesto-copy h2 {
     max-width: 11ch;
-    margin-top: 1rem;
-    font-size: clamp(3rem, 7vw, 7.4rem);
-    line-height: 0.94;
+    margin-top: 0.8rem;
+    font-size: clamp(2.9rem, 5.1vw, 5rem);
+    line-height: 0.98;
   }
 
   .manifesto-copy > p:last-child {
     grid-column: 2;
     grid-row: 2;
     max-width: 34ch;
-    margin: 0.45rem 0 0;
+    margin: 0 0 0.2rem;
     color: var(--muted);
-    font-size: clamp(1rem, 1.35vw, 1.15rem);
-    line-height: 1.75;
+    font-size: clamp(0.94rem, 1.15vw, 1.04rem);
+    line-height: 1.78;
   }
 
   .principle-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: clamp(3.5rem, 8vw, 7rem) 0 0;
-    border-top: 1px solid var(--line);
+    gap: 0;
+    width: min(100%, 69rem);
+    margin: clamp(3.4rem, 6vw, 5.8rem) 0 0 auto;
     padding: 0;
     list-style: none;
   }
 
-  .principle-list li {
+  .principle-trace {
     display: grid;
-    min-height: 12rem;
-    align-content: start;
-    border-right: 1px solid var(--line);
-    padding: 1.4rem 1.6rem 1.8rem 0;
+    width: 76%;
+    min-height: 6.8rem;
+    grid-template-columns: 2.2rem minmax(2rem, 0.22fr) minmax(8rem, 0.48fr) minmax(13rem, 1fr);
+    gap: 1.1rem;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding: 1.15rem 0;
   }
 
-  .principle-list li + li {
-    padding-left: 1.6rem;
+  .principle-trace:nth-child(2) {
+    width: 68%;
+    margin-left: 16%;
   }
 
-  .principle-list li:last-child {
-    border-right: 0;
+  .principle-trace:nth-child(3) {
+    width: 74%;
+    margin-left: 7%;
+    border-bottom: 1px solid var(--line);
   }
 
-  .principle-list span,
+  .principle-index,
   .phase-index,
   .phase-code {
     color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.08em;
   }
 
-  .principle-list strong {
-    margin-top: 2.6rem;
-    color: var(--paper);
-    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: 1.7rem;
+  .principle-rule {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--ember-strong), var(--line));
   }
 
-  .principle-list p {
-    max-width: 24ch;
-    margin: 0.8rem 0 0;
+  .principle-trace strong {
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  }
+
+  .principle-trace p {
+    max-width: 28ch;
+    margin: 0;
     color: var(--muted);
-    line-height: 1.7;
+    font-size: 0.9rem;
+    line-height: 1.68;
   }
 
   .method-section {
-    margin-top: clamp(6rem, 11vw, 10rem);
+    margin-top: clamp(5.5rem, 9vw, 8.5rem);
   }
 
   .method-head {
     display: grid;
-    grid-template-columns: minmax(0, 0.75fr) minmax(18rem, 0.45fr);
+    grid-template-columns: minmax(0, 0.78fr) minmax(16rem, 0.4fr);
     gap: 1rem 6vw;
+    align-items: end;
   }
 
   .method-head .kicker,
@@ -151,74 +166,107 @@ const { copy, method } = Astro.props;
   }
 
   .method-head h2 {
-    margin-top: 0.9rem;
-    font-size: clamp(2.4rem, 5vw, 5.2rem);
-    line-height: 0.98;
+    max-width: 12ch;
+    margin-top: 0.75rem;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    line-height: 1;
   }
 
   .method-head > p:last-child {
     grid-column: 2;
     grid-row: 2;
     max-width: 34ch;
-    margin: 0.35rem 0 0;
+    margin: 0 0 0.15rem;
     color: var(--muted);
-    line-height: 1.75;
+    font-size: 0.94rem;
+    line-height: 1.72;
   }
 
-  .method-rail {
+  .method-track {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    margin: 3.5rem 0 0;
-    border-block: 1px solid var(--line);
+    margin: 2.8rem 0 0;
+    border-top: 1px solid var(--line);
     padding: 0;
     list-style: none;
   }
 
-  .method-rail li {
+  .method-track li {
     position: relative;
     display: grid;
-    min-height: 18rem;
-    align-content: start;
-    border-right: 1px solid var(--line);
-    padding: 1.3rem 1.4rem 1.6rem;
+    min-height: 12.5rem;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.65rem 1rem;
+    padding: 1rem clamp(1rem, 2vw, 1.5rem) 1.25rem 0;
   }
 
-  .method-rail li:last-child {
-    border-right: 0;
+  .method-track li + li {
+    padding-left: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .method-track li::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ember-strong);
+    box-shadow: 0 0 0 4px var(--coal);
   }
 
   .phase-code {
-    justify-self: end;
-    margin-top: -1rem;
     color: var(--muted);
   }
 
-  .method-rail strong {
-    margin-top: 4rem;
+  .method-track strong {
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
     color: var(--paper);
-    font-size: 1.25rem;
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
   }
 
-  .method-rail p {
-    margin: 0.75rem 0 0;
+  .method-track p {
+    grid-column: 1 / -1;
+    margin: 0;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.86rem;
     line-height: 1.65;
   }
 
-  .method-rail em {
+  .method-track em {
+    grid-column: 1 / -1;
     align-self: end;
-    margin-top: 2rem;
     color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-style: normal;
     letter-spacing: 0.04em;
   }
 
+  @media (max-width: 820px) {
+    .principle-trace,
+    .principle-trace:nth-child(2),
+    .principle-trace:nth-child(3) {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .method-track {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .method-track li:nth-child(3),
+    .method-track li:nth-child(4) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
   @media (max-width: 720px) {
     .brand-manifesto {
-      padding: 4rem 0;
+      padding: 5rem 0;
     }
 
     .manifesto-copy,
@@ -232,32 +280,39 @@ const { copy, method } = Astro.props;
       grid-row: auto;
     }
 
-    .principle-list,
-    .method-rail {
-      grid-template-columns: 1fr;
+    .principle-list {
+      margin-top: 3rem;
     }
 
-    .principle-list li,
-    .principle-list li + li,
-    .method-rail li {
+    .principle-trace {
       min-height: auto;
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
-      padding: 1.3rem 0 1.5rem;
+      grid-template-columns: 2rem 1.3rem minmax(0, 1fr);
+      gap: 0.8rem;
+      padding: 1.25rem 0;
     }
 
-    .principle-list li:last-child,
-    .method-rail li:last-child {
-      border-bottom: 0;
+    .principle-trace p {
+      grid-column: 3;
     }
 
-    .principle-list strong,
-    .method-rail strong {
-      margin-top: 1.5rem;
+    .method-track {
+      position: relative;
+      grid-template-columns: 1fr;
+      margin-left: 0.25rem;
+      border-top: 0;
+      border-left: 1px solid var(--line);
     }
 
-    .phase-code {
-      margin-top: -0.9rem;
+    .method-track li,
+    .method-track li + li {
+      min-height: auto;
+      border-top: 1px solid var(--line);
+      padding: 1.1rem 0 1.5rem 1.25rem;
+    }
+
+    .method-track li::before {
+      top: -3px;
+      left: -3px;
     }
   }
 </style>

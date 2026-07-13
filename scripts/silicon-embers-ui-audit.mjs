@@ -152,6 +152,23 @@ for (const [relative, marker] of [
 if (/10\.8rem/.test(read('src/components/silicon-embers/EmberHero.astro'))) {
   failures.push('Hero display cap must be reduced below the poster-scale 10.8rem');
 }
+for (const [relative, marker] of [
+  ['src/components/silicon-embers/BrandManifesto.astro', 'principle-trace'],
+  ['src/components/silicon-embers/BrandManifesto.astro', 'method-track'],
+  ['src/components/silicon-embers/WritingPreview.astro', 'writing-rule'],
+  ['src/components/silicon-embers/SignalLinksSection.astro', 'resource-record'],
+]) {
+  if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
+}
+for (const forbidden of ['7.4rem', '6.3rem']) {
+  if (
+    [manifestoSource, read('src/components/silicon-embers/WritingPreview.astro')].some((source) =>
+      source.includes(forbidden),
+    )
+  ) {
+    failures.push(`Poster-scale section cap ${forbidden} must be removed`);
+  }
+}
 
 const navBlocks = [...homeCopySource.matchAll(/nav:\s*\[([\s\S]*?)\],/g)].map((match) => match[1]);
 const expectedNavLabels = [
