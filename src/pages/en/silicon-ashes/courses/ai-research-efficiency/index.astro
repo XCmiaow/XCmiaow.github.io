@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+
+import { coursePaths } from '../../../../../data/courseCatalog';
+import { sortCourseEntries } from '../../../../../lib/course';
+import SiliconEmbersLayout from '../../../../../layouts/SiliconEmbersLayout.astro';
+import '../../../../../styles/course.css';
+
+const entries = sortCourseEntries(await getCollection('course'));
+---
+
+<SiliconEmbersLayout
+  lang="en"
+  title="AI Research Efficiency Course｜silicon-embers"
+  description="A 12-hour course for researchers. The full teaching content is delivered in Chinese."
+  canonicalPath={`${coursePaths.en}/`}
+  alternatePath={`${coursePaths.zh}/`}
+>
+  <div class="course-program">
+    <header class="course-hero">
+      <div>
+        <p class="course-hero__index">12 hours · In-person first / self-study compatible</p>
+        <h1>AI Research Efficiency Course</h1>
+        <p class="course-hero__summary">
+          <strong>The full course content is in Chinese.</strong> This English entry explains the structure and links to the
+          six Chinese units.
+        </p>
+      </div>
+      <dl class="course-meta">
+        <div><dt>Language</dt><dd>Chinese teaching content</dd></div>
+        <div>
+          <dt>Audience</dt><dd>Researchers across disciplines; chemistry and chemical-engineering teaching cases</dd>
+        </div>
+        <div><dt>Balance</dt><dd>Methods about 60%; product practice about 40%</dd></div>
+      </dl>
+    </header>
+    <ol class="course-unit-list">
+      {
+        entries.map((entry) => (
+          <li>
+            <a href={`${coursePaths.zh}/${entry.id}/`} lang="zh-CN">
+              <span class="course-unit-list__number">{String(entry.data.order).padStart(2, '0')}</span>
+              <span class="course-unit-list__copy">
+                <>
+                  <strong>{entry.data.title}</strong>
+                  <span>{entry.data.summary}</span>
+                </>
+              </span>
+              <span class="course-unit-list__time">{entry.data.durationMinutes} min · Chinese</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</SiliconEmbersLayout>

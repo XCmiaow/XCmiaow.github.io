@@ -1,0 +1,37 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+import { coursePaths } from '../../../../data/courseCatalog';
+import { courseComponents } from '../../../../lib/courseComponents';
+import { validateCourse } from '../../../../lib/course';
+import CourseLayout from '../../../../layouts/CourseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('course', ({ data }) => data.kind === 'lesson' || data.kind === 'lab');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'course'>;
+}
+
+const { entry } = Astro.props;
+const entries = await getCollection('course');
+const { sorted } = validateCourse(entries);
+const { Content } = await render(entry);
+---
+
+<CourseLayout
+  title={entry.data.title}
+  summary={entry.data.summary}
+  canonicalPath={`${coursePaths.zh}/${entry.id}/`}
+  entries={sorted}
+  currentId={entry.id}
+  durationMinutes={entry.data.durationMinutes}
+  objectives={entry.data.objectives}
+  deliverables={entry.data.deliverables}
+  sources={entry.data.sources}
+  eyebrow={`单元 ${entry.data.order} / 6 · ${entry.data.kind === 'lab' ? '工作坊' : '讲授与练习'}`}
+>
+  <Content components={courseComponents} />
+</CourseLayout>

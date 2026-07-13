@@ -1,0 +1,161 @@
+---
+import type { CourseEntry } from '../lib/course';
+import { sortCourseEntries } from '../lib/course';
+import { coursePaths } from '../data/courseCatalog';
+import SiliconEmbersLayout from './SiliconEmbersLayout.astro';
+import '../styles/course.css';
+
+interface Props {
+  title: string;
+  summary: string;
+  canonicalPath: string;
+  entries: CourseEntry[];
+  currentId?: string;
+  durationMinutes?: number;
+  objectives?: string[];
+  deliverables?: string[];
+  sources?: CourseEntry['data']['sources'];
+  eyebrow?: string;
+}
+
+const {
+  title,
+  summary,
+  canonicalPath,
+  entries,
+  currentId,
+  durationMinutes = 120,
+  objectives = [],
+  deliverables = [],
+  sources = [],
+  eyebrow = 'AI 科研效率课 · 中文完整课程',
+} = Astro.props;
+const sorted = sortCourseEntries(entries);
+const currentIndex = currentId ? sorted.findIndex((entry) => entry.id === currentId) : -1;
+const previous = currentIndex > 0 ? sorted[currentIndex - 1] : undefined;
+const next = currentIndex >= 0 && currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : undefined;
+---
+
+<SiliconEmbersLayout
+  lang="zh"
+  title={`${title}｜硅基余烬`}
+  description={summary}
+  canonicalPath={canonicalPath}
+  alternatePath={coursePaths.en}
+>
+  <div class="course-program">
+    <header class="course-hero">
+      <div>
+        <p class="course-hero__index">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="course-hero__summary">{summary}</p>
+      </div>
+      <dl class="course-meta">
+        <div><dt>时长</dt><dd>{durationMinutes} 分钟</dd></div>
+        <div><dt>教学方式</dt><dd>线下授课优先，同时兼容自学</dd></div>
+        <div><dt>适用人群</dt><dd>广泛科研人员；化学、化工教师案例为主</dd></div>
+        {
+          objectives.length > 0 && (
+            <div>
+              <>
+                <dt>目标</dt>
+                <dd>{objectives.join('；')}</dd>
+              </>
+            </div>
+          )
+        }
+        {
+          deliverables.length > 0 && (
+            <div>
+              <>
+                <dt>交付物</dt>
+                <dd>{deliverables.join('；')}</dd>
+              </>
+            </div>
+          )
+        }
+      </dl>
+    </header>
+
+    <details class="course-mobile-toc">
+      <summary>展开六单元目录</summary>
+      <ol>
+        {
+          sorted.map((entry) => (
+            <li>
+              <a href={`${coursePaths.zh}/${entry.id}/`}>{entry.data.title}</a>
+            </li>
+          ))
+        }
+      </ol>
+    </details>
+
+    <div class="course-layout">
+      <nav class="course-rail" aria-label="课程章节">
+        <p class="course-rail__label">六个单元 · 720 分钟</p>
+        <ol>
+          {
+            sorted.map((entry) => (
+              <li>
+                <a href={`${coursePaths.zh}/${entry.id}/`} aria-current={entry.id === currentId ? 'page' : undefined}>
+                  <span>{String(entry.data.order).padStart(2, '0')}</span>
+                  <span>{entry.data.title}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <article class="course-prose">
+        <slot />
+
+        {
+          sources.length > 0 && (
+            <section class="course-source-list" aria-labelledby="course-sources">
+              <h2 id="course-sources">本单元参考来源</h2>
+              <ul>
+                {sources.map((source) => (
+                  <li>
+                    <a href={source.url} rel="noreferrer">
+                      {source.title}
+                    </a>
+                    {' · '}
+                    复核于 {source.reviewedAt.toISOString().slice(0, 10)}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          currentId && (
+            <nav class="course-navigation" aria-label="课程前后章节">
+              {previous ? (
+                <a href={`${coursePaths.zh}/${previous.id}/`}>
+                  <small>上一单元</small>
+                  {previous.data.title}
+                </a>
+              ) : (
+                <a href={`${coursePaths.zh}/`}>
+                  <small>课程首页</small>查看完整安排
+                </a>
+              )}
+              {next ? (
+                <a href={`${coursePaths.zh}/${next.id}/`}>
+                  <small>下一单元</small>
+                  {next.data.title}
+                </a>
+              ) : (
+                <a href={`${coursePaths.zh}/handout/`}>
+                  <small>完成课程</small>打开连续讲义
+                </a>
+              )}
+            </nav>
+          )
+        }
+      </article>
+    </div>
+  </div>
+</SiliconEmbersLayout>

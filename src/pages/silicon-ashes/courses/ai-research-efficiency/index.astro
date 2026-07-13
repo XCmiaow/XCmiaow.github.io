@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+
+import CourseOverview from '../../../../components/course/CourseOverview.astro';
+import { coursePaths } from '../../../../data/courseCatalog';
+import { validateCourse } from '../../../../lib/course';
+import CourseLayout from '../../../../layouts/CourseLayout.astro';
+
+const entries = await getCollection('course');
+const { sorted } = validateCourse(entries);
+---
+
+<CourseLayout
+  title="AI 科研效率课"
+  summary="面向非计算机背景科研人员的 12 小时中文完整课程：先讲透 AI 与数字工具的前置知识，再把智能体放进可检查、可复用的科研工作流。"
+  canonicalPath={`${coursePaths.zh}/`}
+  entries={sorted}
+  durationMinutes={720}
+  eyebrow="硅基余烬课程 · 方法 60% / 产品 40%"
+>
+  <CourseOverview entries={sorted} basePath={coursePaths.zh} />
+</CourseLayout>

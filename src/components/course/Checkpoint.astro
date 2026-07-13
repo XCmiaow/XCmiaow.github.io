@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  answer: string;
+}
+
+const { title, answer } = Astro.props;
+---
+
+<aside class="course-block course-block--checkpoint" aria-label={`理解检查：${title}`}>
+  <p class="course-block__label">理解检查</p>
+  <h3>{title}</h3>
+  <div class="course-block__body"><slot /></div>
+  <details>
+    <summary>展开参考答案</summary>
+    <p>{answer}</p>
+  </details>
+</aside>

@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const base = '/silicon-ashes/courses/ai-research-efficiency';
+const routes = [
+  `${base}/`,
+  ...[
+    '01-ai-history',
+    '02-llm-mental-model',
+    '03-task-design',
+    '04-tool-systems',
+    '05-controlled-agents',
+    '06-research-workflow-studio',
+    'schedule',
+    'instructor',
+    'reference',
+    'handout',
+  ].map((slug) => `${base}/${slug}/`),
+  '/en/silicon-ashes/courses/ai-research-efficiency/',
+];
+
+for (const route of routes) {
+  const file = resolve('dist', route.replace(/^\//, ''), 'index.html');
+  assert(existsSync(file), `${route}: built page is missing`);
+  const html = readFileSync(file, 'utf8');
+  assert(html.includes('<h1'), `${route}: h1 is missing`);
+  assert(html.includes('course-program'), `${route}: unified Astro course shell is missing`);
+  assert(!html.includes('�'), `${route}: encoding corruption detected`);
+}
+
+const home = readFileSync(resolve('dist', base.replace(/^\//, ''), 'index.html'), 'utf8');
+for (const slug of [
+  '01-ai-history',
+  '02-llm-mental-model',
+  '03-task-design',
+  '04-tool-systems',
+  '05-controlled-agents',
+  '06-research-workflow-studio',
+]) {
+  assert(home.includes(`${base}/${slug}/`), `course home does not link to ${slug}`);
+}
+
+console.log(JSON.stringify({ courseRoutes: 'ok', routes: routes.length }));

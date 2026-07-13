@@ -1,0 +1,47 @@
+---
+import type { CourseEntry } from '../../lib/course';
+import { sortCourseEntries } from '../../lib/course';
+
+interface Props {
+  entries: CourseEntry[];
+  basePath: string;
+}
+
+const { entries, basePath } = Astro.props;
+const sorted = sortCourseEntries(entries);
+---
+
+<div class="course-overview">
+  <section class="course-overview__promise" aria-labelledby="course-promise">
+    <p class="course-block__label">12 小时 · 线下优先 / 自学兼容</p>
+    <h2 id="course-promise">先理解系统，再驾驭产品</h2>
+    <p>
+      这不是六种工具的功能串讲。前四个单元补齐
+      AI、语言模型、任务设计和数字工具系统；后两个单元再把智能体放进可检查的科研工作流。方法约占六成，产品演示约占四成。
+    </p>
+  </section>
+
+  <ol class="course-unit-list">
+    {
+      sorted.map((entry) => (
+        <li>
+          <a href={`${basePath}/${entry.id}/`}>
+            <span class="course-unit-list__number">{String(entry.data.order).padStart(2, '0')}</span>
+            <span class="course-unit-list__copy">
+              <strong>{entry.data.title}</strong>
+              <span>{entry.data.summary}</span>
+            </span>
+            <span class="course-unit-list__time">{entry.data.durationMinutes} 分钟</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+
+  <nav class="course-support-links" aria-label="课程辅助材料">
+    <a href={`${basePath}/schedule/`}>查看 12 小时安排</a>
+    <a href={`${basePath}/instructor/`}>授课指南</a>
+    <a href={`${basePath}/reference/`}>官方参考资料</a>
+    <a href={`${basePath}/handout/`}>连续讲义 / 打印</a>
+  </nav>
+</div>

@@ -1,0 +1,32 @@
+---
+import type { CourseEntry } from '../../lib/course';
+import { sortCourseEntries } from '../../lib/course';
+
+interface Props {
+  entries: CourseEntry[];
+}
+
+const { entries } = Astro.props;
+const sorted = sortCourseEntries(entries);
+---
+
+<div class="course-reference">
+  {
+    sorted.map((entry) => (
+      <section>
+        <p class="course-block__label">单元 {entry.data.order}</p>
+        <h2>{entry.data.title}</h2>
+        <ul>
+          {entry.data.sources.map((source) => (
+            <li>
+              <a href={source.url} rel="noreferrer">
+                {source.title}
+              </a>
+              <span>复核于 {source.reviewedAt.toISOString().slice(0, 10)}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>

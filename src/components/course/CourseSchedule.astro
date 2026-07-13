@@ -1,0 +1,37 @@
+---
+import type { CourseEntry } from '../../lib/course';
+import { sortCourseEntries } from '../../lib/course';
+
+interface Props {
+  entries: CourseEntry[];
+  basePath: string;
+}
+
+const { entries, basePath } = Astro.props;
+const sorted = sortCourseEntries(entries);
+---
+
+<ol class="course-schedule">
+  {
+    sorted.map((entry) => (
+      <li>
+        <div class="course-schedule__time">
+          <span>{String(entry.data.order).padStart(2, '0')}</span>
+          <strong>{entry.data.durationMinutes} 分钟</strong>
+        </div>
+        <div>
+          <h2>
+            <a href={`${basePath}/${entry.id}/`}>{entry.data.title}</a>
+          </h2>
+          <p>{entry.data.summary}</p>
+          <h3>本单元结束时，学员能够</h3>
+          <ul>
+            {entry.data.objectives.map((objective) => (
+              <li>{objective}</li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    ))
+  }
+</ol>

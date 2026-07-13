@@ -1,0 +1,22 @@
+---
+interface Props {
+  product: string;
+  goal: string;
+  verifiedAt: string;
+  minutes?: number;
+}
+
+const { product, goal, verifiedAt, minutes } = Astro.props;
+---
+
+<aside class="course-block course-block--demo" aria-label={`产品演示：${product}，${goal}`}>
+  <div class="course-block__heading">
+    <div>
+      <p class="course-block__label">产品演示 · {product}</p>
+      <h3>{goal}</h3>
+    </div>
+    {minutes && <span class="course-block__time">{minutes} 分钟</span>}
+  </div>
+  <div class="course-block__body"><slot /></div>
+  <p class="course-block__reviewed">界面与能力复核：{verifiedAt}</p>
+</aside>

@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+
+import { coursePaths } from '../../../../data/courseCatalog';
+import { validateCourse } from '../../../../lib/course';
+import CourseLayout from '../../../../layouts/CourseLayout.astro';
+
+const entries = await getCollection('course');
+const { sorted } = validateCourse(entries);
+---
+
+<CourseLayout
+  title="授课指南"
+  summary="给线下讲师的节奏、演示、安全和验收建议；自学者也可以把它当作学习路线说明。"
+  canonicalPath={`${coursePaths.zh}/instructor/`}
+  entries={sorted}
+  durationMinutes={720}
+  eyebrow="课程辅助材料 · Instructor guide"
+>
+  <h2>每个 120 分钟单元的节奏</h2>
+  <ol>
+    <li><strong>建立共同语言（25–35 分钟）：</strong>先用类比解释，再给技术定义，不预设编程背景。</li>
+    <li><strong>拆解案例（20–30 分钟）：</strong>优先使用文献、反应信息、实验记录、课程设计和数据表。</li>
+    <li><strong>产品演示（按单元元数据）：</strong>演示只服务于方法，不要求所有学员使用同一产品。</li>
+    <li><strong>练习与验收（30–45 分钟）：</strong>必须留下可检查的任务说明、风险卡、配置清单或工作流包。</li>
+  </ol>
+
+  <h2>演示纪律</h2>
+  <ul>
+    <li>提前准备脱敏材料；不要把真实 API Key、未公开论文、学生隐私或实验原始记录投到公共模型。</li>
+    <li>所有产品界面都可能变化。以本页参考来源的复核日期为准，现场变化时讲方法，不猜按钮位置。</li>
+    <li>智能体执行前先展示计划、权限和预期文件；执行后展示差异、日志和验收结果。</li>
+    <li>WorkBuddy 专属内容限定 45 分钟；比较产品时使用同一任务、同一输入和同一验收标准。</li>
+  </ul>
+
+  <h2>六个单元的最低交付物</h2>
+  <ol>
+    {
+      sorted.map((entry) => (
+        <li>
+          <strong>{entry.data.title}：</strong>
+          {entry.data.deliverables.join('；')}
+        </li>
+      ))
+    }
+  </ol>
+</CourseLayout>

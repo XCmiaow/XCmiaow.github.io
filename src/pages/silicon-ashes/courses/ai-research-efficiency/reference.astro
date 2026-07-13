@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+
+import CourseReference from '../../../../components/course/CourseReference.astro';
+import { coursePaths } from '../../../../data/courseCatalog';
+import { validateCourse } from '../../../../lib/course';
+import CourseLayout from '../../../../layouts/CourseLayout.astro';
+
+const entries = await getCollection('course');
+const { sorted } = validateCourse(entries);
+---
+
+<CourseLayout
+  title="参考资料与复核日期"
+  summary="课程中的产品能力、权限和安全边界优先引用官方文档；复核日期用于提醒读者界面和规则会变化。"
+  canonicalPath={`${coursePaths.zh}/reference/`}
+  entries={sorted}
+  durationMinutes={0}
+  eyebrow="课程辅助材料 · Official sources"
+>
+  <CourseReference entries={sorted} />
+</CourseLayout>

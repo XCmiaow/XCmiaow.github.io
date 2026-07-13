@@ -1,0 +1,14 @@
+---
+interface Props {
+  title: string;
+  bridge?: string;
+}
+
+const { title, bridge = '换一种方式理解' } = Astro.props;
+---
+
+<aside class="course-block course-block--analogy" aria-label={`${bridge}：${title}`}>
+  <p class="course-block__label">{bridge}</p>
+  <h3>{title}</h3>
+  <div class="course-block__body"><slot /></div>
+</aside>

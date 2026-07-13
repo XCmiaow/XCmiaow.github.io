@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+
+import CourseSchedule from '../../../../components/course/CourseSchedule.astro';
+import { coursePaths } from '../../../../data/courseCatalog';
+import { validateCourse } from '../../../../lib/course';
+import CourseLayout from '../../../../layouts/CourseLayout.astro';
+
+const entries = await getCollection('course');
+const { sorted } = validateCourse(entries);
+---
+
+<CourseLayout
+  title="12 小时授课安排"
+  summary="六个 120 分钟单元。每个单元都由解释、示例、动手练习和验收组成，可按两天、三天或六次课实施。"
+  canonicalPath={`${coursePaths.zh}/schedule/`}
+  entries={sorted}
+  durationMinutes={720}
+  eyebrow="课程辅助材料 · Schedule"
+>
+  <CourseSchedule entries={sorted} basePath={coursePaths.zh} />
+</CourseLayout>

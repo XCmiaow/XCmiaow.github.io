@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+  instructions: string[];
+  acceptance: string[];
+  minutes?: number;
+}
+
+const { title, instructions, acceptance, minutes } = Astro.props;
+---
+
+<section class="course-block course-block--exercise" aria-label={`动手练习：${title}`}>
+  <div class="course-block__heading">
+    <div>
+      <p class="course-block__label">动手练习</p>
+      <h2>{title}</h2>
+    </div>
+    {minutes && <span class="course-block__time">{minutes} 分钟</span>}
+  </div>
+  <div class="course-block__body"><slot /></div>
+  <div class="course-task-grid">
+    <section>
+      <h3>怎么做</h3>
+      <ol>{instructions.map((instruction) => <li>{instruction}</li>)}</ol>
+    </section>
+    <section>
+      <h3>做到什么算完成</h3>
+      <ul>{acceptance.map((criterion) => <li>{criterion}</li>)}</ul>
+    </section>
+  </div>
+</section>

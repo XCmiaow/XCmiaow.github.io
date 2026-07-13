@@ -48,3 +48,8 @@ export const courseFacts = {
   audience: '广泛科研人员；案例与练习以化学、化工教师为主',
   delivery: '线下授课优先，同时兼容自学',
 } as const;
+
+export const coursePaths = {
+  zh: '/silicon-ashes/courses/ai-research-efficiency',
+  en: '/en/silicon-ashes/courses/ai-research-efficiency',
+} as const;
