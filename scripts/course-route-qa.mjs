@@ -29,6 +29,11 @@ for (const route of routes) {
   assert(!html.includes('�'), `${route}: encoding corruption detected`);
 }
 
+const sitemap = readFileSync(resolve('dist/sitemap.xml'), 'utf8');
+for (const route of routes) {
+  assert(sitemap.includes(route), `${route}: sitemap entry is missing`);
+}
+
 const home = readFileSync(resolve('dist', base.replace(/^\//, ''), 'index.html'), 'utf8');
 for (const slug of [
   '01-ai-history',

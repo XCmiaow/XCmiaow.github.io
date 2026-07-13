@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { coursePaths } from '../data/courseCatalog';
 import { resourceTemplates } from '../data/siliconAshesResources';
 import { absoluteUrl } from '../data/siteConfig';
 import { canonicalRoutes } from '../lib/siteRoutes';
@@ -24,6 +25,7 @@ const xmlEscape = (value: string) =>
 
 export async function GET() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const course = await getCollection('course');
   const latestPostDate = posts.map((post) => post.data.date).sort((a, b) => b.valueOf() - a.valueOf())[0];
   const fallbackDate = latestPostDate ?? new Date('2026-07-06T00:00:00Z');
 
@@ -37,6 +39,23 @@ export async function GET() {
     { path: dynamicPath('resources', 'en', template.slug), lastmod: fallbackDate, priority: '0.68' },
   ]);
 
+  const courseDates = course.flatMap((entry) => entry.data.sources.map((source) => source.reviewedAt));
+  const courseLastmod = courseDates.sort((a, b) => b.valueOf() - a.valueOf())[0] ?? fallbackDate;
+  const courseRoutes = [
+    { path: `${coursePaths.zh}/`, lastmod: courseLastmod, priority: '0.86' },
+    ...course.map((entry) => ({
+      path: `${coursePaths.zh}/${entry.id}/`,
+      lastmod: courseLastmod,
+      priority: '0.78',
+    })),
+    ...['schedule', 'instructor', 'reference', 'handout'].map((slug) => ({
+      path: `${coursePaths.zh}/${slug}/`,
+      lastmod: courseLastmod,
+      priority: '0.7',
+    })),
+    { path: `${coursePaths.en}/`, lastmod: courseLastmod, priority: '0.72' },
+  ];
+
   const seenPaths = new Set<string>();
   const entries = [
     ...staticRoutes.map((path) => ({
@@ -46,6 +65,7 @@ export async function GET() {
     })),
     ...postRoutes,
     ...templateRoutes,
+    ...courseRoutes,
   ].filter((entry) => {
     if (seenPaths.has(entry.path)) return false;
     seenPaths.add(entry.path);
