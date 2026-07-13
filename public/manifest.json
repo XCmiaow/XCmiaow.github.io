@@ -1,25 +1,25 @@
 {
-  "name": "Xujie Fang · Academic Resume",
-  "short_name": "Xujie Fang",
-  "description": "Personal academic resume website of Xujie Fang — undergraduate in Chemical Engineering at NJFU.",
+  "name": "硅基余烬 · silicon-embers",
+  "short_name": "硅基余烬",
+  "description": "面向科研与教学实践的 AI 博客、中文课程和可复用资源。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "theme_color": "#102a43",
-  "background_color": "#f7f5ef",
+  "theme_color": "#050504",
+  "background_color": "#050504",
   "orientation": "any",
   "icons": [
     {
-      "src": "/assets/avatar.jpg",
-      "sizes": "192x192",
+      "src": "/silicon-ashes/logo.jpg",
+      "sizes": "1254x1254",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/assets/avatar.jpg",
-      "sizes": "512x512",
+      "src": "/silicon-ashes/logo.jpg",
+      "sizes": "1254x1254",
       "type": "image/jpeg",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "dir": "ltr"

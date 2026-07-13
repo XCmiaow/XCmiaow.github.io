@@ -42,6 +42,9 @@ function runStaticChecks() {
   }
   if (manifest.start_url !== '/') fail(`manifest start_url must be "/": ${manifest.start_url}`);
   if (manifest.scope !== '/') fail(`manifest scope must be "/": ${manifest.scope}`);
+  if (!manifest.name.includes('硅基余烬') || !manifest.name.includes('silicon-embers')) {
+    fail(`manifest name must reflect the primary brand: ${manifest.name}`);
+  }
   if (!['standalone', 'fullscreen', 'minimal-ui'].includes(manifest.display)) {
     fail(`manifest display should be installable, got ${manifest.display}`);
   }
@@ -56,6 +59,7 @@ function runStaticChecks() {
     if (!icon.sizes || !icon.type) fail(`manifest icon is missing sizes/type: ${JSON.stringify(icon)}`);
     const iconPath = path.join(root, 'public', icon.src || '');
     if (!fs.existsSync(iconPath)) fail(`manifest icon file does not exist: ${icon.src}`);
+    if (icon.src !== '/silicon-ashes/logo.jpg') fail(`manifest icon must use the brand logo: ${icon.src}`);
   }
 
   const sw = readText('public/sw.js');

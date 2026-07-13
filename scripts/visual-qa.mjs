@@ -174,12 +174,12 @@ try {
   await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
   await waitForSettledPage(page);
   await page.locator('a.cert-card').first().click();
-  await page.waitForSelector('#lightbox.active');
+  await page.waitForSelector('#lightbox[open]');
   await page.waitForFunction(
     () => {
       const lb = document.querySelector('#lightbox');
       const img = document.querySelector('#lb-img');
-      return !!lb && !!img && img.complete && img.naturalWidth > 1 && getComputedStyle(lb).opacity === '1';
+      return lb instanceof HTMLDialogElement && lb.open && !!img && img.complete && img.naturalWidth > 1;
     },
     { timeout: 10000 },
   );

@@ -598,10 +598,34 @@
 }
 
 @media print {
-  .course-program {
-    padding: 0;
+  html,
+  body,
+  .sa-shell {
+    background: #fff !important;
+    color: #111 !important;
   }
 
+  .sa-shell {
+    --paper: #111;
+    --muted: #444;
+    --line: #bbb;
+    --ember: #7b421e;
+    --ember-strong: #5f3015;
+    --moss: #355f55;
+    --coal: #fff;
+    --coal-2: #fff;
+  }
+
+  .course-program {
+    --course-surface: #fff;
+    padding: 0;
+    color-scheme: light;
+    print-color-adjust: economy;
+  }
+
+  .sa-nav,
+  .sa-footer,
+  .skip-link,
   .course-rail,
   .course-mobile-toc,
   .course-navigation,
@@ -617,5 +641,13 @@
   .course-block,
   .course-prose pre {
     break-inside: avoid;
+  }
+
+  .course-prose,
+  .course-prose p,
+  .course-prose li,
+  .course-prose td,
+  .course-prose th {
+    color: #111 !important;
   }
 }
