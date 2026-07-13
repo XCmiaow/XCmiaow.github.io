@@ -1,0 +1,23 @@
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; frame-src 'none'; frame-ancestors 'none'; media-src 'self'; worker-src 'self'; manifest-src 'self'; form-action 'self'; upgrade-insecure-requests
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), fullscreen=(self), browsing-topics=()
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Cross-Origin-Resource-Policy: same-origin
+
+/admin/*
+  Cache-Control: no-store, max-age=0
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https://api.github.com https://github.com https://*.githubusercontent.com; frame-src https://github.com; worker-src 'self' blob:; form-action 'self' https://github.com; frame-ancestors 'none'; upgrade-insecure-requests
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  X-Content-Type-Options: nosniff
+
+/write/*
+  Cache-Control: no-store, max-age=0
+
+/sw.js
+  Cache-Control: no-cache, must-revalidate
+
+/route-contract.json
+  Cache-Control: no-cache, must-revalidate
