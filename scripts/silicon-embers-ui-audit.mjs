@@ -233,6 +233,19 @@ const emberFieldSource = read('src/components/silicon-embers/EmberField.astro');
 for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon', 'lensing-arc']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing ${className}`);
 }
+for (const className of ['depth-far', 'depth-rear', 'depth-event', 'depth-front', 'depth-near']) {
+  if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing depth plane ${className}`);
+}
+for (const className of ['orbital-guide', 'disc-filament', 'photon-caustic', 'field-scale']) {
+  if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing precision detail ${className}`);
+}
+for (const contract of [
+  "type ParticleBand = 'far' | 'mid' | 'near'",
+  'const createSeededRandom',
+  'band: ParticleBand',
+]) {
+  if (!emberCanvasSource.includes(contract)) failures.push(`Ember canvas is missing ${contract}`);
+}
 if ((emberFieldSource.match(/data-ember-canvas/g) ?? []).length !== 1) {
   failures.push('EmberField must render exactly one particle canvas');
 }

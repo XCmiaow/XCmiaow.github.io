@@ -5,7 +5,19 @@ interface GravityField {
   outerRadius: number;
 }
 
+type ParticleBand = 'far' | 'mid' | 'near';
+type RandomSource = () => number;
+type NumberRange = readonly [number, number];
+
+interface ParticleProfile {
+  angularVelocity: NumberRange;
+  radialVelocity: NumberRange;
+  size: NumberRange;
+  alpha: NumberRange;
+}
+
 interface OrbitParticle {
+  band: ParticleBand;
   radius: number;
   spawnRadius: number;
   angle: number;
@@ -23,7 +35,17 @@ interface OrbitParticle {
 
 const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
-const rand = (minimum: number, maximum: number) => minimum + Math.random() * (maximum - minimum);
+const rand = (minimum: number, maximum: number, random: RandomSource = Math.random) =>
+  minimum + random() * (maximum - minimum);
+
+const createSeededRandom =
+  (seed: number): RandomSource =>
+  () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+
+const bandFor = (value: number): ParticleBand => (value < 0.46 ? 'far' : value < 0.86 ? 'mid' : 'near');
 
 const project = (field: GravityField, radius: number, angle: number) => {
   const rotation = -0.2;
@@ -82,22 +104,45 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
   };
 
-  const createParticle = (): OrbitParticle => {
+  const createParticle = (random: RandomSource = Math.random): OrbitParticle => {
     const gravity = field();
-    const radius = rand(gravity.outerRadius * 0.55, gravity.outerRadius * 1.02);
-    const angle = rand(0, TAU);
+    const band = bandFor(random());
+    const radius = rand(gravity.outerRadius * 0.55, gravity.outerRadius * 1.02, random);
+    const angle = rand(0, TAU, random);
     const point = project(gravity, radius, angle);
+    const profiles: Record<ParticleBand, ParticleProfile> = {
+      far: {
+        angularVelocity: [0.00008, 0.00017],
+        radialVelocity: [0.002, 0.006],
+        size: [0.3, 0.72],
+        alpha: [0.12, 0.32],
+      },
+      mid: {
+        angularVelocity: [0.00013, 0.0003],
+        radialVelocity: [0.004, 0.01],
+        size: [0.48, 1.15],
+        alpha: [0.2, 0.56],
+      },
+      near: {
+        angularVelocity: [0.00018, 0.00038],
+        radialVelocity: [0.006, 0.013],
+        size: [0.82, 1.62],
+        alpha: [0.3, 0.7],
+      },
+    };
+    const profile = profiles[band];
 
     return {
+      band,
       radius,
       spawnRadius: radius,
       angle,
-      angularVelocity: rand(0.00013, 0.00034),
-      radialVelocity: rand(0.004, 0.011),
-      size: rand(0.45, 1.35),
-      alpha: rand(0.22, 0.68),
+      angularVelocity: rand(profile.angularVelocity[0], profile.angularVelocity[1], random),
+      radialVelocity: rand(profile.radialVelocity[0], profile.radialVelocity[1], random),
+      size: rand(profile.size[0], profile.size[1], random),
+      alpha: rand(profile.alpha[0], profile.alpha[1], random),
       life: 0,
-      maxLife: rand(13000, 24000),
+      maxLife: rand(13000, 24000, random),
       previousX: point.x,
       previousY: point.y,
       x: point.x,
@@ -105,17 +150,20 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     };
   };
 
-  const emit = (count: number) => {
+  const emit = (count: number, random: RandomSource = Math.random) => {
     for (let index = 0; index < count && particles.length < PARTICLE_LIMIT; index += 1) {
-      particles.push(createParticle());
+      particles.push(createParticle(random));
     }
   };
 
   const drawParticle = (particle: OrbitParticle, opacity: number, pull: number) => {
     const warm = particle.angle % 1.8 > 0.46;
-    const trailAlpha = opacity * (warm ? 0.28 : 0.16);
+    const depth = particle.band === 'far' ? 0.7 : particle.band === 'near' ? 1.18 : 1;
+    const trailAlpha = opacity * (warm ? 0.28 : 0.16) * depth;
     context.strokeStyle = warm ? `rgba(211, 125, 60, ${trailAlpha})` : `rgba(232, 215, 186, ${trailAlpha})`;
-    context.lineWidth = Math.max(0.45, particle.size * (0.6 + pull * 0.45));
+    context.lineWidth = Math.max(0.4, particle.size * (0.58 + pull * 0.42));
+    context.shadowBlur = particle.band === 'near' ? 5 : particle.band === 'mid' ? 2 : 0;
+    context.shadowColor = warm ? 'rgba(224, 139, 66, 0.32)' : 'rgba(238, 219, 187, 0.2)';
     context.beginPath();
     context.moveTo(particle.previousX, particle.previousY);
     context.lineTo(particle.x, particle.y);
@@ -126,6 +174,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     context.beginPath();
     context.arc(particle.x, particle.y, radius, 0, TAU);
     context.fill();
+    context.shadowBlur = 0;
   };
 
   const draw = (time: number, delta: number, shouldEmit: boolean) => {
@@ -178,18 +227,19 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   };
 
   const renderStatic = () => {
+    const random = createSeededRandom(240713);
     particles.length = 0;
-    emit(28);
+    emit(28, random);
     const gravity = field();
     for (const particle of particles) {
-      particle.radius = rand(gravity.innerRadius * 1.7, particle.spawnRadius);
-      particle.angle += rand(0, TAU);
-      particle.life = particle.maxLife * rand(0.16, 0.66);
+      particle.radius = rand(gravity.innerRadius * 1.7, particle.spawnRadius, random);
+      particle.angle += rand(0, TAU, random);
+      particle.life = particle.maxLife * rand(0.16, 0.66, random);
       const point = project(gravity, particle.radius, particle.angle);
       particle.x = point.x;
       particle.y = point.y;
-      particle.previousX = point.x - rand(-4, 4);
-      particle.previousY = point.y - rand(-2, 2);
+      particle.previousX = point.x - rand(-4, 4, random);
+      particle.previousY = point.y - rand(-2, 2, random);
     }
     draw(performance.now(), 0, false);
   };

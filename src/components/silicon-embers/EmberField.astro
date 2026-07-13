@@ -1,30 +1,51 @@
 <div class="ember-stage" aria-hidden="true">
-  <div class="cosmic-grain"></div>
+  <div class="depth-far">
+    <div class="cosmic-grain"></div>
+    <span class="orbital-guide guide-outer"></span>
+    <span class="orbital-guide guide-inner"></span>
+  </div>
+
   <div class="black-hole-scene">
     <div class="gravity-veil"></div>
-    <div class="lensing-arc arc-back"></div>
-    <div class="accretion-disc disc-back"></div>
-    <div class="photon-ring"></div>
-    <div class="event-horizon"></div>
-    <div class="accretion-disc disc-front"></div>
-    <div class="lensing-arc arc-front"></div>
+
+    <div class="depth-rear">
+      <div class="lensing-arc arc-back"></div>
+      <div class="accretion-disc disc-back"><span class="disc-filament"></span></div>
+    </div>
+
+    <div class="depth-event">
+      <div class="photon-ring"><span class="photon-caustic"></span></div>
+      <div class="event-horizon"></div>
+    </div>
+
+    <div class="depth-front">
+      <div class="accretion-disc disc-front"><span class="disc-filament"></span></div>
+      <div class="lensing-arc arc-front"></div>
+    </div>
   </div>
+
   <canvas data-ember-canvas></canvas>
-  <div class="field-caption"><span>FIELD 01</span><span>gravity / memory</span></div>
+  <div class="depth-near"><span class="foreground-dust"></span></div>
+
+  <div class="field-caption">
+    <span class="field-scale"></span>
+    <span>FIELD 01 · GRAVITY / MEMORY</span>
+    <span>R 04.7 · θ 12° · STABLE</span>
+  </div>
 </div>
 
 <style>
   .ember-stage {
     --hole-x: 72%;
-    --hole-y: 50%;
-    --hole-size: min(47vw, 680px);
+    --hole-y: 49%;
+    --hole-size: min(45vw, 650px);
 
     position: absolute;
-    inset: 0 max(-7vw, -104px) 0 29%;
+    inset: 0 max(-6vw, -92px) 0 32%;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    mask-image: linear-gradient(90deg, transparent 0%, #000 13%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 91%, transparent 100%);
   }
 
   .ember-stage::before,
@@ -38,43 +59,90 @@
   .ember-stage::before {
     z-index: 1;
     background:
-      radial-gradient(circle at 72% 48%, transparent 0 12%, rgba(203, 128, 66, 0.055) 31%, transparent 58%),
-      linear-gradient(90deg, rgba(7, 6, 4, 0.96) 0%, rgba(7, 6, 4, 0.56) 32%, transparent 64%);
+      radial-gradient(
+        circle at var(--hole-x) var(--hole-y),
+        transparent 0 13%,
+        rgba(180, 105, 50, 0.05) 31%,
+        transparent 59%
+      ),
+      linear-gradient(90deg, rgba(7, 6, 4, 0.97), rgba(7, 6, 4, 0.5) 31%, transparent 61%);
   }
 
   .ember-stage::after {
-    z-index: 9;
-    background: linear-gradient(90deg, rgba(7, 6, 4, 0.92) 0%, rgba(7, 6, 4, 0.28) 30%, transparent 57%);
+    z-index: 10;
+    background: linear-gradient(90deg, rgba(7, 6, 4, 0.94), rgba(7, 6, 4, 0.24) 31%, transparent 56%);
+  }
+
+  .depth-far,
+  .depth-near,
+  canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  .depth-far {
+    z-index: 0;
   }
 
   .cosmic-grain {
     position: absolute;
-    inset: 7% 0 9% 15%;
-    z-index: 0;
+    inset: 8% 0 10% 14%;
     background-image:
-      radial-gradient(circle at 14% 28%, rgba(244, 220, 177, 0.34) 0 0.6px, transparent 1.1px),
-      radial-gradient(circle at 68% 18%, rgba(230, 183, 124, 0.3) 0 0.7px, transparent 1.2px),
-      radial-gradient(circle at 87% 72%, rgba(244, 220, 177, 0.24) 0 0.6px, transparent 1.2px),
-      radial-gradient(circle at 43% 81%, rgba(210, 137, 77, 0.28) 0 0.8px, transparent 1.4px);
+      radial-gradient(circle at 14% 28%, rgba(244, 220, 177, 0.34) 0 0.5px, transparent 1px),
+      radial-gradient(circle at 68% 18%, rgba(230, 183, 124, 0.26) 0 0.65px, transparent 1.1px),
+      radial-gradient(circle at 87% 72%, rgba(244, 220, 177, 0.2) 0 0.55px, transparent 1.1px),
+      radial-gradient(circle at 43% 81%, rgba(210, 137, 77, 0.24) 0 0.7px, transparent 1.25px);
     background-size:
       163px 149px,
       211px 197px,
       241px 223px,
       179px 191px;
-    opacity: 0.38;
-    mask-image: radial-gradient(ellipse at 68% 50%, #000 0 35%, transparent 77%);
+    opacity: 0.34;
+    mask-image: radial-gradient(ellipse at var(--hole-x) var(--hole-y), #000 0 34%, transparent 76%);
+  }
+
+  .orbital-guide {
+    position: absolute;
+    top: var(--hole-y);
+    left: var(--hole-x);
+    border: 1px solid rgba(225, 176, 112, 0.075);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.72);
+  }
+
+  .guide-outer {
+    width: calc(var(--hole-size) * 1.46);
+    aspect-ratio: 1;
+  }
+
+  .guide-inner {
+    width: calc(var(--hole-size) * 0.92);
+    aspect-ratio: 1;
+    border-style: dashed;
+    border-color: rgba(225, 176, 112, 0.055);
+    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.72) rotate(7deg);
   }
 
   canvas {
-    position: absolute;
-    inset: 0;
     z-index: 8;
     width: 100%;
     height: 100%;
   }
 
-  .black-hole-scene,
+  .black-hole-scene {
+    position: absolute;
+    top: var(--hole-y);
+    left: var(--hole-x);
+    z-index: 3;
+    width: var(--hole-size);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+  }
+
   .gravity-veil,
+  .depth-rear,
+  .depth-event,
+  .depth-front,
   .lensing-arc,
   .accretion-disc,
   .photon-ring,
@@ -82,182 +150,219 @@
     position: absolute;
   }
 
-  .black-hole-scene {
-    top: var(--hole-y);
-    left: var(--hole-x);
-    z-index: 3;
-    width: var(--hole-size);
-    aspect-ratio: 1;
-    transform: translate(-50%, -50%);
-    transform-style: preserve-3d;
-  }
-
-  .black-hole-scene::before {
-    content: '';
-    position: absolute;
-    inset: -9%;
-    z-index: -2;
-    border: 1px solid rgba(225, 176, 112, 0.08);
-    border-radius: 50%;
-    opacity: 0.65;
-    transform: rotate(-11deg) scaleY(0.92);
-  }
-
   .gravity-veil {
-    inset: -30%;
-    z-index: -3;
+    inset: -28%;
+    z-index: -1;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.9) 0 14%, rgba(0, 0, 0, 0.45) 23%, transparent 45%),
-      radial-gradient(ellipse at 52% 49%, rgba(189, 109, 50, 0.15) 0 12%, rgba(83, 48, 26, 0.11) 32%, transparent 66%);
-    filter: blur(24px);
+      radial-gradient(circle, rgba(0, 0, 0, 0.95) 0 14%, rgba(0, 0, 0, 0.48) 24%, transparent 45%),
+      radial-gradient(ellipse, rgba(178, 100, 45, 0.14) 0 13%, rgba(74, 42, 23, 0.1) 34%, transparent 67%);
+    filter: blur(23px);
     opacity: 0.9;
-    transform: rotate(-12deg) scale(1.18, 0.82);
-    animation: veil-breathe 16s ease-in-out infinite;
+    transform: rotate(-12deg) scale(1.2, 0.82);
+    animation: gravity-breathe 18s ease-in-out infinite;
+  }
+
+  .depth-rear,
+  .depth-event,
+  .depth-front {
+    inset: 0;
+  }
+
+  .depth-rear {
+    z-index: 2;
+  }
+
+  .depth-event {
+    z-index: 4;
+  }
+
+  .depth-front {
+    z-index: 6;
   }
 
   .lensing-arc {
     top: 50%;
     left: 50%;
-    width: 68%;
-    height: 68%;
+    width: 69%;
+    height: 69%;
     border-radius: 50%;
     transform-origin: center;
   }
 
   .arc-back {
-    z-index: 1;
-    border-top: 1px solid rgba(242, 201, 140, 0.5);
-    border-left: 1px solid rgba(197, 119, 57, 0.16);
-    filter: drop-shadow(0 -4px 12px rgba(200, 117, 55, 0.14));
-    clip-path: inset(0 0 48% 0);
-    transform: translate(-50%, -50%) rotate(-13deg) scale(1.24, 0.98);
-    opacity: 0.62;
+    border-top: 1px solid rgba(250, 214, 158, 0.56);
+    border-left: 1px solid rgba(197, 119, 57, 0.14);
+    clip-path: inset(0 0 50% 0);
+    filter: drop-shadow(0 -4px 10px rgba(221, 139, 68, 0.18));
+    opacity: 0.72;
+    transform: translate(-50%, -50%) rotate(-13deg) scale(1.25, 0.96);
   }
 
   .arc-front {
-    z-index: 7;
-    border-right: 1px solid rgba(229, 158, 91, 0.3);
-    border-bottom: 1px solid rgba(239, 186, 117, 0.52);
-    filter: drop-shadow(0 5px 13px rgba(205, 119, 57, 0.12));
-    clip-path: inset(48% 0 0 0);
-    transform: translate(-50%, -50%) rotate(-13deg) scale(1.18, 0.95);
-    opacity: 0.5;
+    border-right: 1px solid rgba(229, 158, 91, 0.24);
+    border-bottom: 1px solid rgba(255, 205, 137, 0.64);
+    clip-path: inset(50% 0 0 0);
+    filter: drop-shadow(0 5px 12px rgba(226, 142, 69, 0.18));
+    opacity: 0.62;
+    transform: translate(-50%, -50%) rotate(-13deg) scale(1.19, 0.94);
   }
 
   .accretion-disc {
     top: 50%;
     left: 50%;
-    width: 146%;
-    height: 42%;
+    width: 152%;
+    height: 38%;
     border-radius: 50%;
     background:
       radial-gradient(
         ellipse at center,
-        transparent 0 29%,
-        rgba(255, 222, 159, 0.58) 34%,
-        rgba(211, 126, 59, 0.31) 43%,
-        transparent 61%
+        transparent 0 31%,
+        rgba(255, 226, 167, 0.72) 34%,
+        rgba(213, 126, 57, 0.36) 39%,
+        transparent 55%
       ),
       conic-gradient(
-        from 188deg at 50% 50%,
-        transparent 0 10%,
-        rgba(128, 67, 31, 0.1) 18%,
-        rgba(234, 161, 88, 0.48) 31%,
-        rgba(255, 221, 151, 0.78) 39%,
-        rgba(163, 84, 38, 0.18) 51%,
-        transparent 61% 78%,
-        rgba(205, 118, 51, 0.24) 91%,
+        from 193deg,
+        transparent 0 8%,
+        rgba(152, 77, 34, 0.08) 16%,
+        rgba(236, 159, 82, 0.5) 29%,
+        rgba(255, 226, 159, 0.86) 38%,
+        rgba(145, 72, 32, 0.12) 53%,
+        transparent 63% 82%,
+        rgba(210, 119, 50, 0.2) 91%,
         transparent
       );
-    filter: blur(1px);
     mix-blend-mode: screen;
-    mask-image: radial-gradient(ellipse at center, transparent 0 28%, #000 34% 48%, transparent 62%);
-    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
+    mask-image: radial-gradient(ellipse at center, transparent 0 30%, #000 34% 47%, transparent 57%);
+    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.46);
   }
 
   .disc-back {
-    z-index: 2;
     clip-path: inset(0 0 49% 0);
-    opacity: 0.66;
-    animation: disc-drift 28s ease-in-out infinite;
+    filter: blur(1.3px);
+    opacity: 0.58;
+    animation: rear-drift 31s ease-in-out infinite;
   }
 
   .disc-front {
-    z-index: 6;
     clip-path: inset(49% 0 0 0);
-    opacity: 0.88;
-    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.54);
-    animation: disc-drift-front 21s ease-in-out infinite;
+    filter: blur(0.45px) drop-shadow(0 4px 9px rgba(215, 128, 54, 0.18));
+    opacity: 0.9;
+    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
+    animation: front-drift 25s ease-in-out infinite;
+  }
+
+  .disc-filament {
+    position: absolute;
+    inset: 15% 8%;
+    border: 1px solid rgba(255, 224, 164, 0.24);
+    border-radius: 50%;
+    opacity: 0.72;
   }
 
   .photon-ring {
     top: 50%;
     left: 50%;
-    z-index: 4;
-    width: 37%;
+    width: 38%;
     aspect-ratio: 1;
     border-radius: 50%;
     background: conic-gradient(
-      from 214deg,
-      rgba(122, 66, 32, 0.14),
-      rgba(245, 190, 114, 0.9) 20%,
-      rgba(255, 225, 163, 0.98) 28%,
-      rgba(188, 103, 45, 0.28) 47%,
-      rgba(88, 47, 27, 0.12) 67%,
-      rgba(228, 147, 74, 0.62) 86%,
-      rgba(122, 66, 32, 0.14)
+      from 218deg,
+      rgba(109, 56, 27, 0.1),
+      rgba(244, 180, 101, 0.94) 18%,
+      rgba(255, 230, 174, 1) 26%,
+      rgba(183, 94, 40, 0.24) 43%,
+      rgba(75, 39, 22, 0.08) 66%,
+      rgba(224, 138, 65, 0.52) 88%,
+      rgba(109, 56, 27, 0.1)
     );
-    filter: blur(0.35px) drop-shadow(-8px -2px 12px rgba(219, 139, 68, 0.24));
-    mask-image: radial-gradient(circle, transparent 0 40%, #000 44% 51%, transparent 56%);
+    filter: blur(0.25px) drop-shadow(-7px -1px 11px rgba(229, 151, 74, 0.26));
+    mask-image: radial-gradient(circle, transparent 0 41%, #000 44% 50%, transparent 54%);
     transform: translate(-50%, -50%);
-    animation: photon-turn 44s linear infinite;
+    animation: photon-turn 58s linear infinite;
+  }
+
+  .photon-caustic {
+    position: absolute;
+    inset: 2%;
+    border: 1px solid transparent;
+    border-bottom-color: rgba(255, 235, 194, 0.5);
+    border-left-color: rgba(255, 210, 139, 0.32);
+    border-radius: 50%;
+    filter: blur(0.4px);
+    transform: rotate(34deg);
   }
 
   .event-horizon {
     top: 50%;
     left: 50%;
-    z-index: 5;
     width: 29%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle at 41% 34%, #060504 0 23%, #010101 58%, #000 100%);
+    background: #020201;
     box-shadow:
-      inset -11px -14px 32px rgba(0, 0, 0, 0.94),
-      inset 7px 5px 18px rgba(49, 31, 19, 0.18),
-      0 0 0 1px rgba(235, 177, 104, 0.08),
-      0 0 42px rgba(0, 0, 0, 0.9);
+      0 0 0 1px rgba(238, 183, 111, 0.09),
+      0 0 34px rgba(0, 0, 0, 0.94),
+      0 0 62px rgba(72, 39, 20, 0.18);
     transform: translate(-50%, -50%);
   }
 
   .event-horizon::after {
     content: '';
     position: absolute;
-    inset: 13%;
+    inset: 14%;
     border-radius: 50%;
     background: #000;
-    box-shadow: inset 6px 7px 18px rgba(31, 20, 13, 0.12);
+  }
+
+  .depth-near {
+    z-index: 9;
+    overflow: hidden;
+    opacity: 0.68;
+  }
+
+  .foreground-dust {
+    position: absolute;
+    top: 24%;
+    right: 6%;
+    width: 28%;
+    height: 48%;
+    background-image:
+      radial-gradient(circle at 22% 20%, rgba(255, 218, 159, 0.55) 0 0.7px, transparent 1.8px),
+      radial-gradient(circle at 78% 39%, rgba(205, 123, 55, 0.42) 0 1px, transparent 2.4px),
+      radial-gradient(circle at 47% 81%, rgba(244, 220, 177, 0.38) 0 0.8px, transparent 2px);
+    filter: blur(0.25px);
+    opacity: 0.5;
+    animation: near-drift 19s ease-in-out infinite;
   }
 
   .field-caption {
     position: absolute;
-    right: clamp(3rem, 8vw, 8rem);
-    bottom: clamp(2rem, 7vh, 5rem);
-    z-index: 10;
+    right: clamp(2.5rem, 6vw, 6rem);
+    bottom: clamp(2rem, 6vh, 4.5rem);
+    z-index: 11;
     display: grid;
-    gap: 0.3rem;
-    padding-left: 1rem;
-    border-left: 1px solid rgba(229, 173, 103, 0.38);
+    grid-template-columns: 2.5rem auto;
+    gap: 0.3rem 0.75rem;
     color: rgba(230, 209, 175, 0.42);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.62rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+  }
+
+  .field-scale {
+    grid-row: 1 / span 2;
+    align-self: center;
+    width: 2.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(229, 173, 103, 0.72), rgba(229, 173, 103, 0.08));
   }
 
   .field-caption span:last-child {
     color: rgba(230, 209, 175, 0.24);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
   }
 
   @keyframes photon-turn {
@@ -266,72 +371,87 @@
     }
   }
 
-  @keyframes veil-breathe {
+  @keyframes gravity-breathe {
     0%,
     100% {
-      opacity: 0.76;
-      transform: rotate(-12deg) scale(1.14, 0.8);
+      opacity: 0.78;
+      transform: rotate(-12deg) scale(1.17, 0.8);
     }
     50% {
       opacity: 0.94;
-      transform: rotate(-10deg) scale(1.2, 0.85);
+      transform: rotate(-10.5deg) scale(1.21, 0.84);
     }
   }
 
-  @keyframes disc-drift {
+  @keyframes rear-drift {
     0%,
     100% {
-      opacity: 0.58;
+      opacity: 0.52;
+      transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.46);
+    }
+    50% {
+      opacity: 0.62;
+      transform: translate(-50%, -50%) rotate(-10.8deg) scaleY(0.48);
+    }
+  }
+
+  @keyframes front-drift {
+    0%,
+    100% {
+      opacity: 0.84;
       transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
     }
     50% {
-      opacity: 0.7;
-      transform: translate(-50%, -50%) rotate(-10deg) scaleY(0.52);
+      opacity: 0.94;
+      transform: translate(-50%, -50%) rotate(-13deg) scaleY(0.52);
     }
   }
 
-  @keyframes disc-drift-front {
+  @keyframes near-drift {
     0%,
     100% {
-      opacity: 0.82;
-      transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.54);
+      opacity: 0.36;
+      transform: translate3d(0, 0, 0);
     }
     50% {
-      opacity: 0.92;
-      transform: translate(-50%, -50%) rotate(-13.5deg) scaleY(0.56);
+      opacity: 0.58;
+      transform: translate3d(-6px, 4px, 0);
     }
   }
 
   @media (max-width: 960px) {
     .ember-stage {
-      --hole-x: 73%;
-      --hole-size: min(62vw, 600px);
+      --hole-x: 74%;
+      --hole-size: min(59vw, 580px);
 
-      inset: 0 -22vw 0 14%;
-      opacity: 0.82;
+      inset: 0 -20vw 0 16%;
+      opacity: 0.86;
     }
 
     .field-caption {
-      right: 18vw;
+      right: 17vw;
     }
   }
 
   @media (max-width: 720px) {
     .ember-stage {
       --hole-x: 72%;
-      --hole-y: 29%;
-      --hole-size: min(108vw, 430px);
+      --hole-y: 27%;
+      --hole-size: min(102vw, 410px);
 
-      inset: 0 -52vw 0 4%;
-      opacity: 0.66;
-      mask-image: linear-gradient(180deg, #000 0%, #000 57%, transparent 82%);
+      inset: 0 -49vw 0 7%;
+      opacity: 0.7;
+      mask-image: linear-gradient(180deg, #000 0%, #000 53%, transparent 78%);
     }
 
     .ember-stage::after {
-      background: linear-gradient(90deg, rgba(7, 6, 4, 0.9) 0%, rgba(7, 6, 4, 0.4) 46%, transparent 78%);
+      background: linear-gradient(90deg, rgba(7, 6, 4, 0.92), rgba(7, 6, 4, 0.36) 48%, transparent 80%);
     }
 
-    .field-caption {
+    .guide-outer,
+    .guide-inner,
+    .field-caption,
+    .foreground-dust {
       display: none;
     }
   }
@@ -340,7 +460,8 @@
     .gravity-veil,
     .disc-back,
     .disc-front,
-    .photon-ring {
+    .photon-ring,
+    .foreground-dust {
       animation: none;
     }
   }
