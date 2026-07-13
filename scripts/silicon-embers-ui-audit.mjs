@@ -207,6 +207,14 @@ if (
   failures.push('Ember canvas must pause offscreen/hidden animation and clean up observers');
 }
 
+const notFoundSource = read('src/pages/404.astro');
+if (
+  !/SiliconEmbersLayout/.test(notFoundSource) ||
+  /SiliconEmbersSiteFrame|<!doctype html>|<html\b/.test(notFoundSource)
+) {
+  failures.push('404 page must use the shared SiliconEmbersLayout document/runtime shell');
+}
+
 if (failures.length) {
   console.error(JSON.stringify({ failures }, null, 2));
   process.exit(1);

@@ -1,18 +1,169 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import SiliconEmbersLayout from '../layouts/SiliconEmbersLayout.astro';
 
-// Detect English path
-const isEn = typeof Astro !== 'undefined' && Astro.url.pathname.startsWith('/en/');
+const copy = {
+  title: '这条路径已经冷却',
+  lead: '页面可能被移动、删除，或从未留下信号。先回到硅基余烬主站，再重新进入博客、课程或资源。',
+  routesLabel: '恢复路径',
+  home: '主站',
+  writing: '博客',
+  resources: '资源',
+  courses: '课程',
+  resume: '简历',
+  homeHref: '/',
+  writingHref: '/silicon-ashes/writing/',
+  resourcesHref: '/silicon-ashes/resources/',
+  coursesHref: '/silicon-ashes/courses/',
+  resumeHref: '/profile/',
+};
+
+const footerLinks = [
+  { label: copy.home, href: copy.homeHref },
+  { label: copy.writing, href: copy.writingHref },
+  { label: copy.resources, href: copy.resourcesHref },
+  { label: copy.resume, href: copy.resumeHref },
+];
 ---
 
-<BaseLayout title={isEn ? 'Page Not Found · 404' : '页面未找到 · 404'} lang={isEn ? 'en' : 'zh'}>
-  <section class="hero" style="min-height:60vh;display:grid;place-items:center;text-align:center">
-    <div>
-      <h1 style="font-size:clamp(80px,20vw,160px);color:var(--accent);margin:0">404</h1>
-      <p style="font-size:20px;color:var(--muted);margin:8px 0 32px">
-        {isEn ? 'Page not found or has been removed.' : '页面不存在或已被移除'}
-      </p>
-      <a class="btn primary" href={isEn ? '/en/' : '/'}>{isEn ? 'Back to Home' : '回到首页'}</a>
+<SiliconEmbersLayout
+  lang="zh"
+  title="页面未找到｜硅基余烬"
+  description="硅基余烬品牌主站的 404 恢复页。"
+  canonicalPath="/404"
+  footerLinks={footerLinks}
+>
+  <section class="not-found" aria-labelledby="nf-title">
+    <p class="eyebrow">404 / signal lost</p>
+    <div class="nf-grid">
+      <div>
+        <p class="code">404</p>
+        <h1 id="nf-title">{copy.title}</h1>
+        <p class="lead">{copy.lead}</p>
+      </div>
+      <nav class="recovery" aria-label={copy.routesLabel}>
+        <a class="primary" href={copy.homeHref}>{copy.home}</a>
+        <a href={copy.writingHref}>{copy.writing}</a>
+        <a href={copy.resourcesHref}>{copy.resources}</a>
+        <a href={copy.coursesHref}>{copy.courses}</a>
+        <a href={copy.resumeHref}>{copy.resume}</a>
+      </nav>
     </div>
   </section>
-</BaseLayout>
+</SiliconEmbersLayout>
+
+<style>
+  .not-found {
+    display: grid;
+    min-height: min(700px, calc(100dvh - 82px));
+    align-content: center;
+    border-bottom: 1px solid var(--line);
+    padding: clamp(76px, 11vw, 128px) 0;
+  }
+
+  .nf-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.32fr);
+    gap: clamp(38px, 7vw, 92px);
+    align-items: end;
+    margin-top: 18px;
+  }
+
+  .code {
+    margin: 0;
+    color: rgba(232, 174, 98, 0.5);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: clamp(4.4rem, 13vw, 12rem);
+    font-weight: 900;
+    line-height: 0.78;
+  }
+
+  h1 {
+    max-width: 980px;
+    margin: 26px 0 0;
+    color: var(--paper);
+    font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+    font-size: clamp(3rem, 7vw, 7rem);
+    font-weight: 850;
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  .lead {
+    max-width: 720px;
+    margin: 28px 0 0;
+    color: var(--muted);
+    font-size: clamp(1.08rem, 1.7vw, 1.34rem);
+    line-height: 1.86;
+  }
+
+  .recovery {
+    display: grid;
+    gap: 1px;
+    border: 1px solid rgba(232, 174, 98, 0.16);
+    background: rgba(232, 174, 98, 0.14);
+  }
+
+  .recovery a {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: rgba(7, 6, 5, 0.92);
+    color: rgba(239, 227, 205, 0.76);
+    font-size: 15px;
+    font-weight: 850;
+    text-decoration: none;
+    transition:
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .recovery a::after {
+    content: '>';
+    color: rgba(232, 174, 98, 0.72);
+    font-family: Consolas, 'SFMono-Regular', monospace;
+  }
+
+  .recovery a.primary {
+    background: var(--ember-strong);
+    color: #120d08;
+  }
+
+  .recovery a.primary::after {
+    color: rgba(18, 13, 8, 0.72);
+  }
+
+  .recovery a:hover,
+  .recovery a:focus-visible {
+    transform: translateX(2px);
+    background: rgba(120, 155, 145, 0.1);
+    color: var(--paper);
+    outline: none;
+  }
+
+  .recovery a.primary:hover,
+  .recovery a.primary:focus-visible {
+    background: #f1c575;
+    color: #120d08;
+  }
+
+  @media (max-width: 820px) {
+    .nf-grid {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .not-found {
+      min-height: auto;
+      padding: 62px 0 72px;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 15vw, 4.9rem);
+    }
+  }
+</style>
