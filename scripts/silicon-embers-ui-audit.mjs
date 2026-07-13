@@ -141,6 +141,17 @@ const editorialComponents = [
 for (const [relative, className] of editorialComponents) {
   if (!read(relative).includes(className)) failures.push(`${relative}: missing editorial marker ${className}`);
 }
+for (const [relative, marker] of [
+  ['src/components/silicon-embers/EmberHero.astro', 'hero-record'],
+  ['src/components/silicon-embers/EmberHero.astro', 'action-primary'],
+  ['src/components/silicon-embers/SiteCompass.astro', 'compass-record'],
+  ['src/components/silicon-embers/SiteCompass.astro', 'record-rule'],
+]) {
+  if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
+}
+if (/10\.8rem/.test(read('src/components/silicon-embers/EmberHero.astro'))) {
+  failures.push('Hero display cap must be reduced below the poster-scale 10.8rem');
+}
 
 const navBlocks = [...homeCopySource.matchAll(/nav:\s*\[([\s\S]*?)\],/g)].map((match) => match[1]);
 const expectedNavLabels = [

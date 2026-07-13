@@ -1,6 +1,6 @@
 ---
 import EmberField from './EmberField.astro';
-import ActionLinks from './ActionLinks.astro';
+import ActionButton from './ActionButton.astro';
 import type { SiliconEmbersHeroCopy } from '../../data/siliconEmbersHome';
 
 interface Props {
@@ -15,18 +15,36 @@ const { copy, wordmark } = Astro.props;
   <EmberField />
 
   <div class="hero-copy">
-    <p class="observation-label" aria-hidden="true">
-      <span>OBSERVATION</span>
-      <span>01 / SILICON—CARBON</span>
+    <p class="hero-record observation-label" aria-hidden="true">
+      <span class="record-index">OBS.01</span>
+      <span class="record-axis">SILICON—CARBON</span>
+      <span class="record-state">ARCHIVE / ACTIVE</span>
     </p>
-    {copy.eyebrow && <p class="eyebrow">{copy.eyebrow}</p>}
-    <p class="wordmark">{wordmark}</p>
-    <h1 id="sa-title">{copy.title}</h1>
+
+    <div class="hero-title-block">
+      {copy.eyebrow && <p class="eyebrow">{copy.eyebrow}</p>}
+      <p class="wordmark">{wordmark}</p>
+      <h1 id="sa-title">{copy.title}</h1>
+    </div>
+
     <div class="hero-statement">
       <p class="lead">{copy.lead}</p>
       <p class="sublead">{copy.sublead}</p>
     </div>
-    <ActionLinks links={copy.actions} label={copy.actionsLabel} className="actions" linkClass="sa-button" />
+
+    <nav class="hero-actions" aria-label={copy.actionsLabel}>
+      {
+        copy.actions.map((action, index) => (
+          <ActionButton
+            href={action.href}
+            variant={index === 0 ? 'primary' : 'text'}
+            className={index === 0 ? 'action-primary' : 'action-text'}
+          >
+            {action.label}
+          </ActionButton>
+        ))
+      }
+    </nav>
   </div>
 
   <p class="scroll-cue" aria-hidden="true"><span></span>INDEX / 01—03</p>
@@ -37,72 +55,97 @@ const { copy, wordmark } = Astro.props;
     position: relative;
     isolation: isolate;
     display: grid;
-    min-height: min(52rem, calc(100dvh - 4.5rem));
+    min-height: min(46rem, calc(100dvh - 4.5rem));
     align-items: center;
     border-bottom: 1px solid var(--line);
-    padding: clamp(5rem, 10vh, 7.5rem) 0 clamp(6rem, 12vh, 9rem);
+    padding: clamp(4.5rem, 8vh, 6rem) 0 clamp(4.8rem, 8vh, 6.8rem);
   }
 
   .ember-hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: clamp(12rem, 38vw, 31rem);
+    top: 8%;
+    bottom: 8%;
+    left: clamp(12rem, 37vw, 30rem);
     z-index: 1;
     width: 1px;
-    background: linear-gradient(180deg, transparent, var(--line) 18% 82%, transparent);
-    opacity: 0.48;
+    background: linear-gradient(180deg, transparent, var(--line) 16% 84%, transparent);
+    opacity: 0.42;
   }
 
   .hero-copy {
     position: relative;
     z-index: 2;
-    max-width: 62rem;
+    width: min(100%, 54rem);
   }
 
-  .observation-label {
-    display: flex;
-    max-width: 31rem;
+  .hero-record {
+    display: grid;
+    width: min(100%, 34rem);
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 0 0 clamp(2.5rem, 5.5vh, 4.6rem);
+    gap: 0.75rem;
+    margin: 0 0 clamp(2.2rem, 4.5vh, 3.5rem);
     color: var(--muted);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.66rem;
+    font-size: 0.63rem;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
   }
 
-  .observation-label span:first-child {
+  .record-index {
     color: var(--ember-strong);
+  }
+
+  .record-axis {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .record-axis::before,
+  .record-axis::after {
+    content: '';
+    height: 1px;
+    background: var(--line);
+  }
+
+  .record-axis::before {
+    width: 1.8rem;
+  }
+
+  .record-axis::after {
+    flex: 1;
+  }
+
+  .record-state {
+    color: color-mix(in srgb, var(--muted) 72%, transparent);
   }
 
   .wordmark {
-    margin: 0 0 0.8rem;
+    margin: 0 0 0.65rem;
     color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: clamp(0.8rem, 1.1vw, 1rem);
+    font-size: clamp(0.76rem, 1vw, 0.9rem);
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: lowercase;
   }
 
   h1 {
-    max-width: 7ch;
-    font-size: clamp(4.8rem, 10.5vw, 10.8rem);
-    line-height: 0.84;
-    letter-spacing: -0.055em;
+    max-width: 8ch;
+    font-size: clamp(3.8rem, 7.8vw, 7rem);
+    line-height: 0.88;
+    letter-spacing: -0.05em;
   }
 
   .hero-statement {
     display: grid;
-    max-width: 47rem;
-    grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.65fr);
-    gap: 1.4rem clamp(2rem, 5vw, 5rem);
+    width: min(100%, 43rem);
+    grid-template-columns: minmax(0, 1.1fr) minmax(13rem, 0.68fr);
+    gap: 1.2rem clamp(2rem, 4vw, 4rem);
     align-items: start;
-    margin-top: clamp(2rem, 5vh, 3.5rem);
+    margin-top: clamp(1.7rem, 3.6vh, 2.6rem);
   }
 
   .lead,
@@ -113,69 +156,77 @@ const { copy, wordmark } = Astro.props;
   .lead {
     color: var(--paper);
     font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: clamp(1.25rem, 2.3vw, 2rem);
-    line-height: 1.42;
+    font-size: clamp(1.15rem, 1.8vw, 1.65rem);
+    line-height: 1.48;
+    text-wrap: balance;
   }
 
   .sublead {
     max-width: 30ch;
-    padding-top: 0.25rem;
+    padding-top: 0.2rem;
     color: var(--muted);
-    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
-    line-height: 1.72;
+    font-size: clamp(0.88rem, 1vw, 0.98rem);
+    line-height: 1.75;
+    text-wrap: pretty;
   }
 
-  :global(.ember-hero .actions) {
+  .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.65rem;
-    margin-top: 2rem;
+    align-items: center;
+    gap: 0.15rem 0.45rem;
+    margin-top: 1.65rem;
   }
 
-  :global(.ember-hero .actions .sa-button) {
-    min-width: 7rem;
+  :global(.ember-hero .action-primary) {
+    min-width: 6.8rem;
+  }
+
+  :global(.ember-hero .action-text) {
+    min-width: auto;
+    padding-inline: 0.7rem;
   }
 
   .scroll-cue {
     position: absolute;
     right: 0;
-    bottom: 1.1rem;
+    bottom: 1rem;
     z-index: 10;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.7rem;
     margin: 0;
     color: var(--muted);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    letter-spacing: 0.09em;
   }
 
   .scroll-cue span {
-    width: 2.6rem;
+    width: 2.4rem;
     height: 1px;
     background: var(--ember-strong);
   }
 
   @media (max-width: 960px) {
     .ember-hero::before {
-      left: 48%;
+      left: 47%;
     }
 
     .hero-copy {
-      max-width: 49rem;
+      width: min(100%, 46rem);
     }
 
     h1 {
-      font-size: clamp(4.4rem, 13vw, 8rem);
+      font-size: clamp(3.7rem, 10vw, 6.2rem);
     }
   }
 
   @media (max-width: 720px) {
     .ember-hero {
-      min-height: 42rem;
+      min-height: 39rem;
       align-items: end;
-      padding: 4rem 0 5rem;
+      padding: 3.5rem 0 4.4rem;
     }
 
     .ember-hero::before {
@@ -184,40 +235,46 @@ const { copy, wordmark } = Astro.props;
 
     .hero-copy {
       width: 100%;
-      max-width: 34rem;
+      max-width: 33rem;
     }
 
-    .observation-label {
-      max-width: 21rem;
-      margin-bottom: 10.5rem;
-      font-size: 0.58rem;
+    .hero-record {
+      width: min(100%, 22rem);
+      grid-template-columns: auto 1fr;
+      margin-bottom: 8.4rem;
+      font-size: 0.57rem;
+    }
+
+    .record-axis::after,
+    .record-state {
+      display: none;
     }
 
     h1 {
-      max-width: 5.5ch;
-      font-size: clamp(3.5rem, 19vw, 6rem);
-      line-height: 0.9;
+      max-width: 6ch;
+      font-size: clamp(3.1rem, 16vw, 5.2rem);
+      line-height: 0.92;
     }
 
     .hero-statement {
       grid-template-columns: 1fr;
-      gap: 0.8rem;
-      margin-top: 1.6rem;
+      gap: 0.65rem;
+      margin-top: 1.4rem;
     }
 
     .lead {
       max-width: 23rem;
-      font-size: clamp(1.1rem, 5.5vw, 1.45rem);
+      font-size: clamp(1.05rem, 5vw, 1.35rem);
     }
 
     .sublead {
-      max-width: 26rem;
+      max-width: 27rem;
       padding-top: 0;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
     }
 
-    :global(.ember-hero .actions) {
-      margin-top: 1.4rem;
+    .hero-actions {
+      margin-top: 1.2rem;
     }
 
     .scroll-cue {
@@ -226,12 +283,8 @@ const { copy, wordmark } = Astro.props;
   }
 
   @media (max-width: 360px) {
-    .observation-label {
-      margin-bottom: 9.5rem;
-    }
-
-    :global(.ember-hero .actions .sa-button) {
-      min-width: 0;
+    .hero-record {
+      margin-bottom: 7.5rem;
     }
   }
 </style>

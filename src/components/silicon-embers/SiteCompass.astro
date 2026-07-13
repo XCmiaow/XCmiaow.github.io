@@ -11,119 +11,129 @@ const { label, items } = Astro.props;
 
 <section class="compass" aria-labelledby="compass-label">
   <p id="compass-label" class="compass-label">{label}</p>
-  <div class="compass-grid">
+  <ol class="compass-grid">
     {
       items.map((item, index) => (
-        <a class="compass-link" href={item.href}>
-          <span class="compass-index">{String(index + 1).padStart(2, '0')}</span>
-          <strong>{item.title}</strong>
-          <em>{item.body}</em>
-          <span class="compass-arrow" aria-hidden="true">
-            ↗
-          </span>
-        </a>
+        <li class="compass-record">
+          <a class="compass-link" href={item.href}>
+            <span class="compass-index">{String(index + 1).padStart(2, '0')}</span>
+            <span class="record-rule" aria-hidden="true" />
+            <span class="compass-copy">
+              <strong>{item.title}</strong>
+              <span>{item.body}</span>
+            </span>
+            <span class="compass-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        </li>
       ))
     }
-  </div>
+  </ol>
 </section>
 
 <style>
   .compass {
     border-bottom: 1px solid var(--line);
-    padding: 1rem 0 0;
+    padding-top: 0.85rem;
   }
 
   .compass-label {
-    margin: 0 0 0.7rem;
+    margin: 0 0 0.65rem;
     color: var(--ember-strong);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.67rem;
+    font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.1em;
   }
 
   .compass-grid {
     display: grid;
-    grid-template-columns: 0.9fr 1.15fr 0.95fr;
+    grid-template-columns: 1.08fr 0.98fr 0.94fr;
+    margin: 0;
     border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+  }
+
+  .compass-record {
+    border-right: 1px solid var(--line);
+  }
+
+  .compass-record:last-child {
+    border-right: 0;
   }
 
   .compass-link {
     position: relative;
     display: grid;
-    min-height: 13rem;
-    grid-template-columns: 2.8rem minmax(0, 1fr) auto;
-    grid-template-rows: auto 1fr auto;
-    gap: 1rem 1.25rem;
-    border-right: 1px solid var(--line);
-    padding: 1.25rem 1.5rem 1.5rem 0;
+    min-height: 7.5rem;
+    grid-template-columns: 2.2rem 2rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.15rem 1.3rem 1.2rem 0;
+    color: inherit;
     text-decoration: none;
   }
 
-  .compass-link + .compass-link {
-    padding-left: 1.5rem;
-  }
-
-  .compass-link:last-child {
-    border-right: 0;
-  }
-
-  .compass-link::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    right: 0;
-    left: 0;
-    height: 1px;
-    background: var(--ember-strong);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  .compass-record + .compass-record .compass-link {
+    padding-left: 1.3rem;
   }
 
   .compass-index {
-    grid-row: 1 / span 2;
     color: var(--muted);
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.08em;
   }
 
-  .compass-link strong {
-    align-self: start;
+  .record-rule {
+    width: 1.5rem;
+    height: 1px;
+    background: var(--line);
+    transform-origin: left;
+    transition:
+      width 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background 200ms ease;
+  }
+
+  .compass-copy {
+    display: grid;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
+  .compass-copy strong {
     color: var(--paper);
     font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
-    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-size: clamp(1.5rem, 2.2vw, 2.15rem);
     line-height: 1;
   }
 
-  .compass-link em {
-    grid-column: 2;
-    align-self: end;
-    max-width: 23ch;
+  .compass-copy > span {
+    max-width: 25ch;
     color: var(--muted);
-    font-size: 0.86rem;
-    font-style: normal;
-    line-height: 1.55;
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
 
   .compass-arrow {
-    grid-column: 3;
-    grid-row: 1;
+    align-self: start;
     color: var(--ember-strong);
-    font-size: 1.15rem;
+    font-size: 0.94rem;
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .compass-link:hover::before,
-  .compass-link:focus-visible::before {
-    transform: scaleX(1);
+  .compass-link:hover .record-rule,
+  .compass-link:focus-visible .record-rule {
+    width: 1.9rem;
+    background: var(--ember-strong);
   }
 
   .compass-link:hover .compass-arrow,
   .compass-link:focus-visible .compass-arrow {
-    transform: translate(0.25rem, -0.25rem);
+    transform: translate(2px, -2px);
   }
 
   .compass-link:focus-visible {
@@ -132,7 +142,17 @@ const { label, items } = Astro.props;
   }
 
   .compass-link:active .compass-arrow {
-    transform: translate(0.1rem, -0.1rem);
+    transform: translate(1px, -1px);
+  }
+
+  @media (max-width: 860px) {
+    .compass-link {
+      grid-template-columns: 1.7rem minmax(0, 1fr) auto;
+    }
+
+    .record-rule {
+      display: none;
+    }
   }
 
   @media (max-width: 720px) {
@@ -140,20 +160,30 @@ const { label, items } = Astro.props;
       grid-template-columns: 1fr;
     }
 
-    .compass-link,
-    .compass-link + .compass-link {
-      min-height: 9rem;
+    .compass-record,
+    .compass-record:last-child {
       border-right: 0;
       border-bottom: 1px solid var(--line);
-      padding: 1.15rem 0 1.4rem;
     }
 
-    .compass-link:last-child {
+    .compass-record:last-child {
       border-bottom: 0;
     }
 
-    .compass-link strong {
-      font-size: 2rem;
+    .compass-link,
+    .compass-record + .compass-record .compass-link {
+      min-height: 7.2rem;
+      grid-template-columns: 2.2rem 1.5rem minmax(0, 1fr) auto;
+      padding: 1rem 0 1.1rem;
+    }
+
+    .record-rule {
+      display: block;
+      width: 1rem;
+    }
+
+    .compass-copy strong {
+      font-size: 1.7rem;
     }
   }
 </style>
