@@ -1,11 +1,8 @@
 import { getCollection } from 'astro:content';
-
-const SITE = 'https://XCmiaow.github.io';
+import { absoluteUrl } from '../../data/siteConfig';
 
 const xmlEscape = (value: string) =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
-const toUrl = (pathname: string) => new URL(pathname, SITE).toString();
 
 export async function GET() {
   const posts = (await getCollection('blog', ({ data }) => data.lang === 'zh' && !data.draft)).sort(
@@ -15,13 +12,13 @@ export async function GET() {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>硅基余烬写作</title>
-    <link>${toUrl('/silicon-ashes/writing/')}</link>
-    <description>关于 AI、教育、科研方法与化工专业的写作。</description>
+    <title>硅基余烬博客</title>
+    <link>${absoluteUrl('/silicon-ashes/writing/')}</link>
+    <description>关于 AI、教育、科研方法与化工专业的博客。</description>
     <language>zh-CN</language>
     ${posts
       .map((post) => {
-        const link = toUrl(`/silicon-ashes/writing/${post.id}/`);
+        const link = absoluteUrl(`/silicon-ashes/writing/${post.id}/`);
         return `<item>
       <title>${xmlEscape(post.data.title)}</title>
       <link>${link}</link>

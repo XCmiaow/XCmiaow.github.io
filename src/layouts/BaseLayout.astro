@@ -1,6 +1,5 @@
 ---
 import ClientBehaviors from '../components/ClientBehaviors.astro';
-import Molecule3D from '../components/Molecule3D.astro';
 import CardFloat3D from '../components/CardFloat3D.astro';
 import DocumentLayout from './DocumentLayout.astro';
 import i18n from '../data/i18n.json';
@@ -151,7 +150,6 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
   <main id="main" tabindex="-1"><slot /></main>
 
   <CardFloat3D />
-  <Molecule3D />
   <ClientBehaviors />
   <footer role="contentinfo">
     <div class="container">
@@ -216,6 +214,11 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
     color: var(--muted);
     font-size: 14px;
     font-weight: 650;
+  }
+  .nav-links a {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
   }
   .nav-links a:hover {
     color: var(--primary);

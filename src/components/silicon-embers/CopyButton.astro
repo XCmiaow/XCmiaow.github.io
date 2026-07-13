@@ -28,25 +28,8 @@ const variantClass = variant === 'default' ? undefined : variant;
 
 <script>
   const copyText = async (value: string) => {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(value);
-        return;
-      } catch {
-        // Use the selection fallback in browser contexts without clipboard permission.
-      }
-    }
-
-    const field = document.createElement('textarea');
-    field.value = value;
-    field.setAttribute('readonly', '');
-    field.style.position = 'fixed';
-    field.style.opacity = '0';
-    document.body.appendChild(field);
-    field.select();
-    const copied = document.execCommand('copy');
-    field.remove();
-    if (!copied) throw new Error('copy failed');
+    if (!navigator.clipboard?.writeText) throw new Error('clipboard unavailable');
+    await navigator.clipboard.writeText(value);
   };
 
   document.querySelectorAll('[data-copy-control]').forEach((control) => {

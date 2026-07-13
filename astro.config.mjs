@@ -12,7 +12,9 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  build: {
-    assets: 'assets',
+  vite: {
+    resolve: {
+      preserveSymlinks: true,
+    },
   },
 });

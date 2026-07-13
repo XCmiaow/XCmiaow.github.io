@@ -2,33 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const styleSources = [
-  'src/styles/global.css',
-  'src/layouts/BaseLayout.astro',
-  'src/layouts/PrintLayout.astro',
-  'src/components/CompetitionTimeline.astro',
-  'src/components/Lightbox.astro',
-  'src/components/Molecule3D.astro',
-  'src/components/ParticlesBackground.astro',
-  'src/components/CursorGlow.astro',
-  'src/pages/index.astro',
-  'src/pages/en/index.astro',
-  'src/pages/modeling.astro',
-  'src/pages/en/modeling.astro',
-  'src/pages/ai-km.astro',
-  'src/pages/en/ai-km.astro',
-  'src/pages/evidence.astro',
-  'src/pages/en/evidence.astro',
-  'src/pages/materials.astro',
-  'src/pages/en/materials.astro',
-  'src/pages/resume-onepage.astro',
-  'src/pages/en/resume-onepage.astro',
-  'src/pages/resume-academic.astro',
-  'src/pages/en/resume-academic.astro',
-  'src/pages/resume-career.astro',
-  'src/pages/en/resume-career.astro',
-  'src/styles/mobile.css',
-];
+export const styleSources = ['src/styles/global.css', 'src/styles/mobile.css'];
 
 export function collectSiteCss(root = process.cwd()) {
   let css = [
@@ -62,5 +36,6 @@ export function writeSiteCss(root = process.cwd()) {
   fs.writeFileSync(path.join(outDir, 'site.css'), collectSiteCss(root), 'utf8');
 }
 
-const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const realPath = (value) => fs.realpathSync.native(path.resolve(value));
+const isDirectRun = process.argv[1] && realPath(process.argv[1]) === realPath(fileURLToPath(import.meta.url));
 if (isDirectRun) writeSiteCss();
