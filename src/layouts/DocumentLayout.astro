@@ -13,6 +13,7 @@ export interface Props {
   themeColor?: string;
   bodyClass?: string;
   ogImagePath?: string;
+  faviconPath?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   themeColor = '#102a43',
   bodyClass,
   ogImagePath,
+  faviconPath,
 } = Astro.props;
 const canonicalUrl = absoluteUrl(canonicalPath);
 const alternateUrl = alternatePath ? absoluteUrl(alternatePath) : undefined;
@@ -51,6 +53,7 @@ const ogImageUrl = ogImagePath ? absoluteUrl(ogImagePath) : undefined;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content={themeColor} />
+    {faviconPath && <link rel="icon" href={faviconPath} />}
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={lang} href={canonicalUrl} />
     {alternateUrl && <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />}

@@ -97,8 +97,15 @@ for (const required of allowedSaControl) {
 }
 
 const layoutSource = read('src/layouts/SiliconEmbersLayout.astro');
+const documentLayoutSource = read('src/layouts/DocumentLayout.astro');
 if ((layoutSource.match(/<SiliconEmbersSiteFrame\b/g) ?? []).length !== 1) {
   failures.push('SiliconEmbersLayout must render exactly one SiliconEmbersSiteFrame');
+}
+if (
+  !/faviconPath="\/silicon-ashes\/logo\.jpg"/.test(layoutSource) ||
+  !/<link rel="icon" href=\{faviconPath\}/.test(documentLayoutSource)
+) {
+  failures.push('SiliconEmbersLayout must expose the existing brand mark as its favicon');
 }
 for (const relative of shellContentComponents) {
   if (/SiliconEmbersSiteFrame/.test(read(relative))) {
@@ -168,6 +175,12 @@ for (const forbidden of ['7.4rem', '6.3rem']) {
   ) {
     failures.push(`Poster-scale section cap ${forbidden} must be removed`);
   }
+}
+for (const [relative, marker] of [
+  ['src/components/silicon-embers/BrandNav.astro', 'archive-index'],
+  ['src/components/silicon-embers/SiliconEmbersFooter.astro', 'archive-note'],
+]) {
+  if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
 }
 
 const navBlocks = [...homeCopySource.matchAll(/nav:\s*\[([\s\S]*?)\],/g)].map((match) => match[1]);
@@ -254,6 +267,12 @@ for (const token of ['--paper: #241c14', '--coal: #f4efe5', '--paper: #f0dfbf', 
 }
 if (sharedControlCss.includes('visibility: hidden !important')) {
   failures.push('Light mode must translate the gravity field instead of hiding it');
+}
+if (!/--display-section-max:\s*5rem/.test(sharedControlCss)) {
+  failures.push('Shared brand type scale must cap section display text at 5rem');
+}
+if (!/\.event-horizon::after\s*\{[^}]*background:\s*#0d0b09/s.test(sharedControlCss)) {
+  failures.push('Light-mode event horizon must remain one flat near-black plane');
 }
 
 const emberCanvasSource = read('src/components/silicon-embers/emberFieldCanvas.ts');

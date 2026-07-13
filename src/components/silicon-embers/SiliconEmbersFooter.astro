@@ -15,7 +15,10 @@ const { note, links } = Astro.props;
 ---
 
 <footer class="sa-footer">
-  <p>{note}</p>
+  <div class="footer-identity">
+    <p class="footer-note">{note}</p>
+    <p class="archive-note">OBSERVATIONS ON TECHNOLOGY, RESEARCH &amp; PRACTICE.</p>
+  </div>
   <nav aria-label="Contact links">
     {
       links.map((link) => (
@@ -91,11 +94,29 @@ const { note, links } = Astro.props;
     color: var(--muted);
   }
 
-  p {
+  .footer-identity {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .footer-note,
+  .archive-note {
     margin: 0;
     font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 13px;
-    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer-note {
+    font-size: 0.75rem;
+    font-weight: 750;
+  }
+
+  .archive-note {
+    max-width: 36rem;
+    color: color-mix(in srgb, var(--muted) 68%, transparent);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
   }
 
   nav {

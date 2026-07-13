@@ -37,6 +37,10 @@ html[data-theme='dark'] body {
   --surface: rgba(255, 252, 245, 0.58);
   --surface-strong: rgba(255, 252, 245, 0.86);
   --primary-ink: #ffffff;
+  --display-section-max: 5rem;
+  --space-section: clamp(5.5rem, 8vw, 8.5rem);
+  --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
+  --meta-size: 0.72rem;
 
   position: relative;
   min-height: 100dvh;
@@ -60,6 +64,10 @@ html[data-theme='dark'] body {
   --surface: rgba(238, 215, 177, 0.025);
   --surface-strong: rgba(238, 215, 177, 0.055);
   --primary-ink: #170e08;
+  --display-section-max: 5rem;
+  --space-section: clamp(5.5rem, 8vw, 8.5rem);
+  --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
+  --meta-size: 0.72rem;
 
   background:
     radial-gradient(circle at 77% 8%, rgba(190, 86, 39, 0.12), transparent 31rem),
@@ -170,9 +178,9 @@ html[data-theme='dark'] body {
 
 .sa-shell .section-copy h2 {
   margin-top: 0.9rem;
-  font-size: clamp(2.6rem, 6vw, 5.9rem);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.4rem, 4.5vw, var(--display-section-max));
+  line-height: 0.98;
+  letter-spacing: -0.03em;
 }
 
 .sa-shell .section-copy > p:not(.kicker) {
@@ -329,12 +337,16 @@ html[data-theme='dark'] body {
   opacity: 0.32;
 }
 
+:root:not([data-theme='dark']) .sa-shell .orbital-guide {
+  border-color: rgba(80, 60, 41, 0.1);
+}
+
 :root:not([data-theme='dark']) .sa-shell .gravity-veil {
   background:
-    radial-gradient(circle at 50% 50%, rgba(45, 37, 30, 0.72) 0 14%, rgba(70, 57, 45, 0.18) 24%, transparent 45%),
-    radial-gradient(ellipse at 52% 49%, rgba(159, 95, 45, 0.11) 0 12%, rgba(100, 76, 53, 0.08) 32%, transparent 66%);
+    radial-gradient(circle at 50% 50%, rgba(28, 24, 20, 0.56) 0 14%, rgba(70, 57, 45, 0.12) 25%, transparent 47%),
+    radial-gradient(ellipse at 52% 49%, rgba(159, 95, 45, 0.09) 0 13%, rgba(100, 76, 53, 0.055) 34%, transparent 68%);
   mix-blend-mode: multiply;
-  opacity: 0.62;
+  opacity: 0.54;
 }
 
 :root:not([data-theme='dark']) .sa-shell .black-hole-scene::before {
@@ -344,13 +356,12 @@ html[data-theme='dark'] body {
 :root:not([data-theme='dark']) .sa-shell .event-horizon {
   background: #0d0b09;
   box-shadow:
-    inset 0 0 26px rgba(0, 0, 0, 0.94),
     0 0 0 1px rgba(88, 62, 39, 0.18),
-    0 0 52px rgba(83, 56, 34, 0.2);
+    0 0 38px rgba(83, 56, 34, 0.16);
 }
 
 :root:not([data-theme='dark']) .sa-shell .event-horizon::after {
-  background: #171512;
+  background: #0d0b09;
 }
 
 :root:not([data-theme='dark']) .sa-shell .photon-ring {
@@ -360,11 +371,23 @@ html[data-theme='dark'] body {
 
 :root:not([data-theme='dark']) .sa-shell .accretion-disc {
   mix-blend-mode: multiply;
-  opacity: 0.48;
+}
+
+:root:not([data-theme='dark']) .sa-shell .disc-back {
+  opacity: 0.4;
+}
+
+:root:not([data-theme='dark']) .sa-shell .disc-front {
+  opacity: 0.66;
 }
 
 :root:not([data-theme='dark']) .sa-shell .lensing-arc {
-  opacity: 0.38;
+  opacity: 0.42;
+}
+
+:root:not([data-theme='dark']) .sa-shell .foreground-dust {
+  filter: sepia(0.4) saturate(0.55);
+  opacity: 0.3;
 }
 
 :root:not([data-theme='dark']) .sa-shell .field-caption {
