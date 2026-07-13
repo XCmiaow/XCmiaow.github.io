@@ -1,5 +1,6 @@
 ---
 import type { SiliconEmbersLang } from '../data/siliconEmbersHome';
+import { coursePaths } from '../data/courseCatalog';
 import ActionButton from './silicon-embers/ActionButton.astro';
 import EmberField from './silicon-embers/EmberField.astro';
 
@@ -9,24 +10,51 @@ export interface Props {
 
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
+const courseBase = `${coursePaths.zh}/`;
+const courseEntry = isZh ? courseBase : `${coursePaths.en}/`;
+const zhSteps = [
+  ['01', 'AI 能力地图', '从发展史理解生成、检索、推理与行动。', `${courseBase}01-ai-history/`],
+  ['02', 'LLM 心智模型', '理解 token、上下文、幻觉、RAG 与引用核验。', `${courseBase}02-llm-mental-model/`],
+  ['03', '任务设计', '把目标、输入、约束、格式与验收写进任务简报。', `${courseBase}03-task-design/`],
+  ['04', '工具系统', '补齐网络、API、文件、成本、权限与安全。', `${courseBase}04-tool-systems/`],
+  ['05', '可控智能体', '用计划、权限、日志、Git 与人工确认约束行动。', `${courseBase}05-controlled-agents/`],
+  ['06', '工作流工坊', '围绕真实科研任务交付可复核、可复用的工作流包。', `${courseBase}06-research-workflow-studio/`],
+];
+const enSteps = [
+  ['01', 'AI capability map', 'Generation, retrieval, reasoning, and action.', `${courseBase}01-ai-history/`],
+  [
+    '02',
+    'LLM mental model',
+    'Tokens, context, hallucination, RAG, and citation checks.',
+    `${courseBase}02-llm-mental-model/`,
+  ],
+  ['03', 'Task design', 'Goals, inputs, constraints, formats, and acceptance.', `${courseBase}03-task-design/`],
+  ['04', 'Tool systems', 'Web, APIs, files, cost, permissions, and safety.', `${courseBase}04-tool-systems/`],
+  [
+    '05',
+    'Controlled agents',
+    'Plans, permissions, logs, Git, and human confirmation.',
+    `${courseBase}05-controlled-agents/`,
+  ],
+  [
+    '06',
+    'Workflow studio',
+    'Ship a reviewable and reusable research workflow package.',
+    `${courseBase}06-research-workflow-studio/`,
+  ],
+];
 
 const t = isZh
   ? {
       eyebrow: '资源 / 课程',
       title: 'AI 科研效率课程包',
-      lead: '面向化工教师与零基础用户，把 AI 方法和工具链整理成可进入、可复用的资源。',
+      lead: '面向广泛科研人员，以化学、化工教师案例为主：12 小时讲透方法，再把工具放进可检查的工作流。',
       path: {
         kicker: '学习路径',
-        title: '四步走完一套科研 AI 工作流',
-        body: '先建立概念地图，再完成工具实操，最后把真实科研任务沉淀成自己的流程包。',
+        title: '六个单元，从前置知识走到真实工作流',
+        body: '前四个单元讲清 AI、语言模型、任务设计和数字工具系统，后两个单元完成可控智能体实践与科研工作流交付。',
         cta: '进入课程首页 →',
-        steps: [
-          ['01', '基础概念', '听懂 LLM、API、Prompt、Context、CLI/GUI。', `${courseBase}foundations.html`],
-          ['02', '工具实操', '跑通 WorkBuddy、Claude Code、Codex 与 GitHub。', `${courseBase}toolchain.html`],
-          ['03', '工作流工坊', '把文献、表达、数据或课程任务拆成可检查流程。', `${courseBase}workflow-lab.html`],
-          ['04', '项目实战', '用一项真实任务完成个人科研 AI 工作流包。', `${courseBase}project-lab.html`],
-        ],
+        steps: zhSteps,
       },
       roadmap: {
         kicker: '后续方向',
@@ -39,38 +67,37 @@ const t = isZh
       },
       gateway: {
         kicker: '课程子模块',
-        title: 'AI 编程与科研效率基础课',
-        body: '不是一个孤立网页，而是一套可以直接进入、打印、复用和扩展的课程资料包。',
+        title: 'AI 科研效率 12 小时完整课',
+        body: '中文完整正文、统一教学组件、官方来源与复核日期；线下授课优先，同时兼容自学与打印。',
         stats: [
-          ['标准课', '8 小时'],
-          ['扩展版', '12 小时'],
-          ['主工具', 'WorkBuddy'],
+          ['总时长', '12 小时'],
+          ['方法 / 产品', '约 60% / 40%'],
+          ['WorkBuddy', '45 分钟'],
         ],
         groups: [
           {
             title: '先进入',
             links: [
-              ['课程总览', `${courseBase}index.html`],
-              ['课程安排', `${courseBase}schedule.html`],
-              ['基础概念', `${courseBase}foundations.html`],
+              ['课程总览', courseBase],
+              ['课程安排', `${courseBase}schedule/`],
+              ['AI 能力地图', `${courseBase}01-ai-history/`],
             ],
           },
           {
             title: '再实操',
             links: [
-              ['工具实操', `${courseBase}toolchain.html`],
-              ['工作流工坊', `${courseBase}workflow-lab.html`],
-              ['项目实战', `${courseBase}project-lab.html`],
+              ['任务设计', `${courseBase}03-task-design/`],
+              ['工具系统', `${courseBase}04-tool-systems/`],
+              ['可控智能体', `${courseBase}05-controlled-agents/`],
             ],
           },
           {
             title: '交付与复用',
             links: [
-              ['讲师手册', `${courseBase}instructor.html`],
-              ['代码审阅', `${courseBase}code-review.html`],
-              ['速查附录', `${courseBase}reference.html`],
-              ['打印讲义', `${courseBase}handout.html`],
-              ['PDF 讲义', `${courseBase}course-handout.pdf`],
+              ['工作流工坊', `${courseBase}06-research-workflow-studio/`],
+              ['讲师指南', `${courseBase}instructor/`],
+              ['参考资料', `${courseBase}reference/`],
+              ['连续讲义', `${courseBase}handout/`],
             ],
           },
         ],
@@ -79,33 +106,13 @@ const t = isZh
   : {
       eyebrow: 'Resources / Courses',
       title: 'AI research efficiency course pack',
-      lead: 'Turning AI methods and toolchains into reusable resources for chemistry teachers and zero-basis learners.',
+      lead: 'A 12-hour course for researchers. The full teaching content is in Chinese, with chemistry and chemical-engineering teaching cases.',
       path: {
         kicker: 'Learning path',
-        title: 'Build one research AI workflow in four steps',
-        body: 'Map the concepts, run the tools, then turn a real research task into a reusable workflow pack.',
+        title: 'Six units from foundations to a real research workflow',
+        body: 'The English entry explains the structure; all six complete units are taught and written in Chinese.',
         cta: 'Enter course home →',
-        steps: [
-          [
-            '01',
-            'Foundations',
-            'Understand LLMs, APIs, prompts, context, CLI, and GUI.',
-            `${courseBase}foundations.html`,
-          ],
-          ['02', 'Toolchain', 'Run WorkBuddy, Claude Code, Codex, and GitHub.', `${courseBase}toolchain.html`],
-          [
-            '03',
-            'Workflow lab',
-            'Turn reading, expression, data, or course tasks into checkable flows.',
-            `${courseBase}workflow-lab.html`,
-          ],
-          [
-            '04',
-            'Project lab',
-            'Ship a personal research AI workflow pack from a real task.',
-            `${courseBase}project-lab.html`,
-          ],
-        ],
+        steps: enSteps,
       },
       roadmap: {
         kicker: 'Next directions',
@@ -119,37 +126,36 @@ const t = isZh
       gateway: {
         kicker: 'Course submodule',
         title: 'AI Programming and Research Efficiency Basics',
-        body: 'A directly usable course package: overview, schedule, toolchain labs, instructor notes, printable handout, and PDF.',
+        body: 'The full course content is in Chinese. This English gateway provides the outline and links to the Chinese lessons.',
         stats: [
-          ['Core', '8 hours'],
-          ['Extended', '12 hours'],
-          ['Main tool', 'WorkBuddy'],
+          ['Duration', '12 hours'],
+          ['Methods / products', 'about 60% / 40%'],
+          ['WorkBuddy-specific', '45 minutes'],
         ],
         groups: [
           {
             title: 'Start',
             links: [
-              ['Overview', `${courseBase}index.html`],
-              ['Schedule', `${courseBase}schedule.html`],
-              ['Foundations', `${courseBase}foundations.html`],
+              ['English overview', courseEntry],
+              ['Chinese course', courseBase],
+              ['Schedule (Chinese)', `${courseBase}schedule/`],
             ],
           },
           {
             title: 'Practice',
             links: [
-              ['Toolchain', `${courseBase}toolchain.html`],
-              ['Workflow lab', `${courseBase}workflow-lab.html`],
-              ['Project lab', `${courseBase}project-lab.html`],
+              ['Task design (Chinese)', `${courseBase}03-task-design/`],
+              ['Tool systems (Chinese)', `${courseBase}04-tool-systems/`],
+              ['Controlled agents (Chinese)', `${courseBase}05-controlled-agents/`],
             ],
           },
           {
             title: 'Reuse',
             links: [
-              ['Instructor notes', `${courseBase}instructor.html`],
-              ['Code review', `${courseBase}code-review.html`],
-              ['Reference', `${courseBase}reference.html`],
-              ['Printable handout', `${courseBase}handout.html`],
-              ['PDF handout', `${courseBase}course-handout.pdf`],
+              ['Workflow studio (Chinese)', `${courseBase}06-research-workflow-studio/`],
+              ['Instructor guide (Chinese)', `${courseBase}instructor/`],
+              ['Reference (Chinese)', `${courseBase}reference/`],
+              ['Handout (Chinese)', `${courseBase}handout/`],
             ],
           },
         ],
@@ -210,9 +216,7 @@ const t = isZh
         <h2 id="path-title">{t.path.title}</h2>
         <p>{t.path.body}</p>
       </div>
-      <ActionButton href={`${courseBase}index.html`} variant="primary" className="primary-course-link"
-        >{t.path.cta}</ActionButton
-      >
+      <ActionButton href={courseEntry} variant="primary" className="primary-course-link">{t.path.cta}</ActionButton>
     </div>
 
     <div class="path-grid">
@@ -434,7 +438,7 @@ const t = isZh
 
   .path-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1px;
     border: 1px solid rgba(218, 166, 86, 0.15);
     background: rgba(218, 166, 86, 0.15);

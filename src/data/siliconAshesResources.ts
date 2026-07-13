@@ -1,3 +1,5 @@
+import { coursePaths } from './courseCatalog';
+
 export type ResourceTemplateLocale = {
   title: string;
   summary: string;
@@ -397,7 +399,7 @@ export type ResourceIndexGroup = {
 
 type ResourceIndexLang = 'zh' | 'en';
 
-const coursePackBase = '/silicon-ashes/courses/ai-research-efficiency/';
+const coursePackBase = `${coursePaths.zh}/`;
 
 type ResourceRegistryEntry = {
   id: string;
@@ -445,14 +447,14 @@ export const resourceRegistry: readonly ResourceRegistryEntry[] = [
     category: 'course-materials',
     zh: {
       title: '课程首页',
-      summary: '进入静态课程包，查看完整模块。',
-      href: `${coursePackBase}index.html`,
+      summary: '进入 Astro 中文完整课程，查看六个 120 分钟单元。',
+      href: coursePackBase,
       meta: ['课程包', '入口'],
     },
     en: {
       title: 'Course home',
-      summary: 'Open the static course package and all modules.',
-      href: `${coursePackBase}index.html`,
+      summary: 'English overview; the complete teaching content is in Chinese.',
+      href: `${coursePaths.en}/`,
       meta: ['Course pack', 'Entry'],
     },
   },
@@ -462,13 +464,13 @@ export const resourceRegistry: readonly ResourceRegistryEntry[] = [
     zh: {
       title: '课程安排',
       summary: '课时结构、模块顺序和课堂节奏。',
-      href: `${coursePackBase}schedule.html`,
+      href: `${coursePackBase}schedule/`,
       meta: ['日程', '教学'],
     },
     en: {
-      title: 'Schedule',
-      summary: 'Class structure, module order, and teaching rhythm.',
-      href: `${coursePackBase}schedule.html`,
+      title: 'Schedule · Chinese',
+      summary: 'Chinese class structure, module order, and teaching rhythm.',
+      href: `${coursePackBase}schedule/`,
       meta: ['Schedule', 'Teaching'],
     },
   },
@@ -478,13 +480,13 @@ export const resourceRegistry: readonly ResourceRegistryEntry[] = [
     zh: {
       title: '打印讲义',
       summary: '适合课前发放或课后归档的讲义版本。',
-      href: `${coursePackBase}handout.html`,
+      href: `${coursePackBase}handout/`,
       meta: ['讲义', '打印'],
     },
     en: {
-      title: 'Printable handout',
-      summary: 'A version for class use and archive.',
-      href: `${coursePackBase}handout.html`,
+      title: 'Printable handout · Chinese',
+      summary: 'The complete Chinese handout for class use and archive.',
+      href: `${coursePackBase}handout/`,
       meta: ['Handout', 'Print'],
     },
   },
@@ -492,15 +494,15 @@ export const resourceRegistry: readonly ResourceRegistryEntry[] = [
     id: 'toolchain',
     category: 'workflow-tools',
     zh: {
-      title: '工具链实操',
-      summary: 'WorkBuddy、Claude Code、Codex 与 GitHub 的基础使用路径。',
-      href: `${coursePackBase}toolchain.html`,
+      title: '可控智能体',
+      summary: '用计划、权限、日志、Git 和人工确认约束 WorkBuddy、Claude Code 与 Codex。',
+      href: `${coursePackBase}05-controlled-agents/`,
       meta: ['工具', '实操'],
     },
     en: {
-      title: 'Toolchain practice',
-      summary: 'A starter path for WorkBuddy, Claude Code, Codex, and GitHub.',
-      href: `${coursePackBase}toolchain.html`,
+      title: 'Controlled agents · Chinese',
+      summary: 'Chinese unit on plans, permissions, logs, Git, and human confirmation.',
+      href: `${coursePackBase}05-controlled-agents/`,
       meta: ['Tools', 'Practice'],
     },
   },
@@ -510,30 +512,14 @@ export const resourceRegistry: readonly ResourceRegistryEntry[] = [
     zh: {
       title: '工作流工坊',
       summary: '把文献、表达、数据或课程任务拆成可检查流程。',
-      href: `${coursePackBase}workflow-lab.html`,
+      href: `${coursePackBase}06-research-workflow-studio/`,
       meta: ['流程', '练习'],
     },
     en: {
-      title: 'Workflow lab',
-      summary: 'Turn reading, expression, data, or course tasks into checkable flows.',
-      href: `${coursePackBase}workflow-lab.html`,
+      title: 'Workflow studio · Chinese',
+      summary: 'Chinese studio for turning research and teaching tasks into checkable workflows.',
+      href: `${coursePackBase}06-research-workflow-studio/`,
       meta: ['Workflow', 'Lab'],
-    },
-  },
-  {
-    id: 'code-review',
-    category: 'workflow-tools',
-    zh: {
-      title: '代码审查',
-      summary: '用于课堂或个人项目的代码检查入口。',
-      href: `${coursePackBase}code-review.html`,
-      meta: ['代码', '质量'],
-    },
-    en: {
-      title: 'Code review',
-      summary: 'A review entry for class exercises and personal projects.',
-      href: `${coursePackBase}code-review.html`,
-      meta: ['Code', 'Quality'],
     },
   },
   {

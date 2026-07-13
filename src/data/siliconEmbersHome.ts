@@ -1,4 +1,6 @@
-const courseBase = '/silicon-ashes/courses/ai-research-efficiency/';
+import { coursePaths } from './courseCatalog';
+
+const courseBase = `${coursePaths.zh}/`;
 
 export type SiliconEmbersLang = 'zh' | 'en';
 
@@ -125,9 +127,9 @@ export const siliconEmbersHomeCopy = {
       body: '面向非计算机背景。目标是一套可执行的科研 AI 工作流。',
       links: [
         { label: '课程资料', href: '/silicon-ashes/resources/#course-materials' },
-        { label: '课程首页', href: `${courseBase}index.html` },
-        { label: '课程安排', href: `${courseBase}schedule.html` },
-        { label: '打印讲义', href: `${courseBase}handout.html` },
+        { label: '课程首页', href: courseBase },
+        { label: '课程安排', href: `${courseBase}schedule/` },
+        { label: '连续讲义', href: `${courseBase}handout/` },
       ],
     },
     resources: {
@@ -269,9 +271,9 @@ export const siliconEmbersHomeCopy = {
       body: 'For non-CS backgrounds. The goal is an executable research AI workflow.',
       links: [
         { label: 'Course materials', href: '/en/silicon-ashes/resources/#course-materials' },
-        { label: 'Course home', href: `${courseBase}index.html` },
-        { label: 'Schedule', href: `${courseBase}schedule.html` },
-        { label: 'Handout', href: `${courseBase}handout.html` },
+        { label: 'English course overview', href: `${coursePaths.en}/` },
+        { label: 'Schedule · Chinese', href: `${courseBase}schedule/` },
+        { label: 'Handout · Chinese', href: `${courseBase}handout/` },
       ],
     },
     resources: {
