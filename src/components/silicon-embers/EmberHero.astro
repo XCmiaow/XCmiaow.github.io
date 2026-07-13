@@ -15,10 +15,9 @@ const { copy, wordmark } = Astro.props;
   <EmberField />
 
   <div class="hero-copy">
-    <p class="hero-record observation-label" aria-hidden="true">
-      <span class="record-index">OBS.01</span>
-      <span class="record-axis">SILICON—CARBON</span>
-      <span class="record-state">ARCHIVE / ACTIVE</span>
+    <p class="hero-status" aria-hidden="true">
+      <span>silicon—carbon archive</span>
+      <span>field / active</span>
     </p>
 
     <div class="hero-title-block">
@@ -76,50 +75,27 @@ const { copy, wordmark } = Astro.props;
   .hero-copy {
     position: relative;
     z-index: 2;
-    width: min(100%, 54rem);
+    width: min(48%, 40rem);
   }
 
-  .hero-record {
-    display: grid;
-    width: min(100%, 34rem);
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 0 0 clamp(2.2rem, 4.5vh, 3.5rem);
-    color: var(--muted);
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.63rem;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.1em;
-  }
-
-  .record-index {
-    color: var(--ember-strong);
-  }
-
-  .record-axis {
+  .hero-status {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.8rem;
+    margin: 0 0 clamp(2rem, 4vh, 3rem);
+    color: var(--muted);
+    font-family: var(--font-mono, Consolas, 'SFMono-Regular', monospace);
+    font-size: 0.64rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .record-axis::before,
-  .record-axis::after {
+  .hero-status::before {
     content: '';
+    width: 2rem;
     height: 1px;
-    background: var(--line);
-  }
-
-  .record-axis::before {
-    width: 1.8rem;
-  }
-
-  .record-axis::after {
-    flex: 1;
-  }
-
-  .record-state {
-    color: color-mix(in srgb, var(--muted) 72%, transparent);
+    background: var(--ember-strong);
   }
 
   .wordmark {
@@ -134,9 +110,9 @@ const { copy, wordmark } = Astro.props;
 
   h1 {
     max-width: 8ch;
-    font-size: clamp(3.8rem, 7.8vw, 7rem);
-    line-height: 0.88;
-    letter-spacing: -0.05em;
+    font-size: clamp(3.25rem, 6.4vw, 5.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
   }
 
   .hero-statement {
@@ -214,11 +190,11 @@ const { copy, wordmark } = Astro.props;
     }
 
     .hero-copy {
-      width: min(100%, 46rem);
+      width: min(58%, 32rem);
     }
 
     h1 {
-      font-size: clamp(3.7rem, 10vw, 6.2rem);
+      font-size: clamp(3.25rem, 8vw, 4.8rem);
     }
   }
 
@@ -238,22 +214,15 @@ const { copy, wordmark } = Astro.props;
       max-width: 33rem;
     }
 
-    .hero-record {
-      width: min(100%, 22rem);
-      grid-template-columns: auto 1fr;
-      margin-bottom: 8.4rem;
+    .hero-status {
+      margin-bottom: 8.5rem;
       font-size: 0.57rem;
     }
 
-    .record-axis::after,
-    .record-state {
-      display: none;
-    }
-
     h1 {
-      max-width: 6ch;
-      font-size: clamp(3.1rem, 16vw, 5.2rem);
-      line-height: 0.92;
+      max-width: 7ch;
+      font-size: clamp(2.8rem, 14vw, 4.2rem);
+      line-height: 0.96;
     }
 
     .hero-statement {
@@ -283,8 +252,8 @@ const { copy, wordmark } = Astro.props;
   }
 
   @media (max-width: 360px) {
-    .hero-record {
-      margin-bottom: 7.5rem;
+    .hero-status {
+      margin-bottom: 7.8rem;
     }
   }
 </style>

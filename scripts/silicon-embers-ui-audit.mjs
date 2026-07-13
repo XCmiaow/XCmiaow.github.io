@@ -127,6 +127,7 @@ if (!/routePath\('writing', lang\)/.test(siteFrameSource) || !/routePath\('resou
 const homeCopySource = read('src/data/siliconEmbersHome.ts');
 const homeSource = read('src/components/SiliconAshesHome.astro');
 const manifestoSource = read('src/components/silicon-embers/BrandManifesto.astro');
+const heroSource = read('src/components/silicon-embers/EmberHero.astro');
 
 if ((homeSource.match(/<BrandManifesto\b/g) ?? []).length !== 1) {
   failures.push('Brand home must render exactly one BrandManifesto');
@@ -139,7 +140,6 @@ for (const className of ['brand-manifesto', 'principle-list', 'method-rail']) {
 }
 
 const editorialComponents = [
-  ['src/components/silicon-embers/EmberHero.astro', 'observation-label'],
   ['src/components/silicon-embers/SiteCompass.astro', 'compass-arrow'],
   ['src/components/silicon-embers/WritingPreview.astro', 'writing-arrow'],
   ['src/components/silicon-embers/BrandNav.astro', 'aperture'],
@@ -149,15 +149,20 @@ for (const [relative, className] of editorialComponents) {
   if (!read(relative).includes(className)) failures.push(`${relative}: missing editorial marker ${className}`);
 }
 for (const [relative, marker] of [
-  ['src/components/silicon-embers/EmberHero.astro', 'hero-record'],
   ['src/components/silicon-embers/EmberHero.astro', 'action-primary'],
   ['src/components/silicon-embers/SiteCompass.astro', 'compass-record'],
   ['src/components/silicon-embers/SiteCompass.astro', 'record-rule'],
 ]) {
   if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
 }
-if (/10\.8rem/.test(read('src/components/silicon-embers/EmberHero.astro'))) {
-  failures.push('Hero display cap must be reduced below the poster-scale 10.8rem');
+if (!heroSource.includes('hero-status')) {
+  failures.push('EmberHero must use one compact hero-status line');
+}
+if (heroSource.includes('hero-record') || heroSource.includes('record-state')) {
+  failures.push('EmberHero must remove the multi-column observation record');
+}
+if (!/font-size:\s*clamp\([^;]+5\.2rem\)/.test(heroSource)) {
+  failures.push('Hero display text must cap at 5.2rem');
 }
 for (const [relative, marker] of [
   ['src/components/silicon-embers/BrandManifesto.astro', 'principle-trace'],
@@ -277,6 +282,15 @@ if (!/\.event-horizon::after\s*\{[^}]*background:\s*#0d0b09/s.test(sharedControl
 
 const emberCanvasSource = read('src/components/silicon-embers/emberFieldCanvas.ts');
 const emberFieldSource = read('src/components/silicon-embers/EmberField.astro');
+for (const forbidden of [/max\(-6vw/, /inset:\s*0\s+-20vw/, /inset:\s*0\s+-49vw/]) {
+  if (forbidden.test(emberFieldSource)) failures.push(`EmberField contains out-of-bounds geometry: ${forbidden}`);
+}
+if (!/overflow:\s*clip/.test(emberFieldSource)) {
+  failures.push('EmberField must clip visual layers to the hero bounds');
+}
+if (!/--hole-x:\s*6[2-6]%/.test(emberFieldSource)) {
+  failures.push('EmberField must keep the gravity center near 62–66%');
+}
 for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon', 'lensing-arc']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing ${className}`);
 }

@@ -50,7 +50,10 @@ async function waitForPreview(child) {
 
 async function waitForSettledPage(page) {
   await page.waitForLoadState('load');
-  await page.locator('#skeleton').waitFor({ state: 'detached', timeout: 2000 }).catch(() => {});
+  await page
+    .locator('#skeleton')
+    .waitFor({ state: 'detached', timeout: 2000 })
+    .catch(() => {});
   await page.waitForTimeout(150);
 }
 
@@ -91,6 +94,38 @@ async function checkDarkRoute(page, route, options = {}) {
   if (check.skeletonVisible) fail(`${route} skeleton remained visible`);
   if (check.forbiddenText) fail(`${route} includes forbidden placeholder/debug text`);
   checks.push(check);
+}
+
+async function checkBrandHomeBounds(page) {
+  for (const width of [360, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: width < 700 ? 844 : 1000 });
+    await page.goto(`${base}/`, { waitUntil: 'load' });
+    await waitForSettledPage(page);
+    const geometry = await page.evaluate(() => {
+      const hero = document.querySelector('.ember-hero')?.getBoundingClientRect();
+      const stage = document.querySelector('.ember-stage')?.getBoundingClientRect();
+      const scene = document.querySelector('.black-hole-scene')?.getBoundingClientRect();
+      return {
+        viewport: innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        hero: hero && { left: hero.left, right: hero.right },
+        stage: stage && { left: stage.left, right: stage.right },
+        scene: scene && { left: scene.left, right: scene.right },
+      };
+    });
+    if (!geometry.hero || !geometry.stage || !geometry.scene) {
+      fail(`brand home ${width}px is missing gravity geometry`);
+      continue;
+    }
+    if (geometry.scrollWidth > geometry.viewport + 1) fail(`brand home ${width}px has horizontal overflow`);
+    if (geometry.stage.left < geometry.hero.left - 1 || geometry.stage.right > geometry.hero.right + 1) {
+      fail(`brand home ${width}px gravity stage leaves the hero`);
+    }
+    if (geometry.scene.left < geometry.hero.left - 1 || geometry.scene.right > geometry.hero.right + 1) {
+      fail(`brand home ${width}px black-hole scene leaves the hero`);
+    }
+    checks.push({ route: '/', width, gravityBounds: 'ok' });
+  }
 }
 
 const child = startPreview();
@@ -147,16 +182,11 @@ try {
     checks.push(check);
   }
 
-  for (const route of [
-    '/materials',
-    '/en/materials',
-    '/chem-ai-lab',
-    '/en/chem-ai-lab',
-    '/blog',
-    '/en/blog',
-  ]) {
+  for (const route of ['/materials', '/en/materials', '/chem-ai-lab', '/en/chem-ai-lab', '/blog', '/en/blog']) {
     await checkDarkRoute(page, route);
   }
+
+  await checkBrandHomeBounds(page);
 
   await page.screenshot({ path: path.join(screenshotDir, 'ai-km-dark-desktop.png'), fullPage: false });
 
