@@ -4,7 +4,14 @@ This repository publishes a sanitized resume website. Keep formal application pa
 
 ## Public routes
 
-- `/`, `/en/`
+- `/`, `/en/` (brand home)
+- `/profile`, `/en/profile`
+- `/silicon-ashes/writing/`, `/en/silicon-ashes/writing/`
+- `/silicon-ashes/resources/`, `/en/silicon-ashes/resources/`
+- `/silicon-ashes/courses/`, `/en/silicon-ashes/courses/`
+- `/silicon-ashes/courses/ai-research-efficiency/` (Chinese full course)
+- `/en/silicon-ashes/courses/ai-research-efficiency/` (English notice/entry)
+- `/silicon-ashes/about/`, `/en/silicon-ashes/about/`
 - `/materials`, `/en/materials`
 - `/resume-onepage`, `/en/resume-onepage`
 - `/resume-academic`, `/en/resume-academic`
@@ -12,7 +19,7 @@ This repository publishes a sanitized resume website. Keep formal application pa
 - `/evidence`, `/en/evidence`
 - `/modeling`, `/en/modeling`
 - `/chem-ai-lab`, `/en/chem-ai-lab`
-- `/blog`, `/en/blog`
+- `/blog`, `/en/blog` (compatibility only; no duplicate canonical content)
 
 ## Restricted public evidence
 

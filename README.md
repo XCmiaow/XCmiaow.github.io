@@ -1,38 +1,50 @@
-# 方绪杰个人学术简历主页
+# 硅基余烬｜品牌内容与科研课程平台
 
-这是一个基于 Astro 构建的中英双语个人简历网站，用于展示教育背景、获奖经历、证明材料、项目作品、一页简历和长期学习方向。
+这是一个基于 Astro 6 的双语品牌站、公开简历与科研课程平台。
 
-## 项目定位
+- `/` 与 `/en/`：品牌首页，连接文章、资源、课程与关于页面。
+- `/profile/` 与 `/en/profile/`：独立的公开简历入口。
+- `/silicon-ashes/courses/ai-research-efficiency/`：12 小时中文完整课程。
+- 英文课程入口明确说明：完整教学内容为中文。
 
-- 公开主页：适合 GitHub Pages、个人主页链接和合作展示。
-- 保研评优：突出 GPA、排名、奖学金、竞赛奖项、学生工作和志愿服务。
-- 求职实习：突出数学建模、Python、Astro 网站、AI 工具链和项目落地能力。
-- 证据材料：通过证书墙、项目详情页和材料中心支撑核心经历。
+## 产品定位
+
+- 品牌优先：硅基余烬是站点主叙事，课程与资源服务于长期内容沉淀。
+- 方法优先：课程约 60% 讲方法、40% 做产品实践，不做工具功能堆砌。
+- 科研通用：面向广泛科研人员，案例与练习以化学、化工教师为主。
+- 证据可核验：公开简历、材料、证书与项目说明通过结构化引用关联。
+- 线下优先：课程适合 12 小时线下授课，同时保留自学目录、答案、讲师提示与打印讲义。
 
 ## 技术栈
 
-- Astro 6
-- HTML / CSS / JavaScript
-- TypeScript 数据文件
-- Playwright QA
-- Prettier / ESLint / Husky / lint-staged
+- Astro 6 + TypeScript
+- Astro Content Collections + MDX
+- 统一品牌、文档与课程 Layout
+- Playwright 浏览器 QA
+- ESLint、Prettier、Husky、lint-staged
+- GitHub Pages / GitHub Actions
 
 ## 目录结构
 
 ```text
 src/
-  components/        # 可复用组件
-  data/              # 简历、项目、材料中心等结构化数据
-  layouts/           # BaseLayout 与 PrintLayout
-  pages/             # 中文页面与英文页面
-  styles/            # 全局与移动端样式
+  components/
+    course/                    # 统一教学块
+    silicon-embers/            # 品牌站组件
+  content/
+    blog/                      # 双语文章
+    course/                    # 六个中文课程单元（MDX）
+  data/                        # 路由、品牌、课程、简历与证据目录
+  layouts/                     # Document / Brand / Course / Print Layout
+  pages/                       # 品牌、简历、课程与兼容路由
+  styles/                      # 全局、品牌与课程样式
 scripts/
-  generate-site-css.mjs   # 生成稳定 CSS，供 GitHub Pages 使用
-  generate-build-meta.mjs # 生成构建元信息
-  qa-check.mjs            # 浏览器、路由、移动端、打印页数 QA
+  course-content-qa.mjs        # 720 分钟、产品比例、来源与发布门禁
+  course-route-qa.mjs          # 课程路由、首页链接与 sitemap
+  route-contract-qa.mjs        # 公共路由契约
+  qa-check.mjs                 # 浏览器行为检查
 public/
-  assets/            # 头像、证书图片、站点资源
-  styles/site.css    # 构建前生成的稳定样式文件
+  assets/                      # 经审核的公开图片与证明材料
 ```
 
 ## 常用命令
@@ -40,86 +52,75 @@ public/
 ```bash
 npm run dev
 npm run build
-npm run preview
-npm run format
-npm run format:check
 npm run lint
+npm run format:check
+npm run typecheck
 npm run check
 ```
 
-推荐在提交前运行：
+课程发布前额外运行：
 
-```bash
-npm run format
-npm run check
+```powershell
+$env:COURSE_RELEASE='1'; node scripts/course-content-qa.mjs
+node scripts/course-route-qa.mjs
 ```
 
-## 页面清单
+## 主要页面
 
-| 页面       | 中文路径           | 英文路径              | 用途                         |
-| ---------- | ------------------ | --------------------- | ---------------------------- |
-| 首页       | `/`                | `/en/`                | 公开展示与核心入口           |
-| 材料中心   | `/materials`       | `/en/materials`       | 集中选择简历、证据、项目材料 |
-| 证据墙     | `/evidence`        | `/en/evidence`        | 奖项证书与证明材料           |
-| 数学建模   | `/modeling`        | `/en/modeling`        | 建模竞赛能力说明             |
-| ChemAI Lab | `/chem-ai-lab`     | `/en/chem-ai-lab`     | AI 化学方向说明              |
-| 通用简历   | `/resume-onepage`  | `/en/resume-onepage`  | 通用一页 PDF                 |
-| 保研评优版 | `/resume-academic` | `/en/resume-academic` | 学业评审场景                 |
-| 求职实习版 | `/resume-career`   | `/en/resume-career`   | 实习和项目合作场景           |
-| 博客       | `/blog`            | `/en/blog`            | 长期笔记和文章入口           |
+| 领域     | 中文路径                                         | 英文路径                                            | 用途                         |
+| -------- | ------------------------------------------------ | --------------------------------------------------- | ---------------------------- |
+| 品牌首页 | `/`                                              | `/en/`                                              | 文章、资源、课程、关于分流   |
+| 文章     | `/silicon-ashes/writing/`                        | `/en/silicon-ashes/writing/`                        | 长期内容沉淀                 |
+| 资源     | `/silicon-ashes/resources/`                      | `/en/silicon-ashes/resources/`                      | 模板、清单、课程与工作流入口 |
+| 课程网关 | `/silicon-ashes/courses/`                        | `/en/silicon-ashes/courses/`                        | 课程结构与入口               |
+| 完整课程 | `/silicon-ashes/courses/ai-research-efficiency/` | `/en/silicon-ashes/courses/ai-research-efficiency/` | 中文正文 / 英文说明入口      |
+| 关于     | `/silicon-ashes/about/`                          | `/en/silicon-ashes/about/`                          | 品牌、背景与联系             |
+| 公开简历 | `/profile/`                                      | `/en/profile/`                                      | 教育、项目、荣誉与能力       |
+| 证据     | `/evidence/`                                     | `/en/evidence/`                                     | 公开证书与证明材料           |
+| 材料     | `/materials/`                                    | `/en/materials/`                                    | 场景化公开材料入口           |
+
+旧 `/silicon-ashes/` 与 `/blog/` 仅保留无重复正文的兼容入口；旧静态课程 `.html` 不再保留。
 
 ## 内容维护
 
-主要内容优先从数据文件维护：
+### 文章
 
-- `src/data/common.json`：通用个人信息、GPA、排名、项目标签与链接。
-- `src/data/zh.json`：中文个人简介、获奖、技能、项目、经历。
-- `src/data/en.json`：英文页面内容。
-- `src/data/materials.ts`：材料中心清单与场景说明。
-- `src/data/i18n.json`：导航、页脚和通用文案。
+在 `src/content/blog/` 新增 Markdown；文章 canonical 位于 `/silicon-ashes/writing/`。
 
-新增奖项时，优先更新 `src/data/zh.json` 和 `src/data/en.json` 的 `competitions`。
+### 课程
 
-新增材料入口时，优先更新 `src/data/materials.ts`，再确认是否需要新增页面。
+在 `src/content/course/` 维护六个 MDX 单元。frontmatter 记录时长、产品时间、前置单元、目标、交付物、官方来源与复核日期。正文教学块复用：
 
-新增页面后，需要同步更新：
+- `Concept`
+- `Analogy`
+- `Checkpoint`
+- `Exercise`
+- `ProductDemo`
+- `InstructorNote`
 
-- `src/layouts/BaseLayout.astro` 的导航入口。
-- `scripts/generate-site-css.mjs` 的样式来源。
-- `scripts/qa-check.mjs` 的路由和标题检查。
+### 品牌资源
 
-## 隐私策略
+在 `src/data/siliconAshesResources.ts` 的统一注册表维护。每条资源必须属于固定 category；`getResourceIndexGroups(lang)` 自动派生分组，不维护第二份列表。
 
-公开站点默认使用脱敏信息：
+### 简历与证据
 
-- 不展示学号。
-- 不展示出生年月、民族、政治面貌等非必要身份信息。
-- 联系方式使用公开邮箱。
-- 证书图片如包含敏感字段，应优先使用脱敏版。
-
-正式投递材料可以在本地保留完整信息，但不建议直接公开部署。
+公开页面只使用脱敏数据。禁止提交学号、证件号、出生日期、私人联系方式、未公开论文与未脱敏实验数据。
 
 ## QA 覆盖
 
-`npm run check` 会执行：
+最终门禁覆盖：
 
-- Astro 静态构建。
-- 主要页面 HTTP 状态检查。
-- H1 标题检查。
-- CSS 加载检查。
-- 图片加载检查。
-- 内部链接检查。
-- 中英文切换检查。
-- 证据墙灯箱检查。
-- 多视口移动端横向溢出检查。
-- 移动端点击目标尺寸检查。
-- 六个一页简历页面的 A4 PDF 页数检查。
+- Astro 构建、ESLint、Prettier 与类型检查
+- 路由契约、canonical、sitemap 与 PWA
+- 课程 6 单元 / 720 分钟 / 产品时间 240–300 分钟
+- WorkBuddy 专属时间不超过 60 分钟
+- 产品内容官方来源与复核日期
+- 品牌 shell、导航、复制按钮与动画生命周期
+- 内部链接、移动端溢出、点击目标、打印与公开隐私
 
 ## 部署
 
-项目可直接部署到 GitHub Pages。
-
-发布前建议：
+GitHub Actions 只有在完整门禁通过后才构建并发布 `dist/`。本地发布前运行：
 
 ```bash
 npm ci
@@ -127,11 +128,4 @@ npm run check
 npm run build
 ```
 
-如果使用 GitHub Pages，请确保发布目录指向 `dist/`，或使用仓库已有的 GitHub Actions 工作流。
-
-## 下一步路线
-
-- 深化数学建模项目详情页。
-- 为证据墙补充奖项级别、主办方、时间、能力映射。
-- 生成正式 PDF 文件并放入材料中心。
-- 将项目经历继续数据化，减少页面内硬编码。
+更详细的维护规则见 `docs/content-workflow.md` 与 `docs/silicon-embers-development.md`。
