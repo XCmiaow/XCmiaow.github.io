@@ -127,20 +127,29 @@ if (!/routePath\('writing', lang\)/.test(siteFrameSource) || !/routePath\('resou
 const homeCopySource = read('src/data/siliconEmbersHome.ts');
 const homeSource = read('src/components/SiliconAshesHome.astro');
 const manifestoSource = read('src/components/silicon-embers/BrandManifesto.astro');
+const methodSource = read('src/components/silicon-embers/MethodStrip.astro');
 const heroSource = read('src/components/silicon-embers/EmberHero.astro');
 
 if ((homeSource.match(/<BrandManifesto\b/g) ?? []).length !== 1) {
   failures.push('Brand home must render exactly one BrandManifesto');
 }
-if (!/copy=\{copy\.thesis\}/.test(homeSource) || !/method=\{copy\.operatingSystem\}/.test(homeSource)) {
-  failures.push('BrandManifesto must receive localized thesis and operating-system copy');
+if (!/copy=\{copy\.thesis\}/.test(homeSource)) {
+  failures.push('BrandManifesto must receive localized thesis copy');
 }
-for (const className of ['brand-manifesto', 'principle-list', 'method-rail']) {
+for (const className of ['brand-manifesto', 'principle-list']) {
   if (!manifestoSource.includes(className)) failures.push(`BrandManifesto is missing ${className}`);
+}
+if (/SiteCompass/.test(homeSource)) failures.push('Brand home must not render the redundant SiteCompass');
+if ((homeSource.match(/<MethodStrip\b/g) ?? []).length !== 1) failures.push('Brand home must render one MethodStrip');
+if (!/copy=\{copy\.operatingSystem\}/.test(homeSource)) failures.push('MethodStrip must receive localized method copy');
+if (!methodSource.includes('method-track') || !methodSource.includes('method-step')) {
+  failures.push('MethodStrip must expose the connected method path');
+}
+if (/method-section|method-track/.test(manifestoSource)) {
+  failures.push('BrandManifesto must contain principles only');
 }
 
 const editorialComponents = [
-  ['src/components/silicon-embers/SiteCompass.astro', 'compass-arrow'],
   ['src/components/silicon-embers/WritingPreview.astro', 'writing-arrow'],
   ['src/components/silicon-embers/BrandNav.astro', 'aperture'],
   ['src/components/silicon-embers/SiliconEmbersFooter.astro', 'footer-link'],
@@ -148,11 +157,7 @@ const editorialComponents = [
 for (const [relative, className] of editorialComponents) {
   if (!read(relative).includes(className)) failures.push(`${relative}: missing editorial marker ${className}`);
 }
-for (const [relative, marker] of [
-  ['src/components/silicon-embers/EmberHero.astro', 'action-primary'],
-  ['src/components/silicon-embers/SiteCompass.astro', 'compass-record'],
-  ['src/components/silicon-embers/SiteCompass.astro', 'record-rule'],
-]) {
+for (const [relative, marker] of [['src/components/silicon-embers/EmberHero.astro', 'action-primary']]) {
   if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
 }
 if (!heroSource.includes('hero-status')) {
@@ -166,7 +171,7 @@ if (!/font-size:\s*clamp\([^;]+5\.2rem\)/.test(heroSource)) {
 }
 for (const [relative, marker] of [
   ['src/components/silicon-embers/BrandManifesto.astro', 'principle-trace'],
-  ['src/components/silicon-embers/BrandManifesto.astro', 'method-track'],
+  ['src/components/silicon-embers/MethodStrip.astro', 'method-track'],
   ['src/components/silicon-embers/WritingPreview.astro', 'writing-rule'],
   ['src/components/silicon-embers/SignalLinksSection.astro', 'resource-record'],
 ]) {

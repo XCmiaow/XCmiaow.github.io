@@ -1,0 +1,180 @@
+---
+import type { SiliconEmbersOperatingSystemCopy } from '../../data/siliconEmbersHome';
+
+interface Props {
+  copy: SiliconEmbersOperatingSystemCopy;
+}
+
+const { copy } = Astro.props;
+---
+
+<section class="method-strip" aria-labelledby="method-title">
+  <header class="method-head section-copy">
+    <p class="kicker">{copy.kicker}</p>
+    <h2 id="method-title">{copy.title}</h2>
+    <p>{copy.body}</p>
+  </header>
+
+  <ol class="method-track" aria-label={copy.railLabel}>
+    {
+      copy.phases.map((phase, index) => (
+        <li class="method-step">
+          <span class="phase-index">{String(index + 1).padStart(2, '0')}</span>
+          <span class="phase-code">{phase.code}</span>
+          <strong>{phase.title}</strong>
+          <p>{phase.body}</p>
+          <em>{phase.output}</em>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .method-strip {
+    border-bottom: 1px solid var(--line);
+    padding: var(--space-section, clamp(5rem, 8vw, 8rem)) 0;
+  }
+
+  .method-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(16rem, 0.42fr);
+    gap: 1rem 6vw;
+    align-items: end;
+  }
+
+  .method-head .kicker,
+  .method-head h2 {
+    grid-column: 1;
+  }
+
+  .method-head h2 {
+    max-width: 12ch;
+    margin-top: 0.75rem;
+    font-size: clamp(2.3rem, 4vw, 4rem);
+    line-height: 1;
+  }
+
+  .method-head > p:last-child {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 34ch;
+    margin: 0 0 0.15rem;
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.72;
+  }
+
+  .method-track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 2.6rem 0 0;
+    border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+  }
+
+  .method-step {
+    position: relative;
+    display: grid;
+    min-height: 10rem;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.6rem 1rem;
+    padding: 1rem clamp(1rem, 2vw, 1.5rem) 1.1rem 0;
+  }
+
+  .method-step + .method-step {
+    padding-left: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .method-step::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ember-strong);
+    box-shadow: 0 0 0 4px var(--coal);
+  }
+
+  .phase-index,
+  .phase-code {
+    color: var(--ember-strong);
+    font-family: var(--font-mono, Consolas, monospace);
+    font-size: 0.68rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.07em;
+  }
+
+  .phase-code {
+    color: var(--muted);
+  }
+
+  .method-step strong {
+    grid-column: 1 / -1;
+    margin-top: 0.9rem;
+    color: var(--paper);
+    font-size: clamp(1rem, 1.2vw, 1.16rem);
+  }
+
+  .method-step p {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.62;
+  }
+
+  .method-step em {
+    grid-column: 1 / -1;
+    align-self: end;
+    color: var(--ember-strong);
+    font-family: var(--font-mono, Consolas, monospace);
+    font-size: 0.7rem;
+    font-style: normal;
+  }
+
+  @media (max-width: 820px) {
+    .method-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .method-step:nth-child(3),
+    .method-step:nth-child(4) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .method-head {
+      grid-template-columns: 1fr;
+    }
+
+    .method-head > p:last-child {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .method-track {
+      grid-template-columns: 1fr;
+      margin-left: 0.25rem;
+      border-top: 0;
+      border-left: 1px solid var(--line);
+    }
+
+    .method-step,
+    .method-step + .method-step {
+      min-height: auto;
+      border-top: 1px solid var(--line);
+      padding: 1.1rem 0 1.45rem 1.25rem;
+    }
+
+    .method-step::before {
+      top: -3px;
+      left: -3px;
+    }
+  }
+</style>

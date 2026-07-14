@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import { siliconEmbersHomeCopy, type SiliconEmbersLang } from '../data/siliconEmbersHome';
 import EmberHero from './silicon-embers/EmberHero.astro';
-import SiteCompass from './silicon-embers/SiteCompass.astro';
 import BrandManifesto from './silicon-embers/BrandManifesto.astro';
 import WritingPreview from './silicon-embers/WritingPreview.astro';
+import MethodStrip from './silicon-embers/MethodStrip.astro';
 import SignalLinksSection from './silicon-embers/SignalLinksSection.astro';
 
 export interface Props {
@@ -22,8 +22,8 @@ const latestPosts = posts.slice(0, 3);
 
 <div class="home-content">
   <EmberHero copy={copy.hero} wordmark={copy.wordmark} />
-  <SiteCompass label={copy.compassLabel} items={copy.compass} />
-  <BrandManifesto copy={copy.thesis} method={copy.operatingSystem} />
+  <BrandManifesto copy={copy.thesis} />
   <WritingPreview copy={copy.writing} lang={lang} posts={latestPosts} />
+  <MethodStrip copy={copy.operatingSystem} />
   <SignalLinksSection id="resources" titleId="resources-title" variant="resource-band" copy={copy.resources} />
 </div>

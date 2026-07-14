@@ -28,15 +28,8 @@ export const siliconEmbersHomeCopy = {
       actions: [
         { label: '读博客', href: '/silicon-ashes/writing/', variant: 'primary' },
         { label: '看资源', href: '/silicon-ashes/resources/', variant: 'default' },
-        { label: '课程资料', href: '/silicon-ashes/resources/#course-materials', variant: 'text' },
       ],
     },
-    compassLabel: '主站入口',
-    compass: [
-      { title: '博客', body: 'AI 与日常工作。', href: '/silicon-ashes/writing/' },
-      { title: '资源', body: '课程、模板与清单。', href: '/silicon-ashes/resources/' },
-      { title: '关于', body: '背景与联系。', href: '/silicon-ashes/about/' },
-    ],
     thesis: {
       kicker: 'thesis',
       title: '在技术里保留判断。',
@@ -172,15 +165,8 @@ export const siliconEmbersHomeCopy = {
       actions: [
         { label: 'Read blog', href: '/en/silicon-ashes/writing/', variant: 'primary' },
         { label: 'Resources', href: '/en/silicon-ashes/resources/', variant: 'default' },
-        { label: 'Course materials', href: '/en/silicon-ashes/resources/#course-materials', variant: 'text' },
       ],
     },
-    compassLabel: 'Site entries',
-    compass: [
-      { title: 'Blog', body: 'AI and daily work.', href: '/en/silicon-ashes/writing/' },
-      { title: 'Resources', body: 'Courses, templates, checklists.', href: '/en/silicon-ashes/resources/' },
-      { title: 'About', body: 'Background and contact.', href: '/en/silicon-ashes/about/' },
-    ],
     thesis: {
       kicker: 'thesis',
       title: 'Keep judgment inside technology.',
@@ -306,7 +292,6 @@ export interface SiliconEmbersNavCopy {
   nav: readonly { label: string; href: string }[];
 }
 export type SiliconEmbersHeroCopy = SiliconEmbersHomeCopy['hero'];
-export type SiliconEmbersCompassItem = SiliconEmbersHomeCopy['compass'][number];
 export type SiliconEmbersThesisCopy = SiliconEmbersHomeCopy['thesis'];
 export type SiliconEmbersOperatingSystemCopy = SiliconEmbersHomeCopy['operatingSystem'];
 export type SiliconEmbersWritingCopy = SiliconEmbersHomeCopy['writing'];
