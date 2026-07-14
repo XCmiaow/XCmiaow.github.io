@@ -363,6 +363,21 @@ if (/drawGravityLens|drawEventHorizon/.test(emberCanvasSource)) {
 if (!/const PARTICLE_LIMIT = 64;/.test(emberCanvasSource)) {
   failures.push('Ember canvas particle budget must remain at 64');
 }
+for (const contract of ['let gravityField:', 'const updateGravityField', 'ResizeObserver']) {
+  if (!emberCanvasSource.includes(contract)) failures.push(`Ember canvas geometry cache is missing ${contract}`);
+}
+for (const [start, end, label] of [
+  ['const createParticle', 'const emit', 'createParticle'],
+  ['const draw =', 'const renderStatic', 'draw'],
+]) {
+  const startIndex = emberCanvasSource.indexOf(start);
+  const endIndex = emberCanvasSource.indexOf(end, startIndex + start.length);
+  if (startIndex === -1 || endIndex === -1) {
+    failures.push(`Ember canvas is missing the ${label} source segment`);
+  } else if (emberCanvasSource.slice(startIndex, endIndex).includes('getBoundingClientRect')) {
+    failures.push(`Ember canvas ${label} must not read layout geometry`);
+  }
+}
 if (
   !/visibilitychange/.test(emberCanvasSource) ||
   !/IntersectionObserver/.test(emberCanvasSource) ||

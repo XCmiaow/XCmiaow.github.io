@@ -35,6 +35,28 @@ interface OrbitParticle {
 
 const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
+const ORBIT_COSINE = Math.cos(-0.2);
+const ORBIT_SINE = Math.sin(-0.2);
+const PARTICLE_PROFILES: Record<ParticleBand, ParticleProfile> = {
+  far: {
+    angularVelocity: [0.00008, 0.00017],
+    radialVelocity: [0.002, 0.006],
+    size: [0.3, 0.72],
+    alpha: [0.12, 0.32],
+  },
+  mid: {
+    angularVelocity: [0.00013, 0.0003],
+    radialVelocity: [0.004, 0.01],
+    size: [0.48, 1.15],
+    alpha: [0.2, 0.56],
+  },
+  near: {
+    angularVelocity: [0.00018, 0.00038],
+    radialVelocity: [0.006, 0.013],
+    size: [0.82, 1.62],
+    alpha: [0.3, 0.7],
+  },
+};
 const rand = (minimum: number, maximum: number, random: RandomSource = Math.random) =>
   minimum + random() * (maximum - minimum);
 
@@ -47,17 +69,11 @@ const createSeededRandom =
 
 const bandFor = (value: number): ParticleBand => (value < 0.46 ? 'far' : value < 0.86 ? 'mid' : 'near');
 
-const project = (field: GravityField, radius: number, angle: number) => {
-  const rotation = -0.2;
-  const planeX = Math.cos(angle) * radius;
-  const planeY = Math.sin(angle) * radius * 0.38;
-  const cosine = Math.cos(rotation);
-  const sine = Math.sin(rotation);
-
-  return {
-    x: field.x + planeX * cosine - planeY * sine,
-    y: field.y + planeX * sine + planeY * cosine,
-  };
+const projectParticle = (particle: OrbitParticle, field: GravityField) => {
+  const planeX = Math.cos(particle.angle) * particle.radius;
+  const planeY = Math.sin(particle.angle) * particle.radius * 0.38;
+  particle.x = field.x + planeX * ORBIT_COSINE - planeY * ORBIT_SINE;
+  particle.y = field.y + planeX * ORBIT_SINE + planeY * ORBIT_COSINE;
 };
 
 const mountEmberField = (canvas: HTMLCanvasElement) => {
@@ -78,13 +94,19 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   let emissionCarry = 0;
   let isIntersecting = true;
   let destroyed = false;
+  let resizeFrame = 0;
+  let gravityField: GravityField = {
+    x: 0,
+    y: 0,
+    innerRadius: 22,
+    outerRadius: 138,
+  };
 
-  const field = (): GravityField => {
-    const hostRect = host.getBoundingClientRect();
+  const updateGravityField = (hostRect: DOMRect) => {
     const sceneRect = scene?.getBoundingClientRect();
     const size = sceneRect?.width ?? Math.min(width * 0.48, 680);
 
-    return {
+    gravityField = {
       x: sceneRect ? sceneRect.left - hostRect.left + sceneRect.width / 2 : width * 0.72,
       y: sceneRect ? sceneRect.top - hostRect.top + sceneRect.height / 2 : height * 0.5,
       innerRadius: Math.max(22, size * 0.15),
@@ -97,6 +119,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
+    updateGravityField(rect);
     canvas.width = Math.floor(width * ratio);
     canvas.height = Math.floor(height * ratio);
     canvas.style.width = `${width}px`;
@@ -105,34 +128,12 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   };
 
   const createParticle = (random: RandomSource = Math.random): OrbitParticle => {
-    const gravity = field();
+    const gravity = gravityField;
     const band = bandFor(random());
     const radius = rand(gravity.outerRadius * 0.55, gravity.outerRadius * 1.02, random);
     const angle = rand(0, TAU, random);
-    const point = project(gravity, radius, angle);
-    const profiles: Record<ParticleBand, ParticleProfile> = {
-      far: {
-        angularVelocity: [0.00008, 0.00017],
-        radialVelocity: [0.002, 0.006],
-        size: [0.3, 0.72],
-        alpha: [0.12, 0.32],
-      },
-      mid: {
-        angularVelocity: [0.00013, 0.0003],
-        radialVelocity: [0.004, 0.01],
-        size: [0.48, 1.15],
-        alpha: [0.2, 0.56],
-      },
-      near: {
-        angularVelocity: [0.00018, 0.00038],
-        radialVelocity: [0.006, 0.013],
-        size: [0.82, 1.62],
-        alpha: [0.3, 0.7],
-      },
-    };
-    const profile = profiles[band];
-
-    return {
+    const profile = PARTICLE_PROFILES[band];
+    const particle: OrbitParticle = {
       band,
       radius,
       spawnRadius: radius,
@@ -143,11 +144,15 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
       alpha: rand(profile.alpha[0], profile.alpha[1], random),
       life: 0,
       maxLife: rand(13000, 24000, random),
-      previousX: point.x,
-      previousY: point.y,
-      x: point.x,
-      y: point.y,
+      previousX: 0,
+      previousY: 0,
+      x: 0,
+      y: 0,
     };
+    projectParticle(particle, gravity);
+    particle.previousX = particle.x;
+    particle.previousY = particle.y;
+    return particle;
   };
 
   const emit = (count: number, random: RandomSource = Math.random) => {
@@ -178,7 +183,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   };
 
   const draw = (time: number, delta: number, shouldEmit: boolean) => {
-    const gravity = field();
+    const gravity = gravityField;
     context.clearRect(0, 0, width, height);
     context.save();
     context.globalCompositeOperation = 'lighter';
@@ -212,9 +217,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
       particle.previousY = particle.y;
       particle.radius -= particle.radialVelocity * delta * (1 + pull * 1.4);
       particle.angle += particle.angularVelocity * delta * (1 + pull * 2.15);
-      const point = project(gravity, particle.radius, particle.angle);
-      particle.x = point.x;
-      particle.y = point.y;
+      projectParticle(particle, gravity);
 
       const fadeIn = Math.min(1, particle.life / 800);
       const fadeOut = Math.min(1, (1 - progress) * 3.2);
@@ -230,16 +233,14 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     const random = createSeededRandom(240713);
     particles.length = 0;
     emit(28, random);
-    const gravity = field();
+    const gravity = gravityField;
     for (const particle of particles) {
       particle.radius = rand(gravity.innerRadius * 1.7, particle.spawnRadius, random);
       particle.angle += rand(0, TAU, random);
       particle.life = particle.maxLife * rand(0.16, 0.66, random);
-      const point = project(gravity, particle.radius, particle.angle);
-      particle.x = point.x;
-      particle.y = point.y;
-      particle.previousX = point.x - rand(-4, 4, random);
-      particle.previousY = point.y - rand(-2, 2, random);
+      projectParticle(particle, gravity);
+      particle.previousX = particle.x - rand(-4, 4, random);
+      particle.previousY = particle.y - rand(-2, 2, random);
     }
     draw(performance.now(), 0, false);
   };
@@ -277,6 +278,14 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     syncAnimation();
   };
 
+  const scheduleResize = () => {
+    if (destroyed || resizeFrame) return;
+    resizeFrame = window.requestAnimationFrame(() => {
+      resizeFrame = 0;
+      resizeAndSync();
+    });
+  };
+
   const handleVisibilityChange = () => syncAnimation();
   const intersectionObserver =
     'IntersectionObserver' in window
@@ -285,20 +294,24 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
           syncAnimation();
         })
       : undefined;
+  const resizeObserver = 'ResizeObserver' in window ? new ResizeObserver(scheduleResize) : undefined;
 
   const cleanup = () => {
     if (destroyed) return;
     destroyed = true;
     window.cancelAnimationFrame(frame);
-    window.removeEventListener('resize', resizeAndSync);
+    window.cancelAnimationFrame(resizeFrame);
+    window.removeEventListener('resize', scheduleResize);
     document.removeEventListener('visibilitychange', handleVisibilityChange);
     reducedMotion.removeEventListener('change', syncAnimation);
     intersectionObserver?.disconnect();
+    resizeObserver?.disconnect();
     canvas.removeAttribute('data-ember-ready');
   };
 
   intersectionObserver?.observe(host);
-  window.addEventListener('resize', resizeAndSync, { passive: true });
+  resizeObserver?.observe(host);
+  window.addEventListener('resize', scheduleResize, { passive: true });
   document.addEventListener('visibilitychange', handleVisibilityChange);
   reducedMotion.addEventListener('change', syncAnimation);
   window.addEventListener('pagehide', cleanup, { once: true });

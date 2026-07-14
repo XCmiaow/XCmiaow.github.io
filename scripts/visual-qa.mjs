@@ -182,6 +182,62 @@ async function checkBrandHomeBounds(page) {
   }
 }
 
+async function checkEmberAnimationHotPath(browser) {
+  const probePage = await browser.newPage({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
+
+  try {
+    await probePage.addInitScript(() => {
+      const sample = { rectReads: 0, clearRectFrames: 0 };
+      const getBoundingClientRect = Element.prototype.getBoundingClientRect;
+      const clearRect = CanvasRenderingContext2D.prototype.clearRect;
+
+      Element.prototype.getBoundingClientRect = function (...args) {
+        if (this.matches('.ember-stage, .black-hole-scene')) sample.rectReads += 1;
+        return Reflect.apply(getBoundingClientRect, this, args);
+      };
+
+      CanvasRenderingContext2D.prototype.clearRect = function (...args) {
+        if (this.canvas.matches('[data-ember-canvas]')) sample.clearRectFrames += 1;
+        return Reflect.apply(clearRect, this, args);
+      };
+
+      Object.defineProperty(window, '__emberPerformanceProbe', {
+        value: {
+          reset() {
+            sample.rectReads = 0;
+            sample.clearRectFrames = 0;
+          },
+          snapshot() {
+            return { ...sample };
+          },
+        },
+      });
+    });
+    await probePage.route('https://cloud.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+    await probePage.route('https://gateway.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+    await probePage.goto(`${base}/`, { waitUntil: 'load' });
+    await waitForSettledPage(probePage);
+    await probePage.waitForFunction(
+      () => document.querySelector('[data-ember-canvas]')?.getAttribute('data-ember-ready') === 'true',
+    );
+    await probePage.bringToFront();
+
+    await probePage.evaluate(() => window.__emberPerformanceProbe.reset());
+    await probePage.waitForTimeout(800);
+    const sample = await probePage.evaluate(() => window.__emberPerformanceProbe.snapshot());
+
+    if (sample.clearRectFrames < 5) {
+      fail(`ember canvas rendered only ${sample.clearRectFrames} frames during the 800ms hot-path sample`);
+    }
+    if (sample.rectReads !== 0) {
+      fail(`ember animation performed ${sample.rectReads} stage/scene layout reads during the 800ms hot-path sample`);
+    }
+    checks.push({ route: '/', emberHotPath: sample, sampleDurationMs: 800 });
+  } finally {
+    await probePage.close();
+  }
+}
+
 async function checkFooterVariants(page) {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
@@ -277,6 +333,7 @@ try {
     await checkDarkRoute(page, route);
   }
 
+  await checkEmberAnimationHotPath(browser);
   await checkBrandHomeBounds(page);
   await checkFooterVariants(page);
 
