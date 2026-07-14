@@ -362,6 +362,9 @@ for (const [relative, source] of [
 for (const marker of ['compact-award', 'skill-line', 'research-tags']) {
   if (!profileSource.includes(marker)) failures.push(`ProfilePage is missing ${marker}`);
 }
+if (!/\.profile-sections\s*>\s*section\s*\{\s*padding:\s*0/.test(profileSource)) {
+  failures.push('ProfilePage must not stack global section padding inside its editorial grid');
+}
 if (
   (profileSource.match(/id="contact"/g) ?? []).length !== 1 ||
   !/<aside class="profile-card" id="contact">/.test(profileSource)
