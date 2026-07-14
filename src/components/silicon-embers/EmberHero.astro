@@ -1,6 +1,5 @@
 ---
 import EmberField from './EmberField.astro';
-import ActionButton from './ActionButton.astro';
 import type { SiliconEmbersHeroCopy } from '../../data/siliconEmbersHome';
 
 interface Props {
@@ -14,78 +13,72 @@ const { copy, wordmark } = Astro.props;
 <section class="ember-hero" aria-labelledby="sa-title">
   <EmberField />
 
-  <div class="hero-copy">
+  <div class="hero-primary">
     <p class="hero-status" aria-hidden="true">
       <span>silicon—carbon archive</span>
       <span>field / active</span>
     </p>
-
-    <div class="hero-title-block">
-      {copy.eyebrow && <p class="eyebrow">{copy.eyebrow}</p>}
-      <p class="wordmark">{wordmark}</p>
-      <h1 id="sa-title">{copy.title}</h1>
-    </div>
-
-    <div class="hero-statement">
-      <p class="lead">{copy.lead}</p>
-      <p class="sublead">{copy.sublead}</p>
-    </div>
-
-    <nav class="hero-actions" aria-label={copy.actionsLabel}>
-      {
-        copy.actions.map((action, index) => (
-          <ActionButton
-            href={action.href}
-            variant={index === 0 ? 'primary' : 'text'}
-            className={index === 0 ? 'action-primary' : 'action-text'}
-          >
-            {action.label}
-          </ActionButton>
-        ))
-      }
-    </nav>
+    <p class="wordmark">{wordmark}</p>
+    <h1 id="sa-title">{copy.title}</h1>
+    <p class="lead">{copy.lead}</p>
   </div>
 
-  <p class="scroll-cue" aria-hidden="true"><span></span>INDEX / 01—03</p>
+  <div class="hero-secondary">
+    <p class="sublead">{copy.sublead}</p>
+    <p class="field-note" aria-hidden="true">FIELD 01 · GRAVITY / MEMORY</p>
+  </div>
 </section>
 
 <style>
   .ember-hero {
     position: relative;
     isolation: isolate;
-    display: grid;
-    min-height: min(46rem, calc(100dvh - 4.5rem));
-    align-items: center;
+    min-height: max(42rem, calc(100dvh - 72px));
+    overflow: clip;
     border-bottom: 1px solid var(--line);
-    padding: clamp(4.5rem, 8vh, 6rem) 0 clamp(4.8rem, 8vh, 6.8rem);
   }
 
   .ember-hero::before {
     content: '';
     position: absolute;
-    top: 8%;
-    bottom: 8%;
-    left: clamp(12rem, 37vw, 30rem);
+    inset: clamp(2.25rem, 6vh, 4.75rem) 0;
     z-index: 1;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, var(--line) 16% 84%, transparent);
-    opacity: 0.42;
+    border-left: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+    pointer-events: none;
   }
 
-  .hero-copy {
-    position: relative;
+  .hero-primary,
+  .hero-secondary {
+    position: absolute;
     z-index: 2;
-    width: min(48%, 40rem);
+  }
+
+  .hero-primary {
+    top: clamp(2.9rem, 8vh, 5.5rem);
+    left: clamp(1rem, 2.4vw, 2.25rem);
+    width: min(29vw, 24rem);
+  }
+
+  .hero-secondary {
+    right: clamp(1rem, 2.4vw, 2.25rem);
+    bottom: clamp(3rem, 8vh, 5.75rem);
+    display: grid;
+    width: min(25vw, 20rem);
+    justify-items: end;
+    gap: 1.25rem;
+    text-align: right;
   }
 
   .hero-status {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.8rem;
-    margin: 0 0 clamp(2rem, 4vh, 3rem);
+    gap: 0.35rem 0.8rem;
+    margin: 0 0 clamp(1.9rem, 4vh, 3rem);
     color: var(--muted);
-    font-family: var(--font-mono, Consolas, 'SFMono-Regular', monospace);
-    font-size: 0.64rem;
+    font-family: var(--font-mono);
+    font-size: 0.61rem;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -99,10 +92,10 @@ const { copy, wordmark } = Astro.props;
   }
 
   .wordmark {
-    margin: 0 0 0.65rem;
+    margin: 0 0 0.7rem;
     color: var(--ember-strong);
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: clamp(0.76rem, 1vw, 0.9rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.74rem, 1vw, 0.88rem);
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: lowercase;
@@ -110,150 +103,124 @@ const { copy, wordmark } = Astro.props;
 
   h1 {
     max-width: 8ch;
-    font-size: clamp(3.25rem, 6.4vw, 5.2rem);
+    font-size: clamp(3.1rem, 6vw, 5.2rem);
     line-height: 0.94;
     letter-spacing: -0.045em;
   }
 
-  .hero-statement {
-    display: grid;
-    width: min(100%, 43rem);
-    grid-template-columns: minmax(0, 1.1fr) minmax(13rem, 0.68fr);
-    gap: 1.2rem clamp(2rem, 4vw, 4rem);
-    align-items: start;
-    margin-top: clamp(1.7rem, 3.6vh, 2.6rem);
-  }
-
   .lead,
-  .sublead {
+  .sublead,
+  .field-note {
     margin: 0;
   }
 
   .lead {
+    max-width: 21rem;
+    margin-top: 1.45rem;
     color: var(--paper);
     font-family: var(--font-display);
-    font-size: clamp(1.15rem, 1.8vw, 1.65rem);
-    line-height: 1.48;
+    font-size: clamp(1rem, 1.45vw, 1.3rem);
+    line-height: 1.55;
     text-wrap: balance;
   }
 
   .sublead {
-    max-width: 30ch;
-    padding-top: 0.2rem;
+    max-width: 25ch;
     color: var(--muted);
-    font-size: clamp(0.88rem, 1vw, 0.98rem);
-    line-height: 1.75;
+    font-size: clamp(0.86rem, 1vw, 0.98rem);
+    line-height: 1.72;
     text-wrap: pretty;
   }
 
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.15rem 0.45rem;
-    margin-top: 1.65rem;
-  }
-
-  :global(.ember-hero .action-primary) {
-    min-width: 6.8rem;
-  }
-
-  :global(.ember-hero .action-text) {
-    min-width: auto;
-    padding-inline: 0.7rem;
-  }
-
-  .scroll-cue {
-    position: absolute;
-    right: 0;
-    bottom: 1rem;
-    z-index: 10;
+  .field-note {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    margin: 0;
-    color: var(--muted);
-    font-family: Consolas, 'SFMono-Regular', monospace;
-    font-size: 0.6rem;
+    gap: 0.75rem;
+    color: color-mix(in srgb, var(--muted) 68%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-variant-numeric: tabular-nums;
     letter-spacing: 0.09em;
   }
 
-  .scroll-cue span {
+  .field-note::before {
+    content: '';
     width: 2.4rem;
     height: 1px;
-    background: var(--ember-strong);
+    background: linear-gradient(90deg, transparent, var(--ember-strong));
   }
 
   @media (max-width: 960px) {
-    .ember-hero::before {
-      left: 47%;
+    .hero-primary {
+      width: min(31vw, 19rem);
     }
 
-    .hero-copy {
-      width: min(58%, 32rem);
+    .hero-secondary {
+      width: min(28vw, 17rem);
     }
 
     h1 {
-      font-size: clamp(3.25rem, 8vw, 4.8rem);
+      font-size: clamp(3rem, 7vw, 4.65rem);
     }
   }
 
   @media (max-width: 720px) {
     .ember-hero {
-      min-height: 39rem;
-      align-items: end;
-      padding: 3.5rem 0 4.4rem;
+      min-height: max(42rem, calc(100dvh - 7.25rem));
     }
 
     .ember-hero::before {
-      display: none;
+      inset: 1.25rem 0;
     }
 
-    .hero-copy {
-      width: 100%;
-      max-width: 33rem;
+    .hero-primary {
+      top: 1.65rem;
+      left: 0.8rem;
+      width: min(76%, 18rem);
+    }
+
+    .hero-secondary {
+      right: 0.8rem;
+      bottom: 2rem;
+      width: min(72%, 18rem);
+      gap: 0.85rem;
     }
 
     .hero-status {
-      margin-bottom: 8.5rem;
-      font-size: 0.57rem;
+      max-width: 15rem;
+      margin-bottom: 1.35rem;
+      font-size: 0.55rem;
     }
 
     h1 {
       max-width: 7ch;
-      font-size: clamp(2.8rem, 14vw, 4.2rem);
-      line-height: 0.96;
-    }
-
-    .hero-statement {
-      grid-template-columns: 1fr;
-      gap: 0.65rem;
-      margin-top: 1.4rem;
+      font-size: clamp(2.65rem, 12.5vw, 3.75rem);
     }
 
     .lead {
-      max-width: 23rem;
-      font-size: clamp(1.05rem, 5vw, 1.35rem);
+      max-width: 17rem;
+      margin-top: 0.9rem;
+      font-size: clamp(0.9rem, 4vw, 1.05rem);
+      line-height: 1.48;
     }
 
     .sublead {
-      max-width: 27rem;
-      padding-top: 0;
-      font-size: 0.86rem;
-    }
-
-    .hero-actions {
-      margin-top: 1.2rem;
-    }
-
-    .scroll-cue {
-      display: none;
+      max-width: 21rem;
+      font-size: 0.82rem;
     }
   }
 
   @media (max-width: 360px) {
-    .hero-status {
-      margin-bottom: 7.8rem;
+    .hero-primary {
+      top: 1.3rem;
+    }
+
+    .hero-secondary {
+      bottom: 1.55rem;
+    }
+
+    .field-note {
+      font-size: 0.53rem;
     }
   }
 </style>

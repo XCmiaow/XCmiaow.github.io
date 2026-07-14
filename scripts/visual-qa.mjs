@@ -97,34 +97,88 @@ async function checkDarkRoute(page, route, options = {}) {
 }
 
 async function checkBrandHomeBounds(page) {
-  for (const width of [360, 390, 768, 1024, 1440]) {
-    await page.setViewportSize({ width, height: width < 700 ? 844 : 1000 });
-    await page.goto(`${base}/`, { waitUntil: 'load' });
-    await waitForSettledPage(page);
-    const geometry = await page.evaluate(() => {
-      const hero = document.querySelector('.ember-hero')?.getBoundingClientRect();
-      const stage = document.querySelector('.ember-stage')?.getBoundingClientRect();
-      const scene = document.querySelector('.black-hole-scene')?.getBoundingClientRect();
-      return {
-        viewport: innerWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-        hero: hero && { left: hero.left, right: hero.right },
-        stage: stage && { left: stage.left, right: stage.right },
-        scene: scene && { left: scene.left, right: scene.right },
-      };
-    });
-    if (!geometry.hero || !geometry.stage || !geometry.scene) {
-      fail(`brand home ${width}px is missing gravity geometry`);
-      continue;
+  const viewports = [
+    { width: 360, height: 800 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1024, height: 1000 },
+    { width: 1440, height: 1100 },
+  ];
+  const homeRoutes = ['/', '/en/'];
+  const intersects = (a, b) =>
+    a.left < b.right - 2 && a.right > b.left + 2 && a.top < b.bottom - 2 && a.bottom > b.top + 2;
+
+  for (const route of homeRoutes) {
+    for (const { width, height } of viewports) {
+      await page.setViewportSize({ width, height });
+      await page.goto(`${base}${route}`, { waitUntil: 'load' });
+      await waitForSettledPage(page);
+      const geometry = await page.evaluate(() => {
+        const readRect = (selector) => {
+          const rect = document.querySelector(selector)?.getBoundingClientRect();
+          return (
+            rect && {
+              left: rect.left,
+              right: rect.right,
+              top: rect.top,
+              bottom: rect.bottom,
+              width: rect.width,
+            }
+          );
+        };
+        return {
+          viewport: innerWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          hero: readRect('.ember-hero'),
+          stage: readRect('.ember-stage'),
+          scene: readRect('.black-hole-scene'),
+          primary: readRect('.hero-primary'),
+          secondary: readRect('.hero-secondary'),
+          photonRing: readRect('.photon-ring'),
+          accretionDisc: readRect('.disc-front'),
+        };
+      });
+      if (!geometry.hero || !geometry.stage || !geometry.scene || !geometry.primary || !geometry.secondary) {
+        fail(`${route} ${width}px is missing home-stage geometry`);
+        continue;
+      }
+      if (geometry.scrollWidth > geometry.viewport + 1) fail(`${route} ${width}px has horizontal overflow`);
+      if (geometry.stage.left < geometry.hero.left - 1 || geometry.stage.right > geometry.hero.right + 1) {
+        fail(`${route} ${width}px gravity stage leaves the hero`);
+      }
+      if (geometry.scene.left < geometry.hero.left - 1 || geometry.scene.right > geometry.hero.right + 1) {
+        fail(`${route} ${width}px black-hole scene leaves the hero`);
+      }
+      const heroCenterX = (geometry.hero.left + geometry.hero.right) / 2;
+      const heroCenterY = (geometry.hero.top + geometry.hero.bottom) / 2;
+      const sceneCenterX = (geometry.scene.left + geometry.scene.right) / 2;
+      const sceneCenterY = (geometry.scene.top + geometry.scene.bottom) / 2;
+      if (Math.abs(heroCenterX - sceneCenterX) > 2 || Math.abs(heroCenterY - sceneCenterY) > 2) {
+        fail(`${route} ${width}px black hole is not centered`);
+      }
+      const minimumSceneWidth = width >= 1200 ? 540 : width === 390 ? 285 : 0;
+      if (minimumSceneWidth && geometry.scene.width < minimumSceneWidth) {
+        fail(`${route} ${width}px black hole is too small`);
+      }
+      if (Math.abs(geometry.hero.bottom - height) > 4) {
+        fail(`${route} ${width}px hero does not end at the first viewport`);
+      }
+      if (
+        geometry.photonRing &&
+        (intersects(geometry.primary, geometry.photonRing) || intersects(geometry.secondary, geometry.photonRing))
+      ) {
+        fail(`${route} ${width}px hero copy overlaps the photon ring`);
+      }
+      if (geometry.accretionDisc) {
+        const visibleDiscWidth =
+          Math.min(geometry.accretionDisc.right, geometry.hero.right) -
+          Math.max(geometry.accretionDisc.left, geometry.hero.left);
+        if (visibleDiscWidth / geometry.accretionDisc.width < 0.96) {
+          fail(`${route} ${width}px accretion disc is visibly clipped`);
+        }
+      }
+      checks.push({ route, width, height, gravityBounds: 'ok', gravityCenter: 'ok', copyClearance: 'ok' });
     }
-    if (geometry.scrollWidth > geometry.viewport + 1) fail(`brand home ${width}px has horizontal overflow`);
-    if (geometry.stage.left < geometry.hero.left - 1 || geometry.stage.right > geometry.hero.right + 1) {
-      fail(`brand home ${width}px gravity stage leaves the hero`);
-    }
-    if (geometry.scene.left < geometry.hero.left - 1 || geometry.scene.right > geometry.hero.right + 1) {
-      fail(`brand home ${width}px black-hole scene leaves the hero`);
-    }
-    checks.push({ route: '/', width, gravityBounds: 'ok' });
   }
 }
 

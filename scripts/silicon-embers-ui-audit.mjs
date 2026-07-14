@@ -152,11 +152,14 @@ const editorialComponents = [
 for (const [relative, className] of editorialComponents) {
   if (!read(relative).includes(className)) failures.push(`${relative}: missing editorial marker ${className}`);
 }
-for (const [relative, marker] of [['src/components/silicon-embers/EmberHero.astro', 'action-primary']]) {
-  if (!read(relative).includes(marker)) failures.push(`${relative}: missing precision marker ${marker}`);
-}
 if (!heroSource.includes('hero-status')) {
   failures.push('EmberHero must use one compact hero-status line');
+}
+for (const forbiddenHeroPattern of ['ActionButton', 'hero-actions', 'scroll-cue']) {
+  if (heroSource.includes(forbiddenHeroPattern)) failures.push(`EmberHero still includes ${forbiddenHeroPattern}`);
+}
+for (const requiredHeroMarker of ['hero-primary', 'hero-secondary']) {
+  if (!heroSource.includes(requiredHeroMarker)) failures.push(`EmberHero is missing ${requiredHeroMarker}`);
 }
 if (heroSource.includes('hero-record') || heroSource.includes('record-state')) {
   failures.push('EmberHero must remove the multi-column observation record');
@@ -267,6 +270,9 @@ const sharedControlCss = read('src/styles/silicon-embers.css');
 if (!/\.sa-shell \.sa-control\s*\{/.test(sharedControlCss) || !/\.sa-control:focus-visible/.test(sharedControlCss)) {
   failures.push('ActionButton and CopyButton must share themed control and visible focus styles');
 }
+if (/circle at 72% 48%/.test(sharedControlCss)) {
+  failures.push('light theme black-hole wash must follow the centered gravity variables');
+}
 for (const token of ['--paper: #241c14', '--coal: #f4efe5', '--paper: #f0dfbf', '--coal: #080705']) {
   if (!sharedControlCss.includes(token)) failures.push(`Brand palette is missing ${token}`);
 }
@@ -300,8 +306,21 @@ for (const forbidden of [/max\(-6vw/, /inset:\s*0\s+-20vw/, /inset:\s*0\s+-49vw/
 if (!/overflow:\s*clip/.test(emberFieldSource)) {
   failures.push('EmberField must clip visual layers to the hero bounds');
 }
-if (!/--hole-x:\s*6[2-6]%/.test(emberFieldSource)) {
-  failures.push('EmberField must keep the gravity center near 62–66%');
+if (!/--hole-x:\s*50%/.test(emberFieldSource) || !/--hole-y:\s*50%/.test(emberFieldSource)) {
+  failures.push('black hole must be centered at 50% / 50%');
+}
+if (!/--hole-size:\s*min\(42vw,\s*560px\)/.test(emberFieldSource)) {
+  failures.push('desktop black hole must use the larger 560px cap');
+}
+const eventHorizonRules = [...emberFieldSource.matchAll(/\.event-horizon\s*\{([\s\S]*?)\}/g)].map((match) => match[1]);
+if (!eventHorizonRules.some((rule) => rule.includes('radial-gradient') && rule.includes('inset'))) {
+  failures.push('event horizon must include tonal depth instead of a flat black center');
+}
+const stageAfterRules = [...emberFieldSource.matchAll(/\.ember-stage::after\s*\{([\s\S]*?)\}/g)].map(
+  (match) => match[1],
+);
+if (stageAfterRules.some((rule) => rule.includes('linear-gradient(90deg'))) {
+  failures.push('gravity overlay must not darken only the left half of a centered black hole');
 }
 for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon', 'lensing-arc']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing ${className}`);
@@ -309,8 +328,11 @@ for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event
 for (const className of ['depth-far', 'depth-rear', 'depth-event', 'depth-front', 'depth-near']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing depth plane ${className}`);
 }
-for (const className of ['orbital-guide', 'disc-filament', 'photon-caustic', 'field-scale']) {
+for (const className of ['orbital-guide', 'disc-filament', 'photon-caustic']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing precision detail ${className}`);
+}
+if (emberFieldSource.includes('field-caption')) {
+  failures.push('EmberField must leave field metadata to the hero text layer');
 }
 for (const contract of [
   "type ParticleBand = 'far' | 'mid' | 'near'",

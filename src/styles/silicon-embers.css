@@ -327,12 +327,19 @@ html[data-theme='dark'] body {
 
 :root:not([data-theme='dark']) .sa-shell .ember-stage::before {
   background:
-    radial-gradient(circle at 72% 48%, transparent 0 12%, rgba(159, 95, 45, 0.06) 31%, transparent 58%),
+    radial-gradient(
+      circle at var(--hole-x) var(--hole-y),
+      transparent 0 12%,
+      rgba(159, 95, 45, 0.06) 31%,
+      transparent 58%
+    ),
     linear-gradient(90deg, rgba(246, 241, 232, 0.96) 0%, rgba(246, 241, 232, 0.58) 34%, transparent 66%);
 }
 
 :root:not([data-theme='dark']) .sa-shell .ember-stage::after {
-  background: linear-gradient(90deg, rgba(246, 241, 232, 0.92) 0%, rgba(246, 241, 232, 0.22) 34%, transparent 61%);
+  background:
+    radial-gradient(circle at 0 0, rgba(246, 241, 232, 0.92), rgba(246, 241, 232, 0.28) 24%, transparent 48%),
+    radial-gradient(circle at 100% 100%, rgba(246, 241, 232, 0.78), rgba(246, 241, 232, 0.18) 22%, transparent 46%);
 }
 
 :root:not([data-theme='dark']) .sa-shell .ember-stage canvas {
@@ -396,15 +403,6 @@ html[data-theme='dark'] body {
 :root:not([data-theme='dark']) .sa-shell .foreground-dust {
   filter: sepia(0.4) saturate(0.55);
   opacity: 0.3;
-}
-
-:root:not([data-theme='dark']) .sa-shell .field-caption {
-  border-left-color: rgba(123, 66, 31, 0.32);
-  color: rgba(74, 57, 42, 0.52);
-}
-
-:root:not([data-theme='dark']) .sa-shell .field-caption span:last-child {
-  color: rgba(74, 57, 42, 0.34);
 }
 
 :root:not([data-theme='dark']) .sa-shell .post-row,
