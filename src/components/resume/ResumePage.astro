@@ -23,7 +23,6 @@ const labels = isZh
       research: '研究兴趣',
       evidence: '项公开证据',
       provincial: '项省级以上成果',
-      abilities: '能力',
     }
   : {
       general: 'One-Page Resume',
@@ -37,7 +36,6 @@ const labels = isZh
       research: 'Research Interests',
       evidence: 'public evidence items',
       provincial: 'provincial-or-higher achievements',
-      abilities: 'Capabilities',
     };
 const title = `${data.person.name} · ${labels[variant]}`;
 const summary = isZh
@@ -121,19 +119,9 @@ const levelLabel = (level: string) =>
             <div class="item">
               <>
                 <div class="item-head">
-                  <>
-                    <strong>{item.title}</strong>
-                    <span>{item.tags.join(' · ')}</span>
-                  </>
+                  <strong>{item.title}</strong>
                 </div>
                 <p class="small">{item.summary}</p>
-                <p class="small">
-                  <strong>
-                    {labels.abilities}
-                    {isZh ? '：' : ': '}
-                  </strong>
-                  {item.abilities}
-                </p>
               </>
             </div>
           ),

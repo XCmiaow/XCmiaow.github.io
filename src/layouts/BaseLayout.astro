@@ -37,6 +37,7 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
   canonicalPath={Astro.url.pathname}
   alternatePath={isZh ? enUrl : zhUrl}
   ogImagePath="/assets/avatar.jpg"
+  faviconPath="/assets/avatar.jpg"
 >
   <div class="skeleton-screen" id="skeleton">
     <div class="sk-header"><div class="sk-line w-20"></div><div class="sk-line w-10"></div></div>

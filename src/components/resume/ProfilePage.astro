@@ -28,8 +28,6 @@ const copy = isZh
       evidence: '查看证明材料',
       materials: '材料中心',
       generalResume: '通用一页简历',
-      abilities: '能力',
-      contact: '公开联系',
       level: { international: '国际', national: '国家', provincial: '省级', university: '校级', college: '院级' },
     }
   : {
@@ -48,8 +46,6 @@ const copy = isZh
       evidence: 'View evidence',
       materials: 'Materials hub',
       generalResume: 'General resume',
-      abilities: 'Capabilities',
-      contact: 'Public contact',
       level: {
         international: 'International',
         national: 'National',
@@ -74,7 +70,7 @@ const copy = isZh
           <a class="btn" href={`${base}/materials`}>{copy.materials}</a>
         </div>
       </div>
-      <aside class="profile-card">
+      <aside class="profile-card" id="contact">
         <img src={data.person.avatar} alt={data.person.name} loading="eager" />
         <strong>{data.person.name}</strong>
         <span>{data.person.tagline}</span>
@@ -100,17 +96,14 @@ const copy = isZh
 
     <section id="honors">
       <div class="section-line"><h2>{copy.honors}</h2><a href={`${base}/evidence`}>{copy.evidence}</a></div>
-      <div class="card-grid">
+      <div class="award-list">
         {
           data.achievements.map((item) => (
-            <article class="panel">
+            <article class="compact-award">
               <p class="eyebrow">
                 {item.period} · {copy.level[item.level]}
               </p>
-              <>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-              </>
+              <h3>{item.title}</h3>
             </article>
           ))
         }
@@ -119,15 +112,12 @@ const copy = isZh
 
     <section id="skills">
       <h2>{copy.skills}</h2>
-      <div class="card-grid">
+      <div class="skill-list">
         {
           data.skills.map((item) => (
-            <article class="panel">
-              <>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-                <p class="tags">{item.items.join(' · ')}</p>
-              </>
+            <article class="skill-line">
+              <h3>{item.title}</h3>
+              <p>{item.items.join(' · ')}</p>
             </article>
           ))
         }
@@ -136,21 +126,14 @@ const copy = isZh
 
     <section id="projects">
       <h2>{copy.projects}</h2>
-      <div class="card-grid">
+      <div class="project-list">
         {
           data.projects.map((item) => (
-            <article class="panel">
-              <>
-                <h3>
-                  <a href={item.href}>{item.title}</a>
-                </h3>
-                <p>{item.summary}</p>
-                <p>
-                  <strong>{copy.abilities}：</strong>
-                  {item.abilities}
-                </p>
-                <p class="tags">{item.tags.join(' · ')}</p>
-              </>
+            <article class="project-row">
+              <h3>
+                <a href={item.href}>{item.title}</a>
+              </h3>
+              <p>{item.summary}</p>
             </article>
           ))
         }
@@ -178,26 +161,9 @@ const copy = isZh
     <section id="research">
       <h2>{copy.research}</h2>
       <p class="lead">{data.research.tagline}</p><p>{data.research.summary}</p>
-      <div class="card-grid">
-        {
-          data.research.areas.map((item) => (
-            <article class="panel">
-              <>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-              </>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>{copy.contact}</h2>
-      <div class="panel contact-links">
-        <a href={`mailto:${data.person.email}`}>{data.person.email}</a>
-        <a href={`https://${data.person.github}`} rel="me">{data.person.github}</a>
-      </div>
+      <ul class="research-tags">
+        {data.research.areas.map((item) => <li>{item.title}</li>)}
+      </ul>
     </section>
   </div>
 </BaseLayout>
@@ -242,6 +208,67 @@ const copy = isZh
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
   }
+  .award-list,
+  .skill-list,
+  .project-list {
+    display: grid;
+    border-top: 1px solid var(--border);
+  }
+  .award-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+  .compact-award,
+  .skill-line,
+  .project-row {
+    border-bottom: 1px solid var(--border);
+    padding: 1.15rem 0;
+  }
+  .compact-award {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 0.34fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .compact-award .eyebrow,
+  .compact-award h3,
+  .skill-line h3,
+  .skill-line p,
+  .project-row h3,
+  .project-row p {
+    margin: 0;
+  }
+  .skill-line,
+  .project-row {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .skill-line p,
+  .project-row p {
+    color: var(--muted);
+  }
+  .project-row h3 a {
+    display: inline-flex;
+    min-height: 24px;
+    align-items: center;
+  }
+  .research-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 1.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .research-tags li {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.42rem 0.75rem;
+    color: var(--secondary);
+    font-size: 0.88rem;
+  }
   .panel h3 {
     margin-top: 0;
   }
@@ -250,19 +277,23 @@ const copy = isZh
     align-items: center;
     min-height: 24px;
   }
-  .contact-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.5rem;
-  }
   .eyebrow,
-  .tags {
+  .research-tags {
     color: var(--secondary);
     font-size: 0.9rem;
   }
   @media (max-width: 720px) {
     .profile-hero {
       grid-template-columns: 1fr;
+    }
+    .award-list {
+      grid-template-columns: 1fr;
+    }
+    .compact-award,
+    .skill-line,
+    .project-row {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
     }
   }
 </style>

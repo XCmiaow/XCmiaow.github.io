@@ -349,6 +349,33 @@ if (
   failures.push('404 page must use the shared SiliconEmbersLayout document/runtime shell');
 }
 
+const profileSource = read('src/components/resume/ProfilePage.astro');
+const resumeSource = read('src/components/resume/ResumePage.astro');
+for (const [relative, source] of [
+  ['src/components/resume/ProfilePage.astro', profileSource],
+  ['src/components/resume/ResumePage.astro', resumeSource],
+]) {
+  if (/copy\.abilities|item\.abilities|class="tags"/.test(source)) {
+    failures.push(`${relative}: repeats project capabilities or tags`);
+  }
+}
+for (const marker of ['compact-award', 'skill-line', 'research-tags']) {
+  if (!profileSource.includes(marker)) failures.push(`ProfilePage is missing ${marker}`);
+}
+if (
+  (profileSource.match(/id="contact"/g) ?? []).length !== 1 ||
+  !/<aside class="profile-card" id="contact">/.test(profileSource)
+) {
+  failures.push('ProfilePage must expose exactly one contact anchor on the hero card');
+}
+for (const collection of ['data.achievements.map', 'data.skills.map', 'data.projects.map', 'data.research.areas.map']) {
+  if (!profileSource.includes(collection)) failures.push(`ProfilePage must retain the full ${collection} collection`);
+}
+const baseLayoutSource = read('src/layouts/BaseLayout.astro');
+if (!/faviconPath="\/assets\/avatar\.jpg"/.test(baseLayoutSource)) {
+  failures.push('BaseLayout must provide the existing avatar favicon');
+}
+
 if (failures.length) {
   console.error(JSON.stringify({ failures }, null, 2));
   process.exit(1);
