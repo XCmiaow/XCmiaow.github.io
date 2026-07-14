@@ -1,4 +1,12 @@
 html {
+  --font-sans:
+    'Avenir Next', 'Segoe UI Variable', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC',
+    'Microsoft YaHei', sans-serif;
+  --font-display:
+    'Segoe UI Variable', 'Avenir Next', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Microsoft YaHei',
+    sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
   scroll-behavior: smooth;
   background: #f4efe5;
 }
@@ -11,7 +19,7 @@ body {
   margin: 0;
   background: #f4efe5;
   color: #241c14;
-  font-family: 'Satoshi', 'Avenir Next', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  font-family: var(--font-sans);
 }
 
 html[data-theme='dark'] body {
@@ -37,8 +45,8 @@ html[data-theme='dark'] body {
   --surface: rgba(255, 252, 245, 0.58);
   --surface-strong: rgba(255, 252, 245, 0.86);
   --primary-ink: #ffffff;
-  --display-section-max: 5rem;
-  --space-section: clamp(5.5rem, 8vw, 8.5rem);
+  --display-section-max: 3.4rem;
+  --space-section: clamp(4.5rem, 7vw, 7rem);
   --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
   --meta-size: 0.72rem;
 
@@ -64,8 +72,8 @@ html[data-theme='dark'] body {
   --surface: rgba(238, 215, 177, 0.025);
   --surface-strong: rgba(238, 215, 177, 0.055);
   --primary-ink: #170e08;
-  --display-section-max: 5rem;
-  --space-section: clamp(5.5rem, 8vw, 8.5rem);
+  --display-section-max: 3.4rem;
+  --space-section: clamp(4.5rem, 7vw, 7rem);
   --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
   --meta-size: 0.72rem;
 
@@ -156,7 +164,7 @@ html[data-theme='dark'] body {
 .sa-shell h2 {
   margin: 0;
   color: var(--paper);
-  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-weight: 780;
   text-wrap: balance;
 }

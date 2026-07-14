@@ -278,8 +278,20 @@ for (const token of ['--paper: #241c14', '--coal: #f4efe5', '--paper: #f0dfbf', 
 if (sharedControlCss.includes('visibility: hidden !important')) {
   failures.push('Light mode must translate the gravity field instead of hiding it');
 }
-if (!/--display-section-max:\s*5rem/.test(sharedControlCss)) {
-  failures.push('Shared brand type scale must cap section display text at 5rem');
+for (const token of ['--font-sans:', '--font-display:', '--font-mono:', '--display-section-max: 3.4rem']) {
+  if (!sharedControlCss.includes(token)) failures.push(`Brand typography is missing ${token}`);
+}
+const brandTypefaceFiles = [
+  'src/styles/silicon-embers.css',
+  'src/styles/course.css',
+  ...shellContentComponents,
+  ...files.map(rel).filter((relative) => relative.startsWith('src/components/silicon-embers/')),
+];
+for (const relative of new Set(brandTypefaceFiles)) {
+  const source = read(relative);
+  if (/Satoshi|Source Han Serif SC|Songti SC/.test(source)) {
+    failures.push(`${relative}: declares an unavailable brand font`);
+  }
 }
 if (!/\.event-horizon::after\s*\{[^}]*background:\s*#0d0b09/s.test(sharedControlCss)) {
   failures.push('Light-mode event horizon must remain one flat near-black plane');
