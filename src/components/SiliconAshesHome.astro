@@ -1,11 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
 import { siliconEmbersHomeCopy, type SiliconEmbersLang } from '../data/siliconEmbersHome';
 import EmberHero from './silicon-embers/EmberHero.astro';
-import BrandManifesto from './silicon-embers/BrandManifesto.astro';
-import WritingPreview from './silicon-embers/WritingPreview.astro';
-import MethodStrip from './silicon-embers/MethodStrip.astro';
-import SignalLinksSection from './silicon-embers/SignalLinksSection.astro';
 
 export interface Props {
   lang: SiliconEmbersLang;
@@ -13,17 +8,6 @@ export interface Props {
 
 const { lang } = Astro.props;
 const copy = siliconEmbersHomeCopy[lang];
-
-const posts = (await getCollection('blog', ({ data }) => data.lang === lang && !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-const latestPosts = posts.slice(0, 3);
 ---
 
-<div class="home-content">
-  <EmberHero copy={copy.hero} wordmark={copy.wordmark} />
-  <BrandManifesto copy={copy.thesis} />
-  <WritingPreview copy={copy.writing} lang={lang} posts={latestPosts} />
-  <MethodStrip copy={copy.operatingSystem} />
-  <SignalLinksSection id="resources" titleId="resources-title" variant="resource-band" copy={copy.resources} />
-</div>
+<EmberHero copy={copy.hero} wordmark={copy.wordmark} />

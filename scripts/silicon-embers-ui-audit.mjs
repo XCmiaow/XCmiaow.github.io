@@ -127,26 +127,21 @@ if (!/routePath\('writing', lang\)/.test(siteFrameSource) || !/routePath\('resou
 const homeCopySource = read('src/data/siliconEmbersHome.ts');
 const homeSource = read('src/components/SiliconAshesHome.astro');
 const manifestoSource = read('src/components/silicon-embers/BrandManifesto.astro');
-const methodSource = read('src/components/silicon-embers/MethodStrip.astro');
 const heroSource = read('src/components/silicon-embers/EmberHero.astro');
 
-if ((homeSource.match(/<BrandManifesto\b/g) ?? []).length !== 1) {
-  failures.push('Brand home must render exactly one BrandManifesto');
+for (const removedHomeDependency of [
+  'astro:content',
+  'BrandManifesto',
+  'WritingPreview',
+  'MethodStrip',
+  'SignalLinksSection',
+]) {
+  if (homeSource.includes(removedHomeDependency)) {
+    failures.push(`brand home still depends on ${removedHomeDependency}`);
+  }
 }
-if (!/copy=\{copy\.thesis\}/.test(homeSource)) {
-  failures.push('BrandManifesto must receive localized thesis copy');
-}
-for (const className of ['brand-manifesto', 'principle-list']) {
-  if (!manifestoSource.includes(className)) failures.push(`BrandManifesto is missing ${className}`);
-}
-if (/SiteCompass/.test(homeSource)) failures.push('Brand home must not render the redundant SiteCompass');
-if ((homeSource.match(/<MethodStrip\b/g) ?? []).length !== 1) failures.push('Brand home must render one MethodStrip');
-if (!/copy=\{copy\.operatingSystem\}/.test(homeSource)) failures.push('MethodStrip must receive localized method copy');
-if (!methodSource.includes('method-track') || !methodSource.includes('method-step')) {
-  failures.push('MethodStrip must expose the connected method path');
-}
-if (/method-section|method-track/.test(manifestoSource)) {
-  failures.push('BrandManifesto must contain principles only');
+if ((homeSource.match(/<EmberHero\b/g) ?? []).length !== 1) {
+  failures.push('brand home must render exactly one EmberHero');
 }
 
 const editorialComponents = [
