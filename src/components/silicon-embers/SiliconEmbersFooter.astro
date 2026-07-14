@@ -7,18 +7,25 @@ interface FooterLink {
 }
 
 interface Props {
+  title: string;
   note: string;
   links: readonly FooterLink[];
+  variant?: 'default' | 'contact';
 }
 
-const { note, links } = Astro.props;
+const { title, note, links, variant = 'default' } = Astro.props;
 ---
 
-<footer class="sa-footer">
-  <div class="footer-identity">
-    <p class="footer-note">{note}</p>
-    <p class="archive-note">OBSERVATIONS ON TECHNOLOGY, RESEARCH &amp; PRACTICE.</p>
+<footer class:list={['sa-footer', variant]}>
+  <div class="footer-intro">
+    {variant === 'contact' && <p class="contact-kicker">contact</p>}
+    <div class="footer-identity">
+      {variant === 'contact' && <h2 class="contact-heading">{title}</h2>}
+      <p class="footer-note">{note}</p>
+      <p class="archive-note">OBSERVATIONS ON TECHNOLOGY, RESEARCH &amp; PRACTICE.</p>
+    </div>
   </div>
+
   <nav aria-label="Contact links">
     {
       links.map((link) => (
@@ -84,26 +91,63 @@ const { note, links } = Astro.props;
   .sa-footer {
     position: relative;
     z-index: 2;
-    display: grid;
     width: min(100% - 56px, 1320px);
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 28px;
-    align-items: start;
     margin: 0 auto;
-    padding: 2rem 0 3.25rem;
     color: var(--muted);
   }
 
-  .footer-identity {
+  .sa-footer.default {
     display: grid;
-    gap: 0.55rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: start;
+    padding: 2rem 0 3.25rem;
   }
 
+  .sa-footer.contact {
+    display: grid;
+    min-height: 48dvh;
+    grid-template-columns: minmax(0, 0.72fr) minmax(24rem, 0.9fr);
+    gap: clamp(3rem, 9vw, 9rem);
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+  }
+
+  .footer-intro,
+  .footer-identity {
+    display: grid;
+  }
+
+  .footer-intro {
+    gap: 1.1rem;
+  }
+
+  .footer-identity {
+    gap: 0.6rem;
+  }
+
+  .contact-kicker,
   .footer-note,
   .archive-note {
     margin: 0;
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+  }
+
+  .contact-kicker {
+    color: var(--ember-strong);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+  }
+
+  .contact-heading {
+    max-width: 6ch;
+    font-size: clamp(3rem, 6vw, 5.4rem);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
   }
 
   .footer-note {
@@ -120,10 +164,21 @@ const { note, links } = Astro.props;
   }
 
   nav {
+    margin: 0;
+    padding: 0;
+  }
+
+  .default nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 0.35rem 1.1rem;
+  }
+
+  .contact nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
   }
 
   .footer-link {
@@ -133,7 +188,6 @@ const { note, links } = Astro.props;
     min-height: 44px;
     align-items: center;
     gap: 8px;
-    padding: 0 0.15rem;
     color: inherit;
     font-size: 0.82rem;
     font-weight: 650;
@@ -141,6 +195,21 @@ const { note, links } = Astro.props;
     transition:
       color 180ms ease,
       transform 180ms ease;
+  }
+
+  .default .footer-link {
+    padding: 0 0.15rem;
+  }
+
+  .contact .footer-link {
+    min-height: 4.5rem;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0.8rem;
+  }
+
+  .contact .footer-link:nth-child(odd) {
+    border-right: 1px solid var(--line);
   }
 
   .footer-link::after {
@@ -154,6 +223,10 @@ const { note, links } = Astro.props;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 180ms ease;
+  }
+
+  .contact .footer-link::after {
+    bottom: -1px;
   }
 
   .footer-icon {
@@ -184,18 +257,41 @@ const { note, links } = Astro.props;
   }
 
   @media (max-width: 960px) {
-    .sa-footer {
+    .sa-footer.default,
+    .sa-footer.contact {
       grid-template-columns: 1fr;
     }
 
-    nav {
+    .default nav {
       justify-content: flex-start;
+    }
+
+    .contact {
+      gap: 3rem;
     }
   }
 
   @media (max-width: 720px) {
     .sa-footer {
       width: min(100% - 24px, 1320px);
+    }
+
+    .sa-footer.contact {
+      min-height: 54dvh;
+      gap: 2.5rem;
+      padding: 4rem 0 4.75rem;
+    }
+
+    .contact-heading {
+      font-size: clamp(2.8rem, 14vw, 4.4rem);
+    }
+
+    .contact nav {
+      grid-template-columns: 1fr;
+    }
+
+    .contact .footer-link:nth-child(odd) {
+      border-right: 0;
     }
   }
 

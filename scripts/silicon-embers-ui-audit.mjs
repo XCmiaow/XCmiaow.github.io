@@ -120,8 +120,21 @@ if ((siteFrameSource.match(/<BrandNav\b/g) ?? []).length !== 1) {
 if ((siteFrameSource.match(/<SiliconEmbersFooter\b/g) ?? []).length !== 1) {
   failures.push('SiliconEmbersSiteFrame must render exactly one brand footer');
 }
+if (!siteFrameSource.includes("variant={isHome ? 'contact' : 'default'}")) {
+  failures.push('site frame must select the contact footer on the brand home');
+}
+if (
+  !/normalizePath\(Astro\.url\.pathname\)[\s\S]*normalizePath\(routePath\('brand-home', lang\)\)/.test(siteFrameSource)
+) {
+  failures.push('site frame must normalize home paths before selecting the footer variant');
+}
 if (!/routePath\('writing', lang\)/.test(siteFrameSource) || !/routePath\('resources', lang\)/.test(siteFrameSource)) {
   failures.push('Brand navigation paths must be derived from the route contract');
+}
+
+const footerSource = read('src/components/silicon-embers/SiliconEmbersFooter.astro');
+for (const marker of ["variant?: 'default' | 'contact'", "class:list={['sa-footer', variant]}", 'contact-heading']) {
+  if (!footerSource.includes(marker)) failures.push(`SiliconEmbersFooter is missing ${marker}`);
 }
 
 const homeCopySource = read('src/data/siliconEmbersHome.ts');

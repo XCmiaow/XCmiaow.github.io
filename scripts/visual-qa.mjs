@@ -182,6 +182,43 @@ async function checkBrandHomeBounds(page) {
   }
 }
 
+async function checkFooterVariants(page) {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const cases = [
+    { route: '/', expected: 'contact' },
+    { route: '/en/', expected: 'contact' },
+    { route: '/silicon-ashes/writing/', expected: 'default' },
+    { route: '/silicon-ashes/courses/ai-research-efficiency/', expected: 'default' },
+  ];
+
+  for (const { route, expected } of cases) {
+    await page.goto(`${base}${route}`, { waitUntil: 'load' });
+    await waitForSettledPage(page);
+    const state = await page.evaluate(() => {
+      const footer = document.querySelector('.sa-footer');
+      const heading = document.querySelector('.contact-heading');
+      return {
+        className: footer?.className || '',
+        height: footer?.getBoundingClientRect().height || 0,
+        viewportHeight: innerHeight,
+        headingVisible: !!heading && getComputedStyle(heading).display !== 'none',
+        linkCount: footer?.querySelectorAll('a').length || 0,
+      };
+    });
+    if (!state.className.split(/\s+/).includes(expected)) fail(`${route} footer must use the ${expected} variant`);
+    if (expected === 'contact') {
+      if (!state.headingVisible) fail(`${route} contact footer heading is not visible`);
+      if (state.height < state.viewportHeight * 0.47) fail(`${route} contact footer is shorter than the contact stage`);
+      if (state.linkCount < 5) fail(`${route} contact footer is missing public contact links`);
+    } else {
+      if (state.headingVisible) fail(`${route} default footer exposes the contact-stage heading`);
+      if (state.height >= state.viewportHeight * 0.4)
+        fail(`${route} default footer inherited the contact-stage height`);
+    }
+    checks.push({ route, footerVariant: expected });
+  }
+}
+
 const child = startPreview();
 
 try {
@@ -241,6 +278,7 @@ try {
   }
 
   await checkBrandHomeBounds(page);
+  await checkFooterVariants(page);
 
   await page.screenshot({ path: path.join(screenshotDir, 'ai-km-dark-desktop.png'), fullPage: false });
 

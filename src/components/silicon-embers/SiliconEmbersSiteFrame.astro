@@ -21,6 +21,8 @@ interface Props {
 
 const { lang, footerLinks, alternateHref } = Astro.props;
 const copy = siliconEmbersHomeCopy[lang];
+const normalizePath = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+const isHome = normalizePath(Astro.url.pathname) === normalizePath(routePath('brand-home', lang));
 const navCopy: SiliconEmbersNavCopy = {
   ...copy,
   homeHref: routePath('brand-home', lang),
@@ -53,5 +55,10 @@ const links = footerLinks ?? [
   <main id="main" class="sa-frame-main">
     <slot />
   </main>
-  <SiliconEmbersFooter note={copy.footer.note} links={links} />
+  <SiliconEmbersFooter
+    note={copy.footer.note}
+    title={copy.footer.contact}
+    links={links}
+    variant={isHome ? 'contact' : 'default'}
+  />
 </div>

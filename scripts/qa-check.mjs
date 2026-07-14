@@ -229,8 +229,15 @@ async function checkInteractions(page) {
   if ((await page.locator('.ember-hero .black-hole-scene').count()) !== 1)
     fail('Brand home lost its black-hole visual');
   if ((await page.locator('canvas[data-ember-canvas]').count()) !== 1) fail('Brand home lost its ember canvas');
-  if ((await page.locator('.brand-manifesto').count()) !== 1) {
-    fail('Brand home lost its thesis and method section');
+  const homeChildren = page.locator('#main > *');
+  if (
+    (await homeChildren.count()) !== 1 ||
+    !(await homeChildren.first().evaluate((element) => element.matches('.ember-hero')))
+  ) {
+    fail('Brand home must contain only the gravity hero before the contact footer');
+  }
+  if ((await page.locator('.sa-footer.contact').count()) !== 1) {
+    fail('Brand home lost its contact footer stage');
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
