@@ -378,6 +378,18 @@ for (const [start, end, label] of [
     failures.push(`Ember canvas ${label} must not read layout geometry`);
   }
 }
+for (const contract of ['const PARTICLE_GAIN = 1.2;', 'const createGlowSprite', 'const glowSprites']) {
+  if (!emberCanvasSource.includes(contract)) failures.push(`Ember canvas glow cache is missing ${contract}`);
+}
+{
+  const startIndex = emberCanvasSource.indexOf('const drawParticle');
+  const endIndex = emberCanvasSource.indexOf('const draw =', startIndex);
+  if (startIndex === -1 || endIndex === -1) {
+    failures.push('Ember canvas is missing the drawParticle source segment');
+  } else if (emberCanvasSource.slice(startIndex, endIndex).includes('shadowBlur')) {
+    failures.push('Ember particles must use cached glow instead of real-time shadowBlur');
+  }
+}
 if (
   !/visibilitychange/.test(emberCanvasSource) ||
   !/IntersectionObserver/.test(emberCanvasSource) ||

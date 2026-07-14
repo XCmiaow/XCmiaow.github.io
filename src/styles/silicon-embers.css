@@ -343,7 +343,7 @@ html[data-theme='dark'] body {
 }
 
 :root:not([data-theme='dark']) .sa-shell .ember-stage canvas {
-  opacity: 0.3;
+  opacity: 0.36;
   filter: sepia(0.3) saturate(0.62);
 }
 

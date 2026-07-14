@@ -35,6 +35,8 @@ interface OrbitParticle {
 
 const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
+const PARTICLE_GAIN = 1.2;
+const GLOW_SIZE = 32;
 const ORBIT_COSINE = Math.cos(-0.2);
 const ORBIT_SINE = Math.sin(-0.2);
 const PARTICLE_PROFILES: Record<ParticleBand, ParticleProfile> = {
@@ -69,6 +71,24 @@ const createSeededRandom =
 
 const bandFor = (value: number): ParticleBand => (value < 0.46 ? 'far' : value < 0.86 ? 'mid' : 'near');
 
+const createGlowSprite = (core: string, edge: string) => {
+  const sprite = document.createElement('canvas');
+  sprite.width = GLOW_SIZE;
+  sprite.height = GLOW_SIZE;
+  const spriteContext = sprite.getContext('2d');
+  if (!spriteContext) return sprite;
+
+  const center = GLOW_SIZE / 2;
+  const gradient = spriteContext.createRadialGradient(center, center, 0, center, center, center);
+  gradient.addColorStop(0, core);
+  gradient.addColorStop(0.18, core);
+  gradient.addColorStop(0.5, edge);
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  spriteContext.fillStyle = gradient;
+  spriteContext.fillRect(0, 0, GLOW_SIZE, GLOW_SIZE);
+  return sprite;
+};
+
 const projectParticle = (particle: OrbitParticle, field: GravityField) => {
   const planeX = Math.cos(particle.angle) * particle.radius;
   const planeY = Math.sin(particle.angle) * particle.radius * 0.38;
@@ -87,6 +107,10 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   const scene = host.querySelector<HTMLElement>('.black-hole-scene');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const particles: OrbitParticle[] = [];
+  const glowSprites = {
+    warm: createGlowSprite('rgba(255, 220, 160, 0.34)', 'rgba(224, 139, 66, 0.1)'),
+    cool: createGlowSprite('rgba(255, 244, 220, 0.28)', 'rgba(238, 219, 187, 0.08)'),
+  };
   let width = 0;
   let height = 0;
   let frame = 0;
@@ -165,21 +189,40 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     const warm = particle.angle % 1.8 > 0.46;
     const depth = particle.band === 'far' ? 0.7 : particle.band === 'near' ? 1.18 : 1;
     const trailAlpha = opacity * (warm ? 0.28 : 0.16) * depth;
-    context.strokeStyle = warm ? `rgba(211, 125, 60, ${trailAlpha})` : `rgba(232, 215, 186, ${trailAlpha})`;
-    context.lineWidth = Math.max(0.4, particle.size * (0.58 + pull * 0.42));
-    context.shadowBlur = particle.band === 'near' ? 5 : particle.band === 'mid' ? 2 : 0;
-    context.shadowColor = warm ? 'rgba(224, 139, 66, 0.32)' : 'rgba(238, 219, 187, 0.2)';
+    const trailColor = warm ? 'rgb(211, 125, 60)' : 'rgb(232, 215, 186)';
+    const trailWidth = Math.max(0.4, particle.size * (0.58 + pull * 0.42));
+    context.strokeStyle = trailColor;
+    context.globalAlpha = trailAlpha * 0.42;
+    context.lineWidth = trailWidth * 2.4;
+    context.beginPath();
+    context.moveTo(particle.previousX, particle.previousY);
+    context.lineTo(particle.x, particle.y);
+    context.stroke();
+
+    context.globalAlpha = trailAlpha;
+    context.lineWidth = trailWidth;
     context.beginPath();
     context.moveTo(particle.previousX, particle.previousY);
     context.lineTo(particle.x, particle.y);
     context.stroke();
 
     const radius = particle.size * (1 + pull * 0.65);
-    context.fillStyle = warm ? `rgba(239, 169, 91, ${opacity})` : `rgba(239, 224, 197, ${opacity * 0.72})`;
+    const glowRadius = radius * (particle.band === 'near' ? 3.35 : particle.band === 'mid' ? 2.95 : 2.55);
+    context.globalAlpha = opacity * depth * (warm ? 0.7 : 0.58);
+    context.drawImage(
+      warm ? glowSprites.warm : glowSprites.cool,
+      particle.x - glowRadius,
+      particle.y - glowRadius,
+      glowRadius * 2,
+      glowRadius * 2,
+    );
+
+    context.globalAlpha = opacity * (warm ? 1 : 0.72);
+    context.fillStyle = warm ? 'rgb(239, 169, 91)' : 'rgb(239, 224, 197)';
     context.beginPath();
     context.arc(particle.x, particle.y, radius, 0, TAU);
     context.fill();
-    context.shadowBlur = 0;
+    context.globalAlpha = 1;
   };
 
   const draw = (time: number, delta: number, shouldEmit: boolean) => {
@@ -223,7 +266,8 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
       const fadeOut = Math.min(1, (1 - progress) * 3.2);
       const inwardFade = Math.pow(remaining, 0.34);
       const flicker = 0.82 + Math.sin(time * 0.002 + particle.angle * 3) * 0.12;
-      drawParticle(particle, particle.alpha * fadeIn * fadeOut * inwardFade * flicker, pull);
+      const opacity = Math.min(1, particle.alpha * fadeIn * fadeOut * inwardFade * flicker * PARTICLE_GAIN);
+      drawParticle(particle, opacity, pull);
     }
 
     context.restore();

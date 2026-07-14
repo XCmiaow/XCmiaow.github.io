@@ -238,6 +238,63 @@ async function checkEmberAnimationHotPath(browser) {
   }
 }
 
+async function checkEmberParticlePresence(browser) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'reduce',
+    serviceWorkers: 'block',
+  });
+  const particlePage = await context.newPage();
+
+  try {
+    await particlePage.route('https://cloud.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+    await particlePage.route('https://gateway.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await particlePage.setViewportSize(viewport);
+      await particlePage.goto(`${base}/`, { waitUntil: 'load' });
+      await waitForSettledPage(particlePage);
+      await particlePage.waitForFunction(
+        () => document.querySelector('[data-ember-canvas]')?.getAttribute('data-ember-ready') === 'true',
+      );
+
+      const metrics = await particlePage.locator('[data-ember-canvas]').evaluate((canvas) => {
+        const context = canvas.getContext('2d');
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        let alphaEnergy = 0;
+        let vividPixels = 0;
+        let maxAlpha = 0;
+
+        for (let index = 3; index < pixels.length; index += 4) {
+          const alpha = pixels[index];
+          alphaEnergy += alpha;
+          if (alpha >= 24) vividPixels += 1;
+          maxAlpha = Math.max(maxAlpha, alpha);
+        }
+
+        return { alphaEnergy, vividPixels, maxAlpha };
+      });
+
+      if (metrics.alphaEnergy < 9000 || metrics.alphaEnergy > 18000) {
+        fail(`${viewport.width}px ember particle alpha energy is ${metrics.alphaEnergy.toFixed(1)}`);
+      }
+      if (metrics.vividPixels < 120 || metrics.vividPixels > 300) {
+        fail(`${viewport.width}px ember particle vivid pixel count is ${metrics.vividPixels}`);
+      }
+      if (metrics.maxAlpha < 145 || metrics.maxAlpha > 210) {
+        fail(`${viewport.width}px ember particle max alpha is ${metrics.maxAlpha}`);
+      }
+      checks.push({ route: '/', viewport: `${viewport.width}x${viewport.height}`, emberParticles: metrics });
+    }
+  } finally {
+    await context.close();
+  }
+}
+
 async function checkFooterVariants(page) {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
@@ -334,6 +391,7 @@ try {
   }
 
   await checkEmberAnimationHotPath(browser);
+  await checkEmberParticlePresence(browser);
   await checkBrandHomeBounds(page);
   await checkFooterVariants(page);
 

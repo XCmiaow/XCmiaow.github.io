@@ -188,7 +188,7 @@ const particleMetrics = await page.locator('[data-ember-canvas]').evaluate((canv
   let maxAlpha = 0;
   for (let index = 3; index < data.length; index += 4) {
     const alpha = data[index];
-    alphaEnergy += alpha / 255;
+    alphaEnergy += alpha;
     if (alpha >= 24) vividPixels += 1;
     maxAlpha = Math.max(maxAlpha, alpha);
   }
