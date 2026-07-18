@@ -185,6 +185,38 @@ async function checkCourse(page) {
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
+async function checkMobileContactRow(page) {
+  for (const width of [360, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(`${previewBase}/`, { waitUntil: 'load' });
+    const layout = await page.locator('.sa-footer.contact nav .footer-link').evaluateAll((links) => {
+      const boxes = links.map((link) => link.getBoundingClientRect());
+      const visibleLabels = links.filter((link) => {
+        const label = link.querySelector('span');
+        return label && getComputedStyle(label).display !== 'none' && label.getBoundingClientRect().width > 0;
+      }).length;
+      return {
+        count: links.length,
+        rowCount: new Set(boxes.map((box) => Math.round(box.top))).size,
+        widths: boxes.map((box) => box.width),
+        minHeight: Math.min(...boxes.map((box) => box.height)),
+        overflow: boxes.some((box) => box.left < -1 || box.right > innerWidth + 1),
+        visibleLabels,
+        missingNames: links.filter((link) => !link.getAttribute('aria-label')?.trim()).length,
+      };
+    });
+    if (layout.count !== 5) fail(`Mobile contact footer exposes ${layout.count} links at ${width}px; expected 5`);
+    if (layout.rowCount !== 1) fail(`Mobile contact links use ${layout.rowCount} rows at ${width}px; expected 1`);
+    if (Math.max(...layout.widths) - Math.min(...layout.widths) > 1) {
+      fail(`Mobile contact links are not equally sized at ${width}px`);
+    }
+    if (layout.minHeight < 44) fail(`Mobile contact targets are shorter than 44px at ${width}px`);
+    if (layout.overflow) fail(`Mobile contact row overflows at ${width}px`);
+    if (layout.visibleLabels !== 0) fail(`Mobile contact row still shows ${layout.visibleLabels} labels at ${width}px`);
+    if (layout.missingNames !== 0) fail(`Mobile contact row has ${layout.missingNames} unnamed links at ${width}px`);
+  }
+}
+
 async function checkInteractions(page) {
   await page.goto(`${previewBase}/`, { waitUntil: 'load' });
   await page.locator('.sa-nav a[href="/en/"]').click();
@@ -282,6 +314,7 @@ await withPreview(async () => {
     for (const route of staticRouteLocales()) await checkRoute(page, route);
     await checkXml(page);
     await checkCourse(page);
+    await checkMobileContactRow(page);
     await checkInteractions(page);
     await checkPrint(page);
   } finally {

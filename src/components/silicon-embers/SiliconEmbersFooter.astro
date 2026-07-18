@@ -32,6 +32,7 @@ const { title, note, links, variant = 'default' } = Astro.props;
         <a
           class="footer-link"
           href={link.href}
+          aria-label={link.label}
           target={link.external ? '_blank' : undefined}
           rel={link.external ? 'noopener noreferrer' : undefined}
         >
@@ -287,11 +288,22 @@ const { title, note, links, variant = 'default' } = Astro.props;
     }
 
     .contact nav {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
-    .contact .footer-link:nth-child(odd) {
+    .contact .footer-link {
+      min-height: 3.5rem;
+      justify-content: center;
+      border-right: 1px solid var(--line);
+      padding: 0;
+    }
+
+    .contact .footer-link:last-child {
       border-right: 0;
+    }
+
+    .contact .footer-link span {
+      display: none;
     }
   }
 
