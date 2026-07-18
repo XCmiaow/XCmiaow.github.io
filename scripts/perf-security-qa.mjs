@@ -163,7 +163,9 @@ function runEmberChecks() {
     'prefers-reduced-motion',
     'visibilitychange',
     'IntersectionObserver',
-    'cancelAnimationFrame',
+    'ResizeObserver',
+    'cancelAnimationFrame(resizeFrame)',
+    'resizeObserver?.disconnect()',
   ]) {
     if (!source.includes(behavior)) fail(`Ember canvas is missing ${behavior} lifecycle handling`);
   }

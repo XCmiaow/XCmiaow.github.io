@@ -104,6 +104,13 @@ async function checkBrandHomeBounds(page) {
     { width: 1024, height: 1000 },
     { width: 1440, height: 1100 },
   ];
+  const expectedSceneWidths = new Map([
+    [360, 280.8],
+    [390, 304.2],
+    [768, 384],
+    [1024, 430.08],
+    [1440, 560],
+  ]);
   const homeRoutes = ['/', '/en/'];
   const intersects = (a, b) =>
     a.left < b.right - 2 && a.right > b.left + 2 && a.top < b.bottom - 2 && a.bottom > b.top + 2;
@@ -160,6 +167,10 @@ async function checkBrandHomeBounds(page) {
       if (minimumSceneWidth && geometry.scene.width < minimumSceneWidth) {
         fail(`${route} ${width}px black hole is too small`);
       }
+      const expectedSceneWidth = expectedSceneWidths.get(width);
+      if (expectedSceneWidth && Math.abs(geometry.scene.width - expectedSceneWidth) > 2) {
+        fail(`${route} ${width}px changed the black-hole scene width to ${geometry.scene.width.toFixed(1)}px`);
+      }
       if (Math.abs(geometry.hero.bottom - height) > 4) {
         fail(`${route} ${width}px hero does not end at the first viewport`);
       }
@@ -177,7 +188,15 @@ async function checkBrandHomeBounds(page) {
           fail(`${route} ${width}px accretion disc is visibly clipped`);
         }
       }
-      checks.push({ route, width, height, gravityBounds: 'ok', gravityCenter: 'ok', copyClearance: 'ok' });
+      checks.push({
+        route,
+        width,
+        height,
+        sceneWidth: geometry.scene.width,
+        gravityBounds: 'ok',
+        gravityCenter: 'ok',
+        copyClearance: 'ok',
+      });
     }
   }
 }
@@ -233,6 +252,73 @@ async function checkEmberAnimationHotPath(browser) {
       fail(`ember animation performed ${sample.rectReads} stage/scene layout reads during the 800ms hot-path sample`);
     }
     checks.push({ route: '/', emberHotPath: sample, sampleDurationMs: 800 });
+
+    const sampleFrameCount = async (duration = 350) => {
+      await probePage.evaluate(() => window.__emberPerformanceProbe.reset());
+      await probePage.waitForTimeout(duration);
+      return probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
+    };
+    const waitForCanvasIdle = async () => {
+      let previous = await probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
+      for (let attempt = 0; attempt < 6; attempt += 1) {
+        await probePage.waitForTimeout(225);
+        const current = await probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
+        if (current === previous) return true;
+        previous = current;
+      }
+      return false;
+    };
+
+    const visibleFrames = await sampleFrameCount();
+    if (visibleFrames < 2) fail('ember canvas does not animate while visible');
+
+    await probePage.evaluate(() => {
+      const spacer = document.createElement('div');
+      spacer.dataset.emberTestSpacer = '';
+      spacer.style.height = '120vh';
+      document.body.append(spacer);
+      window.scrollTo(0, document.documentElement.scrollHeight);
+    });
+    await probePage.waitForFunction(() => document.querySelector('.ember-stage')?.getBoundingClientRect().bottom <= 0);
+    if (!(await waitForCanvasIdle())) fail('ember canvas did not become idle after leaving the viewport');
+    const offscreenFrames = await sampleFrameCount();
+    if (offscreenFrames !== 0) fail(`ember canvas drew ${offscreenFrames} frames while offscreen`);
+
+    await probePage.evaluate(() => window.scrollTo(0, 0));
+    await probePage.waitForFunction(() => {
+      const rect = document.querySelector('.ember-stage')?.getBoundingClientRect();
+      return rect && rect.top < innerHeight && rect.bottom > 0;
+    });
+    const resumedFrames = await sampleFrameCount();
+    if (resumedFrames < 2) fail('ember canvas does not resume after returning onscreen');
+
+    await probePage.emulateMedia({ reducedMotion: 'reduce' });
+    if (!(await waitForCanvasIdle())) fail('reduced-motion ember canvas did not become idle');
+    const reducedMotionFrames = await sampleFrameCount();
+    if (reducedMotionFrames !== 0) fail(`reduced-motion ember canvas drew ${reducedMotionFrames} continuing frames`);
+
+    await probePage.emulateMedia({ reducedMotion: 'no-preference' });
+    const restoredFrames = await sampleFrameCount();
+    if (restoredFrames < 2) fail('ember canvas does not resume after reduced motion is disabled');
+
+    await probePage.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    if (!(await waitForCanvasIdle())) fail('pagehide ember canvas did not become idle');
+    const pagehideFrames = await sampleFrameCount();
+    if (pagehideFrames !== 0) fail(`pagehide ember canvas drew ${pagehideFrames} continuing frames`);
+    if ((await probePage.locator('[data-ember-ready]').count()) !== 0) {
+      fail('pagehide did not clear ember canvas readiness');
+    }
+    checks.push({
+      route: '/',
+      emberLifecycle: {
+        visibleFrames,
+        offscreenFrames,
+        resumedFrames,
+        reducedMotionFrames,
+        restoredFrames,
+        pagehideFrames,
+      },
+    });
   } finally {
     await probePage.close();
   }
