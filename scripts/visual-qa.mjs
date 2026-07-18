@@ -365,13 +365,13 @@ async function checkEmberParticlePresence(browser) {
         return { alphaEnergy, vividPixels, maxAlpha };
       });
 
-      if (metrics.alphaEnergy < 9000 || metrics.alphaEnergy > 18000) {
+      if (metrics.alphaEnergy < 6000 || metrics.alphaEnergy > 7500) {
         fail(`${viewport.width}px ember particle alpha energy is ${metrics.alphaEnergy.toFixed(1)}`);
       }
-      if (metrics.vividPixels < 120 || metrics.vividPixels > 300) {
+      if (metrics.vividPixels < 80 || metrics.vividPixels > 110) {
         fail(`${viewport.width}px ember particle vivid pixel count is ${metrics.vividPixels}`);
       }
-      if (metrics.maxAlpha < 145 || metrics.maxAlpha > 210) {
+      if (metrics.maxAlpha < 110 || metrics.maxAlpha > 135) {
         fail(`${viewport.width}px ember particle max alpha is ${metrics.maxAlpha}`);
       }
       checks.push({ route: '/', viewport: `${viewport.width}x${viewport.height}`, emberParticles: metrics });

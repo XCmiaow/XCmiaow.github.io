@@ -35,7 +35,7 @@ interface OrbitParticle {
 
 const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
-const PARTICLE_GAIN = 1.2;
+const PARTICLE_GAIN = 1;
 const GLOW_SIZE = 32;
 const ORBIT_COSINE = Math.cos(-0.2);
 const ORBIT_SINE = Math.sin(-0.2);
@@ -189,16 +189,8 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     const warm = particle.angle % 1.8 > 0.46;
     const depth = particle.band === 'far' ? 0.7 : particle.band === 'near' ? 1.18 : 1;
     const trailAlpha = opacity * (warm ? 0.28 : 0.16) * depth;
-    const trailColor = warm ? 'rgb(211, 125, 60)' : 'rgb(232, 215, 186)';
     const trailWidth = Math.max(0.4, particle.size * (0.58 + pull * 0.42));
-    context.strokeStyle = trailColor;
-    context.globalAlpha = trailAlpha * 0.42;
-    context.lineWidth = trailWidth * 2.4;
-    context.beginPath();
-    context.moveTo(particle.previousX, particle.previousY);
-    context.lineTo(particle.x, particle.y);
-    context.stroke();
-
+    context.strokeStyle = warm ? 'rgb(211, 125, 60)' : 'rgb(232, 215, 186)';
     context.globalAlpha = trailAlpha;
     context.lineWidth = trailWidth;
     context.beginPath();
@@ -208,7 +200,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
 
     const radius = particle.size * (1 + pull * 0.65);
     const glowRadius = radius * (particle.band === 'near' ? 3.35 : particle.band === 'mid' ? 2.95 : 2.55);
-    context.globalAlpha = opacity * depth * (warm ? 0.7 : 0.58);
+    context.globalAlpha = opacity * depth * (warm ? 0.32 : 0.26);
     context.drawImage(
       warm ? glowSprites.warm : glowSprites.cool,
       particle.x - glowRadius,
