@@ -21,6 +21,7 @@
 ### Task 1: Remove layout reads from the animation hot path
 
 **Files:**
+
 - Modify: `scripts/visual-qa.mjs`
 - Modify: `scripts/silicon-embers-ui-audit.mjs`
 - Modify: `src/components/silicon-embers/emberFieldCanvas.ts`
@@ -170,6 +171,7 @@ git commit -m "perf: cache ember field geometry"
 ### Task 2: Replace real-time particle blur and increase particle presence
 
 **Files:**
+
 - Modify: `scripts/visual-qa.mjs`
 - Modify: `scripts/silicon-embers-ui-audit.mjs`
 - Modify: `src/components/silicon-embers/emberFieldCanvas.ts`
@@ -268,6 +270,7 @@ git commit -m "perf: pre-render ember particle glow"
 ### Task 3: Keep complex CSS textures static during animation
 
 **Files:**
+
 - Modify: `scripts/visual-qa.mjs`
 - Modify: `scripts/silicon-embers-ui-audit.mjs`
 - Modify: `src/components/silicon-embers/EmberField.astro`
@@ -275,17 +278,15 @@ git commit -m "perf: pre-render ember particle glow"
 
 - [ ] **Step 1: Add the failing frame-budget and surface contracts**
 
-Sample 180 rAF intervals in normal mode and reduced-motion mode on the same 1440×900 context. Sort the intervals and calculate p50, p95, and the ratio above 34ms. Require:
+After `data-ember-ready` and `document.fonts.ready`, warm up 45 rAF frames, then sample 120 rAF intervals in normal mode and reduced-motion mode on the same 1440×900 context. Reject runners whose static rAF p50 or p95 exceeds 20ms. Instrument the interval from the Ember Canvas `clearRect()` to its matching `restore()` and count frames so a paused animation cannot pass. Headless Chromium software-composites the full mixed CSS scene, so keep its rAF pacing as a diagnostic and gate the application-owned draw cost. Require:
 
 ```js
-const p50Limit = Math.max(20, staticFrames.p50 * 1.25);
-const p95Limit = Math.max(34, staticFrames.p95 * 2);
-if (animatedFrames.p50 > p50Limit) fail('ember p50 frame budget exceeded');
-if (animatedFrames.p95 > p95Limit) fail('ember p95 frame budget exceeded');
-if (animatedFrames.over34Ratio > 0.05) fail('ember long-frame ratio exceeded');
+if (animatedFrames.canvasFrames < sampleCount * 0.9) fail('ember canvas did not render continuously');
+if (animatedFrames.drawP50 > 1) fail('ember canvas draw p50 exceeded 1ms');
+if (animatedFrames.drawP95 > 2) fail('ember canvas draw p95 exceeded 2ms');
 ```
 
-Require `.gravity-veil::before`, `.accretion-disc::before`, and `will-change: transform, opacity` in the component source.
+Require `.gravity-veil::before` and `will-change: transform, opacity` in the component source.
 
 - [ ] **Step 2: Run RED**
 
@@ -326,55 +327,15 @@ Make `.gravity-veil` the animated wrapper and move its unchanged background/filt
 }
 ```
 
-Make each `.accretion-disc` an animated geometry wrapper. Its surface must use these exact declarations; keep clip-path, opacity, and animation on `.disc-back`/`.disc-front`:
+Keep each `.accretion-disc` on its existing rendering surface so its mask and filter continue to include `.disc-filament`. Promote the animated surface without moving its background, mask, blend mode, or filter:
 
 ```css
 .accretion-disc {
   will-change: transform, opacity;
 }
-
-.accretion-disc::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 0 31%,
-      rgba(255, 226, 167, 0.72) 34%,
-      rgba(213, 126, 57, 0.36) 39%,
-      transparent 55%
-    ),
-    conic-gradient(
-      from 193deg,
-      transparent 0 8%,
-      rgba(152, 77, 34, 0.08) 16%,
-      rgba(236, 159, 82, 0.5) 29%,
-      rgba(255, 226, 159, 0.86) 38%,
-      rgba(145, 72, 32, 0.12) 53%,
-      transparent 63% 82%,
-      rgba(210, 119, 50, 0.2) 91%,
-      transparent
-    );
-  mix-blend-mode: screen;
-  mask-image: radial-gradient(ellipse at center, transparent 0 30%, #000 34% 47%, transparent 57%);
-}
-
-.disc-back::before {
-  filter: blur(1.3px);
-}
-
-.disc-front::before {
-  filter: blur(0.45px) drop-shadow(0 4px 9px rgba(215, 128, 54, 0.18));
-}
-
-.disc-filament {
-  z-index: 1;
-}
 ```
 
-Move light-theme `mix-blend-mode: multiply` to `.accretion-disc::before`. Move light-theme gravity gradients to `.gravity-veil::before`.
+Leave the light-theme `mix-blend-mode: multiply` on `.accretion-disc`. Move only the light-theme gravity gradients to `.gravity-veil::before`.
 
 - [ ] **Step 4: Run GREEN**
 
@@ -390,6 +351,7 @@ git commit -m "perf: isolate gravity animation surfaces"
 ### Task 4: Lock geometry and lifecycle behavior
 
 **Files:**
+
 - Modify: `scripts/visual-qa.mjs`
 - Modify: `scripts/perf-security-qa.mjs`
 
@@ -475,6 +437,7 @@ git commit -m "test: lock ember animation behavior"
 ### Task 5: Verify, push, and deploy
 
 **Files:**
+
 - No production files expected.
 
 - [ ] **Step 1: Format changed source and scripts**

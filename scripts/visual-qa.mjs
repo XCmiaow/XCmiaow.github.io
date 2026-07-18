@@ -295,6 +295,121 @@ async function checkEmberParticlePresence(browser) {
   }
 }
 
+async function checkEmberFrameBudget(browser) {
+  const sampleCount = 120;
+  const sample = async (reducedMotion) => {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      reducedMotion,
+      serviceWorkers: 'block',
+    });
+    await context.addInitScript(() => {
+      const originalClear = CanvasRenderingContext2D.prototype.clearRect;
+      const originalRestore = CanvasRenderingContext2D.prototype.restore;
+      window.__emberFrameBudgetProbe = { canvasFrames: 0, drawStartedAt: 0, drawDurations: [] };
+      CanvasRenderingContext2D.prototype.clearRect = function (...args) {
+        if (this.canvas?.matches?.('[data-ember-canvas]')) {
+          window.__emberFrameBudgetProbe.canvasFrames += 1;
+          window.__emberFrameBudgetProbe.drawStartedAt = performance.now();
+        }
+        return originalClear.apply(this, args);
+      };
+      CanvasRenderingContext2D.prototype.restore = function (...args) {
+        const result = originalRestore.apply(this, args);
+        if (this.canvas?.matches?.('[data-ember-canvas]') && window.__emberFrameBudgetProbe.drawStartedAt) {
+          window.__emberFrameBudgetProbe.drawDurations.push(
+            performance.now() - window.__emberFrameBudgetProbe.drawStartedAt,
+          );
+          window.__emberFrameBudgetProbe.drawStartedAt = 0;
+        }
+        return result;
+      };
+    });
+    const samplePage = await context.newPage();
+
+    try {
+      await samplePage.route('https://cloud.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+      await samplePage.route('https://gateway.umami.is/**', (route) => route.fulfill({ status: 204, body: '' }));
+      await samplePage.goto(`${base}/`, { waitUntil: 'load' });
+      await waitForSettledPage(samplePage);
+      await samplePage.bringToFront();
+      await samplePage.locator('[data-ember-ready]').waitFor();
+      await samplePage.evaluate(() => document.fonts.ready);
+
+      const sampleResult = await samplePage.evaluate(
+        (targetCount) =>
+          new Promise((resolve) => {
+            const samples = [];
+            let previous;
+            let warmupFrames = 45;
+            const record = (time) => {
+              if (warmupFrames > 0) {
+                warmupFrames -= 1;
+                requestAnimationFrame(record);
+                return;
+              }
+              if (previous === undefined) {
+                window.__emberFrameBudgetProbe.canvasFrames = 0;
+                window.__emberFrameBudgetProbe.drawDurations = [];
+              }
+              if (previous !== undefined) samples.push(time - previous);
+              previous = time;
+              if (samples.length >= targetCount) {
+                resolve({
+                  intervals: samples,
+                  canvasFrames: window.__emberFrameBudgetProbe.canvasFrames,
+                  drawDurations: window.__emberFrameBudgetProbe.drawDurations,
+                });
+              } else requestAnimationFrame(record);
+            };
+            requestAnimationFrame(record);
+          }),
+        sampleCount,
+      );
+      const sorted = [...sampleResult.intervals].sort((left, right) => left - right);
+      const drawSorted = [...sampleResult.drawDurations].sort((left, right) => left - right);
+      return {
+        rafP50: sorted[Math.floor(sorted.length * 0.5)],
+        rafP95: sorted[Math.floor(sorted.length * 0.95)],
+        intervals: sampleResult.intervals,
+        canvasFrames: sampleResult.canvasFrames,
+        drawP50: drawSorted[Math.floor(drawSorted.length * 0.5)] ?? 0,
+        drawP95: drawSorted[Math.floor(drawSorted.length * 0.95)] ?? 0,
+      };
+    } finally {
+      await context.close();
+    }
+  };
+
+  const staticFrames = await sample('reduce');
+  const animatedFrames = await sample('no-preference');
+  if (staticFrames.rafP50 > 20 || staticFrames.rafP95 > 20) {
+    fail(
+      `ember frame runner cannot validate 60fps (${staticFrames.rafP50.toFixed(1)}/${staticFrames.rafP95.toFixed(1)}ms)`,
+    );
+  }
+  if (animatedFrames.canvasFrames < sampleCount * 0.9) {
+    fail(`ember canvas rendered only ${animatedFrames.canvasFrames}/${sampleCount} sampled frames`);
+  }
+  if (animatedFrames.drawP50 > 1) {
+    fail(`ember canvas draw p50 ${animatedFrames.drawP50.toFixed(2)}ms exceeds 1ms`);
+  }
+  if (animatedFrames.drawP95 > 2) {
+    fail(`ember canvas draw p95 ${animatedFrames.drawP95.toFixed(2)}ms exceeds 2ms`);
+  }
+  // Headless Chromium software-composites the full CSS scene and may throttle rAF;
+  // keep pacing as a diagnostic while gating the application-owned Canvas work.
+  const pacingBudget = Math.max(20, staticFrames.rafP95 * 1.25);
+  const missedVsyncRatio =
+    animatedFrames.intervals.filter((interval) => interval > pacingBudget).length / animatedFrames.intervals.length;
+  delete staticFrames.intervals;
+  delete animatedFrames.intervals;
+  checks.push({
+    route: '/',
+    emberFrameBudget: { staticFrames, animatedFrames, pacingBudget, missedVsyncRatio },
+  });
+}
+
 async function checkFooterVariants(page) {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
@@ -392,6 +507,7 @@ try {
 
   await checkEmberAnimationHotPath(browser);
   await checkEmberParticlePresence(browser);
+  await checkEmberFrameBudget(browser);
   await checkBrandHomeBounds(page);
   await checkFooterVariants(page);
 

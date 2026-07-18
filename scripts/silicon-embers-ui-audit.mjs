@@ -344,6 +344,9 @@ for (const className of ['depth-far', 'depth-rear', 'depth-event', 'depth-front'
 for (const className of ['orbital-guide', 'disc-filament', 'photon-caustic']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing precision detail ${className}`);
 }
+for (const contract of ['.gravity-veil::before', 'will-change: transform, opacity']) {
+  if (!emberFieldSource.includes(contract)) failures.push(`EmberField compositor surface is missing ${contract}`);
+}
 if (emberFieldSource.includes('field-caption')) {
   failures.push('EmberField must leave field metadata to the hero text layer');
 }
