@@ -1,7 +1,8 @@
 # Mobile Contact Icon Row Design
 
-**Date:** 2026-07-17  
-**Status:** Approved direction, pending written-spec review
+**Date:** 2026-07-17
+
+**Status:** Approved and implemented
 
 ## Goal
 
