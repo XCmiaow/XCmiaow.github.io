@@ -356,14 +356,11 @@ html[data-theme='dark'] body {
   border-color: rgba(80, 60, 41, 0.1);
 }
 
-:root:not([data-theme='dark']) .sa-shell .gravity-veil::before {
+:root:not([data-theme='dark']) .sa-shell .gravity-veil {
   background:
     radial-gradient(circle at 50% 50%, rgba(28, 24, 20, 0.56) 0 14%, rgba(70, 57, 45, 0.12) 25%, transparent 47%),
     radial-gradient(ellipse at 52% 49%, rgba(159, 95, 45, 0.09) 0 13%, rgba(100, 76, 53, 0.055) 34%, transparent 68%);
   mix-blend-mode: multiply;
-}
-
-:root:not([data-theme='dark']) .sa-shell .gravity-veil {
   opacity: 0.54;
 }
 
