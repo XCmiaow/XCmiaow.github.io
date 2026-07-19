@@ -48,26 +48,6 @@ const { copy, wordmark } = Astro.props;
     pointer-events: none;
   }
 
-  /* carbon-reflection: restrained rust warmth over cold steel geometry. */
-  .ember-hero::after {
-    content: '';
-    position: absolute;
-    inset: 48% 0 0;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, transparent 0 22%, color-mix(in srgb, var(--rust) 10%, transparent) 68%, transparent),
-      repeating-linear-gradient(
-        96deg,
-        transparent 0 3rem,
-        color-mix(in srgb, var(--steel) 14%, transparent) 3rem calc(3rem + 1px),
-        transparent calc(3rem + 1px) 6rem
-      );
-    -webkit-mask-image: linear-gradient(180deg, transparent, #000 34%, transparent 94%);
-    mask-image: linear-gradient(180deg, transparent, #000 34%, transparent 94%);
-    opacity: 0.42;
-  }
-
   .hero-primary,
   .hero-secondary {
     position: absolute;
