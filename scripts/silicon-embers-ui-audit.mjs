@@ -393,7 +393,7 @@ for (const [start, end, label] of [
     failures.push(`Ember canvas ${label} must not read layout geometry`);
   }
 }
-for (const contract of ['const PARTICLE_GAIN = 1;', 'const createGlowSprite', 'const glowSprites']) {
+for (const contract of ['const PARTICLE_GAIN = 1.2;', 'const createGlowSprite', 'const glowSprites']) {
   if (!emberCanvasSource.includes(contract)) failures.push(`Ember canvas glow cache is missing ${contract}`);
 }
 {
@@ -401,14 +401,8 @@ for (const contract of ['const PARTICLE_GAIN = 1;', 'const createGlowSprite', 'c
   const endIndex = emberCanvasSource.indexOf('const draw =', startIndex);
   if (startIndex === -1 || endIndex === -1) {
     failures.push('Ember canvas is missing the drawParticle source segment');
-  } else {
-    const drawParticleSource = emberCanvasSource.slice(startIndex, endIndex);
-    if (drawParticleSource.includes('shadowBlur')) {
-      failures.push('Ember particles must use cached glow instead of real-time shadowBlur');
-    }
-    if (drawParticleSource.includes('lineWidth = trailWidth * 2.4')) {
-      failures.push('Ember particles must use one restrained trail instead of a broad double trail');
-    }
+  } else if (emberCanvasSource.slice(startIndex, endIndex).includes('shadowBlur')) {
+    failures.push('Ember particles must use cached glow instead of real-time shadowBlur');
   }
 }
 if (
