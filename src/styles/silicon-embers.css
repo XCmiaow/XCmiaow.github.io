@@ -8,23 +8,23 @@ html {
   --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 
   scroll-behavior: smooth;
-  background: #f4efe5;
+  background: linear-gradient(180deg, #e6d8bc 0%, #d8c7a8 100%);
 }
 
 html[data-theme='dark'] {
-  background: #080705;
+  background: linear-gradient(180deg, #080a0b 0%, #161a1d 100%);
 }
 
 body {
   margin: 0;
-  background: #f4efe5;
-  color: #241c14;
+  background: linear-gradient(180deg, #e6d8bc 0%, #d8c7a8 100%);
+  color: #161a1d;
   font-family: var(--font-sans);
 }
 
 html[data-theme='dark'] body {
-  background: #080705;
-  color: #f0dfbf;
+  background: linear-gradient(180deg, #080a0b 0%, #161a1d 100%);
+  color: #e6d8bc;
 }
 
 *,
@@ -34,17 +34,20 @@ html[data-theme='dark'] body {
 }
 
 .sa-shell {
-  --paper: #241c14;
-  --muted: #71675b;
-  --line: rgba(51, 39, 27, 0.14);
-  --ember: #9f5f2d;
-  --ember-strong: #7b421f;
-  --moss: #7b421f;
-  --coal: #f4efe5;
-  --coal-2: #ebe3d5;
-  --surface: rgba(255, 252, 245, 0.58);
-  --surface-strong: rgba(255, 252, 245, 0.86);
-  --primary-ink: #ffffff;
+  --paper: #161a1d;
+  --muted: rgba(22, 26, 29, 0.62);
+  --line: rgba(38, 52, 61, 0.16);
+  --ember: #8e4f35;
+  --ember-strong: #8e4f35;
+  --amber: #f0b35a;
+  --rust: #8e4f35;
+  --steel: #26343d;
+  --moss: #8e4f35;
+  --coal: #e6d8bc;
+  --coal-2: #d8c7a8;
+  --surface: rgba(230, 216, 188, 0.58);
+  --surface-strong: rgba(230, 216, 188, 0.84);
+  --primary-ink: #080a0b;
   --display-section-max: 3.4rem;
   --space-section: clamp(4.5rem, 7vw, 7rem);
   --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
@@ -54,33 +57,36 @@ html[data-theme='dark'] body {
   min-height: 100dvh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 76% 7%, rgba(159, 95, 45, 0.09), transparent 29rem),
-    radial-gradient(circle at 12% 76%, rgba(117, 83, 52, 0.06), transparent 32rem),
-    linear-gradient(180deg, #f6f1e8 0%, #eee6d8 52%, #f4efe5 100%);
+    radial-gradient(circle at 76% 7%, color-mix(in srgb, var(--amber) 8%, transparent), transparent 29rem),
+    radial-gradient(circle at 12% 76%, color-mix(in srgb, var(--rust) 6%, transparent), transparent 32rem),
+    linear-gradient(180deg, #e6d8bc 0%, #d8c7a8 52%, #e6d8bc 100%);
 }
 
 :root[data-theme='dark'] .sa-shell,
 :root.dark .sa-shell {
-  --paper: #f0dfbf;
-  --muted: rgba(232, 219, 195, 0.62);
-  --line: rgba(237, 216, 180, 0.13);
-  --ember: #c7773d;
-  --ember-strong: #e5ad67;
-  --moss: #c69255;
-  --coal: #080705;
-  --coal-2: #0d0b08;
-  --surface: rgba(238, 215, 177, 0.025);
-  --surface-strong: rgba(238, 215, 177, 0.055);
-  --primary-ink: #170e08;
+  --paper: #e6d8bc;
+  --muted: rgba(230, 216, 188, 0.62);
+  --line: rgba(200, 155, 82, 0.15);
+  --ember: #c89b52;
+  --ember-strong: #f0b35a;
+  --amber: #f0b35a;
+  --rust: #8e4f35;
+  --steel: #26343d;
+  --moss: #c89b52;
+  --coal: #080a0b;
+  --coal-2: #161a1d;
+  --surface: rgba(230, 216, 188, 0.025);
+  --surface-strong: rgba(230, 216, 188, 0.055);
+  --primary-ink: #080a0b;
   --display-section-max: 3.4rem;
   --space-section: clamp(4.5rem, 7vw, 7rem);
   --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
   --meta-size: 0.72rem;
 
   background:
-    radial-gradient(circle at 77% 8%, rgba(190, 86, 39, 0.12), transparent 31rem),
-    radial-gradient(circle at 16% 78%, rgba(100, 65, 35, 0.07), transparent 34rem),
-    linear-gradient(180deg, #080705 0%, #0d0b08 50%, #060504 100%);
+    radial-gradient(circle at 77% 8%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 31rem),
+    radial-gradient(circle at 16% 78%, color-mix(in srgb, var(--rust) 7%, transparent), transparent 34rem),
+    linear-gradient(180deg, #080a0b 0%, #161a1d 50%, #080a0b 100%);
 }
 
 .sa-shell a {
@@ -97,33 +103,33 @@ html[data-theme='dark'] body {
 }
 
 .sa-shell::before {
-  opacity: 0.16;
+  opacity: 0.18;
   background-image:
-    linear-gradient(rgba(54, 39, 25, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(54, 39, 25, 0.04) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--steel) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ember) 12%, transparent) 1px, transparent 1px);
   background-size: 108px 108px;
   mask-image: radial-gradient(circle at 58% 18%, #000 0 21%, transparent 72%);
 }
 
 .sa-shell::after {
-  opacity: 0.035;
-  background-image: repeating-radial-gradient(circle at 30% 20%, #2d2015 0 0.4px, transparent 0.8px 3px);
+  opacity: 0.04;
+  background-image: repeating-radial-gradient(circle at 30% 20%, var(--paper) 0 0.4px, transparent 0.8px 3px);
   background-size: 5px 5px;
   mix-blend-mode: multiply;
 }
 
 :root[data-theme='dark'] .sa-shell::before,
 :root.dark .sa-shell::before {
-  opacity: 0.2;
+  opacity: 0.24;
   background-image:
-    linear-gradient(rgba(232, 207, 166, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232, 207, 166, 0.025) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--steel) 32%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ember) 18%, transparent) 1px, transparent 1px);
 }
 
 :root[data-theme='dark'] .sa-shell::after,
 :root.dark .sa-shell::after {
-  opacity: 0.055;
-  background-image: repeating-radial-gradient(circle at 30% 20%, #f2d9ad 0 0.35px, transparent 0.75px 3px);
+  opacity: 0.07;
+  background-image: repeating-radial-gradient(circle at 30% 20%, var(--paper) 0 0.35px, transparent 0.75px 3px);
   mix-blend-mode: screen;
 }
 
@@ -429,7 +435,7 @@ html[data-theme='dark'] body {
 :root:not([data-theme='dark']) .sa-shell .copy-control {
   border-color: var(--ember-strong);
   background: var(--ember-strong);
-  color: #ffffff;
+  color: var(--coal);
 }
 
 @media (prefers-reduced-motion: reduce) {

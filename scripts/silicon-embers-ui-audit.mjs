@@ -280,14 +280,26 @@ for (const route of routes.filter((entry) => entry.domain === 'compatibility')) 
 }
 
 const sharedControlCss = read('src/styles/silicon-embers.css');
+const emberHeroSource = read('src/components/silicon-embers/EmberHero.astro');
 if (!/\.sa-shell \.sa-control\s*\{/.test(sharedControlCss) || !/\.sa-control:focus-visible/.test(sharedControlCss)) {
   failures.push('ActionButton and CopyButton must share themed control and visible focus styles');
 }
 if (/circle at 72% 48%/.test(sharedControlCss)) {
   failures.push('light theme black-hole wash must follow the centered gravity variables');
 }
-for (const token of ['--paper: #241c14', '--coal: #f4efe5', '--paper: #f0dfbf', '--coal: #080705']) {
+const editorialPalette = ['#080a0b', '#161a1d', '#c89b52', '#f0b35a', '#8e4f35', '#e6d8bc', '#26343d'];
+const lowerBrandCss = sharedControlCss.toLowerCase();
+for (const color of editorialPalette) {
+  if (!lowerBrandCss.includes(color)) failures.push(`Brand palette is missing ${color}`);
+}
+for (const token of ['--amber:', '--rust:', '--steel:']) {
   if (!sharedControlCss.includes(token)) failures.push(`Brand palette is missing ${token}`);
+}
+if (/#(?:fff|ffffff)\b/i.test(sharedControlCss)) {
+  failures.push('Brand shell must use bone white instead of pure white');
+}
+for (const marker of ['.ember-hero::after', 'var(--steel)', 'var(--rust)', 'carbon-reflection']) {
+  if (!emberHeroSource.includes(marker)) failures.push(`Ember hero material system is missing ${marker}`);
 }
 if (sharedControlCss.includes('visibility: hidden !important')) {
   failures.push('Light mode must translate the gravity field instead of hiding it');
