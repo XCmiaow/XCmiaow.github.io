@@ -13,7 +13,7 @@ import Ferrofluid from './Ferrofluid.astro';
     <Ferrofluid
       colors={['#d5c19a', '#a9805a', '#65503f', '#272a29']}
       backgroundColor="transparent"
-      speed={0.26}
+      speed={0.035}
       scale={1.55}
       turbulence={1.18}
       fluidity={0.09}
@@ -227,7 +227,7 @@ import Ferrofluid from './Ferrofluid.astro';
       linear-gradient(90deg, transparent 0%, #000 11%, #000 92%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
-    animation: fluid-field-drift 24s ease-in-out infinite;
+    animation: fluid-field-drift 120s ease-in-out infinite;
     will-change: transform, opacity;
   }
 
@@ -240,7 +240,7 @@ import Ferrofluid from './Ferrofluid.astro';
       radial-gradient(circle at 20% 28%, rgba(184, 154, 105, 0.055), transparent 28rem),
       radial-gradient(circle at 82% 72%, rgba(76, 54, 40, 0.08), transparent 32rem);
     opacity: 0.5;
-    animation: fluid-field-breathe 18s ease-in-out infinite;
+    animation: fluid-field-breathe 96s ease-in-out infinite;
   }
 
   .depth-fluid :global(.magnetic-fluid) {
