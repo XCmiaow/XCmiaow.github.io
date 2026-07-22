@@ -40,19 +40,19 @@ const FALLBACK_COLOR = '#d79a52';
 const FALLBACK_RGB: RGB = [0.843, 0.604, 0.322];
 const DEFAULT_CONFIG: FerrofluidConfig = {
   colors: ['#d79a52', '#c9793f', '#9b5630', '#4f2c1d'],
-  speed: 0.22,
+  speed: 0.58,
   scale: 1.28,
-  turbulence: 0.8,
-  fluidity: 0.07,
-  rimWidth: 0.11,
+  turbulence: 1.12,
+  fluidity: 0.08,
+  rimWidth: 0.12,
   sharpness: 3.2,
-  shimmer: 0.48,
-  glow: 1.32,
+  shimmer: 0.72,
+  glow: 1.56,
   flowDirection: 'down',
   opacity: 0.24,
   mouseInteraction: true,
-  mouseStrength: 0.28,
-  mouseRadius: 0.24,
+  mouseStrength: 0.38,
+  mouseRadius: 0.28,
   mouseDampening: 0.24,
   paused: false,
   dpr: 1,
@@ -158,12 +158,13 @@ float dbn(vec2 p, float s, float seed) {
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   float ref = 700.0 / max(uScale, 0.05);
   vec2 p = fragCoord / iResolution.y * ref;
-
   float spd = 200.0 * uSpeed;
   float t = iTime;
 
   vec2 dir = uFlow;
   vec2 perp = vec2(-dir.y, dir.x);
+  float waveShear = sin(dot(p, dir) * 0.046 + dot(p, perp) * 0.017 + t * spd * 1.55);
+  p += perp * waveShear * 9.0 * uTurbulence;
 
   float distort1 = vn(p + perp * (t * spd), 60.0, 10.0) * 50.0 * uTurbulence;
   float distort2 = vn(p - perp * (t * spd), 120.0, 15.0) * 100.0 * uTurbulence;
@@ -183,10 +184,17 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
   float band = (uRimWidth - abs((mapeaks - 0.4) * 2.0)) * 5.0;
   float ltn = clamp(band - vn(p + dir * (t * spd * 0.5), 60.0, 12.0) * uShimmer, 0.0, 1.0);
+  float stream = dot(p, dir) * 0.052 + dot(p, perp) * 0.018;
+  float counterStream = dot(p, dir) * 0.031 - dot(p, perp) * 0.026;
+  float waveA = 0.5 + 0.5 * sin(stream - t * spd * 1.8);
+  float waveB = 0.5 + 0.5 * sin(counterStream + t * spd * 1.15);
+  float flowPulse = smoothstep(0.48, 0.98, max(waveA, waveB));
   ltn = pow(ltn, uSharpness) * uGlow;
+  ltn *= mix(0.62, 1.78, flowPulse);
+
   ltn *= clamp(1.0 - mGlow, 0.0, 1.0);
 
-  float h = clamp(0.5 + (peaks - peaks2) * 0.8, 0.0, 1.0);
+  float h = clamp(0.5 + (peaks - peaks2) * 0.8 + (flowPulse - 0.5) * 0.12, 0.0, 1.0);
   vec3 col = palette(h);
 
   vec3 outc = col * ltn;
