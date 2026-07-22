@@ -37,7 +37,7 @@ const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
 const PARTICLE_GAIN = 1.2;
 const GLOW_SIZE = 32;
-const FRAME_FALLBACK_DELAY = 72;
+const FRAME_FALLBACK_DELAY = 48;
 const ORBIT_COSINE = Math.cos(-0.2);
 const ORBIT_SINE = Math.sin(-0.2);
 const PARTICLE_PROFILES: Record<ParticleBand, ParticleProfile> = {
@@ -278,11 +278,13 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   const renderStatic = () => {
     const random = createSeededRandom(240713);
     particles.length = 0;
-    emit(28, random);
+    emit(30, random);
     const gravity = gravityField;
+    const alphaCap = width < 640 ? 0.5 : 0.62;
     for (const particle of particles) {
       particle.radius = rand(gravity.innerRadius * 1.7, particle.spawnRadius, random);
       particle.angle += rand(0, TAU, random);
+      particle.alpha = Math.min(particle.alpha, alphaCap);
       particle.life = particle.maxLife * rand(0.16, 0.66, random);
       projectParticle(particle, gravity);
       particle.previousX = particle.x - rand(-4, 4, random);
