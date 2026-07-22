@@ -18,27 +18,31 @@ import Ferrofluid from './Ferrofluid.astro';
     </div>
 
     <div class="depth-fluid">
+      <span class="fluid-current current-counter"></span>
+      <span class="fluid-current current-main"></span>
+      <span class="fluid-current current-hot"></span>
       <Ferrofluid
-        colors={['#d79a52', '#c9793f', '#9b5630', '#4f2c1d']}
+        colors={['#ffe4a4', '#f6a64d', '#d15f2e', '#8f3f24', '#2a130d']}
         backgroundColor="transparent"
-        speed={0.58}
-        scale={1.28}
-        turbulence={1.12}
-        fluidity={0.08}
-        rimWidth={0.12}
-        sharpness={3.2}
-        shimmer={0.72}
-        glow={1.56}
+        speed={1.18}
+        scale={0.92}
+        turbulence={1.86}
+        fluidity={0.18}
+        rimWidth={0.22}
+        sharpness={1.95}
+        shimmer={1.18}
+        glow={2.55}
         flowDirection="down"
-        opacity={0.24}
+        opacity={0.68}
         mouseInteraction={true}
-        mouseStrength={0.38}
-        mouseRadius={0.28}
-        mouseDampening={0.24}
+        mouseStrength={0.72}
+        mouseRadius={0.36}
+        mouseDampening={0.16}
         dpr={1}
-        mixBlendMode="screen"
+        mixBlendMode="normal"
         className="magnetic-fluid"
       />
+      <span class="fluid-current current-glints"></span>
     </div>
 
     <div class="depth-event">
@@ -203,30 +207,228 @@ import Ferrofluid from './Ferrofluid.astro';
   }
 
   .depth-fluid {
-    inset: -16%;
-    z-index: 5;
+    inset: -24%;
+    z-index: 3;
     pointer-events: none;
-    filter: saturate(0.82) contrast(0.98) blur(0.28px);
-    opacity: 0.46;
-    transform: rotate(-12deg) scale(1.06, 0.8);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0 13%, #000 24% 78%, transparent 94%);
-    mask-image: radial-gradient(circle at 50% 50%, transparent 0 13%, #000 24% 78%, transparent 94%);
-    animation: fluid-tide 8.5s ease-in-out infinite;
-    will-change: transform;
+    overflow: visible;
+    filter: saturate(1.12) contrast(1.05);
+    mix-blend-mode: normal;
+    opacity: 0.92;
+    transform: rotate(-12deg) scale(1.14, 0.82);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0 13%, #000 20% 80%, transparent 91%);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 0 13%, #000 20% 80%, transparent 91%);
+    animation: fluid-tide 5.2s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .depth-fluid::before {
+    content: '';
+    position: absolute;
+    inset: 14%;
+    z-index: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      transparent 0 18%,
+      rgba(255, 223, 151, 0.4) 24%,
+      rgba(213, 95, 43, 0.24) 37%,
+      transparent 58%
+    );
+    opacity: 0.76;
+    animation: fluid-glow-pulse 3.4s ease-in-out infinite;
   }
 
   .depth-fluid :global(.magnetic-fluid) {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     width: 100%;
     height: 100%;
+    opacity: 0.98;
+    filter: saturate(1.22) contrast(1.08);
+  }
+
+  .depth-fluid :global(.magnetic-fluid canvas) {
+    opacity: 1;
+  }
+
+  .fluid-current {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    mix-blend-mode: normal;
+    pointer-events: none;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+
+  .current-main {
+    z-index: 3;
+    width: 168%;
+    height: 50%;
+    background:
+      repeating-linear-gradient(
+        102deg,
+        transparent 0 22px,
+        rgba(255, 234, 174, 0.2) 22px 27px,
+        rgba(236, 123, 52, 0.13) 27px 35px,
+        transparent 35px 64px
+      ),
+      conic-gradient(
+        from 214deg,
+        transparent 0 7%,
+        rgba(214, 93, 42, 0.26) 11%,
+        rgba(255, 226, 156, 0.98) 17%,
+        rgba(244, 146, 65, 0.5) 24%,
+        transparent 35% 47%,
+        rgba(255, 205, 112, 0.78) 56%,
+        rgba(181, 74, 35, 0.34) 65%,
+        transparent 76%,
+        rgba(255, 239, 188, 0.86) 91%,
+        transparent
+      );
+    background-size:
+      190px 86px,
+      100% 100%;
+    opacity: 0.98;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 31%, #000 35% 50%, transparent 60%);
+    mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 31%, #000 35% 50%, transparent 60%);
+    animation: current-main-roll 3.15s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  }
+
+  .current-counter {
+    z-index: 1;
+    width: 146%;
+    height: 66%;
+    background:
+      repeating-linear-gradient(78deg, transparent 0 34px, rgba(255, 211, 135, 0.16) 34px 42px, transparent 42px 78px),
+      conic-gradient(
+        from 28deg,
+        transparent 0 12%,
+        rgba(198, 82, 38, 0.42) 22%,
+        rgba(255, 210, 126, 0.76) 34%,
+        transparent 45% 59%,
+        rgba(238, 126, 54, 0.48) 69%,
+        rgba(255, 231, 170, 0.58) 76%,
+        transparent 88%
+      );
+    background-size:
+      240px 110px,
+      100% 100%;
+    opacity: 0.66;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 34%, #000 39% 54%, transparent 66%);
+    mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 34%, #000 39% 54%, transparent 66%);
+    animation: current-counter-roll 4.7s ease-in-out infinite;
+  }
+
+  .current-hot {
+    z-index: 4;
+    width: 126%;
+    height: 31%;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0 7%,
+        rgba(255, 242, 189, 0.95) 14%,
+        rgba(237, 123, 51, 0.18) 22%,
+        transparent 31% 52%,
+        rgba(255, 221, 141, 0.82) 61%,
+        rgba(211, 91, 42, 0.24) 70%,
+        transparent 83%
+      ),
+      radial-gradient(ellipse at 50% 50%, transparent 0 28%, rgba(255, 222, 145, 0.7) 36%, transparent 49%);
+    opacity: 0.86;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 28%, #000 35% 47%, transparent 56%);
+    mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 28%, #000 35% 47%, transparent 56%);
+    animation: current-hot-lash 2.25s ease-in-out infinite;
+  }
+
+  .current-glints {
+    z-index: 5;
+    width: 154%;
+    height: 38%;
+    background:
+      repeating-linear-gradient(94deg, transparent 0 9%, rgba(255, 246, 205, 0.72) 9.4% 10.1%, transparent 10.8% 17%),
+      radial-gradient(ellipse at 50% 50%, transparent 0 34%, rgba(255, 223, 156, 0.42) 39%, transparent 48%);
+    opacity: 0.64;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 34%, #000 38% 45%, transparent 51%);
+    mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 34%, #000 38% 45%, transparent 51%);
+    animation: current-glints-flash 1.55s steps(2, end) infinite;
   }
 
   @keyframes fluid-tide {
     0%,
     100% {
-      transform: rotate(-12deg) scale(1.06, 0.8) translate3d(-0.7%, 0.2%, 0);
+      opacity: 0.82;
+      transform: rotate(-12.5deg) scale(1.12, 0.8) translate3d(-1.2%, 0.3%, 0);
     }
     50% {
-      transform: rotate(-10.2deg) scale(1.1, 0.84) translate3d(1.4%, -0.6%, 0);
+      opacity: 1;
+      transform: rotate(-8.8deg) scale(1.2, 0.88) translate3d(2.2%, -0.9%, 0);
+    }
+  }
+
+  @keyframes fluid-glow-pulse {
+    0%,
+    100% {
+      transform: scale(0.95, 0.82);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.14, 0.96);
+      opacity: 0.86;
+    }
+  }
+
+  @keyframes current-main-roll {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) rotate(-14deg) scale(1, 0.43);
+    }
+    34% {
+      transform: translate(-48.5%, -53%) rotate(-10.6deg) scale(1.06, 0.5);
+    }
+    68% {
+      transform: translate(-52%, -47%) rotate(-16deg) scale(0.98, 0.46);
+    }
+  }
+
+  @keyframes current-counter-roll {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) rotate(-15deg) scale(0.98, 0.45);
+    }
+    50% {
+      transform: translate(-51.5%, -47%) rotate(-18deg) scale(1.08, 0.58);
+    }
+  }
+
+  @keyframes current-hot-lash {
+    0%,
+    100% {
+      transform: translate(-51%, -50%) rotate(-13deg) scale(0.96, 0.38);
+      opacity: 0.56;
+    }
+    42% {
+      transform: translate(-47.5%, -54%) rotate(-9deg) scale(1.1, 0.52);
+      opacity: 0.98;
+    }
+    70% {
+      transform: translate(-52%, -47%) rotate(-16deg) scale(1.03, 0.43);
+      opacity: 0.72;
+    }
+  }
+
+  @keyframes current-glints-flash {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) rotate(-12deg) scale(1, 0.42);
+      opacity: 0.38;
+    }
+    50% {
+      transform: translate(-48.5%, -52%) rotate(-9deg) scale(1.05, 0.5);
+      opacity: 0.78;
     }
   }
 
@@ -479,9 +681,24 @@ import Ferrofluid from './Ferrofluid.astro';
     }
 
     .depth-fluid {
-      inset: -10%;
-      opacity: 0.34;
-      animation-duration: 9.5s;
+      inset: -16%;
+      opacity: 0.84;
+      animation-duration: 6.2s;
+    }
+
+    .current-main {
+      width: 148%;
+      height: 54%;
+    }
+
+    .current-counter {
+      width: 132%;
+      height: 70%;
+    }
+
+    .current-hot,
+    .current-glints {
+      width: 122%;
     }
   }
 
@@ -491,7 +708,9 @@ import Ferrofluid from './Ferrofluid.astro';
     .disc-front,
     .photon-ring,
     .foreground-dust,
-    .depth-fluid {
+    .depth-fluid,
+    .depth-fluid::before,
+    .fluid-current {
       animation: none;
     }
   }

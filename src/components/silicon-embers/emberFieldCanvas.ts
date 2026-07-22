@@ -37,6 +37,7 @@ const TAU = Math.PI * 2;
 const PARTICLE_LIMIT = 64;
 const PARTICLE_GAIN = 1.2;
 const GLOW_SIZE = 32;
+const FRAME_FALLBACK_DELAY = 72;
 const ORBIT_COSINE = Math.cos(-0.2);
 const ORBIT_SINE = Math.sin(-0.2);
 const PARTICLE_PROFILES: Record<ParticleBand, ParticleProfile> = {
@@ -114,6 +115,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   let width = 0;
   let height = 0;
   let frame = 0;
+  let frameFallback = 0;
   let lastTime = performance.now();
   let emissionCarry = 0;
   let isIntersecting = true;
@@ -208,7 +210,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
 
     const radius = particle.size * (1 + pull * 0.65);
     const glowRadius = radius * (particle.band === 'near' ? 3.35 : particle.band === 'mid' ? 2.95 : 2.55);
-    context.globalAlpha = opacity * depth * (warm ? 0.7 : 0.58);
+    context.globalAlpha = opacity * depth * (warm ? 0.64 : 0.54);
     context.drawImage(
       warm ? glowSprites.warm : glowSprites.cool,
       particle.x - glowRadius,
@@ -217,7 +219,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
       glowRadius * 2,
     );
 
-    context.globalAlpha = opacity * (warm ? 1 : 0.72);
+    context.globalAlpha = opacity * (warm ? 0.94 : 0.68);
     context.fillStyle = warm ? 'rgb(239, 169, 91)' : 'rgb(239, 224, 197)';
     context.beginPath();
     context.arc(particle.x, particle.y, radius, 0, TAU);
@@ -289,28 +291,49 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     draw(performance.now(), 0, false);
   };
 
-  const tick = (time: number) => {
-    if (destroyed || document.hidden || !isIntersecting || reducedMotion.matches) {
+  const shouldAnimate = () => !destroyed && !document.hidden && isIntersecting && !reducedMotion.matches;
+
+  const queueFrame = () => {
+    window.cancelAnimationFrame(frame);
+    window.clearTimeout(frameFallback);
+    frame = window.requestAnimationFrame((time) => {
+      window.clearTimeout(frameFallback);
+      frameFallback = 0;
+      tick(time);
+    });
+    frameFallback = window.setTimeout(() => {
+      window.cancelAnimationFrame(frame);
       frame = 0;
+      frameFallback = 0;
+      tick(performance.now());
+    }, FRAME_FALLBACK_DELAY);
+  };
+
+  const tick = (time: number) => {
+    if (!shouldAnimate()) {
+      frame = 0;
+      frameFallback = 0;
       return;
     }
 
     const delta = Math.min(40, time - lastTime);
     lastTime = time;
     draw(time, delta, true);
-    frame = window.requestAnimationFrame(tick);
+    queueFrame();
   };
 
   const syncAnimation = () => {
     window.cancelAnimationFrame(frame);
+    window.clearTimeout(frameFallback);
     frame = 0;
+    frameFallback = 0;
     if (destroyed) return;
 
     if (reducedMotion.matches) {
       renderStatic();
     } else if (!document.hidden && isIntersecting) {
       lastTime = performance.now();
-      frame = window.requestAnimationFrame(tick);
+      queueFrame();
     }
   };
 
@@ -322,8 +345,13 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     syncAnimation();
   };
 
-  const scheduleResize = () => {
+  const scheduleResize = (entries?: ResizeObserverEntry[] | Event) => {
     if (destroyed || resizeFrame) return;
+    const observedRect = Array.isArray(entries) ? entries[0]?.contentRect : undefined;
+    if (observedRect && Math.abs(observedRect.width - width) < 0.5 && Math.abs(observedRect.height - height) < 0.5) {
+      return;
+    }
+
     resizeFrame = window.requestAnimationFrame(() => {
       resizeFrame = 0;
       resizeAndSync();
@@ -344,6 +372,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     if (destroyed) return;
     destroyed = true;
     window.cancelAnimationFrame(frame);
+    window.clearTimeout(frameFallback);
     window.cancelAnimationFrame(resizeFrame);
     window.removeEventListener('resize', scheduleResize);
     document.removeEventListener('visibilitychange', handleVisibilityChange);
