@@ -121,6 +121,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   let isIntersecting = true;
   let destroyed = false;
   let resizeFrame = 0;
+  let warmStartTimers: number[] = [];
   let gravityField: GravityField = {
     x: 0,
     y: 0,
@@ -334,8 +335,29 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     if (reducedMotion.matches) {
       renderStatic();
     } else if (!document.hidden && isIntersecting) {
-      lastTime = performance.now();
+      const now = performance.now();
+      lastTime = now;
+      draw(now, 0, false);
       queueFrame();
+    }
+  };
+
+  const clearWarmStartTimers = () => {
+    for (const timer of warmStartTimers) window.clearTimeout(timer);
+    warmStartTimers = [];
+  };
+
+  const handleMotionChange = () => {
+    clearWarmStartTimers();
+    syncAnimation();
+    if (reducedMotion.matches) return;
+
+    for (const delay of [96, 192]) {
+      warmStartTimers.push(
+        window.setTimeout(() => {
+          if (!destroyed && !reducedMotion.matches) syncAnimation();
+        }, delay),
+      );
     }
   };
 
@@ -376,9 +398,10 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     window.cancelAnimationFrame(frame);
     window.clearTimeout(frameFallback);
     window.cancelAnimationFrame(resizeFrame);
+    clearWarmStartTimers();
     window.removeEventListener('resize', scheduleResize);
     document.removeEventListener('visibilitychange', handleVisibilityChange);
-    reducedMotion.removeEventListener('change', syncAnimation);
+    reducedMotion.removeEventListener('change', handleMotionChange);
     intersectionObserver?.disconnect();
     resizeObserver?.disconnect();
     canvas.removeAttribute('data-ember-ready');
@@ -388,7 +411,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
   resizeObserver?.observe(host);
   window.addEventListener('resize', scheduleResize, { passive: true });
   document.addEventListener('visibilitychange', handleVisibilityChange);
-  reducedMotion.addEventListener('change', syncAnimation);
+  reducedMotion.addEventListener('change', handleMotionChange);
   window.addEventListener('pagehide', cleanup, { once: true });
   document.addEventListener('astro:before-swap', cleanup, { once: true });
   resizeAndSync();
