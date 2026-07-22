@@ -1,0 +1,137 @@
+---
+export type FuzzyTextDirection = 'horizontal' | 'vertical' | 'both';
+
+export interface Props {
+  fontSize?: number | string;
+  fontWeight?: number | string;
+  fontFamily?: string;
+  color?: string;
+  enableHover?: boolean;
+  baseIntensity?: number;
+  hoverIntensity?: number;
+  fuzzRange?: number;
+  fps?: number;
+  direction?: FuzzyTextDirection;
+  transitionDuration?: number;
+  clickEffect?: boolean;
+  glitchMode?: boolean;
+  glitchInterval?: number;
+  glitchDuration?: number;
+  gradient?: string[] | null;
+  letterSpacing?: number;
+  className?: string;
+}
+
+const {
+  fontSize = 'clamp(2rem, 10vw, 10rem)',
+  fontWeight = 900,
+  fontFamily = 'inherit',
+  color = '#fff',
+  enableHover = true,
+  baseIntensity = 0.18,
+  hoverIntensity = 0.5,
+  fuzzRange = 30,
+  fps = 60,
+  direction = 'horizontal',
+  transitionDuration = 0,
+  clickEffect = false,
+  glitchMode = false,
+  glitchInterval = 2000,
+  glitchDuration = 200,
+  gradient = null,
+  letterSpacing = 0,
+  className = '',
+} = Astro.props;
+
+const slotHtml = Astro.slots.has('default') ? await Astro.slots.render('default') : '';
+const text = slotHtml
+  .replace(/<[^>]*>/g, '')
+  .replace(/\s+/g, ' ')
+  .trim();
+const fontSizeValue = typeof fontSize === 'number' ? `${fontSize}px` : fontSize;
+const config = {
+  text,
+  fontSize: fontSizeValue,
+  fontWeight,
+  fontFamily,
+  color,
+  enableHover,
+  baseIntensity,
+  hoverIntensity,
+  fuzzRange,
+  fps,
+  direction,
+  transitionDuration,
+  clickEffect,
+  glitchMode,
+  glitchInterval,
+  glitchDuration,
+  gradient,
+  letterSpacing,
+};
+const style = [
+  `--fuzzy-font-size: ${fontSizeValue}`,
+  `--fuzzy-font-weight: ${fontWeight}`,
+  `--fuzzy-font-family: ${fontFamily}`,
+  `--fuzzy-color: ${color}`,
+  `--fuzzy-letter-spacing: ${letterSpacing}px`,
+].join('; ');
+---
+
+<span class="fuzzy-text" data-fuzzy-root style={style}>
+  <span class="fuzzy-text__fallback"><slot /></span>
+  <canvas class={className} data-fuzzy-text data-fuzzy-config={JSON.stringify(config)} aria-hidden="true"></canvas>
+</span>
+
+<script>
+  import './fuzzyTextCanvas';
+</script>
+
+<style>
+  .fuzzy-text {
+    position: relative;
+    display: inline-block;
+    color: var(--fuzzy-color);
+    font-family: var(--fuzzy-font-family);
+    font-size: var(--fuzzy-font-size);
+    font-weight: var(--fuzzy-font-weight);
+    letter-spacing: var(--fuzzy-letter-spacing);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .fuzzy-text__fallback {
+    display: inline-block;
+    transition: opacity 160ms ease;
+  }
+
+  .fuzzy-text canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    max-width: none;
+    opacity: 0;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    transition: opacity 160ms ease;
+  }
+
+  .fuzzy-text[data-fuzzy-ready='true'] .fuzzy-text__fallback {
+    opacity: 0;
+  }
+
+  .fuzzy-text[data-fuzzy-ready='true'] canvas {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fuzzy-text canvas {
+      display: none;
+    }
+
+    .fuzzy-text[data-fuzzy-ready='true'] .fuzzy-text__fallback {
+      opacity: 1;
+    }
+  }
+</style>

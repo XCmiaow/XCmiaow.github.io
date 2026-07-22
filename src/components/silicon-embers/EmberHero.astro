@@ -1,5 +1,6 @@
 ---
 import EmberField from './EmberField.astro';
+import FuzzyText from './FuzzyText.astro';
 import type { SiliconEmbersHeroCopy } from '../../data/siliconEmbersHome';
 
 interface Props {
@@ -19,7 +20,27 @@ const { copy, wordmark } = Astro.props;
       <span>field / active</span>
     </p>
     <p class="wordmark">{wordmark}</p>
-    <h1 id="sa-title">{copy.title}</h1>
+    <h1 id="sa-title" class="hero-title">
+      <FuzzyText
+        fontSize="var(--hero-title-size)"
+        fontWeight={780}
+        fontFamily="var(--font-display)"
+        color="var(--paper)"
+        enableHover={true}
+        baseIntensity={0.1}
+        hoverIntensity={0.34}
+        fuzzRange={18}
+        fps={30}
+        direction="horizontal"
+        transitionDuration={8}
+        clickEffect={false}
+        gradient={['var(--paper)', 'var(--ember-strong)', 'var(--paper)']}
+        letterSpacing={-1}
+        className="hero-fuzzy-canvas"
+      >
+        {copy.title}
+      </FuzzyText>
+    </h1>
     <p class="lead">{copy.lead}</p>
   </div>
 
@@ -121,11 +142,18 @@ const { copy, wordmark } = Astro.props;
     text-transform: lowercase;
   }
 
-  h1 {
+  .hero-title {
+    --hero-title-size: clamp(3.1rem, 6vw, 5.2rem);
+
+    display: inline-block;
     max-width: 8ch;
     font-size: clamp(3.1rem, 6vw, 5.2rem);
     line-height: 0.94;
     letter-spacing: -0.045em;
+  }
+
+  .hero-title :global(.hero-fuzzy-canvas) {
+    filter: drop-shadow(0 0 16px color-mix(in srgb, var(--ember-strong) 35%, transparent));
   }
 
   .lead,
@@ -179,8 +207,10 @@ const { copy, wordmark } = Astro.props;
       width: min(28vw, 17rem);
     }
 
-    h1 {
-      font-size: clamp(3rem, 7vw, 4.65rem);
+    .hero-title {
+      --hero-title-size: clamp(3rem, 7vw, 4.65rem);
+
+      font-size: var(--hero-title-size);
     }
   }
 
@@ -212,9 +242,11 @@ const { copy, wordmark } = Astro.props;
       font-size: 0.55rem;
     }
 
-    h1 {
+    .hero-title {
       max-width: 7ch;
-      font-size: clamp(2.65rem, 12.5vw, 3.75rem);
+      --hero-title-size: clamp(2.65rem, 12.5vw, 3.75rem);
+
+      font-size: var(--hero-title-size);
     }
 
     .lead {
