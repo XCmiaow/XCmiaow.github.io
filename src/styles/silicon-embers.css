@@ -354,38 +354,17 @@ html[data-theme='dark'] body {
 }
 
 :root:not([data-theme='dark']) .sa-shell .depth-fluid {
-  filter: sepia(0.16) saturate(0.72) contrast(0.9);
-  mix-blend-mode: normal;
-  opacity: 0.48;
-}
-
-:root:not([data-theme='dark']) .sa-shell .depth-fluid .fluid-current {
-  mix-blend-mode: normal;
-}
-
-:root:not([data-theme='dark']) .sa-shell .depth-fluid .current-main {
-  opacity: 0.34;
-}
-
-:root:not([data-theme='dark']) .sa-shell .depth-fluid .current-counter {
+  filter: sepia(0.26) saturate(0.44) contrast(0.78) brightness(1.04);
   opacity: 0.22;
 }
 
-:root:not([data-theme='dark']) .sa-shell .depth-fluid .current-hot {
-  opacity: 0.24;
-}
-
-:root:not([data-theme='dark']) .sa-shell .depth-fluid .current-glints {
-  opacity: 0.18;
-}
-
 :root:not([data-theme='dark']) .sa-shell .depth-fluid .magnetic-fluid {
-  filter: sepia(0.2) saturate(0.78) contrast(0.92);
-  opacity: 0.42;
+  filter: sepia(0.32) saturate(0.48) contrast(0.82);
+  opacity: 0.34;
 }
 
 :root:not([data-theme='dark']) .sa-shell .depth-fluid .magnetic-fluid[data-ferrofluid-ready='true'] canvas {
-  opacity: 0.5;
+  opacity: 0.42;
 }
 
 :root:not([data-theme='dark']) .sa-shell .cosmic-grain {
