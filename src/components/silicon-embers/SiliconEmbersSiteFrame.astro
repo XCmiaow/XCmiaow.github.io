@@ -3,6 +3,7 @@ import common from '../../data/common.json';
 import '../../styles/silicon-embers.css';
 import { siliconEmbersHomeCopy, type SiliconEmbersLang, type SiliconEmbersNavCopy } from '../../data/siliconEmbersHome';
 import { alternatePath, routePath } from '../../lib/siteRoutes';
+import BrandLoader from './BrandLoader.astro';
 import BrandNav from './BrandNav.astro';
 import SiliconEmbersFooter from './SiliconEmbersFooter.astro';
 
@@ -51,6 +52,7 @@ const links = footerLinks ?? [
 
 <div class="sa-shell" data-lang={lang}>
   <a class="skip-link" href="#main">{copy.skipLabel}</a>
+  <BrandLoader overlay size={152} />
   <BrandNav copy={navCopy} />
   <main id="main" class="sa-frame-main">
     <slot />

@@ -1,0 +1,265 @@
+---
+export interface Props {
+  label?: string;
+  overlay?: boolean;
+  size?: number;
+  className?: string;
+}
+
+const { label = 'field loading', overlay = false, size = 112, className = '' } = Astro.props;
+const classes = ['brand-loader', overlay ? 'page' : 'inline', className].filter(Boolean).join(' ');
+const style = `--loader-size: ${size}px`;
+---
+
+<div
+  class={classes}
+  style={style}
+  role="status"
+  aria-live="polite"
+  aria-label={label}
+  data-brand-loader={overlay ? 'page' : 'inline'}
+>
+  <div class="brand-loader__field" aria-hidden="true">
+    <svg style="--i: 0; --j: 0; --spin: 8s" viewBox="0 0 344 344">
+      <g class="loader-orbit orbit-outer">
+        <path
+          class="loader-fill"
+          d="M72 172C72 116.772 116.772 72 172 72C227.228 72 272 116.772 272 172C272 227.228 227.228 272 172 272C116.772 272 72 227.228 72 172ZM197.322 172C197.322 158.015 185.985 146.678 172 146.678C158.015 146.678 146.678 158.015 146.678 172C146.678 185.985 158.015 197.322 172 197.322C185.985 197.322 197.322 185.985 197.322 172Z"
+        ></path>
+        <path
+          class="loader-stroke"
+          d="M72 172C72 116.772 116.772 72 172 72C227.228 72 272 116.772 272 172C272 227.228 227.228 272 172 272C116.772 272 72 227.228 72 172ZM197.322 172C197.322 158.015 185.985 146.678 172 146.678C158.015 146.678 146.678 158.015 146.678 172C146.678 185.985 158.015 197.322 172 197.322C185.985 197.322 197.322 185.985 197.322 172Z"
+        ></path>
+      </g>
+    </svg>
+
+    <svg style="--i: 1; --j: 1; --spin: 7s" viewBox="0 0 344 344">
+      <g class="loader-orbit orbit-broken">
+        <path d="M102.892 127.966C93.373 142.905 88.952 160.527 90.29 178.19"></path>
+        <path d="M93.34 194.968C98.305 211.971 108.646 226.908 122.814 237.541"></path>
+        <path d="M152.707 92.359C140.33 95.358 128.822 101.199 119.097 109.421"></path>
+        <path d="M244.195 133.235C246.991 138.442 249.216 143.937 250.83 149.623"></path>
+        <path d="M234.238 225.304C223.932 237.338 210.358 246.126 195.159 250.604"></path>
+      </g>
+    </svg>
+
+    <svg style="--i: 0; --j: 2; --spin: 4.8s" viewBox="0 0 344 344">
+      <g class="loader-orbit orbit-middle">
+        <path
+          d="M240.944 172C240.944 187.951 235.414 203.408 225.295 215.738C215.176 228.068 201.095 236.508 185.45 239.62C169.806 242.732 153.567 240.323 139.5 232.804C125.433 225.285 114.408 213.12 108.304 198.384C102.2 183.648 101.394 167.25 106.024 151.987C110.654 136.723 120.434 123.537 133.696 114.675C146.959 105.813 162.884 101.824 178.758 103.388C194.632 104.951 209.472 111.97 220.751 123.249"
+        ></path>
+        <path
+          d="M195.136 135.689C188.115 131.215 179.948 128.873 171.624 128.946C163.299 129.019 155.174 131.503 148.232 136.099"
+        ></path>
+        <path
+          d="M195.136 208.311C188.115 212.784 179.948 215.127 171.624 215.054C163.299 214.981 155.174 212.496 148.232 207.901"
+        ></path>
+      </g>
+    </svg>
+
+    <svg style="--i: 1; --j: 3; --spin: 5.8s" viewBox="0 0 344 344">
+      <g class="loader-orbit orbit-inner">
+        <path
+          d="M145.949 124.51L148.554 129.259C156.575 124.859 165.672 122.804 174.806 123.331C183.94 123.858 192.741 126.944 200.203 132.236C207.665 137.529 213.488 144.815 217.004 153.261C220.521 161.707 221.59 170.972 220.09 179.997"
+        ></path>
+        <path
+          d="M139.91 220.713C134.922 217.428 130.469 213.395 126.705 208.758L134.148 202.721C141.342 211.584 151.417 217.642 162.619 219.839C173.821 222.036 185.438 220.232 195.446 214.742"
+        ></path>
+      </g>
+    </svg>
+
+    <svg style="--i: 2; --j: 4; --spin: 2.6s" viewBox="0 0 344 344">
+      <g class="loader-orbit orbit-core">
+        <path
+          d="M180.956 186.056C183.849 184.212 186.103 181.521 187.41 178.349C188.717 175.177 189.013 171.679 188.258 168.332C187.503 164.986 185.734 161.954 183.192 159.65C180.649 157.346 177.458 155.883 174.054 155.46C170.649 155.038 167.197 155.676 164.169 157.288C161.14 158.9 158.683 161.407 157.133 164.468C155.582 167.528 155.014 170.992 155.505 174.388C155.997 177.783 157.524 180.944 159.879 183.439"
+        ></path>
+        <circle cx="172" cy="172" r="5.56"></circle>
+      </g>
+    </svg>
+  </div>
+
+  <span class="brand-loader__label">{label}</span>
+</div>
+
+<script is:inline>
+  (() => {
+    const dismiss = () => {
+      document.querySelectorAll('[data-brand-loader="page"]').forEach((loader) => {
+        loader.setAttribute('data-loader-state', 'dismissed');
+        window.setTimeout(() => loader.remove(), 520);
+      });
+    };
+    const schedule = () => requestAnimationFrame(() => requestAnimationFrame(dismiss));
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', schedule, { once: true });
+    } else {
+      schedule();
+    }
+  })();
+</script>
+
+<style>
+  .brand-loader {
+    --loader-ink: var(--paper);
+    --loader-hot: var(--ember-strong);
+    --loader-warm: var(--amber);
+    --loader-rust: var(--rust);
+    --loader-cool: var(--steel);
+    --loader-dim: color-mix(in srgb, var(--paper) 34%, transparent);
+
+    display: inline-grid;
+    width: var(--loader-size);
+    min-width: var(--loader-size);
+    place-items: center;
+    justify-items: center;
+    align-content: center;
+    gap: 0.7rem;
+    color: var(--loader-hot);
+  }
+
+  .brand-loader.page {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    width: auto;
+    min-width: 0;
+    min-height: 100dvh;
+    padding: 2rem;
+    background:
+      radial-gradient(circle at 50% 43%, color-mix(in srgb, var(--loader-warm) 20%, transparent), transparent 16rem),
+      linear-gradient(180deg, color-mix(in srgb, var(--coal) 94%, transparent), var(--coal-2));
+    transition:
+      opacity 420ms ease,
+      visibility 420ms ease,
+      transform 420ms ease;
+  }
+
+  .brand-loader.page[data-loader-state='dismissed'] {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.75rem);
+  }
+
+  .brand-loader.inline {
+    position: relative;
+  }
+
+  .brand-loader__field {
+    position: relative;
+    display: flex;
+    width: var(--loader-size);
+    height: var(--loader-size);
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 0 24px color-mix(in srgb, var(--loader-hot) 30%, transparent));
+  }
+
+  .brand-loader__field::before,
+  .brand-loader__field::after {
+    content: '';
+    position: absolute;
+    inset: 28%;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--loader-hot) 22%, transparent);
+    filter: blur(18px);
+    opacity: 0.88;
+  }
+
+  .brand-loader__field::after {
+    inset: 42%;
+    background: var(--loader-warm);
+    filter: blur(8px);
+    opacity: 0.44;
+  }
+
+  .brand-loader svg {
+    position: absolute;
+    z-index: calc(10 - var(--j));
+    width: 116%;
+    height: 116%;
+    overflow: visible;
+    fill: none;
+    transform-origin: center;
+    transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .brand-loader:hover svg {
+    transform: rotate(-80deg) skew(30deg) translateX(calc(14px * var(--i))) translateY(calc(-11px * var(--i)));
+  }
+
+  .loader-orbit {
+    transform-origin: center;
+    animation: loader-spin var(--spin) ease-in-out infinite alternate;
+  }
+
+  .orbit-outer {
+    opacity: 0.28;
+  }
+
+  .loader-fill {
+    fill: color-mix(in srgb, var(--loader-cool) 44%, transparent);
+  }
+
+  .loader-stroke {
+    stroke: var(--loader-hot);
+    stroke-width: 2.25;
+    opacity: 0.82;
+  }
+
+  .orbit-broken {
+    stroke: var(--loader-rust);
+    stroke-linecap: round;
+    stroke-width: 10;
+    opacity: 0.78;
+  }
+
+  .orbit-middle {
+    stroke: var(--loader-warm);
+    stroke-linecap: round;
+    stroke-width: 2.2;
+  }
+
+  .orbit-middle path:first-child {
+    stroke-width: 4;
+  }
+
+  .orbit-inner {
+    stroke: color-mix(in srgb, var(--loader-ink) 78%, var(--loader-hot));
+    stroke-linecap: round;
+    stroke-width: 6.2;
+    opacity: 0.9;
+  }
+
+  .orbit-core {
+    fill: var(--loader-hot);
+    stroke: var(--loader-warm);
+    stroke-linecap: round;
+    stroke-width: 2;
+  }
+
+  .brand-loader__label {
+    color: color-mix(in srgb, var(--paper) 74%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: lowercase;
+  }
+
+  @keyframes loader-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-loader svg,
+    .loader-orbit {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
