@@ -11,9 +11,9 @@ import Ferrofluid from './Ferrofluid.astro';
 
   <div class="depth-fluid">
     <Ferrofluid
-      colors={['#cdb58d', '#907053', '#4d3d31', '#151918']}
+      colors={['#9a7c5a', '#6b4f3b', '#35281f', '#090b0a']}
       backgroundColor="transparent"
-      speed={0.012}
+      speed={0.008}
       scale={1.55}
       turbulence={1.18}
       fluidity={0.09}
@@ -22,7 +22,7 @@ import Ferrofluid from './Ferrofluid.astro';
       shimmer={1.4}
       glow={1.9}
       flowDirection="down"
-      opacity={0.42}
+      opacity={0.5}
       mouseInteraction={true}
       mouseStrength={0.46}
       mouseRadius={0.35}
@@ -207,8 +207,8 @@ import Ferrofluid from './Ferrofluid.astro';
     z-index: 2;
     pointer-events: none;
     overflow: hidden;
-    filter: saturate(0.56) contrast(0.95) brightness(0.6);
-    opacity: 0.7;
+    filter: saturate(0.62) contrast(1.03) brightness(0.54);
+    opacity: 0.78;
     -webkit-mask-image:
       radial-gradient(
         ellipse calc(var(--hole-size) * 1.1) calc(var(--hole-size) * 0.55) at var(--hole-x) var(--hole-y),
@@ -227,7 +227,7 @@ import Ferrofluid from './Ferrofluid.astro';
       linear-gradient(90deg, transparent 0%, #000 11%, #000 92%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
-    animation: fluid-field-drift 180s ease-in-out infinite;
+    animation: fluid-field-drift 240s ease-in-out infinite;
     will-change: transform, opacity;
   }
 
@@ -237,10 +237,10 @@ import Ferrofluid from './Ferrofluid.astro';
     inset: 0;
     z-index: 0;
     background:
-      radial-gradient(circle at 20% 28%, rgba(184, 154, 105, 0.055), transparent 28rem),
-      radial-gradient(circle at 82% 72%, rgba(76, 54, 40, 0.08), transparent 32rem);
-    opacity: 0.44;
-    animation: fluid-field-breathe 144s ease-in-out infinite;
+      radial-gradient(circle at 20% 28%, rgba(158, 126, 87, 0.07), transparent 28rem),
+      radial-gradient(circle at 82% 72%, rgba(54, 38, 29, 0.12), transparent 32rem);
+    opacity: 0.5;
+    animation: fluid-field-breathe 180s ease-in-out infinite;
   }
 
   .depth-fluid :global(.magnetic-fluid) {
@@ -249,8 +249,8 @@ import Ferrofluid from './Ferrofluid.astro';
     z-index: 1;
     width: 100%;
     height: 100%;
-    opacity: 0.8;
-    filter: saturate(0.6) contrast(0.93) brightness(0.9);
+    opacity: 0.86;
+    filter: saturate(0.62) contrast(0.96) brightness(0.82);
   }
 
   .depth-fluid :global(.magnetic-fluid canvas) {
@@ -260,22 +260,22 @@ import Ferrofluid from './Ferrofluid.astro';
   @keyframes fluid-field-drift {
     0%,
     100% {
-      opacity: 0.68;
-      transform: translate3d(-0.6%, -0.2%, 0) scale(1.01);
+      opacity: 0.72;
+      transform: translate3d(-0.35%, -0.12%, 0) scale(1.008);
     }
     50% {
-      opacity: 0.82;
-      transform: translate3d(0.8%, 0.35%, 0) scale(1.025);
+      opacity: 0.9;
+      transform: translate3d(0.55%, 0.24%, 0) scale(1.016);
     }
   }
 
   @keyframes fluid-field-breathe {
     0%,
     100% {
-      opacity: 0.44;
+      opacity: 0.5;
     }
     50% {
-      opacity: 0.68;
+      opacity: 0.74;
     }
   }
 
@@ -529,7 +529,7 @@ import Ferrofluid from './Ferrofluid.astro';
 
     .depth-fluid {
       inset: -10%;
-      opacity: 0.72;
+      opacity: 0.76;
     }
   }
 
