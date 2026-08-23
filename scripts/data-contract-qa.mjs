@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -115,6 +115,37 @@ for (const [lang, sourceData] of [
     `${lang} card-house volunteer year differs from evidence`,
   );
 }
+
+const mathorCup2026Id = 'mathorcup-2026-national-second';
+const mathorCup2026Zh = zh.competitions.find((item) => item.id === mathorCup2026Id);
+const mathorCup2026En = en.competitions.find((item) => item.id === mathorCup2026Id);
+const mathorCup2026Evidence = evidence.items.find((item) => item.id === mathorCup2026Id);
+assert.ok(mathorCup2026Zh, '2026 MathorCup award is missing from Chinese competitions');
+assert.ok(mathorCup2026En, '2026 MathorCup award is missing from English competitions');
+assert.ok(mathorCup2026Evidence, '2026 MathorCup award is missing from evidence');
+assert.equal(mathorCup2026Zh.year, '2026', '2026 MathorCup Chinese year is incorrect');
+assert.equal(mathorCup2026En.year, '2026', '2026 MathorCup English year is incorrect');
+assert.equal(mathorCup2026Zh.level, 'national', '2026 MathorCup Chinese level must be national');
+assert.equal(mathorCup2026En.level, 'national', '2026 MathorCup English level must be national');
+assert.equal(mathorCup2026Evidence.category, 'modeling', '2026 MathorCup evidence must be modeling');
+assert.equal(mathorCup2026Evidence.file, `${mathorCup2026Id}.png`, '2026 MathorCup evidence file is incorrect');
+assert.ok(
+  resumeCatalogSource.includes(`'${mathorCup2026Id}': ['${mathorCup2026Id}']`),
+  '2026 MathorCup award must map to its evidence',
+);
+for (const variant of ['general', 'academic', 'career']) {
+  const variantBlock = selectorSource.match(new RegExp(`${variant}: \\[([\\s\\S]*?)\\]`))?.[1];
+  assert.ok(variantBlock?.includes(`'${mathorCup2026Id}'`), `${variant} resume must include 2026 MathorCup`);
+  assert.ok(!variantBlock?.includes("'mathorcup-2025-second'"), `${variant} resume must replace 2025 MathorCup`);
+}
+for (const materialId of ['general-resume', 'academic-resume', 'career-resume', 'evidence-gallery', 'modeling-case']) {
+  const material = materials.items.find((item) => item.id === materialId);
+  assert.ok(material?.evidenceIds.includes(mathorCup2026Id), `${materialId} must reference 2026 MathorCup`);
+}
+const modelingClaim = claims.items.find((item) => item.id === 'modeling-practice');
+assert.ok(modelingClaim?.evidenceIds.includes(mathorCup2026Id), 'modeling claim must reference 2026 MathorCup');
+await access(path.join(root, 'public/assets/evidence/public', `${mathorCup2026Id}.png`));
+await access(path.join(root, 'public/assets/evidence/thumbs', `${mathorCup2026Id}.webp`));
 
 assertReferences(materials.items, evidenceIds, 'evidenceIds', 'material');
 assertReferences(claims.items, evidenceIds, 'evidenceIds', 'claim');

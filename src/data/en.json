@@ -22,7 +22,7 @@
     {
       "id": "modeling",
       "title": "Modeling Training",
-      "desc": "CUMCM Jiangsu Provincial First Prize, built through repeated practice in problem framing, assumptions, analysis, and writing."
+      "desc": "MathorCup National Second Prize and CUMCM Jiangsu First Prize, supported by end-to-end modeling practice."
     },
     {
       "id": "global",
@@ -42,6 +42,13 @@
       "level": "international",
       "title": "MCM/ICM Honorable Mention (H Award)",
       "note": "International math modeling competition"
+    },
+    {
+      "id": "mathorcup-2026-national-second",
+      "year": "2026",
+      "level": "national",
+      "title": "16th MathorCup Mathematical Application Challenge, National Second Prize (Undergraduate Division)",
+      "note": "National-level math modeling award"
     },
     {
       "id": "mcm-2025-honorable-mention",

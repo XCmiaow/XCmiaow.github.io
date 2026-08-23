@@ -235,7 +235,7 @@ const achievementIdsByVariant: Record<ResumeVariant, string[]> = {
     'national-inspirational-scholarship-2025',
     'cumcm-2024-jiangsu-first',
     'math-competition-2025-third',
-    'mathorcup-2025-second',
+    'mathorcup-2026-national-second',
     'chemistry-olympiad-2023',
     'chemistry-olympiad-2022',
   ],
@@ -245,7 +245,7 @@ const achievementIdsByVariant: Record<ResumeVariant, string[]> = {
     'national-inspirational-scholarship-2025',
     'cumcm-2024-jiangsu-first',
     'math-competition-2025-third',
-    'mathorcup-2025-second',
+    'mathorcup-2026-national-second',
     'three-good-student-2025',
     'debate-second-2024',
   ],
@@ -253,7 +253,7 @@ const achievementIdsByVariant: Record<ResumeVariant, string[]> = {
     'mcm-2026-honorable-mention',
     'mcm-2025-honorable-mention',
     'cumcm-2024-jiangsu-first',
-    'mathorcup-2025-second',
+    'mathorcup-2026-national-second',
   ],
 };
 

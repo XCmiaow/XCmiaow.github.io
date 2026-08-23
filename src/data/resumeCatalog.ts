@@ -101,6 +101,7 @@ const achievementEvidence: Record<string, string[]> = {
   'national-inspirational-scholarship-2025': ['national-inspirational-scholarship-2025'],
   'cumcm-2024-jiangsu-first': ['cumcm-2024-jiangsu-first'],
   'math-competition-2025-third': ['math-competition-2025-third'],
+  'mathorcup-2026-national-second': ['mathorcup-2026-national-second'],
   'mathorcup-2025-second': ['mathorcup-2025-second'],
   'chemistry-olympiad-2023': ['chemistry-olympiad-2023'],
   'chemistry-olympiad-2022': ['chemistry-olympiad-2022'],

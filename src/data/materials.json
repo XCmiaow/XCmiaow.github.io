@@ -11,10 +11,11 @@
         "cumcm-2024-jiangsu-first",
         "mcm-2025-honorable-mention",
         "mcm-2026-honorable-mention",
+        "mathorcup-2026-national-second",
         "three-good-student-2025"
       ],
       "riskNote": "Public sanitized resume route; keep identity-only fields out of the page.",
-      "lastReviewed": "2026-06-10",
+      "lastReviewed": "2026-08-23",
       "href": { "zh": "/resume-onepage", "en": "/en/resume-onepage" },
       "zh": {
         "title": "通用一页简历",
@@ -43,10 +44,11 @@
         "cumcm-2024-jiangsu-first",
         "mcm-2025-honorable-mention",
         "mcm-2026-honorable-mention",
+        "mathorcup-2026-national-second",
         "card-house-volunteer-2024"
       ],
       "riskNote": "Academic route is public; evidence links should remain curated and non-local.",
-      "lastReviewed": "2026-06-10",
+      "lastReviewed": "2026-08-23",
       "href": { "zh": "/resume-academic", "en": "/en/resume-academic" },
       "zh": {
         "title": "保研评优版简历",
@@ -73,10 +75,10 @@
         "cumcm-2024-jiangsu-first",
         "mcm-2025-honorable-mention",
         "mcm-2026-honorable-mention",
-        "mathorcup-2025-second"
+        "mathorcup-2026-national-second"
       ],
       "riskNote": "Career route is public; keep contact fields limited to reviewed public channels.",
-      "lastReviewed": "2026-06-10",
+      "lastReviewed": "2026-08-23",
       "href": { "zh": "/resume-career", "en": "/en/resume-career" },
       "zh": {
         "title": "求职实习版简历",
@@ -105,6 +107,7 @@
         "cumcm-2024-jiangsu-first",
         "mcm-2025-honorable-mention",
         "mcm-2026-honorable-mention",
+        "mathorcup-2026-national-second",
         "mathorcup-2025-second",
         "math-competition-2025-third",
         "national-inspirational-scholarship-2025",
@@ -116,7 +119,7 @@
         "volleyball-college-2026-fourth"
       ],
       "riskNote": "Certificate images are public-facing but should be reviewed before broad forwarding.",
-      "lastReviewed": "2026-06-10",
+      "lastReviewed": "2026-08-23",
       "href": { "zh": "/evidence", "en": "/en/evidence" },
       "zh": {
         "title": "证明材料墙",
@@ -143,11 +146,12 @@
         "cumcm-2024-jiangsu-first",
         "mcm-2025-honorable-mention",
         "mcm-2026-honorable-mention",
+        "mathorcup-2026-national-second",
         "mathorcup-2025-second",
         "math-competition-2025-third"
       ],
       "riskNote": "Project narrative is public; tie award claims to structured evidence.",
-      "lastReviewed": "2026-06-10",
+      "lastReviewed": "2026-08-23",
       "href": { "zh": "/modeling", "en": "/en/modeling" },
       "zh": {
         "title": "数学建模项目说明",
