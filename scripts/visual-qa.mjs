@@ -258,6 +258,16 @@ async function checkEmberAnimationHotPath(browser) {
       await probePage.waitForTimeout(duration);
       return probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
     };
+    const waitForMinimumFrameCount = async (minimum = 2, timeout = 1500, pollInterval = 100) => {
+      await probePage.evaluate(() => window.__emberPerformanceProbe.reset());
+      const deadline = Date.now() + timeout;
+      let frames = 0;
+      do {
+        await probePage.waitForTimeout(pollInterval);
+        frames = await probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
+      } while (frames < minimum && Date.now() < deadline);
+      return frames;
+    };
     const waitForCanvasIdle = async () => {
       let previous = await probePage.evaluate(() => window.__emberPerformanceProbe.snapshot().clearRectFrames);
       for (let attempt = 0; attempt < 6; attempt += 1) {
@@ -269,7 +279,7 @@ async function checkEmberAnimationHotPath(browser) {
       return false;
     };
 
-    const visibleFrames = await sampleFrameCount();
+    const visibleFrames = await waitForMinimumFrameCount();
     if (visibleFrames < 2) fail('ember canvas does not animate while visible');
 
     await probePage.evaluate(() => {
@@ -289,7 +299,7 @@ async function checkEmberAnimationHotPath(browser) {
       const rect = document.querySelector('.ember-stage')?.getBoundingClientRect();
       return rect && rect.top < innerHeight && rect.bottom > 0;
     });
-    const resumedFrames = await sampleFrameCount();
+    const resumedFrames = await waitForMinimumFrameCount();
     if (resumedFrames < 2) fail('ember canvas does not resume after returning onscreen');
 
     await probePage.emulateMedia({ reducedMotion: 'reduce' });
@@ -298,7 +308,7 @@ async function checkEmberAnimationHotPath(browser) {
     if (reducedMotionFrames !== 0) fail(`reduced-motion ember canvas drew ${reducedMotionFrames} continuing frames`);
 
     await probePage.emulateMedia({ reducedMotion: 'no-preference' });
-    const restoredFrames = await sampleFrameCount();
+    const restoredFrames = await waitForMinimumFrameCount();
     if (restoredFrames < 2) fail('ember canvas does not resume after reduced motion is disabled');
 
     await probePage.evaluate(() => window.dispatchEvent(new Event('pagehide')));
