@@ -182,6 +182,38 @@ await access(path.join(root, 'public/assets/evidence/thumbs', `${curtinVolunteer
 await access(path.join(root, 'public/assets/evidence/public', `${wuxiStarFutureId}.png`));
 await access(path.join(root, 'public/assets/evidence/thumbs', `${wuxiStarFutureId}.webp`));
 
+const academicCompetitionIndividualId = 'academic-competition-individual-2025';
+const academicCompetitionIndividualEvidence = evidence.items.find(
+  (item) => item.id === academicCompetitionIndividualId,
+);
+assert.ok(academicCompetitionIndividualEvidence, 'academic competition individual evidence is missing');
+assert.equal(
+  academicCompetitionIndividualEvidence.category,
+  'academic',
+  'academic competition individual evidence must be academic',
+);
+assert.equal(
+  academicCompetitionIndividualEvidence.year,
+  '2024-2025',
+  'academic competition individual evidence year is incorrect',
+);
+assert.equal(
+  academicCompetitionIndividualEvidence.file,
+  `${academicCompetitionIndividualId}.png`,
+  'academic competition individual evidence file is incorrect',
+);
+assert.equal(
+  academicCompetitionIndividualEvidence.titleZh,
+  '2024—2025学年大学生学科竞赛先进个人',
+  'academic competition individual evidence title is incorrect',
+);
+assert.ok(
+  resumeCatalogSource.includes(`'${academicCompetitionIndividualId}': ['${academicCompetitionIndividualId}']`),
+  'academic competition individual honor must map to its evidence',
+);
+await access(path.join(root, 'public/assets/evidence/public', `${academicCompetitionIndividualId}.png`));
+await access(path.join(root, 'public/assets/evidence/thumbs', `${academicCompetitionIndividualId}.webp`));
+
 const mathorCup2026Id = 'mathorcup-2026-national-second';
 const mathorCup2026Zh = zh.competitions.find((item) => item.id === mathorCup2026Id);
 const mathorCup2026En = en.competitions.find((item) => item.id === mathorCup2026Id);

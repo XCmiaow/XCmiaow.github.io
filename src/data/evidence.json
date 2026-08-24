@@ -208,6 +208,24 @@
       "accessEn": "Public evidence"
     },
     {
+      "id": "academic-competition-individual-2025",
+      "file": "academic-competition-individual-2025.png",
+      "year": "2024-2025",
+      "category": "academic",
+      "levelZh": "校级",
+      "levelEn": "University",
+      "issuerZh": "南京林业大学",
+      "issuerEn": "Nanjing Forestry University",
+      "proofTypeZh": "荣誉证书",
+      "proofTypeEn": "Honor certificate",
+      "titleZh": "2024—2025学年大学生学科竞赛先进个人",
+      "titleEn": "2024–2025 Outstanding Individual in Student Academic Competitions",
+      "claimZh": "证明2024—2025学年获南京林业大学“大学生学科竞赛先进个人”称号。",
+      "claimEn": "Documents Nanjing Forestry University recognition for student academic competition achievement in 2024–2025.",
+      "accessZh": "公开证据",
+      "accessEn": "Public evidence"
+    },
+    {
       "id": "debate-second-2024",
       "file": "debate-second-2024.jpg",
       "year": "2024",

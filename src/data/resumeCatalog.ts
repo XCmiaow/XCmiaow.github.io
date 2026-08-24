@@ -106,7 +106,7 @@ const achievementEvidence: Record<string, string[]> = {
   'chemistry-olympiad-2023': ['chemistry-olympiad-2023'],
   'chemistry-olympiad-2022': ['chemistry-olympiad-2022'],
   'three-good-student-2025': ['three-good-student-2025'],
-  'academic-competition-individual-2025': [],
+  'academic-competition-individual-2025': ['academic-competition-individual-2025'],
   'volleyball-freshman-2024-second': ['volleyball-freshman-2024-second'],
   'debate-second-2024': ['debate-second-2024'],
 };
