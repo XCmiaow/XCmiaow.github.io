@@ -204,7 +204,11 @@
       "id": "card-house-volunteer-2024",
       "summary": "2024: Participated in the 'Card House' volunteer service activity"
     },
-    { "id": "blood-donation-2025", "summary": "2025: Participated in the Red Cross voluntary blood donation activity" }
+    { "id": "blood-donation-2025", "summary": "2025: Participated in the Red Cross voluntary blood donation activity" },
+    {
+      "id": "curtin-university-info-session-volunteer-2026",
+      "summary": "2026: Supported the Curtin University information session, with 1.5 volunteer hours certified"
+    }
   ],
   "researchInterests": {
     "tagline": "Organic chemistry as the foundation, computational tools as the extension",

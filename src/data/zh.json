@@ -186,7 +186,11 @@
   "volunteer": [
     { "id": "volleyball-organizer-2024", "summary": "2024 年 白马校区第一届排球新生杯第一组织责任人" },
     { "id": "card-house-volunteer-2024", "summary": "2024 年 参与材料院'纸牌搭屋'志愿服务活动" },
-    { "id": "blood-donation-2025", "summary": "2025 年 参与红十字会无偿献血活动" }
+    { "id": "blood-donation-2025", "summary": "2025 年 参与红十字会无偿献血活动" },
+    {
+      "id": "curtin-university-info-session-volunteer-2026",
+      "summary": "2026 年 参与西澳科廷大学宣讲会志愿服务，获认定 1.5 小时"
+    }
   ],
   "researchInterests": {
     "tagline": "有机化学为根基、计算工具为延伸、AI 为杠杆",

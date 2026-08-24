@@ -116,6 +116,52 @@ for (const [lang, sourceData] of [
   );
 }
 
+const curtinVolunteerId = 'curtin-university-info-session-volunteer-2026';
+const curtinVolunteerEvidence = evidence.items.find((item) => item.id === curtinVolunteerId);
+assert.ok(curtinVolunteerEvidence, 'Curtin information-session volunteer evidence is missing');
+assert.equal(curtinVolunteerEvidence.category, 'service', 'Curtin volunteer evidence must be service');
+assert.equal(curtinVolunteerEvidence.year, '2026', 'Curtin volunteer evidence year is incorrect');
+assert.equal(curtinVolunteerEvidence.file, `${curtinVolunteerId}.png`, 'Curtin volunteer evidence file is incorrect');
+for (const [lang, sourceData] of [
+  ['zh', zh],
+  ['en', en],
+]) {
+  const service = sourceData.volunteer.find((item) => item.id === curtinVolunteerId);
+  assert.ok(service, `${lang} Curtin volunteer service is missing`);
+  assert.ok(service.summary.includes('2026'), `${lang} Curtin volunteer year is missing`);
+  assert.ok(service.summary.includes('1.5'), `${lang} Curtin volunteer hours are missing`);
+}
+
+const wuxiStarFutureId = 'wuxi-apptec-star-future-2026';
+const wuxiStarFutureEvidence = evidence.items.find((item) => item.id === wuxiStarFutureId);
+assert.ok(wuxiStarFutureEvidence, 'WuXi AppTec Star Future evidence is missing');
+assert.equal(wuxiStarFutureEvidence.category, 'chemistry', 'WuXi AppTec evidence must be chemistry');
+assert.equal(wuxiStarFutureEvidence.year, '2026', 'WuXi AppTec evidence year is incorrect');
+assert.equal(wuxiStarFutureEvidence.file, `${wuxiStarFutureId}.png`, 'WuXi AppTec evidence file is incorrect');
+assert.ok(
+  !zh.competitions.some((item) => item.id === wuxiStarFutureId) &&
+    !en.competitions.some((item) => item.id === wuxiStarFutureId),
+  'WuXi AppTec youth-camp recognition must not be classified as a competition-level award',
+);
+
+const evidenceGallery = materials.items.find((item) => item.id === 'evidence-gallery');
+for (const evidenceId of [curtinVolunteerId, wuxiStarFutureId]) {
+  assert.ok(evidenceGallery?.evidenceIds.includes(evidenceId), `evidence gallery must reference ${evidenceId}`);
+}
+const academicResume = materials.items.find((item) => item.id === 'academic-resume');
+assert.ok(academicResume?.evidenceIds.includes(curtinVolunteerId), 'academic resume must reference Curtin service');
+const campusClaim = claims.items.find((item) => item.id === 'campus-collaboration');
+assert.ok(campusClaim?.evidenceIds.includes(curtinVolunteerId), 'campus claim must reference Curtin service');
+const chemistryClaim = claims.items.find((item) => item.id === 'chemistry-foundation');
+assert.ok(
+  chemistryClaim?.evidenceIds.includes(wuxiStarFutureId),
+  'chemistry claim must reference WuXi AppTec recognition',
+);
+await access(path.join(root, 'public/assets/evidence/public', `${curtinVolunteerId}.png`));
+await access(path.join(root, 'public/assets/evidence/thumbs', `${curtinVolunteerId}.webp`));
+await access(path.join(root, 'public/assets/evidence/public', `${wuxiStarFutureId}.png`));
+await access(path.join(root, 'public/assets/evidence/thumbs', `${wuxiStarFutureId}.webp`));
+
 const mathorCup2026Id = 'mathorcup-2026-national-second';
 const mathorCup2026Zh = zh.competitions.find((item) => item.id === mathorCup2026Id);
 const mathorCup2026En = en.competitions.find((item) => item.id === mathorCup2026Id);
@@ -215,6 +261,7 @@ const visitKeys = (value, trail = 'catalog') => {
 };
 visitKeys(publicData);
 const publicText = JSON.stringify(publicData);
+assert.ok(!publicText.includes('2410407105'), 'public catalog contains the Curtin service student ID');
 for (const pattern of [/\b1[3-9]\d{9}\b/, /\b\d{17}[\dX]\b/i, /[A-Z]:\\Users\\/i]) {
   assert.ok(!pattern.test(publicText), `public catalog contains private value: ${pattern}`);
 }
@@ -238,6 +285,14 @@ for (const [route, component] of sharedAdapters) {
     assert.ok(adapterSource.split(/\r?\n/).length <= 12, `${prefix}/${route} must remain a thin adapter`);
   }
 }
+
+const evidenceComponent = await source('src/components/resume/EvidencePage.astro');
+assert.ok(!evidenceComponent.includes("claim: '支撑叙事'"), 'EvidencePage must not label a supported-claim block');
+assert.ok(
+  !evidenceComponent.includes("claim: 'Supported claim'"),
+  'English EvidencePage must not label a supported-claim block',
+);
+assert.ok(!evidenceComponent.includes('{item.claim}'), 'EvidencePage must not render supported-claim content');
 
 const sectionBlock = resumeCatalogSource.match(/export const resumeSectionIds = \[([\s\S]*?)\] as const;/)?.[1];
 assert.ok(sectionBlock, 'resumeSectionIds must remain a typed source list');

@@ -50,18 +50,18 @@
       "category": "chemistry",
       "status": "evidence-backed",
       "risk": "low",
-      "evidenceIds": ["chemistry-olympiad-2022", "chemistry-olympiad-2023"],
+      "evidenceIds": ["chemistry-olympiad-2022", "chemistry-olympiad-2023", "wuxi-apptec-star-future-2026"],
       "materialIds": ["chem-ai-lab"],
       "routes": ["/chem-ai-lab", "/en/chem-ai-lab", "/evidence", "/en/evidence"],
       "zh": {
         "title": "化学学科基础",
-        "claim": "高中阶段化学竞赛训练支撑后续有机化学、计算化学和 AI 化学方向兴趣。",
-        "boundary": "证据限于公开证书；本科阶段研究项目仍以方向说明和学习路径为主。"
+        "claim": "高中阶段化学竞赛训练与本科阶段化学青年营经历，支撑后续有机化学、计算化学和 AI 化学方向兴趣。",
+        "boundary": "证据限于公开竞赛与活动证书；本科阶段研究项目仍以方向说明和学习路径为主。"
       },
       "en": {
         "title": "Chemistry Foundation",
-        "claim": "Chemistry competition training supports later interest in organic chemistry, computational chemistry, and AI chemistry.",
-        "boundary": "Evidence is limited to public certificates; undergraduate research work remains framed as direction and training."
+        "claim": "Chemistry competition training and undergraduate youth-camp participation support later interest in organic chemistry, computational chemistry, and AI chemistry.",
+        "boundary": "Evidence is limited to public competition and program certificates; undergraduate research work remains framed as direction and training."
       }
     },
     {
@@ -110,6 +110,7 @@
       "evidenceIds": [
         "debate-second-2024",
         "card-house-volunteer-2024",
+        "curtin-university-info-session-volunteer-2026",
         "volleyball-freshman-2024-second",
         "high-jump-2025-fourth",
         "volleyball-college-2026-fourth"
