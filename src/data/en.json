@@ -66,9 +66,9 @@
     },
     {
       "id": "cumcm-2024-jiangsu-first",
-      "year": "2024",
+      "year": "2025",
       "level": "provincial",
-      "title": "CUMCM Jiangsu Provincial First Prize",
+      "title": "2025 CUMCM Jiangsu Provincial First Prize (Undergraduate Division)",
       "note": "Core math modeling achievement"
     },
     {
@@ -139,7 +139,7 @@
       "id": "modeling-research",
       "category": "Modeling & Research",
       "desc": "Mathematical modeling, scientific writing, and data visualization.",
-      "items": ["Math Modeling", "Python", "Markdown", "LaTeX", "Origin"]
+      "items": ["Math Modeling", "Python", "Markdown", "LaTeX", "Origin", "CET-6 457"]
     },
     {
       "id": "development-productivity",

@@ -65,6 +65,26 @@ for (const [label, zhItems, enItems] of bilingualGroups.filter(([, items]) => it
   );
 }
 
+const cet6Score = 'CET-6 457';
+for (const [lang, sourceData] of [
+  ['zh', zh],
+  ['en', en],
+]) {
+  const skillItems = sourceData.skills.flatMap((item) => item.items ?? []);
+  assert.ok(skillItems.includes(cet6Score), `${lang} skills must include ${cet6Score}`);
+  assert.ok(!skillItems.includes('CET-6 452'), `${lang} skills must not include CET-6 452`);
+}
+
+const cumcmEvidenceId = 'cumcm-2024-jiangsu-first';
+for (const [label, item] of [
+  ['Chinese CUMCM competition', zh.competitions.find((entry) => entry.id === cumcmEvidenceId)],
+  ['English CUMCM competition', en.competitions.find((entry) => entry.id === cumcmEvidenceId)],
+  ['CUMCM evidence', evidence.items.find((entry) => entry.id === cumcmEvidenceId)],
+]) {
+  assert.ok(item, `${label} is missing`);
+  assert.equal(item.year, '2025', `${label} must match the 2025 award certificate`);
+}
+
 for (const [label, items] of [
   ['common projects', common.projects],
   ['Chinese highlights', zh.highlights],

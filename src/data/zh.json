@@ -54,9 +54,9 @@
     },
     {
       "id": "cumcm-2024-jiangsu-first",
-      "year": "2024",
+      "year": "2025",
       "level": "provincial",
-      "title": "全国大学生数学建模竞赛 江苏省一等奖",
+      "title": "2025 高教社杯全国大学生数学建模竞赛 本科组江苏赛区一等奖",
       "note": "数学建模核心奖项"
     },
     {
@@ -127,7 +127,7 @@
       "id": "modeling-research",
       "category": "建模与科研表达",
       "desc": "熟悉数学建模、文档写作与结果可视化。",
-      "items": ["数学建模", "Python", "Markdown", "LaTeX", "Origin"]
+      "items": ["数学建模", "Python", "Markdown", "LaTeX", "Origin", "CET-6 457"]
     },
     {
       "id": "development-productivity",
