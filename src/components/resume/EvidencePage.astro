@@ -20,7 +20,7 @@ const copy = isZh
   ? {
       title: '方绪杰 | 证明材料墙',
       h1: '证明材料墙',
-      lead: '以稳定编号组织公开脱敏证据，并明确每份材料支撑的简历叙事。',
+      lead: '竞赛、学业荣誉与实践证明。点击证书查看完整大图。',
       profile: '回到简历荣誉区',
       materials: '查看材料中心',
       count: '份公开证据',
@@ -34,7 +34,7 @@ const copy = isZh
   : {
       title: 'Xujie Fang | Evidence Gallery',
       h1: 'Evidence Gallery',
-      lead: 'Public, sanitized evidence organized by stable IDs and linked to the resume claims it supports.',
+      lead: 'Certificates for competitions, academic honors, and practical experience. Select a certificate to view it in full.',
       profile: 'Back to profile honors',
       materials: 'View materials hub',
       count: 'public evidence items',
@@ -47,7 +47,7 @@ const copy = isZh
     };
 ---
 
-<BaseLayout title={copy.title} lang={lang}>
+<BaseLayout title={copy.title} description={copy.lead} lang={lang}>
   <section class="hero">
     <div class="container">
       <p class="eyebrow">{items.length} {copy.count}</p><h1>{copy.h1}</h1><p class="lead">{copy.lead}</p><div
@@ -58,6 +58,16 @@ const copy = isZh
           href={`${base}/materials`}>{copy.materials}</a
         >
       </div>
+      <nav class="category-links" aria-label={isZh ? '证书分类' : 'Certificate categories'}>
+        {
+          groups.map((group) => (
+            <a href={`#evidence-${group.category}`}>
+              {group.label}
+              <span>{group.items.length}</span>
+            </a>
+          ))
+        }
+      </nav>
     </div>
   </section>
   <div class="container evidence-groups">
@@ -68,7 +78,7 @@ const copy = isZh
             <h2 id={`evidence-${group.category}`}>{group.label}</h2>
             <div class="evidence-grid">
               {group.items.map((item) => (
-                <a class="cert-card" href={item.image}>
+                <a class="cert-card" id={item.id} href={item.image}>
                   <img
                     src={`/assets/evidence/thumbs/${item.file.replace(/\.[^.]+$/, '.webp')}`}
                     alt={item.title}
@@ -107,53 +117,85 @@ const copy = isZh
   .evidence-groups {
     display: grid;
     gap: 3rem;
-    padding-block: 2.5rem 5rem;
+    padding-block: 0 5rem;
+  }
+  .category-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 30px;
+    padding-block: 8px;
+    border-block: 1px solid var(--border);
+  }
+  .category-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 0.85rem;
+    color: var(--primary);
+  }
+  .category-links a:hover {
+    color: var(--secondary);
+  }
+  .category-links span {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
   }
   .evidence-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
     gap: 1rem;
   }
   .cert-card {
     display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 1rem;
-    padding: 1rem;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     background: var(--surface);
     color: inherit;
     text-decoration: none;
+    scroll-margin-top: 100px;
+    transition:
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+  .cert-card:hover,
+  .cert-card:target {
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+  }
+  .cert-card > div {
+    padding: 1.25rem;
   }
   .cert-card img {
-    width: 110px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
+    width: 100%;
+    height: 224px;
+    padding: 14px;
+    object-fit: contain;
+    background: #f7f5f0;
+    border-bottom: 1px solid var(--border);
   }
   .cert-card h3 {
+    margin: 0 0 14px;
     font-size: 1rem;
   }
   .cert-card dl {
+    margin: 0;
     font-size: 0.85rem;
   }
   .cert-card dt {
-    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 500;
   }
   .cert-card dd {
     margin: 0 0 0.5rem;
+    color: var(--muted);
   }
   .eyebrow {
     color: var(--secondary);
     font-size: 0.85rem;
-  }
-  @media (max-width: 540px) {
-    .cert-card {
-      grid-template-columns: 1fr;
-    }
-    .cert-card img {
-      width: 100%;
-      height: 180px;
-    }
   }
 </style>

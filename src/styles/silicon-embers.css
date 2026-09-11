@@ -35,7 +35,7 @@ html[data-theme='dark'] body {
 
 .sa-shell {
   --paper: #161a1d;
-  --muted: rgba(22, 26, 29, 0.62);
+  --muted: rgba(22, 26, 29, 0.72);
   --line: rgba(38, 52, 61, 0.16);
   --ember: #8e4f35;
   --ember-strong: #8e4f35;
@@ -47,7 +47,8 @@ html[data-theme='dark'] body {
   --coal-2: #d8c7a8;
   --surface: rgba(230, 216, 188, 0.58);
   --surface-strong: rgba(230, 216, 188, 0.84);
-  --primary-ink: #080a0b;
+  --primary-ink: #fff8ec;
+  --display-page-size: clamp(2.25rem, 5vw, 4.5rem);
   --display-section-max: 3.4rem;
   --space-section: clamp(4.5rem, 7vw, 7rem);
   --rule-fine: color-mix(in srgb, var(--paper) 13%, transparent);
@@ -65,7 +66,7 @@ html[data-theme='dark'] body {
 :root[data-theme='dark'] .sa-shell,
 :root.dark .sa-shell {
   --paper: #e6d8bc;
-  --muted: rgba(230, 216, 188, 0.62);
+  --muted: rgba(230, 216, 188, 0.72);
   --line: rgba(200, 155, 82, 0.15);
   --ember: #c89b52;
   --ember-strong: #f0b35a;
@@ -112,7 +113,7 @@ html[data-theme='dark'] body {
 }
 
 .sa-shell::after {
-  opacity: 0.04;
+  opacity: 0.018;
   background-image: repeating-radial-gradient(circle at 30% 20%, var(--paper) 0 0.4px, transparent 0.8px 3px);
   background-size: 5px 5px;
   mix-blend-mode: multiply;
@@ -128,7 +129,7 @@ html[data-theme='dark'] body {
 
 :root[data-theme='dark'] .sa-shell::after,
 :root.dark .sa-shell::after {
-  opacity: 0.07;
+  opacity: 0.025;
   background-image: repeating-radial-gradient(circle at 30% 20%, var(--paper) 0 0.35px, transparent 0.75px 3px);
   mix-blend-mode: screen;
 }
@@ -172,6 +173,7 @@ html[data-theme='dark'] body {
   color: var(--paper);
   font-family: var(--font-display);
   font-weight: 780;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
@@ -193,7 +195,7 @@ html[data-theme='dark'] body {
 .sa-shell .section-copy h2 {
   margin-top: 0.9rem;
   font-size: clamp(2.4rem, 4.5vw, var(--display-section-max));
-  line-height: 0.98;
+  line-height: 1.16;
   letter-spacing: -0.03em;
 }
 
@@ -303,19 +305,19 @@ html[data-theme='dark'] body {
 
 @media (max-width: 720px) {
   .sa-shell main {
-    width: min(100% - 24px, 1320px);
+    width: min(100% - 36px, 1320px);
   }
 
   .sa-shell .section-copy h2 {
     margin-top: 0.7rem;
-    font-size: clamp(2.25rem, 12vw, 4rem);
-    line-height: 1;
+    font-size: clamp(1.6rem, 6.8vw, 2.3rem);
+    line-height: 1.2;
   }
 
   .sa-shell .section-copy > p:not(.kicker) {
     margin-top: 1rem;
-    font-size: 0.93rem;
-    line-height: 1.68;
+    font-size: 1rem;
+    line-height: 1.75;
   }
 
   .sa-shell .sa-control {
@@ -327,7 +329,7 @@ html[data-theme='dark'] body {
 
 @media (max-width: 360px) {
   .sa-shell main {
-    width: min(100% - 20px, 1320px);
+    width: min(100% - 32px, 1320px);
   }
 }
 

@@ -18,6 +18,7 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
 ---
 
 <dialog class="lightbox" id="lightbox" aria-label={label}>
+  <p class="lightbox-title" id="lb-title"></p>
   <button class="lightbox-close" id="lb-close" type="button" aria-label={closeLabel}>✕</button>
   <button class="lightbox-nav lightbox-prev" id="lb-prev" type="button" aria-label={previousLabel}>‹</button>
   <button class="lightbox-nav lightbox-next" id="lb-next" type="button" aria-label={nextLabel}>›</button>
@@ -38,6 +39,7 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
     const previousButton = document.getElementById('lb-prev');
     const nextButton = document.getElementById('lb-next');
     const counter = document.getElementById('lb-counter');
+    const title = document.getElementById('lb-title');
     if (
       !config ||
       !(dialog instanceof HTMLDialogElement) ||
@@ -66,6 +68,7 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
       lightboxImage.classList.remove('lb-fade');
       lightboxImage.src = item.src;
       lightboxImage.alt = item.alt;
+      if (title) title.textContent = item.alt;
       lightboxCounter.textContent = `${currentIndex + 1} / ${items.length}`;
       void lightboxImage.offsetWidth;
       lightboxImage.classList.add('lb-fade');
@@ -90,6 +93,7 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
 
     document.querySelectorAll<HTMLAnchorElement>('a.cert-card').forEach(function (anchor, index) {
       anchor.addEventListener('click', function (event) {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
         openLightbox(index, anchor);
       });
@@ -128,7 +132,7 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
     z-index: 9999;
     width: 100vw;
     max-width: none;
-    height: 100vh;
+    height: 100dvh;
     max-height: none;
     margin: 0;
     border: 0;
@@ -146,14 +150,15 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
   }
   .lightbox-image-wrap {
     display: flex;
-    max-width: 90vw;
-    max-height: 90vh;
+    width: calc(100% - 160px);
+    max-width: 1440px;
+    max-height: calc(100dvh - 160px);
     align-items: center;
     justify-content: center;
   }
   .lightbox-image-wrap img {
     max-width: 100%;
-    max-height: 90vh;
+    max-height: calc(100dvh - 160px);
     border-radius: 4px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
     object-fit: contain;
@@ -162,6 +167,17 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
   }
   .lightbox-image-wrap img.lb-fade {
     opacity: 1;
+  }
+  .lightbox-title {
+    position: absolute;
+    top: 20px;
+    left: 28px;
+    right: 84px;
+    margin: 0;
+    color: #f7f1e7;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-wrap: balance;
   }
   .lightbox-close,
   .lightbox-nav {
@@ -210,18 +226,29 @@ const serializedItems = JSON.stringify(items).replace(/</g, '\\u003c');
     transform: translateX(-50%);
     color: rgba(255, 255, 255, 0.78);
     font-size: 14px;
+    font-variant-numeric: tabular-nums;
   }
   @media (max-width: 640px) {
+    .lightbox-image-wrap {
+      width: calc(100% - 28px);
+    }
+    .lightbox-image-wrap,
+    .lightbox-image-wrap img {
+      max-height: calc(100dvh - 220px);
+    }
     .lightbox-nav {
+      top: auto;
+      bottom: 12px;
+      transform: none;
       width: 44px;
       height: 44px;
       font-size: 28px;
     }
     .lightbox-prev {
-      left: 4px;
+      left: 20px;
     }
     .lightbox-next {
-      right: 4px;
+      right: 20px;
     }
     .lightbox-close {
       top: 8px;

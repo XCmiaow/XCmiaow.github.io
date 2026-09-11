@@ -29,12 +29,6 @@ const audienceLabel = (a?: string) => {
   return isZh ? '通用' : 'General';
 };
 
-const audienceClass = (a?: string) => {
-  if (a === 'teacher') return 'audience-teacher';
-  if (a === 'researcher') return 'audience-researcher';
-  return 'audience-general';
-};
-
 // Group by series
 const seriesMap = new Map<string, BlogPost[]>();
 for (const post of allPosts) {
@@ -100,9 +94,7 @@ const copy = isZh
                 <div class="article-meta">
                   <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
                   {post.data.readingTime && <span class="reading-time">{post.data.readingTime} min</span>}
-                  <span class={`audience-badge ${audienceClass(post.data.audience)}`}>
-                    {audienceLabel(post.data.audience)}
-                  </span>
+                  <span class="audience-badge">{audienceLabel(post.data.audience)}</span>
                 </div>
                 <h4 class="article-title">{post.data.title}</h4>
                 {post.data.description && <p class="article-desc">{post.data.description}</p>}
@@ -135,7 +127,7 @@ const copy = isZh
     gap: clamp(34px, 7vw, 92px);
     align-items: end;
     border-bottom: 1px solid var(--line);
-    padding: clamp(86px, 12vw, 142px) 0 clamp(58px, 8vw, 92px);
+    padding: clamp(52px, 7vw, 88px) 0 clamp(36px, 5vw, 64px);
   }
 
   h1,
@@ -151,9 +143,9 @@ const copy = isZh
     margin: 22px 0 0;
     color: var(--paper);
     font-family: var(--font-display);
-    font-size: clamp(3rem, 6.2vw, 6.4rem);
-    font-weight: 850;
-    line-height: 0.98;
+    font-size: var(--display-page-size);
+    font-weight: 750;
+    line-height: 1.18;
     text-wrap: balance;
   }
 
@@ -170,17 +162,17 @@ const copy = isZh
     display: grid;
     gap: 1px;
     margin: 0;
-    border: 1px solid rgba(232, 174, 98, 0.18);
-    background: rgba(232, 174, 98, 0.16);
+    border: 1px solid var(--line);
+    background: var(--line);
   }
 
   .writing-stats div {
     padding: 18px;
-    background: rgba(7, 6, 5, 0.88);
+    background: var(--coal);
   }
 
   .writing-stats dt {
-    color: rgba(239, 227, 205, 0.54);
+    color: var(--muted);
     font-family: Consolas, 'SFMono-Regular', monospace;
     font-size: 12px;
     font-weight: 900;
@@ -196,11 +188,10 @@ const copy = isZh
   }
 
   .series-section {
-    padding: 48px 0 120px;
-    border-top: 1px solid rgba(218, 166, 86, 0.18);
+    padding: 48px 0 0;
   }
   .section-title {
-    color: #f2dfbd;
+    color: var(--paper);
     font-family: var(--font-display);
     font-size: 28px;
     font-weight: 800;
@@ -211,13 +202,13 @@ const copy = isZh
     margin-bottom: 48px;
   }
   .series-name {
-    color: #d8aa63;
+    color: var(--ember-strong);
     font-family: Consolas, 'SFMo-Regular', monospace;
     font-size: 15px;
     font-weight: 800;
     margin: 0 0 18px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(218, 166, 86, 0.18);
+    border-bottom: 1px solid var(--line);
   }
 
   .article-list {
@@ -227,12 +218,12 @@ const copy = isZh
   .article-card {
     display: block;
     padding: 24px 0;
-    border-bottom: 1px solid rgba(218, 166, 86, 0.1);
+    border-bottom: 1px solid var(--line);
     text-decoration: none;
     transition: background 160ms ease;
   }
   .article-card:hover {
-    background: rgba(218, 166, 86, 0.04);
+    background: var(--surface-strong);
   }
   .article-card:first-child {
     padding-top: 0;
@@ -245,12 +236,12 @@ const copy = isZh
     margin-bottom: 8px;
   }
   .article-meta time {
-    color: rgba(168, 177, 176, 0.68);
+    color: var(--muted);
     font-family: Consolas, 'SFMo-Regular', monospace;
     font-size: 13px;
   }
   .reading-time {
-    color: rgba(168, 177, 176, 0.5);
+    color: var(--muted);
     font-family: Consolas, 'SFMo-Regular', monospace;
     font-size: 13px;
   }
@@ -262,31 +253,22 @@ const copy = isZh
     border-radius: 3px;
     font-size: 11px;
     font-weight: 800;
-  }
-  .audience-teacher {
-    background: rgba(108, 190, 120, 0.12);
-    color: #6cbe78;
-  }
-  .audience-researcher {
-    background: rgba(100, 160, 220, 0.12);
-    color: #6aa0dc;
-  }
-  .audience-general {
-    background: rgba(168, 177, 176, 0.08);
-    color: rgba(168, 177, 176, 0.6);
+    border: 1px solid var(--line);
+    color: var(--ember-strong);
+    background: var(--surface);
   }
 
   .article-title {
     margin: 0;
-    color: #f2dfbd;
+    color: var(--paper);
     font-family: var(--font-display);
     font-size: 22px;
     font-weight: 800;
-    line-height: 1.3;
+    line-height: 1.5;
   }
   .article-desc {
     margin: 8px 0 0;
-    color: rgba(233, 224, 208, 0.6);
+    color: var(--muted);
     font-size: 15px;
     line-height: 1.6;
   }
@@ -300,15 +282,15 @@ const copy = isZh
     list-style: none;
   }
   .article-tags li {
-    border: 1px solid rgba(168, 177, 176, 0.18);
+    border: 1px solid var(--line);
     border-radius: 3px;
     padding: 3px 8px;
-    color: rgba(220, 228, 224, 0.55);
+    color: var(--muted);
     font-size: 12px;
   }
 
   .empty-state {
-    color: rgba(233, 224, 208, 0.4);
+    color: var(--muted);
     font-size: 16px;
   }
 
@@ -321,14 +303,14 @@ const copy = isZh
 
     h1 {
       margin-top: 12px;
-      font-size: clamp(1.45rem, 6.4vw, 1.95rem);
-      line-height: 1.16;
+      font-size: clamp(1.8rem, 7.8vw, 2.4rem);
+      line-height: 1.24;
     }
 
     .lead {
       margin-top: 14px;
-      font-size: 14.5px;
-      line-height: 1.68;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .writing-stats {
@@ -349,8 +331,8 @@ const copy = isZh
     }
 
     .article-title {
-      font-size: 16px;
-      line-height: 1.34;
+      font-size: 18px;
+      line-height: 1.5;
     }
 
     .article-desc {
@@ -374,7 +356,7 @@ const copy = isZh
 
   @media (max-width: 360px) {
     h1 {
-      font-size: clamp(1.38rem, 6.2vw, 1.72rem);
+      font-size: 1.8rem;
     }
 
     .writing-stats div {

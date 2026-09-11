@@ -9,6 +9,8 @@
   --accent-soft: #fff2bf;
   --green: #2f6f5e;
   --line: #e2e7ee;
+  --border: var(--line);
+  --surface: var(--paper);
   --shadow: 0 16px 36px rgba(16, 42, 67, 0.09);
   --radius: 8px;
   --max: 1120px;
@@ -124,7 +126,7 @@ body {
 :root[data-theme='dark'] body,
 :root.dark body {
   background:
-    radial-gradient(circle at 72% 16%, rgba(205, 88, 42, 0.16), transparent 34rem),
+    radial-gradient(circle at 72% 16%, rgba(205, 88, 42, 0.07), transparent 34rem),
     radial-gradient(circle at 20% 88%, rgba(110, 145, 134, 0.08), transparent 28rem),
     linear-gradient(180deg, #070605 0%, #0d0b09 48%, #050504 100%);
 }
@@ -238,8 +240,8 @@ section {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 42px;
-  padding: 0 16px;
+  min-height: 44px;
+  padding: 10px 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--paper);
@@ -247,6 +249,12 @@ section {
   font-size: 14px;
   font-weight: 750;
   cursor: pointer;
+  line-height: 1.4;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 .btn.primary {
   border-color: transparent;
@@ -254,38 +262,101 @@ section {
   color: #fff;
 }
 .btn:hover {
-  box-shadow: 0 10px 22px rgba(16, 42, 67, 0.12);
+  border-color: var(--accent);
   transform: translateY(-1px);
+}
+.btn:active {
+  transform: translateY(1px);
 }
 
 :root[data-theme='dark'] .btn,
 :root.dark .btn {
   border-color: rgba(242, 223, 189, 0.18);
-  background: linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(232, 174, 98, 0.03)), rgba(9, 8, 7, 0.78);
+  background: var(--paper);
   color: var(--primary);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 245, 220, 0.12),
-    0 12px 28px rgba(0, 0, 0, 0.24);
 }
 
 :root[data-theme='dark'] .btn.primary,
 :root.dark .btn.primary {
-  border-color: rgba(255, 207, 128, 0.82);
-  background:
-    linear-gradient(180deg, rgba(255, 246, 211, 0.42), transparent 28%),
-    linear-gradient(180deg, #f1c06e 0%, #d79a52 52%, #af6731 100%);
+  border-color: var(--secondary);
+  background: var(--secondary);
   color: #150f08;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 249, 225, 0.72),
-    0 16px 34px rgba(184, 97, 36, 0.25);
 }
 
 :root[data-theme='dark'] .btn:hover,
 :root.dark .btn:hover {
   border-color: rgba(232, 174, 98, 0.42);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 245, 220, 0.16),
-    0 18px 38px rgba(0, 0, 0, 0.3);
+  background: var(--accent-soft);
+}
+:root[data-theme='dark'] .btn.primary:hover,
+:root.dark .btn.primary:hover {
+  background: var(--primary);
+}
+
+/* Shared reading rhythm for the profile, evidence, and project pages. */
+.resume-site .hero {
+  padding: clamp(48px, 6vw, 88px) 0 clamp(32px, 4vw, 56px);
+}
+.resume-site .hero h1 {
+  max-width: 22ch;
+  margin: 12px 0 20px;
+  color: var(--primary);
+  font-size: clamp(2.3rem, 4.5vw, 3.75rem);
+  letter-spacing: -0.035em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+.resume-site .eyebrow {
+  margin: 0 0 10px;
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.025em;
+}
+.resume-site .subtitle {
+  max-width: 38ch;
+  margin: 0 0 18px;
+  color: var(--primary);
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.resume-site .lead {
+  max-width: 66ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+.resume-site .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+.resume-site h2 {
+  margin: 0 0 24px;
+  color: var(--primary);
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.resume-site h3 {
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.resume-site .hero + .container > section {
+  padding-block: 0;
+}
+.resume-site .skip-link {
+  color: var(--paper);
+}
+html:has(.lightbox[open]) {
+  overflow: hidden;
 }
 
 .tag {

@@ -15,7 +15,7 @@ const copy = isZh
   ? {
       title: '材料中心 | 方绪杰',
       h1: '材料中心',
-      lead: '公开脱敏材料、需复核证据与本地正式投递包分层管理。正式申请材料不进入公开站点。',
+      lead: '按用途选择一页简历、公开证明和项目资料。',
       profile: '返回个人简历',
       evidence: '证明材料墙',
       reviewed: '复核日期',
@@ -33,7 +33,7 @@ const copy = isZh
   : {
       title: 'Materials Hub | Xujie Fang',
       h1: 'Materials Hub',
-      lead: 'Public sanitized materials, review-first evidence, and local application packages are managed as separate access levels. Formal private packages never enter the public site.',
+      lead: 'Choose a resume, supporting certificates, or project materials for your purpose.',
       profile: 'Back to profile',
       evidence: 'Evidence gallery',
       reviewed: 'Reviewed',
@@ -53,7 +53,7 @@ const groups = audienceOrder
   .filter((group) => group.items.length);
 ---
 
-<BaseLayout title={copy.title} lang={lang}>
+<BaseLayout title={copy.title} description={copy.lead} lang={lang}>
   <section class="hero">
     <div class="container">
       <p class="eyebrow">Resume · Evidence · Cases</p><h1>{copy.h1}</h1><p class="lead">{copy.lead}</p><div
@@ -115,18 +115,33 @@ const groups = audienceOrder
   .material-groups {
     display: grid;
     gap: 3rem;
-    padding-block: 2.5rem 5rem;
+    padding-block: 0 5rem;
   }
   .material-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1rem;
   }
   .material-card {
+    display: flex;
+    flex-direction: column;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 12px;
     background: var(--surface);
-    padding: 1.25rem;
+    padding: 1.5rem;
+  }
+  .material-card > p:not(.review) {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+  .material-card > .review {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .material-card > .btn {
+    align-self: flex-start;
   }
   .meta,
   .review {
