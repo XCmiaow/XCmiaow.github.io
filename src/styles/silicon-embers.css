@@ -404,32 +404,26 @@ html[data-theme='dark'] body {
 :root:not([data-theme='dark']) .sa-shell .photon-ring {
   background: conic-gradient(
     from 218deg,
-    #794320,
-    #9c6035 18%,
-    #d49a5d 26%,
-    #543b2b 43%,
-    #3b2b21 66%,
-    #c98a4c 88%,
-    #794320
+    transparent 0 8%,
+    rgba(156, 96, 53, 0.2) 18%,
+    rgba(212, 154, 93, 0.36) 26%,
+    rgba(84, 59, 43, 0.08) 43%,
+    transparent 58% 100%
   );
-  filter: blur(0.35px);
 }
 
-:root:not([data-theme='dark']) .sa-shell .accretion-disc {
-  mix-blend-mode: multiply;
+:root:not([data-theme='dark']) .sa-shell .black-hole-scene {
+  --disc-edge: #804c2b;
+  --disc-warm: #ad6c37;
+  --disc-hot: #d6a46a;
 }
 
 :root:not([data-theme='dark']) .sa-shell .disc-back {
-  opacity: 0.4;
+  opacity: 0.76;
 }
 
 :root:not([data-theme='dark']) .sa-shell .disc-front {
-  opacity: 0.66;
-}
-
-:root:not([data-theme='dark']) .sa-shell .lensing-arc {
-  opacity: 0.7;
-  mix-blend-mode: multiply;
+  opacity: 0.92;
 }
 
 :root:not([data-theme='dark']) .sa-shell .foreground-dust {

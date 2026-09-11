@@ -1,5 +1,10 @@
 ---
 import Ferrofluid from './Ferrofluid.astro';
+
+const discHalves = [
+  { depth: 'depth-rear', disc: 'disc-back', sweep: 1 },
+  { depth: 'depth-front', disc: 'disc-front', sweep: 0 },
+];
 ---
 
 <div class="ember-stage" aria-hidden="true">
@@ -36,19 +41,40 @@ import Ferrofluid from './Ferrofluid.astro';
   <div class="black-hole-scene">
     <div class="gravity-veil"></div>
 
-    <div class="depth-rear">
-      <div class="lensing-arc arc-back"></div>
-      <div class="accretion-disc disc-back"><span class="disc-filament"></span></div>
-    </div>
+    {
+      discHalves.map(({ depth, disc, sweep }) => (
+        <div class={depth}>
+          <svg class:list={['accretion-disc', disc]} viewBox="0 0 1000 260" fill="none" focusable="false">
+            <defs>
+              <linearGradient
+                id={`accretion-${disc}`}
+                x1="70"
+                y1="130"
+                x2="930"
+                y2="130"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0" stop-color="var(--disc-edge)" stop-opacity="0.25" />
+                <stop offset="0.18" stop-color="var(--disc-warm)" stop-opacity="0.8" />
+                <stop offset="0.38" stop-color="var(--disc-hot)" />
+                <stop offset="0.65" stop-color="var(--disc-warm)" stop-opacity="0.85" />
+                <stop offset="1" stop-color="var(--disc-edge)" stop-opacity="0.2" />
+              </linearGradient>
+            </defs>
+            <g stroke={`url(#accretion-${disc})`} stroke-linecap="round">
+              {['disc-glow', 'disc-body', 'disc-rim'].map((layer) => (
+                <path class={layer} d={`M 70 130 A 430 76 0 0 ${sweep} 930 130`} />
+              ))}
+              <path class="disc-filament" d={`M 88 130 A 412 68 0 0 ${sweep} 912 130`} />
+            </g>
+          </svg>
+        </div>
+      ))
+    }
 
     <div class="depth-event">
-      <div class="photon-ring"><span class="photon-caustic"></span></div>
+      <div class="photon-ring"></div>
       <div class="event-horizon"></div>
-    </div>
-
-    <div class="depth-front">
-      <div class="accretion-disc disc-front"><span class="disc-filament"></span></div>
-      <div class="lensing-arc arc-front"></div>
     </div>
   </div>
 
@@ -155,6 +181,10 @@ import Ferrofluid from './Ferrofluid.astro';
   }
 
   .black-hole-scene {
+    --disc-edge: #a95b2d;
+    --disc-warm: #dc924a;
+    --disc-hot: #ffe5ae;
+
     position: absolute;
     top: var(--hole-y);
     left: var(--hole-x);
@@ -169,7 +199,6 @@ import Ferrofluid from './Ferrofluid.astro';
   .depth-event,
   .depth-fluid,
   .depth-front,
-  .lensing-arc,
   .accretion-disc,
   .photon-ring,
   .event-horizon {
@@ -284,155 +313,67 @@ import Ferrofluid from './Ferrofluid.astro';
     z-index: 6;
   }
 
-  .lensing-arc {
-    top: 50%;
-    left: 50%;
-    width: 42%;
-    height: 39%;
-    border-radius: 50%;
-    transform-origin: center;
-    background: conic-gradient(
-      from 205deg,
-      rgba(128, 62, 27, 0.16),
-      rgba(238, 156, 77, 0.76) 17%,
-      rgba(255, 230, 180, 0.96) 30%,
-      rgba(194, 100, 44, 0.38) 49%,
-      rgba(130, 65, 28, 0.14) 65%,
-      rgba(245, 189, 116, 0.78) 87%,
-      rgba(128, 62, 27, 0.16)
-    );
-    mask-image: radial-gradient(ellipse closest-side, transparent 0 70%, #000 79% 85%, transparent 98%);
-  }
-
-  .arc-back {
-    clip-path: inset(0 0 50% 0);
-    filter: blur(0.7px);
-    opacity: 0.7;
-    transform: translate(-50%, -50%) rotate(-12deg) scale(1.08, 1.04);
-  }
-
-  .arc-front {
-    clip-path: inset(50% 0 0 0);
-    filter: blur(0.5px);
-    opacity: 0.54;
-    transform: translate(-50%, -50%) rotate(-12deg) scale(1, 0.88);
-  }
-
   .accretion-disc {
     top: 50%;
     left: 50%;
-    width: 152%;
-    height: 38%;
-    border-radius: 50%;
-    background:
-      radial-gradient(
-        ellipse at center,
-        transparent 0 31%,
-        rgba(255, 233, 190, 0.84) 34%,
-        rgba(220, 139, 68, 0.46) 39%,
-        transparent 55%
-      ),
-      conic-gradient(
-        from 193deg,
-        transparent 0 8%,
-        rgba(152, 77, 34, 0.08) 16%,
-        rgba(236, 159, 82, 0.5) 29%,
-        rgba(255, 226, 159, 0.86) 38%,
-        rgba(145, 72, 32, 0.12) 53%,
-        transparent 63% 82%,
-        rgba(210, 119, 50, 0.2) 91%,
-        transparent
-      );
-    mix-blend-mode: screen;
-    mask-image: radial-gradient(ellipse at center, transparent 0 30%, #000 34% 43%, transparent 51%);
-    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.46);
-  }
-
-  .accretion-disc::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: repeating-radial-gradient(
-      ellipse at center,
-      transparent 0 2.4%,
-      rgba(255, 230, 183, 0.34) 2.8% 3.1%,
-      rgba(118, 55, 25, 0.16) 3.6%,
-      transparent 4.4% 6.3%
-    );
-    opacity: 0.3;
-    filter: blur(0.25px);
+    display: block;
+    width: 128%;
+    height: auto;
+    aspect-ratio: 1000 / 260;
+    overflow: visible;
+    /* Both halves share one projection; the opaque horizon supplies the occlusion. */
+    transform: translate(-50%, -50%) rotate(-12deg);
   }
 
   .disc-back {
-    clip-path: inset(0 0 49% 0);
-    filter: blur(0.7px);
-    opacity: 0.62;
-    animation: rear-drift 31s ease-in-out infinite;
+    opacity: 0.64;
   }
 
   .disc-front {
-    clip-path: inset(49% 0 0 0);
-    filter: drop-shadow(0 3px 8px rgba(215, 128, 54, 0.16));
     opacity: 0.96;
-    transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
-    animation: front-drift 25s ease-in-out infinite;
+  }
+
+  .disc-glow {
+    stroke-width: 22;
+    filter: blur(7px);
+    opacity: 0.32;
+    animation: disc-shimmer 18s ease-in-out infinite;
+  }
+
+  .disc-body {
+    stroke-width: 7;
+    filter: blur(1.5px);
+    opacity: 0.5;
+  }
+
+  .disc-rim {
+    stroke-width: 1.6;
+    opacity: 0.9;
   }
 
   .disc-filament {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    aspect-ratio: 1;
-    background: repeating-conic-gradient(
-      from 24deg,
-      transparent 0deg 17deg,
-      rgba(255, 217, 153, 0.12) 21deg,
-      rgba(255, 233, 187, 0.56) 25deg,
-      transparent 30deg 61deg
-    );
-    opacity: 0.12;
-    transform: translate(-50%, -50%);
-    animation: disc-orbit 48s linear infinite;
-  }
-
-  .disc-back .disc-filament {
-    animation-delay: -24s;
+    stroke-width: 1;
+    opacity: 0.24;
   }
 
   .photon-ring {
     top: 50%;
     left: 50%;
-    width: 38%;
+    width: 31%;
     aspect-ratio: 1;
     border-radius: 50%;
     background: conic-gradient(
       from 218deg,
-      rgba(109, 56, 27, 0.1),
-      rgba(244, 180, 101, 0.94) 18%,
-      rgba(255, 230, 174, 1) 26%,
-      rgba(183, 94, 40, 0.24) 43%,
-      rgba(75, 39, 22, 0.08) 66%,
-      rgba(224, 138, 65, 0.52) 88%,
-      rgba(109, 56, 27, 0.1)
+      transparent 0 8%,
+      rgba(244, 180, 101, 0.18) 18%,
+      rgba(255, 230, 174, 0.36) 26%,
+      rgba(183, 94, 40, 0.08) 43%,
+      transparent 58% 100%
     );
     filter: blur(0.35px);
-    /* closest-side keeps the luminous annulus outside the 29% horizon. */
-    mask-image: radial-gradient(circle closest-side, transparent 0 79%, #000 82% 86%, transparent 91%);
+    mask-image: radial-gradient(circle closest-side, transparent 0 95%, #000 96% 97%, transparent 99%);
     transform: translate(-50%, -50%);
     animation: photon-breathe 16s ease-in-out infinite;
-  }
-
-  .photon-caustic {
-    position: absolute;
-    inset: 7%;
-    border: 1px solid transparent;
-    border-bottom-color: rgba(255, 235, 194, 0.5);
-    border-left-color: rgba(255, 210, 139, 0.32);
-    border-radius: 50%;
-    filter: blur(0.4px);
-    transform: rotate(34deg);
   }
 
   .event-horizon {
@@ -478,9 +419,13 @@ import Ferrofluid from './Ferrofluid.astro';
     animation: near-drift 19s ease-in-out infinite;
   }
 
-  @keyframes disc-orbit {
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
+  @keyframes disc-shimmer {
+    0%,
+    100% {
+      opacity: 0.26;
+    }
+    50% {
+      opacity: 0.38;
     }
   }
 
@@ -503,26 +448,6 @@ import Ferrofluid from './Ferrofluid.astro';
     50% {
       opacity: 0.94;
       transform: rotate(-10.5deg) scale(1.21, 0.84);
-    }
-  }
-
-  @keyframes rear-drift {
-    0%,
-    100% {
-      opacity: 0.58;
-    }
-    50% {
-      opacity: 0.68;
-    }
-  }
-
-  @keyframes front-drift {
-    0%,
-    100% {
-      opacity: 0.9;
-    }
-    50% {
-      opacity: 1;
     }
   }
 
@@ -559,8 +484,7 @@ import Ferrofluid from './Ferrofluid.astro';
     }
 
     .accretion-disc {
-      width: 116%;
-      height: 42%;
+      width: 112%;
     }
 
     .guide-outer,
@@ -577,9 +501,7 @@ import Ferrofluid from './Ferrofluid.astro';
 
   @media (prefers-reduced-motion: reduce) {
     .gravity-veil,
-    .disc-back,
-    .disc-front,
-    .disc-filament,
+    .disc-glow,
     .photon-ring,
     .foreground-dust,
     .depth-fluid,

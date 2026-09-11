@@ -347,13 +347,13 @@ const stageAfterRules = [...emberFieldSource.matchAll(/\.ember-stage::after\s*\{
 if (stageAfterRules.some((rule) => rule.includes('linear-gradient(90deg'))) {
   failures.push('gravity overlay must not darken only the left half of a centered black hole');
 }
-for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon', 'lensing-arc']) {
+for (const className of ['gravity-veil', 'accretion-disc', 'photon-ring', 'event-horizon']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing ${className}`);
 }
 for (const className of ['depth-far', 'depth-rear', 'depth-event', 'depth-front', 'depth-near']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing depth plane ${className}`);
 }
-for (const className of ['orbital-guide', 'disc-filament', 'photon-caustic']) {
+for (const className of ['orbital-guide', 'disc-filament', 'disc-rim']) {
   if (!emberFieldSource.includes(className)) failures.push(`EmberField is missing precision detail ${className}`);
 }
 if (emberFieldSource.includes('field-caption')) {

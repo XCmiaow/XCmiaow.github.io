@@ -143,7 +143,6 @@ async function checkBrandHomeBounds(page) {
           secondary: readRect('.hero-secondary'),
           photonRing: readRect('.photon-ring'),
           horizon: readRect('.event-horizon'),
-          lens: readRect('.arc-back'),
           photonMask: getComputedStyle(document.querySelector('.photon-ring')).maskImage,
           accretionDisc: readRect('.disc-front'),
         };
@@ -203,9 +202,6 @@ async function checkBrandHomeBounds(page) {
       ) {
         fail(`${route} ${width}px the photon annulus is hidden inside the shadow`);
       }
-      if (!geometry.lens || !geometry.horizon || geometry.lens.width / geometry.horizon.width > 2) {
-        fail(`${route} ${width}px lensing arc is detached from the horizon`);
-      }
       checks.push({
         route,
         width,
@@ -216,6 +212,105 @@ async function checkBrandHomeBounds(page) {
         copyClearance: 'ok',
       });
     }
+  }
+}
+
+async function checkAccretionOcclusion(browser) {
+  const page = await browser.newPage({ reducedMotion: 'reduce', serviceWorkers: 'block' });
+  try {
+    for (const width of [390, 1440]) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+      for (const theme of ['dark', 'light']) {
+        await page.goto(`${base}/`, { waitUntil: 'load' });
+        await waitForSettledPage(page);
+        await page.evaluate((theme) => document.documentElement.setAttribute('data-theme', theme), theme);
+        await page.addStyleTag({
+          content: `* { transition: none !important; }
+            .depth-far, .depth-fluid, [data-ember-canvas], .depth-near { visibility: hidden !important; }`,
+        });
+        const scene = page.locator('.black-hole-scene');
+        const geometry = await page.evaluate(() => {
+          const scene = document.querySelector('.black-hole-scene').getBoundingClientRect();
+          const horizon = document.querySelector('.event-horizon').getBoundingClientRect();
+          return {
+            x: horizon.x + horizon.width / 2 - scene.x,
+            y: horizon.y + horizon.height / 2 - scene.y,
+            radius: horizon.width / 2,
+          };
+        });
+        const captures = {};
+        for (const [name, rear, event, front] of [
+          ['full', true, true, true],
+          ['rear', true, true, false],
+          ['shadow', false, true, false],
+          ['revealed', true, false, false],
+          ['bare', false, false, false],
+        ]) {
+          await page.evaluate(
+            ({ rear, event, front }) => {
+              for (const [layer, visible] of Object.entries({ rear, event, front })) {
+                document.querySelector(`.depth-${layer}`).style.visibility = visible ? '' : 'hidden';
+              }
+            },
+            { rear, event, front },
+          );
+          captures[name] = (await scene.screenshot({ animations: 'disabled', scale: 'css' })).toString('base64');
+        }
+        const pixels = await page.evaluate(
+          async ({ captures, geometry }) => {
+            const samples = {};
+            let width = 0;
+            let height = 0;
+            for (const [name, encoded] of Object.entries(captures)) {
+              const bytes = Uint8Array.from(atob(encoded), (character) => character.charCodeAt(0));
+              const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+              const canvas = document.createElement('canvas');
+              canvas.width = width = bitmap.width;
+              canvas.height = height = bitmap.height;
+              const context = canvas.getContext('2d');
+              context.drawImage(bitmap, 0, 0);
+              samples[name] = context.getImageData(0, 0, width, height).data;
+              bitmap.close();
+            }
+            const result = { rearHidden: 0, rearRevealed: 0, frontVisible: 0, frontArea: 0, rearArea: 0 };
+            const angle = (12 * Math.PI) / 180;
+            const changed = (a, b, i) =>
+              (Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2])) / 3 > 12;
+            for (let y = 0; y < height; y += 1) {
+              for (let x = 0; x < width; x += 1) {
+                const dx = (x + 0.5 - geometry.x) / geometry.radius;
+                const dy = (y + 0.5 - geometry.y) / geometry.radius;
+                if (Math.hypot(dx, dy) > 0.88) continue;
+                const planeX = dx * Math.cos(angle) - dy * Math.sin(angle);
+                const planeY = dx * Math.sin(angle) + dy * Math.cos(angle);
+                const i = (y * width + x) * 4;
+                if (changed(samples.rear, samples.shadow, i)) result.rearHidden += 1;
+                if (Math.abs(planeX) > 0.55 || Math.abs(planeY) < 0.4 || Math.abs(planeY) > 0.84) continue;
+                if (planeY < 0) {
+                  result.rearArea += 1;
+                  if (changed(samples.revealed, samples.bare, i)) result.rearRevealed += 1;
+                } else {
+                  result.frontArea += 1;
+                  if (changed(samples.full, samples.rear, i)) result.frontVisible += 1;
+                }
+              }
+            }
+            return result;
+          },
+          { captures, geometry },
+        );
+        if (pixels.rearHidden > 2) fail(`${theme} ${width}px rear ring shines through the opaque shadow`);
+        if (pixels.rearRevealed < pixels.rearArea * 0.05) {
+          fail(`${theme} ${width}px rear ring does not pass behind the upper shadow`);
+        }
+        if (pixels.frontVisible < pixels.frontArea * 0.05) {
+          fail(`${theme} ${width}px front ring does not visibly cross the lower shadow`);
+        }
+        checks.push({ accretionOcclusion: { width, theme, ...pixels } });
+      }
+    }
+  } finally {
+    await page.close();
   }
 }
 
@@ -636,6 +731,7 @@ try {
     await checkDarkRoute(page, route);
   }
 
+  await checkAccretionOcclusion(browser);
   await checkEmberAnimationHotPath(browser);
   await checkEmberParticlePresence(browser);
   await checkEmberFrameBudget(browser);
