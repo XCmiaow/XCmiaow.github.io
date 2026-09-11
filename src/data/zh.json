@@ -144,6 +144,12 @@
   ],
   "projects": [
     {
+      "id": "chemexam",
+      "title": "ChemExam · 化工原理智能组卷系统",
+      "desc": "面向高校教师开发 React/Electron + FastAPI 命题平台，打通多源题库导入、公式与插图编辑、约束组卷和 LaTeX/PDF 导出，发布 Windows 安装包并实现升级前备份。",
+      "abilities": "需求梳理、全栈开发、题目结构化、组卷约束、公式排版、测试与发布"
+    },
+    {
       "id": "modeling",
       "title": "数学建模竞赛实践",
       "desc": "围绕实际问题完成模型构建、数据处理、结果分析与论文撰写，参与全国大学生数学建模竞赛、MCM/ICM 等赛事，并取得省级与国际级奖项。",

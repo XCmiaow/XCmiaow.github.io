@@ -15,6 +15,11 @@
     "rankMajor": 2
   },
   "projects": [
+    {
+      "id": "chemexam",
+      "tags": ["React", "TypeScript", "Electron", "FastAPI", "SQLAlchemy", "SQLite", "LaTeX"],
+      "link": "/chemexam"
+    },
     { "id": "modeling", "tags": ["Python", "Data Analysis", "Academic Writing"], "link": "/modeling" },
     { "id": "ai-km", "tags": ["AI Workflow", "Zotero", "Obsidian"], "link": "/ai-km" },
     {

@@ -39,6 +39,8 @@ export const accessibilityRoutes = [
   '/en/',
   '/profile',
   '/en/profile',
+  '/chemexam',
+  '/en/chemexam',
   '/materials',
   '/evidence',
   '/silicon-ashes/writing/',

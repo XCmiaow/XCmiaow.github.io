@@ -60,6 +60,16 @@
     "pwa": true
   },
   {
+    "id": "chemexam",
+    "domain": "resume",
+    "kind": "static",
+    "zh": { "path": "/chemexam", "h1": "化工原理智能组卷系统" },
+    "en": { "path": "/en/chemexam", "h1": "Chemical Engineering Exam Builder" },
+    "canonical": true,
+    "sitemap": true,
+    "pwa": true
+  },
+  {
     "id": "chem-ai-lab",
     "domain": "resume",
     "kind": "static",

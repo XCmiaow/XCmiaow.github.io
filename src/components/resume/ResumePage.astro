@@ -43,10 +43,10 @@ const summary = isZh
   : `${data.education.major} undergraduate with GPA ${data.education.gpa}, ranked ${data.education.rankClass}st in class and ${data.education.rankMajor}nd in major. Training across chemistry, mathematical modeling, research communication, and AI-assisted workflows.`;
 const projectIds =
   variant === 'career'
-    ? ['resume-site', 'modeling', 'chem-ai-lab']
+    ? ['chemexam', 'resume-site', 'modeling']
     : variant === 'academic'
-      ? ['modeling', 'ai-km']
-      : ['modeling', 'chem-ai-lab', 'resume-site'];
+      ? ['modeling', 'chemexam']
+      : ['chemexam', 'modeling', 'resume-site'];
 const selectedProjects = projectIds.map((id) => data.projects.find((item) => item.id === id)).filter(Boolean);
 const levelLabel = (level: string) =>
   isZh

@@ -223,13 +223,31 @@ async function checkInteractions(page) {
   await page.waitForURL(`${previewBase}/en/`);
 
   await page.goto(`${previewBase}/profile`, { waitUntil: 'load' });
+  await page.evaluate(() => localStorage.setItem('resume-layout', 'minimal'));
+  await page.reload({ waitUntil: 'load' });
+  if ((await page.locator('#layoutToggle').count()) !== 0) fail('Retired minimal-mode control is still present');
+  if (await page.evaluate(() => document.documentElement.classList.contains('minimal-mode'))) {
+    fail('Legacy layout preference still changes the profile');
+  }
   await page.evaluate(() => localStorage.removeItem('resume-layout'));
-  await page.locator('#layoutToggle').click();
-  const minimal = await page.evaluate(() => ({
-    className: document.documentElement.classList.contains('minimal-mode'),
-    stored: localStorage.getItem('resume-layout'),
-  }));
-  if (!minimal.className || minimal.stored !== 'minimal') fail('Profile layout toggle did not persist minimal mode');
+
+  for (const prefix of ['', '/en']) {
+    await page.goto(`${previewBase}${prefix}/profile`, { waitUntil: 'load' });
+    await page.locator(`#projects a[href="${prefix}/chemexam"]`).click();
+    await page.waitForURL(`${previewBase}${prefix}/chemexam`);
+    if ((await page.locator('#responsibilities li').count()) < 3) fail('ChemExam responsibilities are incomplete');
+    if ((await page.locator('#implementation article').count()) < 4) fail('ChemExam implementation is incomplete');
+    if (
+      (await page.locator('a[href="https://github.com/XCmiaow/chemexam-releases/releases/tag/v1.1.0"]').count()) !== 1
+    ) {
+      fail('ChemExam public release link is missing');
+    }
+    for (const route of ['resume-onepage', 'resume-academic', 'resume-career']) {
+      await page.goto(`${previewBase}${prefix}/${route}`, { waitUntil: 'load' });
+      if (!(await page.locator('#projects').innerText()).includes('ChemExam'))
+        fail(`${prefix}/${route} omits ChemExam`);
+    }
+  }
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${previewBase}/en/profile`, { waitUntil: 'load' });

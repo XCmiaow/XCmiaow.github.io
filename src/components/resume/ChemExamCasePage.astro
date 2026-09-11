@@ -1,0 +1,274 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProfile } from '../../lib/resumeData';
+import { routePath } from '../../lib/siteRoutes';
+import type { SiteLang } from '../../data/resumeCatalog';
+
+interface Props {
+  lang: SiteLang;
+}
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const project = getProfile(lang).projects.find((item) => item.id === 'chemexam')!;
+const releaseUrl = 'https://github.com/XCmiaow/chemexam-releases/releases/tag/v1.1.0';
+const copy = isZh
+  ? {
+      h1: '化工原理智能组卷系统',
+      eyebrow: 'ChemExam · 教学工具开发',
+      release: '查看 Windows 正式版',
+      back: '回到项目经历',
+      facts: [
+        ['项目周期', '2026 — 至今'],
+        ['承担工作', '产品规划与全栈开发 · AI 辅助'],
+        ['交付形态', 'Windows 桌面应用'],
+      ],
+      background: '项目背景',
+      backgroundText:
+        '化工原理试题包含公式、单位、计算过程和设备示意图，教师收集的材料又常分散在 Word、Excel、PDF 和图片中。项目围绕“材料整理—人工审题—组卷—排版导出”设计统一工作台，让题目能够按课程、章节和知识点持续维护。',
+      responsibilities: '我的工作',
+      responsibilityItems: [
+        '梳理教师从录题、校对、蓝图配置到导出交接的流程，设计桌面工作台与题库数据结构。',
+        '通过 AI 辅助开发推进 React/Electron 前端与 FastAPI 后端实现、联调和问题排查，处理公式、插图、课程目录与导入草稿。',
+        '实现组卷约束预检、题目筛选、质量报告与 A/B 卷比较，把分值、题型、章节和难度要求转为可检查的规则。',
+        '维护自动化回归、数据库迁移、Windows 打包与升级前备份，并编写教师维护及系统交接文档。',
+      ],
+      implementation: '核心实现',
+      features: [
+        {
+          title: '多源导入与人工校对',
+          text: '支持 Word、Excel、CSV、文本、Markdown、PDF 和图片来源，先解析为结构化草稿，再校对题型、分值、答案及知识点后入库。课程大纲可整理为章节与知识点目录，并继续拖拽调整。',
+        },
+        {
+          title: '公式与插图编辑',
+          text: '使用 MathLive 与 KaTeX 处理公式输入和显示；插图支持裁剪、旋转、图形与公式标注。编辑结果同时保存 PNG 和可继续修改的场景，试卷内的图片调整与原题库版本分开保存。',
+        },
+        {
+          title: '蓝图约束与组卷诊断',
+          text: '按题型数量、分值、章节、难度和必含知识点配置命题蓝图。生成前检查可用题量与约束冲突，生成后展示覆盖和分值分布；A/B 卷可比较重复题、知识点及题型差异。',
+        },
+        {
+          title: '预览、排版与导出',
+          text: '提供应用内 HTML 预览，并通过 Jinja2 模板生成 LaTeX，调用 XeLaTeX/latexmk 输出 PDF。题干、选项、答案、评分与插图布局进入同一导出流程，题库还可单独导出 Excel。',
+        },
+      ],
+      stack: '技术栈与工程实现',
+      stackItems: [
+        ['桌面与交互', 'React · TypeScript · Electron · Vite · MathLive · KaTeX'],
+        ['后端与数据', 'Python · FastAPI · Pydantic · SQLAlchemy · SQLite · Alembic'],
+        ['文档处理', '结构化文档解析 · 本地 OCR · Jinja2 · LaTeX/PDF'],
+        ['验证与发布', 'pytest · Vitest · PyInstaller · electron-builder / NSIS · electron-updater'],
+      ],
+      outcomes: '阶段成果',
+      outcomeItems: [
+        '2026 年 9 月 9 日公开发布 Windows 正式版 1.0（v1.1.0），具备题库维护、导入、组卷、预览、导出和备份的基础流程。',
+        '桌面程序内置本地后端，题库和设置保存在独立用户数据目录；自动更新前备份并校验数据库与题目图片。PDF 编译需配置 XeLaTeX/latexmk。',
+        '持续迭代课程大纲混合导入、拖拽校对和 OCR 稳定性；多人协同命题仍在完善，暂不作为正式交付能力。',
+      ],
+    }
+  : {
+      h1: 'Chemical Engineering Exam Builder',
+      eyebrow: 'ChemExam · Teaching software',
+      release: 'View Windows release',
+      back: 'Back to projects',
+      facts: [
+        ['Period', '2026 — present'],
+        ['Role', 'Product planning & full-stack development · AI-assisted'],
+        ['Delivery', 'Windows desktop application'],
+      ],
+      background: 'Project background',
+      backgroundText:
+        'Chemical engineering questions combine equations, units, calculations, and equipment diagrams, while source materials are scattered across Word, Excel, PDF, and images. ChemExam brings source preparation, human review, paper assembly, and typesetting into one workspace, with question banks organized by course, chapter, and knowledge point.',
+      responsibilities: 'My contribution',
+      responsibilityItems: [
+        'Mapped the instructor workflow from question entry and review to blueprint configuration and handoff, and designed the desktop workspace and question-bank data structures.',
+        'Used AI-assisted development to implement, integrate, and debug the React/Electron frontend and FastAPI backend, including equations, illustrations, course outlines, and import drafts.',
+        'Implemented constraint checks, question selection, quality reports, and A/B paper comparison for score, question type, chapter, and difficulty requirements.',
+        'Maintained regression tests, database migrations, Windows packaging, and pre-update backups, alongside instructor maintenance and system handoff documentation.',
+      ],
+      implementation: 'Core implementation',
+      features: [
+        {
+          title: 'Multi-format imports and review',
+          text: 'Parses Word, Excel, CSV, plain text, Markdown, PDF, and images into structured drafts. Instructors review question types, scores, answers, and knowledge points before committing them. Course outlines become editable chapter and knowledge-point trees with drag-and-drop organization.',
+        },
+        {
+          title: 'Equations and illustrations',
+          text: 'MathLive and KaTeX support equation input and display. Illustrations support cropping, rotation, shapes, and equation annotations; both a PNG and an editable scene are saved. Paper-specific image adjustments remain separate from the question-bank version.',
+        },
+        {
+          title: 'Blueprints and assembly diagnostics',
+          text: 'Blueprints specify question counts, scores, chapters, difficulty, and required knowledge points. Preflight checks identify shortages and conflicting requirements; generated papers include coverage and score distributions. A/B comparison highlights shared questions and differences in topic and question-type coverage.',
+        },
+        {
+          title: 'Preview, typesetting, and export',
+          text: 'Provides in-app HTML previews and uses Jinja2 templates to generate LaTeX for XeLaTeX/latexmk PDF compilation. Questions, options, answers, marking content, and illustrations share one export workflow. The question bank can also be exported to Excel.',
+        },
+      ],
+      stack: 'Technology and engineering',
+      stackItems: [
+        ['Desktop & interaction', 'React · TypeScript · Electron · Vite · MathLive · KaTeX'],
+        ['Backend & data', 'Python · FastAPI · Pydantic · SQLAlchemy · SQLite · Alembic'],
+        ['Document processing', 'Structured parsing · Local OCR · Jinja2 · LaTeX/PDF'],
+        ['Testing & delivery', 'pytest · Vitest · PyInstaller · electron-builder / NSIS · electron-updater'],
+      ],
+      outcomes: 'Delivered results and current work',
+      outcomeItems: [
+        'Published Windows Release 1.0 (v1.1.0) on September 9, 2026, covering question-bank maintenance, imports, assembly, preview, export, and backups.',
+        'The desktop package includes a local backend and keeps questions and settings in a separate user-data directory. Automatic updates back up and verify the database and question images before installation. PDF compilation requires XeLaTeX/latexmk configuration.',
+        'Ongoing work includes mixed-source outline imports, drag-and-drop review, and OCR stability. Collaborative authoring remains under development and is outside the formal handoff scope.',
+      ],
+    };
+---
+
+<BaseLayout title={`${copy.h1} | ${isZh ? '方绪杰' : 'Xujie Fang'}`} description={project.summary} lang={lang}>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.h1}</h1>
+      <p class="lead">{project.summary}</p>
+      <div class="hero-actions">
+        <a class="btn primary" href={releaseUrl} target="_blank" rel="noopener noreferrer">{copy.release}</a>
+        <a class="btn" href={`${routePath('profile', lang)}#projects`}>{copy.back}</a>
+      </div>
+      <dl class="project-facts">
+        {
+          copy.facts.map(([label, value]) => (
+            <div>
+              <>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <div class="container case-sections">
+    <section id="background">
+      <h2>{copy.background}</h2>
+      <p>{copy.backgroundText}</p>
+    </section>
+    <section id="responsibilities">
+      <h2>{copy.responsibilities}</h2>
+      <ul>{copy.responsibilityItems.map((item) => <li>{item}</li>)}</ul>
+    </section>
+    <section id="implementation">
+      <h2>{copy.implementation}</h2>
+      <div class="feature-grid">
+        {
+          copy.features.map((item, index) => (
+            <article>
+              <p class="eyebrow">0{index + 1}</p>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section id="technology">
+      <h2>{copy.stack}</h2>
+      <dl class="stack-list">
+        {
+          copy.stackItems.map(([label, value]) => (
+            <div>
+              <>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+    <section id="outcomes">
+      <h2>{copy.outcomes}</h2>
+      <ul>{copy.outcomeItems.map((item) => <li>{item}</li>)}</ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .project-facts {
+    display: grid;
+    grid-template-columns: 1fr 1.7fr 1fr;
+    gap: 24px;
+    margin: 36px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  dt {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  dd {
+    margin: 6px 0 0;
+    color: var(--primary);
+    overflow-wrap: anywhere;
+  }
+  .case-sections {
+    display: grid;
+    gap: 3rem;
+    padding-bottom: 5rem;
+  }
+  .case-sections p,
+  .case-sections li {
+    color: var(--muted);
+    line-height: 1.85;
+  }
+  .case-sections p {
+    margin: 0;
+  }
+  ul {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding-left: 1.3rem;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .feature-grid article {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    padding: 24px;
+  }
+  .feature-grid h3 {
+    margin: 8px 0 12px;
+  }
+  .stack-list {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+  .stack-list > div {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.3fr) minmax(0, 1fr);
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-block: 16px;
+  }
+  .stack-list dd {
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .project-facts,
+    .feature-grid,
+    .stack-list > div {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .project-facts {
+      gap: 18px;
+    }
+    .feature-grid article {
+      padding: 20px;
+    }
+    .stack-list > div {
+      gap: 6px;
+    }
+  }
+</style>

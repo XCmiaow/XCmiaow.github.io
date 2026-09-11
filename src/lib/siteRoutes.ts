@@ -9,6 +9,7 @@ export const routeIds = [
   'evidence',
   'modeling',
   'ai-km',
+  'chemexam',
   'chem-ai-lab',
   'resume-onepage',
   'resume-academic',

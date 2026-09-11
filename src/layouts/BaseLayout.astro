@@ -77,24 +77,6 @@ const enUrl = alternateEnUrl ?? (pageKey ? `/en/${pageKey}` : '/en/');
         </div>
         <button
           class="icon-btn"
-          id="layoutToggle"
-          type="button"
-          aria-pressed="false"
-          aria-label={isZh ? '切换极简模式' : 'Toggle minimal mode'}
-          title={isZh ? '极简模式' : 'Minimal'}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 4v16"></path></svg
-          >
-        </button>
-        <button
-          class="icon-btn"
           id="themeToggle"
           data-theme-toggle
           type="button"

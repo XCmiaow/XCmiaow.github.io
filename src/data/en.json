@@ -156,6 +156,12 @@
   ],
   "projects": [
     {
+      "id": "chemexam",
+      "title": "ChemExam · Chemical Engineering Exam Builder",
+      "desc": "Developed a React/Electron + FastAPI exam platform with multi-format question imports, formula and diagram editing, constraint-based paper assembly, LaTeX/PDF export, and Windows packaging with pre-update backups.",
+      "abilities": "Requirements, full-stack development, structured imports, assembly constraints, mathematical typesetting, testing and releases"
+    },
+    {
       "id": "modeling",
       "title": "Mathematical Modeling Practice",
       "desc": "Worked on open-ended modeling problems across CUMCM, MCM/ICM, and MathorCup. The practice emphasized problem decomposition, assumption design, data processing, result interpretation, and paper writing.",

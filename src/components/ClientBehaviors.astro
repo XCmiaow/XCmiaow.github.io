@@ -1,23 +1,10 @@
-<!-- Bundles client-side utilities: external links, layout, lang switch, mobile nav -->
+<!-- Bundles client-side utilities: external links, lang switch, mobile nav -->
 <script>
   (function () {
     document.querySelectorAll('a[href*="//"]:not([href*="' + location.host + '"])').forEach(function (el) {
       if (!el.getAttribute('target')) el.setAttribute('target', '_blank');
       el.setAttribute('rel', 'noopener noreferrer');
     });
-
-    (function () {
-      var btn = document.getElementById('layoutToggle'),
-        root = document.documentElement;
-      if (localStorage.getItem('resume-layout') === 'minimal') root.classList.add('minimal-mode');
-      btn?.setAttribute('aria-pressed', String(root.classList.contains('minimal-mode')));
-      btn &&
-        btn.addEventListener('click', function () {
-          root.classList.toggle('minimal-mode');
-          btn?.setAttribute('aria-pressed', String(root.classList.contains('minimal-mode')));
-          localStorage.setItem('resume-layout', root.classList.contains('minimal-mode') ? 'minimal' : 'academic');
-        });
-    })();
 
     document.querySelectorAll<HTMLAnchorElement>('.lang-switch a').forEach(function (el) {
       el.addEventListener('click', function () {

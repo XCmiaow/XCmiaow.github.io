@@ -99,6 +99,19 @@ for (const [label, items] of [
 }
 
 const projectIds = zh.projects.map((item) => item.id);
+for (const [lang, data] of [
+  ['zh', zh],
+  ['en', en],
+]) {
+  const chemexam = data.projects.find((item) => item.id === 'chemexam');
+  assert.ok(chemexam, `${lang} ChemExam project is missing`);
+  assertNonEmpty(chemexam.desc, `${lang} ChemExam summary`);
+  assertNonEmpty(chemexam.abilities, `${lang} ChemExam responsibilities`);
+}
+assert.equal(common.projects.find((item) => item.id === 'chemexam')?.link, '/chemexam');
+const chemexamMaterial = materials.items.find((item) => item.id === 'chemexam-case');
+assert.ok(chemexamMaterial, 'ChemExam case must be reachable from materials');
+assert.deepEqual(chemexamMaterial.href, { zh: '/chemexam', en: '/en/chemexam' });
 assert.deepEqual(
   en.projects.map((item) => item.id),
   projectIds,

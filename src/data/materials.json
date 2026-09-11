@@ -83,14 +83,14 @@
       "href": { "zh": "/resume-career", "en": "/en/resume-career" },
       "zh": {
         "title": "求职实习版简历",
-        "desc": "突出数学建模、Python、Astro 网站、AI 工具链和项目落地能力。",
+        "desc": "突出 ChemExam 全栈开发、数学建模、Astro 网站和软件交付能力。",
         "action": "打开并打印",
         "usage": "实习投递、项目合作、技术能力展示、GitHub 主页链接。",
         "status": "公开脱敏版"
       },
       "en": {
         "title": "Internship Resume",
-        "desc": "Focused on modeling, Python, Astro, AI toolchains, and implementation.",
+        "desc": "Focused on ChemExam full-stack development, modeling, Astro, and software delivery.",
         "action": "Open & print",
         "usage": "Internship applications, project collaboration, and GitHub profile links.",
         "status": "Public sanitized version"
@@ -137,6 +137,31 @@
         "action": "View evidence",
         "usage": "Award verification, review support, and public certificate checking.",
         "status": "Public evidence version"
+      }
+    },
+    {
+      "id": "chemexam-case",
+      "audience": "portfolio",
+      "access": "public",
+      "kind": "project-case",
+      "status": "ready",
+      "evidenceIds": [],
+      "riskNote": "Public project overview and release link only; source repository and question-bank contents remain private.",
+      "lastReviewed": "2026-09-10",
+      "href": { "zh": "/chemexam", "en": "/en/chemexam" },
+      "zh": {
+        "title": "ChemExam · 化工原理智能组卷系统",
+        "desc": "从多源题库导入、审题和约束组卷，到公式排版、Windows 打包与升级备份的完整开发经历。",
+        "action": "查看项目",
+        "usage": "项目面试、教学工具展示、全栈开发与工程交付能力说明。",
+        "status": "项目详情与公开正式版"
+      },
+      "en": {
+        "title": "ChemExam · Exam Builder",
+        "desc": "End-to-end development spanning question imports, review, paper assembly, typesetting, Windows packaging, and upgrade backups.",
+        "action": "View project",
+        "usage": "Project interviews, teaching-tool demonstrations, and full-stack engineering portfolios.",
+        "status": "Project case with a public release"
       }
     },
     {
