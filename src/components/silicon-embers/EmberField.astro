@@ -131,6 +131,7 @@ import Ferrofluid from './Ferrofluid.astro';
     left: var(--hole-x);
     border: 1px solid rgba(225, 176, 112, 0.075);
     border-radius: 50%;
+    opacity: 0.22;
     transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.72);
   }
 
@@ -286,28 +287,35 @@ import Ferrofluid from './Ferrofluid.astro';
   .lensing-arc {
     top: 50%;
     left: 50%;
-    width: 69%;
-    height: 69%;
+    width: 42%;
+    height: 39%;
     border-radius: 50%;
     transform-origin: center;
+    background: conic-gradient(
+      from 205deg,
+      rgba(128, 62, 27, 0.16),
+      rgba(238, 156, 77, 0.76) 17%,
+      rgba(255, 230, 180, 0.96) 30%,
+      rgba(194, 100, 44, 0.38) 49%,
+      rgba(130, 65, 28, 0.14) 65%,
+      rgba(245, 189, 116, 0.78) 87%,
+      rgba(128, 62, 27, 0.16)
+    );
+    mask-image: radial-gradient(ellipse closest-side, transparent 0 70%, #000 79% 85%, transparent 98%);
   }
 
   .arc-back {
-    border-top: 1px solid rgba(250, 214, 158, 0.56);
-    border-left: 1px solid rgba(197, 119, 57, 0.14);
     clip-path: inset(0 0 50% 0);
-    filter: drop-shadow(0 -4px 10px rgba(221, 139, 68, 0.18));
-    opacity: 0.72;
-    transform: translate(-50%, -50%) rotate(-13deg) scale(1.25, 0.96);
+    filter: blur(0.7px);
+    opacity: 0.7;
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1.08, 1.04);
   }
 
   .arc-front {
-    border-right: 1px solid rgba(229, 158, 91, 0.24);
-    border-bottom: 1px solid rgba(255, 205, 137, 0.64);
     clip-path: inset(50% 0 0 0);
-    filter: drop-shadow(0 5px 12px rgba(226, 142, 69, 0.18));
-    opacity: 0.62;
-    transform: translate(-50%, -50%) rotate(-13deg) scale(1.19, 0.94);
+    filter: blur(0.5px);
+    opacity: 0.54;
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1, 0.88);
   }
 
   .accretion-disc {
@@ -320,8 +328,8 @@ import Ferrofluid from './Ferrofluid.astro';
       radial-gradient(
         ellipse at center,
         transparent 0 31%,
-        rgba(255, 226, 167, 0.72) 34%,
-        rgba(213, 126, 57, 0.36) 39%,
+        rgba(255, 233, 190, 0.84) 34%,
+        rgba(220, 139, 68, 0.46) 39%,
         transparent 55%
       ),
       conic-gradient(
@@ -336,31 +344,61 @@ import Ferrofluid from './Ferrofluid.astro';
         transparent
       );
     mix-blend-mode: screen;
-    mask-image: radial-gradient(ellipse at center, transparent 0 30%, #000 34% 47%, transparent 57%);
+    mask-image: radial-gradient(ellipse at center, transparent 0 30%, #000 34% 43%, transparent 51%);
     transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.46);
+  }
+
+  .accretion-disc::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: repeating-radial-gradient(
+      ellipse at center,
+      transparent 0 2.4%,
+      rgba(255, 230, 183, 0.34) 2.8% 3.1%,
+      rgba(118, 55, 25, 0.16) 3.6%,
+      transparent 4.4% 6.3%
+    );
+    opacity: 0.3;
+    filter: blur(0.25px);
   }
 
   .disc-back {
     clip-path: inset(0 0 49% 0);
-    filter: blur(1.3px);
-    opacity: 0.58;
+    filter: blur(0.7px);
+    opacity: 0.62;
     animation: rear-drift 31s ease-in-out infinite;
   }
 
   .disc-front {
     clip-path: inset(49% 0 0 0);
-    filter: blur(0.45px) drop-shadow(0 4px 9px rgba(215, 128, 54, 0.18));
-    opacity: 0.9;
+    filter: drop-shadow(0 3px 8px rgba(215, 128, 54, 0.16));
+    opacity: 0.96;
     transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
     animation: front-drift 25s ease-in-out infinite;
   }
 
   .disc-filament {
     position: absolute;
-    inset: 15% 8%;
-    border: 1px solid rgba(255, 224, 164, 0.24);
-    border-radius: 50%;
-    opacity: 0.72;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    aspect-ratio: 1;
+    background: repeating-conic-gradient(
+      from 24deg,
+      transparent 0deg 17deg,
+      rgba(255, 217, 153, 0.12) 21deg,
+      rgba(255, 233, 187, 0.56) 25deg,
+      transparent 30deg 61deg
+    );
+    opacity: 0.12;
+    transform: translate(-50%, -50%);
+    animation: disc-orbit 48s linear infinite;
+  }
+
+  .disc-back .disc-filament {
+    animation-delay: -24s;
   }
 
   .photon-ring {
@@ -379,15 +417,16 @@ import Ferrofluid from './Ferrofluid.astro';
       rgba(224, 138, 65, 0.52) 88%,
       rgba(109, 56, 27, 0.1)
     );
-    filter: blur(0.25px) drop-shadow(-7px -1px 11px rgba(229, 151, 74, 0.26));
-    mask-image: radial-gradient(circle, transparent 0 41%, #000 44% 50%, transparent 54%);
+    filter: blur(0.35px);
+    /* closest-side keeps the luminous annulus outside the 29% horizon. */
+    mask-image: radial-gradient(circle closest-side, transparent 0 79%, #000 82% 86%, transparent 91%);
     transform: translate(-50%, -50%);
-    animation: photon-turn 58s linear infinite;
+    animation: photon-breathe 16s ease-in-out infinite;
   }
 
   .photon-caustic {
     position: absolute;
-    inset: 2%;
+    inset: 7%;
     border: 1px solid transparent;
     border-bottom-color: rgba(255, 235, 194, 0.5);
     border-left-color: rgba(255, 210, 139, 0.32);
@@ -402,13 +441,11 @@ import Ferrofluid from './Ferrofluid.astro';
     width: 29%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle at 38% 34%, #100b07 0 8%, #060403 38%, #010101 78%);
+    background: radial-gradient(circle at 48% 46%, #030302 0 58%, #080604 82%, #010101 100%);
     box-shadow:
-      inset 9px 7px 18px rgba(137, 78, 38, 0.08),
-      inset -14px -16px 28px rgba(0, 0, 0, 0.96),
-      0 0 0 1px rgba(238, 183, 111, 0.14),
-      0 0 38px rgba(0, 0, 0, 0.9),
-      0 0 62px rgba(72, 39, 20, 0.18);
+      inset 0 0 16px rgba(0, 0, 0, 0.96),
+      0 0 0 1px rgba(238, 183, 111, 0.09),
+      0 0 12px rgba(0, 0, 0, 0.78);
     transform: translate(-50%, -50%);
   }
 
@@ -417,8 +454,7 @@ import Ferrofluid from './Ferrofluid.astro';
     position: absolute;
     inset: 12%;
     border-radius: 50%;
-    background: radial-gradient(circle at 42% 38%, rgba(86, 48, 25, 0.12), rgba(2, 2, 1, 0.92) 48%, #000 85%);
-    box-shadow: inset -7px -8px 16px rgba(0, 0, 0, 0.88);
+    background: radial-gradient(circle, #010101 0 68%, rgba(2, 2, 1, 0.9) 90%);
   }
 
   .depth-near {
@@ -442,9 +478,19 @@ import Ferrofluid from './Ferrofluid.astro';
     animation: near-drift 19s ease-in-out infinite;
   }
 
-  @keyframes photon-turn {
+  @keyframes disc-orbit {
     to {
       transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @keyframes photon-breathe {
+    0%,
+    100% {
+      opacity: 0.86;
+    }
+    50% {
+      opacity: 1;
     }
   }
 
@@ -463,24 +509,20 @@ import Ferrofluid from './Ferrofluid.astro';
   @keyframes rear-drift {
     0%,
     100% {
-      opacity: 0.52;
-      transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.46);
+      opacity: 0.58;
     }
     50% {
-      opacity: 0.62;
-      transform: translate(-50%, -50%) rotate(-10.8deg) scaleY(0.48);
+      opacity: 0.68;
     }
   }
 
   @keyframes front-drift {
     0%,
     100% {
-      opacity: 0.84;
-      transform: translate(-50%, -50%) rotate(-12deg) scaleY(0.5);
+      opacity: 0.9;
     }
     50% {
-      opacity: 0.94;
-      transform: translate(-50%, -50%) rotate(-13deg) scaleY(0.52);
+      opacity: 1;
     }
   }
 
@@ -537,6 +579,7 @@ import Ferrofluid from './Ferrofluid.astro';
     .gravity-veil,
     .disc-back,
     .disc-front,
+    .disc-filament,
     .photon-ring,
     .foreground-dust,
     .depth-fluid,

@@ -234,6 +234,11 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     context.save();
     context.globalCompositeOperation = 'lighter';
     context.lineCap = 'round';
+    // The foreground Canvas must not let distant particles shine through the shadow.
+    context.beginPath();
+    context.rect(0, 0, width, height);
+    context.arc(gravity.x, gravity.y, gravity.innerRadius, 0, TAU, true);
+    context.clip('evenodd');
 
     if (shouldEmit) {
       emissionCarry += delta * (width < 640 ? 0.0015 : 0.0024);

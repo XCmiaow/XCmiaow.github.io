@@ -402,8 +402,17 @@ html[data-theme='dark'] body {
 }
 
 :root:not([data-theme='dark']) .sa-shell .photon-ring {
-  filter: blur(0.25px) drop-shadow(-7px -1px 10px rgba(159, 95, 45, 0.18));
-  opacity: 0.74;
+  background: conic-gradient(
+    from 218deg,
+    #794320,
+    #9c6035 18%,
+    #d49a5d 26%,
+    #543b2b 43%,
+    #3b2b21 66%,
+    #c98a4c 88%,
+    #794320
+  );
+  filter: blur(0.35px);
 }
 
 :root:not([data-theme='dark']) .sa-shell .accretion-disc {
@@ -419,7 +428,8 @@ html[data-theme='dark'] body {
 }
 
 :root:not([data-theme='dark']) .sa-shell .lensing-arc {
-  opacity: 0.42;
+  opacity: 0.7;
+  mix-blend-mode: multiply;
 }
 
 :root:not([data-theme='dark']) .sa-shell .foreground-dust {

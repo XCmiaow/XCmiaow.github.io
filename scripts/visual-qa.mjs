@@ -142,6 +142,9 @@ async function checkBrandHomeBounds(page) {
           primary: readRect('.hero-primary'),
           secondary: readRect('.hero-secondary'),
           photonRing: readRect('.photon-ring'),
+          horizon: readRect('.event-horizon'),
+          lens: readRect('.arc-back'),
+          photonMask: getComputedStyle(document.querySelector('.photon-ring')).maskImage,
           accretionDisc: readRect('.disc-front'),
         };
       });
@@ -187,6 +190,21 @@ async function checkBrandHomeBounds(page) {
         if (visibleDiscWidth / geometry.accretionDisc.width < 0.96) {
           fail(`${route} ${width}px accretion disc is visibly clipped`);
         }
+      }
+      if (!geometry.photonMask.includes('closest-side')) {
+        fail(`${route} ${width}px photon mask needs an explicit closest-side radius outside the shadow`);
+      }
+      const annulusStart = geometry.photonMask.match(/rgb\(0,\s*0,\s*0\)\s+([\d.]+)%/);
+      if (
+        !annulusStart ||
+        !geometry.photonRing ||
+        !geometry.horizon ||
+        (geometry.photonRing.width * Number(annulusStart[1])) / 100 <= geometry.horizon.width
+      ) {
+        fail(`${route} ${width}px the photon annulus is hidden inside the shadow`);
+      }
+      if (!geometry.lens || !geometry.horizon || geometry.lens.width / geometry.horizon.width > 2) {
+        fail(`${route} ${width}px lensing arc is detached from the horizon`);
       }
       checks.push({
         route,
@@ -361,24 +379,41 @@ async function checkEmberParticlePresence(browser) {
       const metrics = await particlePage.locator('[data-ember-canvas]').evaluate((canvas) => {
         const context = canvas.getContext('2d');
         const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        const canvasRect = canvas.getBoundingClientRect();
+        const horizon = document.querySelector('.event-horizon').getBoundingClientRect();
+        const scale = canvas.width / canvasRect.width;
+        const centerX = (horizon.left + horizon.width / 2 - canvasRect.left) * scale;
+        const centerY = (horizon.top + horizon.height / 2 - canvasRect.top) * scale;
+        const coreRadius = horizon.width * 0.45 * scale;
         let alphaEnergy = 0;
         let vividPixels = 0;
         let maxAlpha = 0;
+        let corePixels = 0;
 
         for (let index = 3; index < pixels.length; index += 4) {
           const alpha = pixels[index];
           alphaEnergy += alpha;
           if (alpha >= 24) vividPixels += 1;
           maxAlpha = Math.max(maxAlpha, alpha);
+          if (alpha > 0) {
+            const pixel = (index - 3) / 4;
+            const dx = (pixel % canvas.width) + 0.5 - centerX;
+            const dy = Math.floor(pixel / canvas.width) + 0.5 - centerY;
+            if (dx * dx + dy * dy < coreRadius * coreRadius) corePixels += 1;
+          }
         }
 
-        return { alphaEnergy, vividPixels, maxAlpha };
+        return { alphaEnergy, vividPixels, maxAlpha, corePixels };
       });
 
+      if (metrics.corePixels !== 0) {
+        fail(`${viewport.width}px particles shine through ${metrics.corePixels} pixels of the central shadow`);
+      }
       if (metrics.alphaEnergy < 9000 || metrics.alphaEnergy > 18000) {
         fail(`${viewport.width}px ember particle alpha energy is ${metrics.alphaEnergy.toFixed(1)}`);
       }
-      if (metrics.vividPixels < 120 || metrics.vividPixels > 300) {
+      // Count only visible particles: the newly occluded shadow previously contributed about 30 bright pixels.
+      if (metrics.vividPixels < 90 || metrics.vividPixels > 200) {
         fail(`${viewport.width}px ember particle vivid pixel count is ${metrics.vividPixels}`);
       }
       if (metrics.maxAlpha < 145 || metrics.maxAlpha > 210) {
