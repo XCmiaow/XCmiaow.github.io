@@ -173,6 +173,9 @@ async function checkBrandHomeBounds(page) {
       if (expectedSceneWidth && Math.abs(geometry.scene.width - expectedSceneWidth) > 2) {
         fail(`${route} ${width}px changed the black-hole scene width to ${geometry.scene.width.toFixed(1)}px`);
       }
+      if (!geometry.horizon || Math.abs(geometry.horizon.width / geometry.scene.width - 0.377) > 0.002) {
+        fail(`${route} ${width}px shadow must be 30% larger without resizing the scene or disc`);
+      }
       if (Math.abs(geometry.hero.bottom - height) > 4) {
         fail(`${route} ${width}px hero does not end at the first viewport`);
       }
@@ -207,6 +210,7 @@ async function checkBrandHomeBounds(page) {
         width,
         height,
         sceneWidth: geometry.scene.width,
+        shadowWidth: geometry.horizon?.width,
         gravityBounds: 'ok',
         gravityCenter: 'ok',
         copyClearance: 'ok',
@@ -504,11 +508,11 @@ async function checkEmberParticlePresence(browser) {
       if (metrics.corePixels !== 0) {
         fail(`${viewport.width}px particles shine through ${metrics.corePixels} pixels of the central shadow`);
       }
-      if (metrics.alphaEnergy < 9000 || metrics.alphaEnergy > 18000) {
+      // The 30% larger shadow occludes more of the seeded field; keep the core fully dark.
+      if (metrics.alphaEnergy < 7000 || metrics.alphaEnergy > 18000) {
         fail(`${viewport.width}px ember particle alpha energy is ${metrics.alphaEnergy.toFixed(1)}`);
       }
-      // Count only visible particles: the newly occluded shadow previously contributed about 30 bright pixels.
-      if (metrics.vividPixels < 90 || metrics.vividPixels > 200) {
+      if (metrics.vividPixels < 70 || metrics.vividPixels > 200) {
         fail(`${viewport.width}px ember particle vivid pixel count is ${metrics.vividPixels}`);
       }
       if (metrics.maxAlpha < 145 || metrics.maxAlpha > 210) {

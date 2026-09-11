@@ -136,7 +136,7 @@ const mountEmberField = (canvas: HTMLCanvasElement) => {
     gravityField = {
       x: sceneRect ? sceneRect.left - hostRect.left + sceneRect.width / 2 : width * 0.72,
       y: sceneRect ? sceneRect.top - hostRect.top + sceneRect.height / 2 : height * 0.5,
-      innerRadius: Math.max(22, size * 0.15),
+      innerRadius: Math.max(22, size * 0.195),
       outerRadius: Math.max(138, size * 0.68),
     };
   };
