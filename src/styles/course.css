@@ -13,7 +13,8 @@
   grid-template-columns: minmax(0, 1fr) minmax(240px, 0.42fr);
   gap: clamp(32px, 7vw, 96px);
   align-items: end;
-  border-bottom: 1px solid var(--course-line);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, var(--course-accent), transparent) 1;
   padding: 48px 0 clamp(40px, 7vw, 88px);
 }
 
@@ -103,6 +104,14 @@
   color: var(--course-muted);
   line-height: 1.45;
   text-decoration: none;
+  transition:
+    color 180ms ease,
+    padding-left 180ms ease;
+}
+
+.course-rail a:hover {
+  color: var(--course-ink);
+  padding-left: 4px;
 }
 
 .course-rail a[aria-current='page'] {
@@ -203,6 +212,7 @@
   margin: clamp(32px, 6vw, 64px) 0;
   border-block: 1px solid var(--course-line);
   padding: clamp(22px, 4vw, 36px) 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--moss) 4%, transparent), transparent 42%) no-repeat;
 }
 
 .course-block h2,

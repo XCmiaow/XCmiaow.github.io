@@ -8,22 +8,34 @@ html {
   --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 
   scroll-behavior: smooth;
-  background: linear-gradient(180deg, #e6d8bc 0%, #d8c7a8 100%);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(240, 179, 90, 0.24), transparent 34rem),
+    radial-gradient(circle at 82% 72%, rgba(142, 79, 53, 0.14), transparent 38rem),
+    linear-gradient(180deg, #f0e5d0 0%, #dcc9a9 100%);
 }
 
 html[data-theme='dark'] {
-  background: linear-gradient(180deg, #080a0b 0%, #161a1d 100%);
+  background:
+    radial-gradient(circle at 78% 12%, rgba(240, 179, 90, 0.09), transparent 36rem),
+    radial-gradient(circle at 12% 84%, rgba(142, 79, 53, 0.12), transparent 34rem),
+    linear-gradient(180deg, #060809 0%, #14171a 100%);
 }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #e6d8bc 0%, #d8c7a8 100%);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(240, 179, 90, 0.24), transparent 34rem),
+    radial-gradient(circle at 82% 72%, rgba(142, 79, 53, 0.14), transparent 38rem),
+    linear-gradient(180deg, #f0e5d0 0%, #dcc9a9 100%);
   color: #161a1d;
   font-family: var(--font-sans);
 }
 
 html[data-theme='dark'] body {
-  background: linear-gradient(180deg, #080a0b 0%, #161a1d 100%);
+  background:
+    radial-gradient(circle at 78% 12%, rgba(240, 179, 90, 0.09), transparent 36rem),
+    radial-gradient(circle at 12% 84%, rgba(142, 79, 53, 0.12), transparent 34rem),
+    linear-gradient(180deg, #060809 0%, #14171a 100%);
   color: #e6d8bc;
 }
 
@@ -199,6 +211,11 @@ html[data-theme='dark'] body {
   letter-spacing: -0.03em;
 }
 
+.sa-shell ::selection {
+  background: color-mix(in srgb, var(--ember-strong) 28%, transparent);
+  color: var(--paper);
+}
+
 .sa-shell .section-copy > p:not(.kicker) {
   max-width: 40rem;
   margin: 1.35rem 0 0;
@@ -215,7 +232,7 @@ html[data-theme='dark'] body {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: 999px;
   padding: 0 1rem;
   background: var(--surface);
   color: var(--paper);
@@ -229,6 +246,7 @@ html[data-theme='dark'] body {
     border-color 180ms ease,
     background 180ms ease,
     color 180ms ease;
+  box-shadow: 0 10px 24px rgba(22, 26, 29, 0.05);
 }
 
 .sa-shell .sa-control::after {
@@ -268,6 +286,7 @@ html[data-theme='dark'] body {
   background: var(--surface-strong);
   color: var(--paper);
   outline: none;
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--ember-strong) 12%, transparent);
 }
 
 .sa-shell .sa-control:hover::after,
