@@ -134,9 +134,9 @@ const setupCanvas = (canvas: FuzzyCanvasElement, config: FuzzyTextConfig) => {
   if (!root || !context || !config.text) return () => undefined;
 
   let animationFrame = 0;
-  let glitchTimeout: ReturnType<typeof setTimeout> | undefined;
-  let glitchEndTimeout: ReturnType<typeof setTimeout> | undefined;
-  let clickTimeout: ReturnType<typeof setTimeout> | undefined;
+  let glitchTimeout: number | undefined;
+  let glitchEndTimeout: number | undefined;
+  let clickTimeout: number | undefined;
   let isCancelled = false;
   let detachEvents = () => undefined;
 

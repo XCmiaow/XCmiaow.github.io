@@ -46,7 +46,7 @@ const isActive = (href: string) => {
     position: relative;
     z-index: 20;
     display: flex;
-    width: min(100% - 56px, 1320px);
+    width: var(--frame-width);
     min-height: 72px;
     align-items: center;
     justify-content: space-between;
@@ -108,7 +108,7 @@ const isActive = (href: string) => {
     padding-left: 0.7rem;
     border-left: 1px solid var(--line);
     color: color-mix(in srgb, var(--muted) 72%, transparent);
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-family: var(--font-mono);
     font-size: 0.58rem;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.08em;
@@ -186,7 +186,7 @@ const isActive = (href: string) => {
   }
 
   .language-link {
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.06em;
   }
@@ -221,7 +221,6 @@ const isActive = (href: string) => {
 
   @media (max-width: 720px) {
     .sa-nav {
-      width: min(100% - 36px, 1320px);
       flex-wrap: wrap;
       gap: 0.35rem 1rem;
       padding: 0.7rem 0 0.55rem;

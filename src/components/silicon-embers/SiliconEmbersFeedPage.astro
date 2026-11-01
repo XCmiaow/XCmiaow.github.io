@@ -198,13 +198,12 @@ const copy = isZh
 
 <style>
   .feed-page {
-    padding-bottom: clamp(86px, 10vw, 132px);
+    padding-bottom: var(--space-section);
   }
 
   .feed-hero {
-    max-width: 900px;
     border-bottom: 1px solid var(--line);
-    padding: clamp(76px, 10vw, 118px) 0 clamp(48px, 7vw, 78px);
+    padding: var(--page-head-top) 0 var(--page-head-bottom);
   }
 
   h1,
@@ -220,13 +219,13 @@ const copy = isZh
     margin: 0;
     color: var(--paper);
     font-family: var(--font-display);
-    font-weight: 850;
+    font-weight: 780;
   }
 
   h1 {
-    margin-top: 18px;
+    margin-top: 16px;
     font-size: var(--display-page-size);
-    line-height: 1.18;
+    line-height: var(--page-title-leading);
     text-wrap: balance;
   }
 
@@ -234,8 +233,8 @@ const copy = isZh
     max-width: 620px;
     margin: 24px 0 0;
     color: var(--muted);
-    font-size: clamp(1.04rem, 1.45vw, 1.24rem);
-    line-height: 1.76;
+    font-size: var(--lead-size);
+    line-height: 1.75;
   }
 
   .wechat-panel,
@@ -243,7 +242,7 @@ const copy = isZh
   .feed-note,
   .feed-index {
     border-bottom: 1px solid var(--line);
-    padding: clamp(48px, 7vw, 84px) 0;
+    padding: var(--space-section) 0;
   }
 
   .wechat-panel {
@@ -262,9 +261,9 @@ const copy = isZh
     margin-top: 14px;
     color: var(--paper);
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 5vw, 4.4rem);
+    font-size: var(--section-title-size);
     font-weight: 850;
-    line-height: 1.04;
+    line-height: 1.2;
   }
 
   .wechat-copy > p:not(.kicker) {
@@ -298,10 +297,10 @@ const copy = isZh
     display: block;
     width: min(100%, 240px);
     aspect-ratio: 1;
-    border: 1px solid rgba(242, 223, 189, 0.18);
+    border: 1px solid var(--line);
     border-radius: 8px;
     padding: 10px;
-    background: rgba(242, 223, 189, 0.06);
+    background: var(--surface);
     object-fit: cover;
   }
 
@@ -310,8 +309,8 @@ const copy = isZh
   }
 
   figcaption {
-    color: rgba(239, 227, 205, 0.56);
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    color: var(--muted);
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 850;
   }
@@ -331,8 +330,8 @@ const copy = isZh
 
   .section-copy h2,
   .feed-note h2 {
-    font-size: clamp(1.7rem, 3vw, 2.8rem);
-    line-height: 1.08;
+    font-size: var(--section-title-size);
+    line-height: 1.2;
   }
 
   .section-copy p:not(.kicker),
@@ -356,7 +355,7 @@ const copy = isZh
     display: grid;
     margin: 0;
     padding: 0;
-    border-top: 1px solid rgba(232, 174, 98, 0.18);
+    border-top: 1px solid var(--line);
     list-style: none;
   }
 
@@ -364,13 +363,13 @@ const copy = isZh
     display: grid;
     grid-template-columns: 44px minmax(0, 1fr);
     gap: 16px;
-    border-bottom: 1px solid rgba(232, 174, 98, 0.14);
+    border-bottom: 1px solid var(--line);
     padding: 18px 0;
   }
 
   .feed-how li span {
-    color: rgba(244, 212, 155, 0.72);
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    color: var(--ember-strong);
+    font-family: var(--font-mono);
     font-size: 13px;
     font-weight: 850;
   }
@@ -385,7 +384,7 @@ const copy = isZh
   .lane-list {
     display: grid;
     gap: 0;
-    border-top: 1px solid rgba(232, 174, 98, 0.18);
+    border-top: 1px solid var(--line);
   }
 
   .lane-card {
@@ -393,7 +392,7 @@ const copy = isZh
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 18px;
     align-items: center;
-    border-bottom: 1px solid rgba(232, 174, 98, 0.14);
+    border-bottom: 1px solid var(--line);
     padding: 18px 0;
   }
 
@@ -410,19 +409,14 @@ const copy = isZh
   }
 
   @media (max-width: 760px) {
-    .feed-hero {
-      padding: 34px 0 30px;
-    }
-
     h1 {
-      font-size: clamp(2.2rem, 12vw, 3.4rem);
-      line-height: 1.08;
+      margin-top: 12px;
     }
 
     .lead {
       margin-top: 14px;
-      font-size: 14.5px;
-      line-height: 1.68;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .wechat-panel,
@@ -430,11 +424,7 @@ const copy = isZh
     .feed-index {
       grid-template-columns: 1fr;
       gap: 22px;
-      padding: 34px 0 42px;
-    }
-
-    .wechat-copy strong {
-      font-size: clamp(2rem, 10vw, 3rem);
+      padding: var(--space-section) 0;
     }
 
     .wechat-copy > p:not(.kicker),
@@ -442,8 +432,8 @@ const copy = isZh
     .section-copy p:not(.kicker),
     .feed-note p:not(.kicker),
     .lane-card p {
-      font-size: 14px;
-      line-height: 1.66;
+      font-size: 15px;
+      line-height: 1.75;
     }
 
     .feed-actions :global(.sa-control),

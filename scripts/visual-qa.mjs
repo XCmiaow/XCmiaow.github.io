@@ -677,6 +677,108 @@ async function checkFooterVariants(page) {
   }
 }
 
+async function checkBrandLightThemeAndAlignment(page) {
+  await page.goto(`${base}/silicon-ashes/resources/`, { waitUntil: 'load' });
+  const templateRoute = await page
+    .locator('.resource-row[href^="/silicon-ashes/resources/"]')
+    .first()
+    .getAttribute('href');
+  const cases = [
+    { route: '/', lead: null },
+    { route: '/silicon-ashes/about/', lead: '.about-hero > p:not(.kicker)' },
+    { route: '/silicon-ashes/resources/', lead: '.group-copy > p' },
+    { route: templateRoute, lead: '.template-hero .lead' },
+    { route: '/silicon-ashes/courses/', lead: '.hero-copy .lead' },
+    { route: '/silicon-ashes/feed/', lead: '.feed-hero .lead' },
+  ];
+
+  for (const { route, lead } of cases) {
+    for (const width of [360, 390, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.goto(`${base}${route}`, { waitUntil: 'load' });
+      await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
+      await page.evaluate(() => {
+        document.documentElement.removeAttribute('data-theme');
+        document.documentElement.classList.remove('dark');
+      });
+      await waitForSettledPage(page);
+      const result = await page.evaluate((leadSelector) => {
+        const rect = (selector) => {
+          const element = document.querySelector(selector);
+          const bounds = element?.getBoundingClientRect();
+          return bounds && { left: bounds.left, right: bounds.right };
+        };
+        const bounds = { nav: rect('.sa-nav'), main: rect('.sa-frame-main'), footer: rect('.sa-footer') };
+        if (!leadSelector) return { bounds, contrast: [] };
+
+        const shell = document.querySelector('.sa-shell');
+        const shellStyle = getComputedStyle(shell);
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 1;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        const rgba = (color) => {
+          if (!CSS.supports('color', color)) throw new Error(`Cannot resolve contrast color: ${color}`);
+          context.clearRect(0, 0, 1, 1);
+          context.fillStyle = color;
+          context.fillRect(0, 0, 1, 1);
+          const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data;
+          return [r, g, b, a / 255];
+        };
+        const composite = (foreground, background) => [
+          ...foreground.slice(0, 3).map((channel, i) => channel * foreground[3] + background[i] * (1 - foreground[3])),
+          1,
+        ];
+        const luminance = (color) =>
+          color.slice(0, 3).reduce((sum, channel, i) => {
+            const value = channel / 255;
+            const linear = value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+            return sum + linear * [0.2126, 0.7152, 0.0722][i];
+          }, 0);
+        // Check both shell gradient base stops; this guards theme readability, not decorative pixel noise.
+        const backgrounds = ['--coal', '--coal-2'].map((token) => rgba(shellStyle.getPropertyValue(token).trim()));
+        const contrast = [
+          { selector: 'h1', minimum: 3 },
+          { selector: leadSelector, minimum: 4.5 },
+        ].map(({ selector, minimum }) => {
+          const element = document.querySelector(selector);
+          if (!element) return { selector, minimum, ratio: 0 };
+          const layers = [];
+          for (let ancestor = element; ancestor && ancestor !== shell; ancestor = ancestor.parentElement) {
+            layers.unshift(rgba(getComputedStyle(ancestor).backgroundColor));
+          }
+          const color = getComputedStyle(element).color;
+          const foreground = rgba(color);
+          const ratio = Math.min(
+            ...backgrounds.map((baseColor) => {
+              const background = layers.reduce((result, layer) => composite(layer, result), baseColor);
+              const bg = luminance(background);
+              const fg = luminance(composite(foreground, background));
+              return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
+            }),
+          );
+          return { selector, minimum, ratio, color };
+        });
+        return { bounds, contrast };
+      }, lead);
+
+      const { nav, main, footer } = result.bounds;
+      if (!nav || !main || !footer) fail(`${route} ${width}px is missing brand frame geometry`);
+      else if (
+        [nav, footer].some((bounds) => ['left', 'right'].some((edge) => Math.abs(bounds[edge] - main[edge]) > 1))
+      ) {
+        fail(`${route} ${width}px navigation, main and footer edges differ by more than 1px`);
+      }
+      for (const { selector, minimum, ratio, color } of result.contrast) {
+        if (ratio < minimum)
+          fail(
+            `${route} ${width}px light ${selector} contrast is ${ratio.toFixed(2)}:1 (minimum ${minimum}:1; ${color || 'missing element'})`,
+          );
+      }
+      checks.push({ route, width, lightTheme: result });
+    }
+  }
+}
+
 const child = startPreview();
 
 try {
@@ -741,6 +843,7 @@ try {
   await checkEmberFrameBudget(browser);
   await checkBrandHomeBounds(page);
   await checkFooterVariants(page);
+  await checkBrandLightThemeAndAlignment(page);
 
   await page.screenshot({ path: path.join(screenshotDir, 'ai-km-dark-desktop.png'), fullPage: false });
 

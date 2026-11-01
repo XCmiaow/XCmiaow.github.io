@@ -77,6 +77,21 @@
 }
 
 /* ── 768px: Small tablet / large phone ── */
+@media (max-width: 720px) {
+  :root {
+    --site-gutter: 18px;
+    --display-page-size: clamp(2rem, 7.8vw, 2.75rem);
+    --page-head-top: 2.5rem;
+    --page-head-bottom: 2rem;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --site-gutter: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .grid-4 {
     grid-template-columns: repeat(2, 1fr);
@@ -126,11 +141,11 @@
 /* ── 640px: Phone ── */
 @media (max-width: 640px) {
   .container {
-    width: calc(100% - 28px) !important;
+    width: calc(100% - var(--site-gutter) * 2);
   }
 
   .hero {
-    padding: 50px 0 42px !important;
+    padding: var(--page-head-top) 0 var(--page-head-bottom);
   }
   .hero-grid,
   .education-card,
@@ -146,7 +161,7 @@
 
   .hero h1 {
     max-width: 100%;
-    font-size: clamp(32px, 11vw, 44px) !important;
+    font-size: var(--display-page-size);
     overflow-wrap: anywhere;
   }
   .subtitle,

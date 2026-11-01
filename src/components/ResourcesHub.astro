@@ -53,12 +53,12 @@ const groups = getResourceIndexGroups(lang);
 
 <style>
   .resources-index {
-    padding-bottom: clamp(76px, 9vw, 116px);
+    padding-bottom: var(--space-section);
   }
 
   .resources-head {
     border-bottom: 1px solid var(--line);
-    padding: clamp(48px, 7vw, 88px) 0 clamp(28px, 4vw, 48px);
+    padding: var(--page-head-top) 0 var(--page-head-bottom);
   }
 
   h1,
@@ -66,13 +66,13 @@ const groups = getResourceIndexGroups(lang);
     margin: 0;
     color: var(--paper);
     font-family: var(--font-display);
-    font-weight: 850;
-    letter-spacing: 0;
+    font-weight: 750;
+    letter-spacing: -0.025em;
   }
 
   h1 {
     font-size: var(--display-page-size);
-    line-height: 1.18;
+    line-height: var(--page-title-leading);
   }
 
   .resource-groups {
@@ -109,7 +109,7 @@ const groups = getResourceIndexGroups(lang);
 
   .resource-list {
     display: grid;
-    border-top: 1px solid rgba(232, 174, 98, 0.18);
+    border-top: 1px solid var(--line);
   }
 
   .resource-row {
@@ -117,7 +117,7 @@ const groups = getResourceIndexGroups(lang);
     grid-template-columns: minmax(0, 1fr) minmax(150px, auto);
     gap: 18px;
     align-items: center;
-    border-bottom: 1px solid rgba(232, 174, 98, 0.16);
+    border-bottom: 1px solid var(--line);
     padding: 16px 0;
     color: inherit;
     text-decoration: none;
@@ -165,7 +165,7 @@ const groups = getResourceIndexGroups(lang);
   }
 
   .resource-meta em {
-    border: 1px solid rgba(168, 177, 176, 0.2);
+    border: 1px solid var(--line);
     border-radius: 4px;
     padding: 5px 9px;
     color: var(--muted);
@@ -174,14 +174,6 @@ const groups = getResourceIndexGroups(lang);
   }
 
   @media (max-width: 720px) {
-    .resources-head {
-      padding: 34px 0 26px;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 11vw, 3.3rem);
-    }
-
     .resource-group {
       grid-template-columns: 1fr;
       gap: 18px;

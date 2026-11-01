@@ -3,25 +3,35 @@
 
 /* src/styles/global.css */
 :root {
-  --bg: #f7f5f0;
-  --paper: #fffdfa;
-  --ink: #161b22;
-  --muted: #5d6875;
-  --primary: #12212e;
-  --secondary: #486274;
-  --accent: #a37414;
-  --accent-soft: rgba(163, 116, 20, 0.12);
+  --bg: #f4efe5;
+  --paper: #faf6ee;
+  --ink: #161a1d;
+  --muted: #62605a;
+  --primary: #161a1d;
+  --secondary: #8e4f35;
+  --accent: #8e4f35;
+  --accent-soft: rgba(142, 79, 53, 0.1);
+  --line: rgba(38, 52, 61, 0.18);
   --green: #2d6c5c;
   --border: var(--line);
   --surface: var(--paper);
-  --surface-strong: rgba(255, 253, 250, 0.92);
-  --primary-ink: #fffdfa;
+  --surface-strong: #eee5d5;
+  --primary-ink: #fff8ec;
   --shadow: 0 18px 40px rgba(26, 29, 36, 0.09);
   --shadow-strong: 0 24px 60px rgba(26, 29, 36, 0.12);
   --radius: 14px;
   --radius-sm: 9px;
   --font-sans: 'Avenir Next', 'Segoe UI Variable', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Songti SC', 'Noto Serif CJK SC', serif;
+  --font-display: var(--font-sans);
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --site-gutter: 28px;
+  --frame-width: min(100% - var(--site-gutter) * 2, 1320px);
+  --display-page-size: clamp(2.25rem, 5vw, 4.5rem);
+  --page-head-top: clamp(2.5rem, 6vw, 5.5rem);
+  --page-head-bottom: clamp(2rem, 4vw, 3.5rem);
+  --page-title-leading: 1.18;
+  --section-title-size: clamp(1.5rem, 3vw, 2.5rem);
+  --lead-size: clamp(1rem, 1.5vw, 1.2rem);
   --max: 1120px;
   transition:
     background-color 0.3s,
@@ -32,18 +42,18 @@
 
 :root[data-theme='dark'],
 :root.dark {
-  --bg: #070809;
-  --paper: #0e100f;
-  --ink: #f0e6cf;
-  --muted: rgba(239, 227, 205, 0.66);
-  --primary: #f1debc;
-  --secondary: #e8ae62;
-  --accent: #df8a3d;
-  --accent-soft: rgba(223, 138, 61, 0.16);
+  --bg: #080a0b;
+  --paper: #161a1d;
+  --ink: #e6d8bc;
+  --muted: #b3aa98;
+  --primary: #e6d8bc;
+  --secondary: #c89b52;
+  --accent: #f0b35a;
+  --accent-soft: rgba(240, 179, 90, 0.12);
   --green: #789b91;
-  --line: rgba(242, 223, 189, 0.14);
-  --surface-strong: rgba(14, 16, 15, 0.92);
-  --primary-ink: #12100b;
+  --line: rgba(200, 155, 82, 0.2);
+  --surface-strong: #202427;
+  --primary-ink: #080a0b;
   --shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
   --shadow-strong: 0 28px 70px rgba(0, 0, 0, 0.44);
 }
@@ -73,9 +83,8 @@ body {
   cursor: default;
   -webkit-tap-highlight-color: transparent;
   background:
-    radial-gradient(circle at 8% 4%, rgba(163, 116, 20, 0.14), transparent 30rem),
-    radial-gradient(circle at 92% 10%, rgba(45, 108, 92, 0.1), transparent 26rem),
-    linear-gradient(180deg, #fffdf8 0%, var(--bg) 48%, #f2efe8 100%);
+    radial-gradient(circle at 8% 4%, rgba(200, 155, 82, 0.08), transparent 30rem),
+    linear-gradient(180deg, var(--bg), #eee5d5 52%, var(--bg));
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -88,9 +97,8 @@ body {
 :root[data-theme='dark'] body,
 :root.dark body {
   background:
-    radial-gradient(circle at 72% 14%, rgba(223, 138, 61, 0.08), transparent 34rem),
-    radial-gradient(circle at 18% 86%, rgba(120, 155, 145, 0.08), transparent 30rem),
-    linear-gradient(180deg, #08090a 0%, #0d0f10 48%, #060708 100%);
+    radial-gradient(circle at 72% 14%, rgba(240, 179, 90, 0.06), transparent 34rem),
+    linear-gradient(180deg, var(--bg), #161a1d 52%, var(--bg));
 }
 
 a {
@@ -143,7 +151,7 @@ img {
 }
 
 .container {
-  width: min(var(--max), calc(100% - 40px));
+  width: min(var(--max), calc(100% - var(--site-gutter) * 2));
   margin: 0 auto;
 }
 section {
@@ -239,9 +247,9 @@ section {
   box-shadow: 0 8px 18px rgba(26, 29, 36, 0.06);
 }
 .btn.primary {
-  border-color: transparent;
-  background: var(--primary);
-  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--primary-ink);
 }
 .btn:hover {
   border-color: var(--accent);
@@ -261,9 +269,9 @@ section {
 
 :root[data-theme='dark'] .btn.primary,
 :root.dark .btn.primary {
-  border-color: var(--secondary);
-  background: var(--secondary);
-  color: #150f08;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--primary-ink);
 }
 
 :root[data-theme='dark'] .btn:hover,
@@ -278,12 +286,13 @@ section {
 
 /* Shared reading rhythm for the profile, evidence, and project pages. */
 .resume-site .hero {
-  padding: clamp(48px, 6vw, 88px) 0 clamp(32px, 4vw, 56px);
+  padding: var(--page-head-top) 0 var(--page-head-bottom);
 }
 .resume-site .hero h1 {
   max-width: 22ch;
   margin: 12px 0 20px;
   color: var(--primary);
+  font-family: var(--font-display);
   font-size: clamp(2.3rem, 4.5vw, 3.75rem);
   letter-spacing: -0.035em;
   line-height: 1.16;
@@ -498,22 +507,14 @@ html:has(.lightbox[open]) {
   background: var(--accent);
 }
 
-/* ── Wave dividers ── */
-section::after {
-  display: none;
-}
-section:last-of-type::after {
-  display: none;
-}
-
 /* ── Glassmorphism nav ── */
 .site-header {
-  background: rgba(255, 253, 250, 0.72) !important;
-  border-bottom: 1px solid rgba(22, 27, 34, 0.08);
+  background: color-mix(in srgb, var(--bg) 88%, transparent) !important;
+  border-bottom: 1px solid var(--line);
 }
 [data-theme='dark'] .site-header {
-  background: rgba(8, 9, 10, 0.78) !important;
-  border-bottom-color: rgba(242, 223, 189, 0.14);
+  background: color-mix(in srgb, var(--bg) 88%, transparent) !important;
+  border-bottom-color: var(--line);
 }
 .site-header::before {
   content: '';
@@ -906,6 +907,21 @@ body {
 }
 
 /* ── 768px: Small tablet / large phone ── */
+@media (max-width: 720px) {
+  :root {
+    --site-gutter: 18px;
+    --display-page-size: clamp(2rem, 7.8vw, 2.75rem);
+    --page-head-top: 2.5rem;
+    --page-head-bottom: 2rem;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --site-gutter: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .grid-4 {
     grid-template-columns: repeat(2, 1fr);
@@ -955,11 +971,11 @@ body {
 /* ── 640px: Phone ── */
 @media (max-width: 640px) {
   .container {
-    width: calc(100% - 28px) !important;
+    width: calc(100% - var(--site-gutter) * 2);
   }
 
   .hero {
-    padding: 50px 0 42px !important;
+    padding: var(--page-head-top) 0 var(--page-head-bottom);
   }
   .hero-grid,
   .education-card,
@@ -975,7 +991,7 @@ body {
 
   .hero h1 {
     max-width: 100%;
-    font-size: clamp(32px, 11vw, 44px) !important;
+    font-size: var(--display-page-size);
     overflow-wrap: anywhere;
   }
   .subtitle,

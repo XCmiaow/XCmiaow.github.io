@@ -80,12 +80,11 @@ const copy = isZh
   .resource-template {
     width: min(100%, 1120px);
     margin: 0 auto;
-    padding-bottom: clamp(82px, 10vw, 128px);
+    padding-bottom: var(--space-section);
   }
 
   .template-hero {
-    max-width: 900px;
-    padding: clamp(78px, 10vw, 118px) 0 clamp(54px, 7vw, 82px);
+    padding: var(--page-head-top) 0 var(--page-head-bottom);
   }
 
   h1,
@@ -99,23 +98,24 @@ const copy = isZh
     margin: 0;
     color: var(--paper);
     font-family: var(--font-display);
-    font-weight: 850;
-    letter-spacing: 0;
-    line-height: 1.05;
+    font-weight: 780;
+    letter-spacing: -0.025em;
+    line-height: var(--page-title-leading);
     text-wrap: balance;
   }
 
   h1 {
-    margin-top: 20px;
-    font-size: clamp(3rem, 6.3vw, 6.1rem);
+    max-width: 20ch;
+    margin-top: 16px;
+    font-size: var(--display-page-size);
   }
 
   .lead {
     max-width: 760px;
-    margin: 26px 0 0;
+    margin: 24px 0 0;
     color: var(--muted);
-    font-size: clamp(1.08rem, 1.65vw, 1.35rem);
-    line-height: 1.84;
+    font-size: var(--lead-size);
+    line-height: 1.75;
   }
 
   .meta-list {
@@ -128,9 +128,10 @@ const copy = isZh
   }
 
   .meta-list li {
-    border: 1px solid rgba(168, 177, 176, 0.22);
+    border: 1px solid var(--line);
+    border-radius: 4px;
     padding: 6px 10px;
-    color: rgba(220, 228, 224, 0.68);
+    color: var(--muted);
     font-size: 13px;
   }
 
@@ -138,12 +139,17 @@ const copy = isZh
   .layout-grid,
   .template-block {
     border-top: 1px solid var(--line);
-    padding: clamp(56px, 7vw, 84px) 0;
+    padding: var(--space-section) 0;
+  }
+
+  .section-head {
+    display: block;
+    margin-bottom: 0;
   }
 
   .section-head h2 {
     margin-top: 12px;
-    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-size: var(--section-title-size);
   }
 
   .section-head.wide {
@@ -153,7 +159,7 @@ const copy = isZh
   .purpose > p {
     max-width: 790px;
     margin: 22px 0 0;
-    color: rgba(239, 227, 205, 0.76);
+    color: var(--muted);
     font-size: 17px;
     line-height: 1.84;
   }
@@ -165,9 +171,10 @@ const copy = isZh
   }
 
   .layout-grid article {
-    border: 1px solid rgba(232, 174, 98, 0.2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
     padding: 28px;
-    background: rgba(13, 12, 10, 0.78);
+    background: var(--surface);
   }
 
   .layout-grid h2 {
@@ -185,7 +192,7 @@ const copy = isZh
   .layout-grid li {
     position: relative;
     padding-left: 18px;
-    color: rgba(239, 227, 205, 0.76);
+    color: var(--muted);
     line-height: 1.64;
   }
 
@@ -202,15 +209,17 @@ const copy = isZh
   .template-block pre {
     overflow-x: auto;
     margin: 30px 0 0;
-    border: 1px solid rgba(232, 174, 98, 0.2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
     padding: 26px;
-    background: rgba(0, 0, 0, 0.42);
+    background: var(--surface-strong);
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
   .template-block code {
-    color: rgba(246, 236, 214, 0.92);
-    font-family: Consolas, 'SFMono-Regular', monospace;
+    color: var(--paper);
+    font-family: var(--font-mono);
     font-size: 14px;
     line-height: 1.76;
   }
@@ -221,36 +230,20 @@ const copy = isZh
   }
 
   @media (max-width: 760px) {
-    .template-hero {
-      padding: 34px 0 28px;
-    }
-
     h1 {
       margin-top: 12px;
-      font-size: clamp(1.45rem, 6.4vw, 1.95rem);
-      line-height: 1.16;
     }
 
     .lead {
       margin-top: 14px;
-      font-size: 14.5px;
-      line-height: 1.68;
-    }
-
-    .section-head h2 {
-      font-size: clamp(1.28rem, 6vw, 1.72rem);
-    }
-
-    .purpose,
-    .layout-grid,
-    .template-block {
-      padding: 38px 0;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .purpose > p,
     .layout-grid li {
-      font-size: 14.5px;
-      line-height: 1.66;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .layout-grid {
@@ -267,16 +260,12 @@ const copy = isZh
     }
 
     .template-block code {
-      font-size: 12.5px;
-      line-height: 1.64;
+      font-size: 13px;
+      line-height: 1.75;
     }
   }
 
   @media (max-width: 360px) {
-    h1 {
-      font-size: clamp(1.38rem, 6.2vw, 1.72rem);
-    }
-
     .meta-list li {
       font-size: 12px;
     }
